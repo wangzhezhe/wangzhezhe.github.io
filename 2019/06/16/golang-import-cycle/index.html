@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>golang import cycle | Wangzhezhe&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="项目结构变得复杂的时候，常常会遇到一个循环引用的问题，特别是对于Golang的项目，循环引用是被禁止的。这里简要罗列以下循环引用的起因以及出现循环引用之后应该如何解决。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang import cycle">
+<meta property="og:url" content="http://yoursite.com/2019/06/16/golang-import-cycle/index.html">
+<meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
+<meta property="og:description" content="项目结构变得复杂的时候，常常会遇到一个循环引用的问题，特别是对于Golang的项目，循环引用是被禁止的。这里简要罗列以下循环引用的起因以及出现循环引用之后应该如何解决。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-16T19:12:18.261Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="golang import cycle">
+<meta name="twitter:description" content="项目结构变得复杂的时候，常常会遇到一个循环引用的问题，特别是对于Golang的项目，循环引用是被禁止的。这里简要罗列以下循环引用的起因以及出现循环引用之后应该如何解决。">
+  
+    <link rel="alternate" href="/atom.xml" title="Wangzhezhe&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wangzhezhe&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Writing is nature&#39;s way of letting you know how sloppy your thinking is.</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-golang-import-cycle" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/16/golang-import-cycle/" class="article-date">
+  <time datetime="2019-06-16T19:09:30.000Z" itemprop="datePublished">2019-06-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/golang/">golang</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      golang import cycle
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>项目结构变得复杂的时候，常常会遇到一个循环引用的问题，特别是对于Golang的项目，循环引用是被禁止的。这里简要罗列以下循环引用的起因以及出现循环引用之后应该如何解决。</p>
+<a id="more"></a>
+<h3 id="交叉引用的解决"><a href="#交叉引用的解决" class="headerlink" title="交叉引用的解决"></a>交叉引用的解决</h3><p>常常使用的一种方式是通过解耦合来达到消除循环引用的目的，在Golang中通过接口的方式进行接耦合是相当方便的。由于golang中struct是通过duck type的方式实现接口，比如一个struct实现了interfaceA以及interfaceB,那么在这个struct的定义文件中是不需要直接引用到interfaceA以及interfaceB这两个文件的，这里就实现了所谓的解耦合（从直接诶引用文件所在的目录到才用duck type的方式解除耦合）。下面看一个实际的例子，线不管这个例子的实际背景含义，比如一个parent package引用了children package，因为parent中定义了一个createchildren的方法，需要引用children的结构体定义，同时children package也需要引用parent package，因为Children需要记录下来到底是哪个Parent实例创建了它。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">package parent</span><br><span class="line">import (</span><br><span class="line">  &quot;fmt&quot;</span><br><span class="line">  &quot;child&quot;</span><br><span class="line">)</span><br><span class="line">type Parent struct &#123;</span><br><span class="line">  message string</span><br><span class="line">&#125;</span><br><span class="line">func (parent *Parent) PrintMessage() &#123;</span><br><span class="line">  fmt.Println(parent.message)</span><br><span class="line">&#125;</span><br><span class="line">func (parent *Parent) CreateNewChild() *child.Child &#123;</span><br><span class="line">  return child.NewChild(parent)</span><br><span class="line">&#125;</span><br><span class="line">func NewParent() *Parent &#123;</span><br><span class="line">  return &amp;Parent&#123;message: &quot;Hello World&quot;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">package child</span><br><span class="line">import &quot;Parent&quot;</span><br><span class="line">type Child struct &#123;</span><br><span class="line">  parent *Parent</span><br><span class="line">&#125;</span><br><span class="line">func (child *Child) PrintParentMessage() &#123;</span><br><span class="line">  child.parent.PrintMessage()</span><br><span class="line">&#125;</span><br><span class="line">func NewChild(parent *Parent) *Child &#123;</span><br><span class="line">  return &amp;Child&#123;parent: parent &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时就出现了交叉引用，按照之前说到的思路，将直接引用变成接口的引用。在Child实例中使用到parent的方法只有<code>PrintParentMessage</code>这个函数，将起抽象成一个interface，interface中定义了<code>PrintParentMessage</code>方法&lt;这个接口的定义需要合child的文件放在一起&gt;。原本Child中对于Parent的直接引用也变成了对于IParent的接口的引用.本质上来讲，child引用parent的功能仅仅是获取其中的某些信息，因此并不需要通过child完全得到parent,只需要通过child得到parent的一些方法，这些方法可以被定义在一个接口中，因此不必要把parent整个实例都暴露给child，仅仅是暴露出其中的一些方法即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package child</span><br><span class="line">type IParent interface &#123;</span><br><span class="line">  PrintMessage()</span><br><span class="line">&#125;</span><br><span class="line">type Child struct &#123;</span><br><span class="line">  parent IParent</span><br><span class="line">&#125;</span><br><span class="line">func (child *Child) PrintParentMessage() &#123;</span><br><span class="line">  child.parent.PrintMessage()</span><br><span class="line">&#125;</span><br><span class="line">func NewChild(parent *Parent) *Child &#123;</span><br><span class="line">  return &amp;Child&#123;parent: parent &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>于是整个流程如下，在创建child的时，parent实例被封装成为一个IParent interface实例存再了child的字段parent中，之后child再次调用的print方法的时候，通过接口实例去调用printmessage的方法，由于此时接口中存的value类型是Parent,因此会自动匹配到Parent struct所实现的<code>PrintMessage</code>方法进行调用，这样就实现了最初的消除交叉引用的目的。</p>
+<p>此外，还有一种消除交叉引用的方式就是按照项目本身的逻辑层次来规划项目的目录，比如向这个例子中定义的Child以及Parent的struct，都可以提炼出来放在一个新的名为type.go的文件中，这个文件算是整个项目的最底层文件了，其他所有的Package可能都需要引用这个文件中定义的内容，这个文件不再需要引用其他的package了，因此也就消除了交叉引用。另外还有一些经验比如涉及到util相关的函数也都会独立出来放在一个新的文件中使用，这样也可以避免一些交叉引用的问题。</p>
+<p>这里就涉及到了项目的结构组织的问题，这应该是个经验活儿，但是也应该有一些通用的原则和最佳实践，以下是通过阅读网上的相关资料整理的一部分。</p>
+<h3 id="项目的目录层次规划"><a href="#项目的目录层次规划" class="headerlink" title="项目的目录层次规划"></a>项目的目录层次规划</h3><p>比较好的方法论是这一篇(<a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html),这里摘一些主要的内容：" target="_blank" rel="noopener">https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html),这里摘一些主要的内容：</a></p>
+<ul>
+<li>软件是分层次的，外部层次的代码依赖内部的层次代码，内部层次的代码不知道外部层次代码的行为，并且不对其产生依赖，一般最常见最靠近中心的内部层次就是某些抽象程度很高的接口的定义，以及用于抽象功能的一些struct定义 &lt;struct本身并没有所谓的层次关系的说法，关键是看起所定义的内容是用于抽象功能的实现还是用于细节功能的实现&gt;。</li>
+<li>层次越向内，逻辑的抽象程度越高，最内层的代码是抽象程度最高的也是最通用的代码，外层的代码是具体的实现细节。抽象代码不能依赖细节代码，细节代码应该依赖抽象代码。<br>这样的方法对阅读源码来说也是有好处的，比如拿来一个新的项目，按照分层的逻辑去阅读就会清晰许多了。虽然说项目运行起来有一个数据流和功能步骤，但是项目在实现和设计的时候从实现的角度来讲都是按照这种层次化的关系来进行的，分析代码的时候从数据流的角度和项目实现的角度应该是两条线了。</li>
+</ul>
+<h3 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h3><p>方法介绍</p>
+<p><a href="http://stackoverflow.com/questions/16168601/any-good-advice-about-how-to-avoid-import-cycle-in-go" target="_blank" rel="noopener">http://stackoverflow.com/questions/16168601/any-good-advice-about-how-to-avoid-import-cycle-in-go</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Dependency_inversion_principle" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Dependency_inversion_principle</a></p>
+<p><a href="https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank" rel="noopener">https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html</a></p>
+<p><a href="http://stackoverflow.com/questions/1897537/why-are-circular-references-considered-harmful" target="_blank" rel="noopener">http://stackoverflow.com/questions/1897537/why-are-circular-references-considered-harmful</a></p>
+<p>实际的例子</p>
+<p><a href="http://manuel.kiessling.net/2012/09/28/applying-the-clean-architecture-to-go-applications/" target="_blank" rel="noopener">http://manuel.kiessling.net/2012/09/28/applying-the-clean-architecture-to-go-applications/</a></p>
+<p><a href="http://mantish.com/post/dealing-with-import-cycle-go/" target="_blank" rel="noopener">http://mantish.com/post/dealing-with-import-cycle-go/</a></p>
+<p><a href="http://programminghave.blogspot.jp/2015/01/go-import-cycle-not-allowed.html" target="_blank" rel="noopener">http://programminghave.blogspot.jp/2015/01/go-import-cycle-not-allowed.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/16/golang-import-cycle/" data-id="cjwzm6xnz000k09y0p7nd8lzz" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/16/golang-factory-pattern/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          golang factory pattern
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/16/golang-routine-using/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">golang routine using</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#交叉引用的解决"><span class="toc-number">1.</span> <span class="toc-text">交叉引用的解决</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#项目的目录层次规划"><span class="toc-number">2.</span> <span class="toc-text">项目的目录层次规划</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#相关参考"><span class="toc-number">3.</span> <span class="toc-text">相关参考</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2019 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

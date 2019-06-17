@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>k8s cache tips | Wangzhezhe&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在程序中经常需要用到内存缓存，说简单一点就是一个map。这里以k8s中的canche为例看看好的缓存机制是如何设计的以及有哪些需要注意的地方，以后在程序中遇到类似的缓存相关的问题就可以直接拿过来使用。这部分的介绍不需要对k8s的背景知识有任何的了解，但是了解了缓存机制之后再看一些相关的组件比如kube-controller，多少会更有一些更加全局的认识对于k8s自身业务代码的深入理解也会有所帮助，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8s cache tips">
+<meta property="og:url" content="http://yoursite.com/2019/06/15/k8s-cache-tips/index.html">
+<meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
+<meta property="og:description" content="在程序中经常需要用到内存缓存，说简单一点就是一个map。这里以k8s中的canche为例看看好的缓存机制是如何设计的以及有哪些需要注意的地方，以后在程序中遇到类似的缓存相关的问题就可以直接拿过来使用。这部分的介绍不需要对k8s的背景知识有任何的了解，但是了解了缓存机制之后再看一些相关的组件比如kube-controller，多少会更有一些更加全局的认识对于k8s自身业务代码的深入理解也会有所帮助，">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-15T16:05:17.952Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="k8s cache tips">
+<meta name="twitter:description" content="在程序中经常需要用到内存缓存，说简单一点就是一个map。这里以k8s中的canche为例看看好的缓存机制是如何设计的以及有哪些需要注意的地方，以后在程序中遇到类似的缓存相关的问题就可以直接拿过来使用。这部分的介绍不需要对k8s的背景知识有任何的了解，但是了解了缓存机制之后再看一些相关的组件比如kube-controller，多少会更有一些更加全局的认识对于k8s自身业务代码的深入理解也会有所帮助，">
+  
+    <link rel="alternate" href="/atom.xml" title="Wangzhezhe&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wangzhezhe&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Writing is nature&#39;s way of letting you know how sloppy your thinking is.</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-k8s-cache-tips" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/15/k8s-cache-tips/" class="article-date">
+  <time datetime="2019-06-15T15:54:34.000Z" itemprop="datePublished">2019-06-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/golang/">golang</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      k8s cache tips
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>在程序中经常需要用到内存缓存，说简单一点就是一个map。这里以k8s中的canche为例看看好的缓存机制是如何设计的以及有哪些需要注意的地方，以后在程序中遇到类似的缓存相关的问题就可以直接拿过来使用。这部分的介绍不需要对k8s的背景知识有任何的了解，但是了解了缓存机制之后再看一些相关的组件比如kube-controller，多少会更有一些更加全局的认识对于k8s自身业务代码的深入理解也会有所帮助，甚至可以按照自己的业务逻辑和场景实现一个定制的controller。</p>
+<a id="more"></a>
+<p>采用的分析k8s的代码版本是v1.6.2，所分析的文件位于<code>.vendor/k8s.io/client-go/tools/cache</code>，其实具体功能上都是比较好理解的，关键是对于一些细节部分的把握。</p>
+<h3 id="threadSafetyStore"><a href="#threadSafetyStore" class="headerlink" title="threadSafetyStore"></a>threadSafetyStore</h3><p>顾名思义，这个store就是实现了一个线程安全的strore，直接使用这个store中提供的Add,Update,Delete方法操纵对象，就不需要再自己考虑各种加锁的问题了。</p>
+<p>再分析具体实现之前，先简单看下测试文件store_test.go，看下这个cache是如何使用的，threadSafetyStore没有直接暴露出来，它和一个keyFunc组合起来被封装在cache结构体中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type cache struct &#123;</span><br><span class="line">	cacheStorage ThreadSafeStore</span><br><span class="line">	keyFunc KeyFunc</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体的cache结构包含两部分，一个是ThreadSafeStore，其中的主要内容是一个map，具体稍后介绍，另一个是KeyFunc，用于将Name转化成为可以进行index的值，出于扩展性的考虑需要将这个函数单独抽象出来。</p>
+<p>比如最基本的KeyFunc可以是以下的形式:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">type testStoreObject struct &#123;</span><br><span class="line">	id  string</span><br><span class="line">	val string</span><br><span class="line">&#125;</span><br><span class="line">func testStoreKeyFunc(obj interface&#123;&#125;) (string, error) &#123;</span><br><span class="line">	return obj.(testStoreObject).id, nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>初始化的时候可以将threadSafeMap中的index设置为空，直接通过KeyFunc从原始的object得到一个index，就是提取出用于存储的对象的id值将其作为index value。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func NewStore(keyFunc KeyFunc) Store &#123;</span><br><span class="line">	return &amp;cache&#123;</span><br><span class="line">		cacheStorage: NewThreadSafeStore(Indexers&#123;&#125;, Indices&#123;&#125;),</span><br><span class="line">		keyFunc:      keyFunc,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>之后具体的Add，Update，Delete，List，Replace等等方法都比较直接，一看就明白了，具体使用的时候如果有不清楚的地方可以根据测试文件中的操作来熟悉相关使用。最简单的情况下就是在生成Store实例的时候把Indexers{}, Indices{}都设置为空实现即可。</p>
+<p><strong>threadsafetycache 具体实现</strong></p>
+<p>这个cache为了保证执行时候的线程安全，在具体进行添加删除操作的时候都加上了lock。struct中主要包含的内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">type threadSafeMap struct &#123;</span><br><span class="line">	lock  sync.RWMutex</span><br><span class="line">	items map[string]interface&#123;&#125;</span><br><span class="line">	// indexers maps a name to an IndexFunc</span><br><span class="line">	indexers Indexers</span><br><span class="line">	// indices maps a name to an Index</span><br><span class="line">	indices Indices</span><br><span class="line">&#125;</span><br><span class="line">// Indexers maps a name to a IndexFunc</span><br><span class="line">type Indexers map[string]IndexFunc</span><br><span class="line">// IndexFunc knows how to provide an indexed value for an object.</span><br><span class="line">type IndexFunc func(obj interface&#123;&#125;) ([]string, error)</span><br><span class="line">// Indices maps a name to an Index</span><br><span class="line">type Indices map[string]Index</span><br><span class="line">// Index maps the indexed value to a set of keys in the store that match on that value</span><br><span class="line">type Index map[string]sets.String</span><br></pre></td></tr></table></figure>
+<p>lock与存放items的map在这里都比较好理解，关键是后面两个元素，这两个元素体现了工程性与扩展性。indexers是一个name到IndexFunc的映射，IndexFunc的功能是将一个name变换成一个可以作为index的value，这个函数可以自己定义。另外一个map存储的是name到Index的映射，具体的Index对象又是一个map，其值是一个set，因为一个可以用于index的value可能对应的是多个key，不过实际使用的时候常产跨过这个中间层，一个object通过IndexFunc对应到一个Key元素。</p>
+<p>比如在每次Add一个元素的时候都需要添加一个updateIndices的操作，这个操作就是用来更新最后一个indices元素，所有的用于index的函数都保存在这个结构体中，之后每次做更新操作的时候都会用到这些函数。</p>
+<h3 id="FIFO"><a href="#FIFO" class="headerlink" title="FIFO"></a>FIFO</h3><p>首先明确下FIFO cache的基本功能</p>
+<ul>
+<li>具备对象的CRUD操作</li>
+<li>按照FIFO的方式存储数据</li>
+<li>在cache中的内容发生变化的时候可以调用回调函数<br>使用队列进行操作的场景都可以通过FIFO cache来进行处理，FIFO cache工作起来就类似于一个队列。</li>
+</ul>
+<p>这里采用的基本结构是map+queue，相比于上一种simplecache，这里增加了queue用于存储index，每次进出cache的元素都是从index中进行检索而不是直接从map中进行检索。具体的回调函数的实现通过sync.condition变量进行，这里有一个实际的例子。</p>
+<p>补充sync.condition的使用，在只用了broadcaster的方法之后，会依次向所有执行了condition.wait的goroutine发广播，（这些goroutine本质上是阻塞在condition.Wati所在的位置）将它们启动起来。sync.condition.Wait会将当前的goroutine挂起，知道执行了sync.condition.Broadcast方法之后，所有的相关的被挂起的goroutine就会重新被调度。</p>
+<p>具体的FIFO的代码仍然参考的k8s中的实现，基本的CRUD就不再赘述，直接参考这里(<a href="https://github.com/wangzhezhe/BLG/blob/develop/Components/cache/fifo.go)的源码，这里主要分析下回调操作的实现。" target="_blank" rel="noopener">https://github.com/wangzhezhe/BLG/blob/develop/Components/cache/fifo.go)的源码，这里主要分析下回调操作的实现。</a></p>
+<p>注意pop方法的使用，这个也是唯一多增加的地方，其实就是把queue的头元素拿出来，唯一不容易理解的地方就是sync.condition的使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">func (f *FIFO) Pop(process PopProcessFunc) (interface&#123;&#125;, error) &#123;</span><br><span class="line">	f.lock.Lock()</span><br><span class="line">	defer f.lock.Unlock()</span><br><span class="line">	for &#123;</span><br><span class="line">		for len(f.queue) == 0 &#123;</span><br><span class="line">			// When the queue is empty, invocation of Pop() is blocked until new item is enqueued.</span><br><span class="line">			// When Close() is called, the f.closed is set and the condition is broadcasted.</span><br><span class="line">			// Which causes this loop to continue and return from the Pop().</span><br><span class="line">			if f.IsClosed() &#123;</span><br><span class="line">				return nil, FIFOClosedError</span><br><span class="line">			&#125;</span><br><span class="line">			f.cond.Wait()</span><br><span class="line">		&#125;</span><br><span class="line">		id := f.queue[0]</span><br><span class="line">		f.queue = f.queue[1:]</span><br><span class="line">		if f.initialPopulationCount &gt; 0 &#123;</span><br><span class="line">			f.initialPopulationCount--</span><br><span class="line">		&#125;</span><br><span class="line">		item, ok := f.items[id]</span><br><span class="line">		if !ok &#123;</span><br><span class="line">			// Item may have been deleted subsequently.</span><br><span class="line">			continue</span><br><span class="line">		&#125;</span><br><span class="line">		delete(f.items, id)</span><br><span class="line">		err := process(item)</span><br><span class="line">		if e, ok := err.(ErrRequeue); ok &#123;</span><br><span class="line">			f.addIfNotPresent(id, item)</span><br><span class="line">			err = e.Err</span><br><span class="line">		&#125;</span><br><span class="line">		return item, err</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，在队列中没有元素的时候，就执行f.cond.Wait()方法，将这个goroutine一直挂起，直到新的元素加入了队列中使得条件符合，比如ADD了一个元素进入队列，这个时候就通过cond.Broadcast方法通知所有被cond.Wait挂起的goroutine，最后从队列中取出第一个元素然后执行传入进来的process函数。整个过程被放在一个大的for循环中，以上的逻辑一直中复执行，<strong>还有一点要注意的是，每次Pop的逻辑执行完成之后都要将被处理过的元素从当前的队列中删除，相当于说是当前的元素已经被处理过了，可以从队列中移出了</strong>，由于存储的key值仅仅是string类型，这里的queue只需要通过[]string来模拟即可。</p>
+<h3 id="LRU"><a href="#LRU" class="headerlink" title="LRU"></a>LRU</h3><p>在实际程序中最有效的缓存应该算是 LRU (least recently used)类型的缓存了，因为申请的map的空间的大小毕竟是有限的，应该存储哪些在最近一段使用比较频繁的缓存，这样才能提高缓存的效率。这部分代码主要参考的是这个库。LRU cache实现的时候需要用到链表的结构，如果是已经存在的元素就将旧的元素调整到链表的第一个位置，具体的实现思路可以参考FIFO的结构，存储数据还是用map来进行，检索的操作通过List来进行，List中只存储元素的id，而不是完整的信息。</p>
+<h3 id="UndeltaStore"><a href="#UndeltaStore" class="headerlink" title="UndeltaStore"></a>UndeltaStore</h3><p>原先store的变种，每次状态变之后，比如ADD，DELETE，UPDATE方法被执行之后，就调用PushFunc，对缓存中剩下的所有的元素都执行一次pushfunc，比如对于Add操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">func (u *UndeltaStore) Add(obj interface&#123;&#125;) error &#123;</span><br><span class="line">	if err := u.Store.Add(obj); err != nil &#123;</span><br><span class="line">		return err</span><br><span class="line">	&#125;</span><br><span class="line">	u.PushFunc(u.Store.List())</span><br><span class="line">	return nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在执行完成之后得到object list然后将其输入到PushFunc中，其他的操作类似。</p>
+<p>在k8s的cahce中还提供了<code>delta_FIFO</code>类型的cache，同时提供了以上介绍的delta功能和类似于Queue一样的FIFO的操作。</p>
+<h3 id="Listwatch"><a href="#Listwatch" class="headerlink" title="Listwatch"></a>Listwatch</h3><p>list watch到底实现了什么功能？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// ListerWatcher is any object that knows how to perform an initial list and start a watch on a resource.</span><br><span class="line">type ListerWatcher interface &#123;</span><br><span class="line">	// List should return a list type object; the Items field will be extracted, and the</span><br><span class="line">	// ResourceVersion field will be used to start the watch in the right place.</span><br><span class="line">	List(options metav1.ListOptions) (runtime.Object, error)</span><br><span class="line">	// Watch should begin a watch at the specified version.</span><br><span class="line">	Watch(options metav1.ListOptions) (watch.Interface, error)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中metav1.ListOptions 包含了对象的一些元信息比如selector，resourceversion，timeout等标记，这些是k8s中用于进行select操作的通用的信息。<br>lw 的能力包括list以及watch特定的资源。list资源比较容易理解，对于一个catch来说，把其中所有的元素都列出来就是实现了list的功能，那watch具体是什么？首先看一个测试函数中使用的list watch（<code>cache/testing/fake_controller_source.go</code>）：</p>
+<p>list方法是模仿 http get 的操作，将fakeobject 缓存中的元素取出来组合成一个list返回，返回的list中，元素的类型是<code>runtime.Object</code>,这个interface所暴露出来的方法是返回元素注册进来的Kind：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type Object interface &#123;</span><br><span class="line">	GetObjectKind() schema.ObjectKind</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其返回值schema.ObjectKind也是一个interface类型，具体有以下能力：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">type ObjectKind interface &#123;</span><br><span class="line">	// SetGroupVersionKind sets or clears the intended serialized kind of an object. Passing kind nil</span><br><span class="line">	// should clear the current setting.</span><br><span class="line">	SetGroupVersionKind(kind GroupVersionKind)</span><br><span class="line">	// GroupVersionKind returns the stored group, version, and kind of an object, or nil if the object does</span><br><span class="line">	// not expose or provide these fields.</span><br><span class="line">	GroupVersionKind() GroupVersionKind</span><br><span class="line">&#125;</span><br><span class="line">type GroupVersionKind struct &#123;</span><br><span class="line">	Group   string</span><br><span class="line">	Version string</span><br><span class="line">	Kind    string</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ObjectKind的能力包括：</p>
+<ul>
+<li>第一个能力就是将传入进来的Kind以及GroupVerionKind参数set到具体的实现对象中。</li>
+<li>第二个能力是得到当前的object的标识符，具体指的是某个api所在Group，Version以及Kind，从这里也能看出k8s中api对象的层级结构。<br>list object 本身来说也实现了这个接口。在以前的k8s代码版本中，ObjectKind:<br>每个api对象在相对应的register文件中都是按照以下的方式实现这个接口</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(func *obj) Cluster() GetObjectKind.schema     &#123; return &amp;obj.TypeMeta &#125;</span><br></pre></td></tr></table></figure>
+<p>其中的obj.TypeMeta就是每个api对象的元信息，具体包括 Kind 以及 APIVersion信息，他实现了上面所说的ObjectKind接口也就是说实现了SetGroupVersionKind以及GroupVersionKind这两个方法。</p>
+<p>watch 功能主要是通过暴露出来的watch interface来体现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">type Interface interface &#123;</span><br><span class="line">        //停止watch操作</span><br><span class="line">	Stop()</span><br><span class="line">        //返回一个chanel用于接受所有的event，这里的events值的就是watch到的events</span><br><span class="line">	ResultChan() &lt;-chan Event</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于watch来说，具体的实现并不像是list那么简单，起真正的底层实现通过interface接口暴露出来。具体的实现细节是在 apimachinery/pkg/watch 中描述，具体来看下watch机制,具体源文件在<code>/apimachinery/pkg/watch</code>中：</p>
+<p>默认的watch的事件类型包括<code>&quot;ADDED&quot; &quot;MODIFIED&quot; &quot;DELETED&quot; &quot;ERROR&quot;</code>几种。默认的用于消息传递的event结构体：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">type Event struct &#123;</span><br><span class="line">	Type EventType</span><br><span class="line">	// Object is:</span><br><span class="line">	//  * If Type is Added or Modified: the new state of the object.</span><br><span class="line">	//  * If Type is Deleted: the state of the object immediately before deletion.</span><br><span class="line">	//  * If Type is Error: *api.Status is recommended; other types may make sense</span><br><span class="line">	//    depending on context.</span><br><span class="line">	Object runtime.Object</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>newEmptyWatch函数的功能就是创建一个channel，channel中具体的元素为Event：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">type emptyWatch chan Event</span><br><span class="line"> </span><br><span class="line">func NewEmptyWatch() Interface &#123;</span><br><span class="line">	ch := make(chan Event)</span><br><span class="line">	close(ch)</span><br><span class="line">	return emptyWatch(ch)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>emptywatch对于stop函数的操作直接返回nil，对于ResultChan的操作直接返回chan Event。<br>fakewatch在empty的基础上实现了一些辅助功能，可以向channel中写入不同的Event数据，具体包括Add，Modified，Delete等等。<br>RaceFreeFakeWatcher在fakewatch的基础上对每种行为都添加了lock。<br>本质上来讲最基本的watch就是对channel进行了一个封装，因为其接口暴露出来的两个方法就只有Stop()以及<code>ResultChan() &lt;-chan Event</code>。</p>
+<h3 id="Event-mux"><a href="#Event-mux" class="headerlink" title="Event mux"></a>Event mux</h3><p>再深入一些看下mux.go的实现，这个部分的主要功能是将watch收到的Event分发到注册进来的多个watcher中，主要是实现了notification的一对多的功能。先大致看下broadcaster结构体中所包含的信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">type Broadcaster struct &#123;</span><br><span class="line">        //这个lock主要控制对于watchers的map的读写操作</span><br><span class="line">	lock sync.Mutex</span><br><span class="line">        //这个watchers存储broadcasterwatcher相当于是notification的下游的各种watchers</span><br><span class="line">	watchers     map[int64]*broadcasterWatcher</span><br><span class="line">	//记录新的即将注册进来的broadcasterWatcher的id</span><br><span class="line">        nextWatcher  int64</span><br><span class="line">        //每次新加入或者减少一个watcher，就在waitgroup中进行相对应的操作</span><br><span class="line">	distributing sync.WaitGroup</span><br><span class="line">        //记录最上游的事件来源</span><br><span class="line">	incoming chan Event</span><br><span class="line">	// 生成一个新的broadcasterwatcher的时候 其中的缓冲channel的长度</span><br><span class="line">	watchQueueLength int</span><br><span class="line">        //控制watchers如何对notification做反应 </span><br><span class="line">        //如果为0 如果某个watcher满了 incoming会阻塞在这里 直到下游的watcher channel变得可以接受新的元素为止</span><br><span class="line">        //如果为1 当某个watcher满了 incoming会跳过当前的watcher 直接将信息传递给下一个watcher 这样chanel满的那个watcher就会丢失一条Event信息</span><br><span class="line">	fullChannelBehavior FullChannelBehavior</span><br><span class="line">&#125;</span><br><span class="line">//每一个broadcasterWatcher都用来处理一个单一的watcher行为</span><br><span class="line">type broadcasterWatcher struct &#123;</span><br><span class="line">        //按照之前的对于基本watch的介绍 result以及stopped chanel是基本的watcher元素</span><br><span class="line">	result  chan Event</span><br><span class="line">	stopped chan struct&#123;&#125;</span><br><span class="line">        //sync.Once控制函数只被调用一次</span><br><span class="line">	stop    sync.Once</span><br><span class="line">        //id用来记录这个broadcasterWatcher的身份标记</span><br><span class="line">	id      int64</span><br><span class="line">        //这里是所反向引用的操作 记录这个broadcasterWatcher上游的Broadcaster</span><br><span class="line">	m       *Broadcaster</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在实际的系统中应该结合场景，比较细致地考虑watchQueueLength以及fullChannelBehavior，在NewBroadcaster操作的时候，这两个也是关键的输入参数。NewBroadcaster操作的时候会将waitgroup中的数字+1,这个loop标记的是有几个Broadcaster正在处于loop的状态，然开始loop循环：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func NewBroadcaster(queueLength int, fullChannelBehavior FullChannelBehavior) *Broadcaster &#123;</span><br><span class="line">	m := &amp;Broadcaster&#123;</span><br><span class="line">		watchers:            map[int64]*broadcasterWatcher&#123;&#125;,</span><br><span class="line">		incoming:            make(chan Event, incomingQueueLength),</span><br><span class="line">		watchQueueLength:    queueLength,</span><br><span class="line">		fullChannelBehavior: fullChannelBehavior,</span><br><span class="line">	&#125;</span><br><span class="line">	m.distributing.Add(1)</span><br><span class="line">	go m.loop()</span><br><span class="line">	return m</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>loop的主要内容就是for循环，从incoming的channel中检测传过来的Event再将Event distribute到注册进来的watcher中，这部分可以说是Broadcaster的核心逻辑了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">func (m *Broadcaster) loop() &#123;</span><br><span class="line">	// Deliberately not catching crashes here. Yes, bring down the process if there&apos;s a</span><br><span class="line">	// bug in watch.Broadcaster.</span><br><span class="line">	for &#123;</span><br><span class="line">		event, ok := &lt;-m.incoming</span><br><span class="line">		if !ok &#123;</span><br><span class="line">			break</span><br><span class="line">		&#125;</span><br><span class="line">		if event.Type == internalRunFunctionMarker &#123;</span><br><span class="line">			event.Object.(functionFakeRuntimeObject)()</span><br><span class="line">			continue</span><br><span class="line">		&#125;</span><br><span class="line">		m.distribute(event)</span><br><span class="line">	&#125;</span><br><span class="line">	m.closeAll()</span><br><span class="line">	m.distributing.Done()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有一点要注意，放在Event中的内容有可能是正常的起到通知作用的消息，也可能是functionFakeRuntimeObject封装成的Event：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func (obj functionFakeRuntimeObject) GetObjectKind() schema.ObjectKind &#123;</span><br><span class="line">	return schema.EmptyObjectKind</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里要注意functionFakeRuntimeObject所执行的function具体来说是一个创建并注册Event的操作（具体在后面的Wacher部分介绍）这样操作的原因是确保注册watcher的时间和Event的发布是有序进行的，也就是说watcher在注册了之后确保可以接收到后面的Event，需要确保一个watcher创建并且注册好之后才能distribute新的Event,所以执行distribute操作之前，必须要确保创建并注册watcher的操作全部完成，这里实现的比较巧妙，需要好好体会以下。</p>
+<p>再来看下distribute操作的实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">func (m *Broadcaster) distribute(event Event) &#123;</span><br><span class="line">	m.lock.Lock()</span><br><span class="line">	defer m.lock.Unlock()</span><br><span class="line">	if m.fullChannelBehavior == DropIfChannelFull &#123;</span><br><span class="line">		for _, w := range m.watchers &#123;</span><br><span class="line">			select &#123;</span><br><span class="line">			case w.result &lt;- event:</span><br><span class="line">			case &lt;-w.stopped:</span><br><span class="line">			default: // Don&apos;t block if the event can&apos;t be queued.</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		for _, w := range m.watchers &#123;</span><br><span class="line">			select &#123;</span><br><span class="line">			case w.result &lt;- event:</span><br><span class="line">			case &lt;-w.stopped:</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>利用channel的通信+内存共享机制可以很容易地分析清楚核心逻辑，将event依次写入每个watchers的channel，如果是非阻塞行为的话在select语句中会多一个default:的判断，也就是说当某个watchers的result channel被缓存占满的时候，select操作会直接跳过阻塞的部分去继续执行default相关操作，直接跳过。</p>
+<p>另外一个重要的部分就是注册新的Watch的操作，这部分的操作就是注册一个新的broadcasterwatcher到Broadcaster中，当然新注册进来的watcher是无法接收到历史的event信息的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">func (m *Broadcaster) Watch() Interface &#123;</span><br><span class="line">	var w *broadcasterWatcher</span><br><span class="line">	m.blockQueue(func() &#123;</span><br><span class="line">		m.lock.Lock()</span><br><span class="line">		defer m.lock.Unlock()</span><br><span class="line">		id := m.nextWatcher</span><br><span class="line">		m.nextWatcher++</span><br><span class="line">		w = &amp;broadcasterWatcher&#123;</span><br><span class="line">			result:  make(chan Event, m.watchQueueLength),</span><br><span class="line">			stopped: make(chan struct&#123;&#125;),</span><br><span class="line">			id:      id,</span><br><span class="line">			m:       m,</span><br><span class="line">		&#125;</span><br><span class="line">		m.watchers[id] = w</span><br><span class="line">	&#125;)</span><br><span class="line">	return w</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主要的创建新的broadcasterWatcher以及添加到map的过程是放在一个匿名函数中然后传入m.blockQueue中被执行的。等下再看blockQueue的意义，匿名函数的主要功能是初始化broadcasterWatcher的参数，注意m.nextWatcher在最初的时候才用默认初始值为0,之后每次创建一个broadcasterWatcher就会增加1，这个相当于是broadcasterWatcher的一个index信息，具体的blockQueue的使用原因可以参考前面的loop循环操作的相关介绍。</p>
+<p>watch部分还有一个操作是WatchWithPrefix，相比于之前的watcher，唯一的区别就是在创建了watcher之后，首先将参数中的queuedEvents []Event发送给这个watcher然后再将original的events依次发送给watcher。</p>
+<p>以上就是watch部分的主要函数和功能，其他的简单的功能相关的函数就不赘述了，总之主要的流程就是从上游的incoming channel中取数据，然后按照固定的格式不断地分发给下游的watcher。</p>
+<p>回到最初的FakeControllerSource实现List Watch的操作，List操作已经介绍过，就是将缓存中的元素copy出来返回。根据resourceversion与Event队列中元素的长度差别，决定才用WatchWithPrefix的操作（distribute Event操作事前，先将queuedEvents中所有的Event输入到这个watcher的channel中）或者是普通的Watch操作，直接注册Event。</p>
+<p>reflector cache用到了watch package的内容</p>
+<h3 id="Reflector"><a href="#Reflector" class="headerlink" title="Reflector"></a>Reflector</h3><p>reflector类型的cache的作用是watch特定类型的资源，并且将被watch对象的变化情况对应到自身所保持的store中，相当于是做了一层映射。在发现被watch对象发生变化的时候还可以执行一个函数。</p>
+<p>具体的结构体如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">type Reflector struct &#123;</span><br><span class="line">	// reflector的名字 用于作为这个reflector的标识符</span><br><span class="line">	name string</span><br><span class="line">	// 希望存入到reflector中的对象的类型</span><br><span class="line">	expectedType reflect.Type</span><br><span class="line">	// 用于同步 watche source 的Store</span><br><span class="line">	store Store</span><br><span class="line">	// listerWatcher 封装了List Watch相关的接口，用于执行对应的操作</span><br><span class="line">	listerWatcher ListerWatcher</span><br><span class="line">	// period 控制一次watch结束和下一次watch开始的时间</span><br><span class="line">	period       time.Duration</span><br><span class="line">	resyncPeriod time.Duration</span><br><span class="line">	ShouldResync func() bool</span><br><span class="line">	// 测试的时候可以通过clock手动调整时间</span><br><span class="line">	clock clock.Clock</span><br><span class="line">        // 记录上一次同步时候的版本号信息</span><br><span class="line">	lastSyncResourceVersion string</span><br><span class="line">	// lastSyncResourceVersionMutex 用于保证对lastSyncResourceVersion进行读写操作时候的线程安全</span><br><span class="line">	lastSyncResourceVersionMutex sync.RWMutex</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果expectedType不为空,reflector只存放expectedType所指定的类型的变化，如果为空，则所有watch到的元素的变化都会被放入store中。主要的函数包括：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func (r *Reflector) Run() &#123;</span><br><span class="line">	glog.V(3).Infof(&quot;Starting reflector %v (%s) from %s&quot;, r.expectedType, r.resyncPeriod, r.name)</span><br><span class="line">	go wait.Until(func() &#123;</span><br><span class="line">		if err := r.ListAndWatch(wait.NeverStop); err != nil &#123;</span><br><span class="line">			utilruntime.HandleError(err)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;, r.period, wait.NeverStop)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>wait.Until是k8s实现的一些中间操作，用于再r.period时间周期内执行传如的func,这里的func主要的操作就是ListAndWatch。主要的逻辑就是这个ListAndWatch操作，这个函数比较长，这里仅仅列下函数中的主要逻辑：</p>
+<ul>
+<li>采用options := metav1.ListOptions{ResourceVersion: “0”}通过r.listerWatcher.List列出当前的所有对象，具体参考ResourceVersion的注释，之后从list中提取出resourceversion并更新reflector实例中的相关参数。之后启动一个goroutine负责select各种停止的channel。</li>
+<li><p>在一个循环中执行watch操作，对可能得到的error进行各种处理，然后通过watchHandler函数对得到的watch channel进行处理。<br>具体来看下watchHandler的逻辑，它主要做了两个事情：</p>
+</li>
+<li><p>判断watch的返回channel中接受到的object的类型是不是期望的类型，以及相关的错误处理，之后得到最新的resourceversion。然后分别判断Event的类型，是ADD，Modified，或是Delete,之后分别对不同的操作进行响应，在相关联的底层store中ADD,Modified或者Delete相对应的Object。 （watch 操作时候用于消息通知的Event结构体中就只有两个部分,EventType以及runtime.Object）</p>
+</li>
+<li>更新resourceVersion并且做一些错误处理，比如watch channel异常关闭。<br>才用reflector+deltaStore可以实现一旦store中的信息变化就执行指定函数的操作。</li>
+</ul>
+<h3 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h3><p>controller类型的cache首先抽象出了一个config用于初始化必要的信息,注释中对于每个参数的解释已经非常清晰了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">// Config contains all the settings for a Controller.</span><br><span class="line">type Config struct &#123;</span><br><span class="line">	// The queue for your objects; either a FIFO or</span><br><span class="line">	// a DeltaFIFO. Your Process() function should accept</span><br><span class="line">	// the output of this Queue&apos;s Pop() method.</span><br><span class="line">	Queue</span><br><span class="line">	// Something that can list and watch your objects.</span><br><span class="line">	ListerWatcher</span><br><span class="line">	// Something that can process your objects.</span><br><span class="line">	Process ProcessFunc</span><br><span class="line">	// The type of your objects.</span><br><span class="line">	ObjectType runtime.Object</span><br><span class="line">	// Reprocess everything at least this often.</span><br><span class="line">	// Note that if it takes longer for you to clear the queue than this</span><br><span class="line">	// period, you will end up processing items in the order determined</span><br><span class="line">	// by FIFO.Replace(). Currently, this is random. If this is a</span><br><span class="line">	// problem, we can change that replacement policy to append new</span><br><span class="line">	// things to the end of the queue instead of replacing the entire</span><br><span class="line">	// queue.</span><br><span class="line">	FullResyncPeriod time.Duration</span><br><span class="line">	// ShouldResync, if specified, is invoked when the controller&apos;s reflector determines the next</span><br><span class="line">	// periodic sync should occur. If this returns true, it means the reflector should proceed with</span><br><span class="line">	// the resync.</span><br><span class="line">	ShouldResync ShouldResyncFunc</span><br><span class="line">	// If true, when Process() returns an error, re-enqueue the object.</span><br><span class="line">	// TODO: add interface to let you inject a delay/backoff or drop</span><br><span class="line">	//       the object completely if desired. Pass the object in</span><br><span class="line">	//       question to this interface as a parameter.</span><br><span class="line">	RetryOnError bool</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最基本的生成controller的方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">func New(c *Config) Controller &#123;</span><br><span class="line">	ctlr := &amp;controller&#123;</span><br><span class="line">		config: *c,</span><br><span class="line">		clock:  &amp;clock.RealClock&#123;&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	return ctlr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>按照之前的套路重点看下Run方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">func (c *controller) Run(stopCh &lt;-chan struct&#123;&#125;) &#123;</span><br><span class="line">	defer utilruntime.HandleCrash()</span><br><span class="line">	go func() &#123;</span><br><span class="line">		&lt;-stopCh</span><br><span class="line">		c.config.Queue.Close()</span><br><span class="line">	&#125;()</span><br><span class="line">	r := NewReflector(</span><br><span class="line">		c.config.ListerWatcher,</span><br><span class="line">		c.config.ObjectType,</span><br><span class="line">		c.config.Queue,</span><br><span class="line">		c.config.FullResyncPeriod,</span><br><span class="line">	)</span><br><span class="line">	r.ShouldResync = c.config.ShouldResync</span><br><span class="line">	r.clock = c.clock</span><br><span class="line">	c.reflectorMutex.Lock()</span><br><span class="line">	c.reflector = r</span><br><span class="line">	c.reflectorMutex.Unlock()</span><br><span class="line">	r.RunUntil(stopCh)</span><br><span class="line">	wait.Until(c.processLoop, time.Second, stopCh)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建reflector之后每隔一秒钟调用processLoop方法，注意在创建reflector的时候第三个参数，也就是reflector的底层store就是这个Queue。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">func (c *controller) processLoop() &#123;</span><br><span class="line">	for &#123;</span><br><span class="line">		obj, err := c.config.Queue.Pop(PopProcessFunc(c.config.Process))</span><br><span class="line">		if err != nil &#123;</span><br><span class="line">			if err == FIFOClosedError &#123;</span><br><span class="line">				return</span><br><span class="line">			&#125;</span><br><span class="line">			if c.config.RetryOnError &#123;</span><br><span class="line">				// This is the safe way to re-enqueue.</span><br><span class="line">				c.config.Queue.AddIfNotPresent(obj)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>processLoop就是不断循环从Queue中pop出object然后传入PopProcessFunc中，具体的Pop的实现细节可以看之前的DeltaFIFO的cache。</p>
+<h3 id="Informer"><a href="#Informer" class="headerlink" title="Informer"></a>Informer</h3><p>informer在本质上来讲是将一个reflector以及一个DeltaFIFO组装起来，对上listwatch到source information的变化然后同步到reflector中，其中reflector的cache类型使用的是DeltaFIFO的类型，对下通过PushFunc将变化类型再解析出来调用提前注册好的不同类型(Add,Update,Delete,Modify)的handler函数。</p>
+<p>理解了informer 之后再看k8s的 controller 以及 event 机制就会有豁然开朗的感觉。sharedinformer的主要功能是从list watch上游接口中获取信息，一旦发现上游数据变化就调用对应的函数进行处理。这些函数主要包括：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">type ResourceEventHandler interface &#123;</span><br><span class="line">	OnAdd(obj interface&#123;&#125;)</span><br><span class="line">	OnUpdate(oldObj, newObj interface&#123;&#125;)</span><br><span class="line">	OnDelete(obj interface&#123;&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个接口中的方法可以通过以下结构体来实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">type ResourceEventHandlerFuncs struct &#123;</span><br><span class="line">	AddFunc    func(obj interface&#123;&#125;)</span><br><span class="line">	UpdateFunc func(oldObj, newObj interface&#123;&#125;)</span><br><span class="line">	DeleteFunc func(obj interface&#123;&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个结构体实现了OnAdd，OnUpdate以及OnDelete方法，其实就是在这些方法中调用对应注册进来的AddFunc，UpdateFunc以及DeleteFunc方法。</p>
+<p>来看下informer struct中具体包含的内容(基本的informer与controller在一个文件中)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">func NewInformer(</span><br><span class="line">	lw ListerWatcher,</span><br><span class="line">	objType runtime.Object,</span><br><span class="line">	resyncPeriod time.Duration,</span><br><span class="line">	h ResourceEventHandler,</span><br><span class="line">) (Store, Controller) &#123;</span><br><span class="line">	// This will hold the client state, as we know it.</span><br><span class="line">	clientState := NewStore(DeletionHandlingMetaNamespaceKeyFunc)</span><br><span class="line">	// This will hold incoming changes. Note how we pass clientState in as a</span><br><span class="line">	// KeyLister, that way resync operations will result in the correct set</span><br><span class="line">	// of update/delete deltas.</span><br><span class="line">	fifo := NewDeltaFIFO(MetaNamespaceKeyFunc, nil, clientState)</span><br><span class="line">	cfg := &amp;Config&#123;</span><br><span class="line">		Queue:            fifo,</span><br><span class="line">		ListerWatcher:    lw,</span><br><span class="line">		ObjectType:       objType,</span><br><span class="line">		FullResyncPeriod: resyncPeriod,</span><br><span class="line">		RetryOnError:     false,</span><br><span class="line">		Process: func(obj interface&#123;&#125;) error &#123;</span><br><span class="line">			// from oldest to newest</span><br><span class="line">			for _, d := range obj.(Deltas) &#123;</span><br><span class="line">				switch d.Type &#123;</span><br><span class="line">				case Sync, Added, Updated:</span><br><span class="line">					if old, exists, err := clientState.Get(d.Object); err == nil &amp;&amp; exists &#123;</span><br><span class="line">						if err := clientState.Update(d.Object); err != nil &#123;</span><br><span class="line">							return err</span><br><span class="line">						&#125;</span><br><span class="line">						h.OnUpdate(old, d.Object)</span><br><span class="line">					&#125; else &#123;</span><br><span class="line">						if err := clientState.Add(d.Object); err != nil &#123;</span><br><span class="line">							return err</span><br><span class="line">						&#125;</span><br><span class="line">						h.OnAdd(d.Object)</span><br><span class="line">					&#125;</span><br><span class="line">				case Deleted:</span><br><span class="line">					if err := clientState.Delete(d.Object); err != nil &#123;</span><br><span class="line">						return err</span><br><span class="line">					&#125;</span><br><span class="line">					h.OnDelete(d.Object)</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			return nil</span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	return clientState, New(cfg)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主要就是把对应的参数填入controller的config，之后生成新的controller，之后controller Run的时候，每次从队列中Pop一个元素出来，所执行的Process函数就是这里注册进来的。这个函数的功能主要是根据对象中的操作类型（这个Delta的结构于之前的Event比较类似）进行具体的细分，分别调用OnAdd，OnUpdate以及OnDelete方法。</p>
+<h3 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h3><p>k8s相关代码<br><a href="https://github.com/kubernetes/kubernetes/tree/336fb2f508a62514a7d3744c46543db816277c3a/staging/src/k8s.io/apimachinery/pkg/util/cache" target="_blank" rel="noopener">https://github.com/kubernetes/kubernetes/tree/336fb2f508a62514a7d3744c46543db816277c3a/staging/src/k8s.io/apimachinery/pkg/util/cache</a></p>
+<p>golang sync condition<br><a href="http://www.liguosong.com/2014/05/07/golang-sync-cond/" target="_blank" rel="noopener">http://www.liguosong.com/2014/05/07/golang-sync-cond/</a></p>
+<p>类似的介绍controller原理的文章<br><a href="http://borismattijssen.github.io/articles/kubernetes-informers-controllers-reflectors-stores" target="_blank" rel="noopener">http://borismattijssen.github.io/articles/kubernetes-informers-controllers-reflectors-stores</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/15/k8s-cache-tips/" data-id="cjwzm6xqo003a09y08cg9iw8v" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/15/golang-context-tips/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          golang context tips
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/15/golang-struct-using-tips/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Golang struct using tips</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#threadSafetyStore"><span class="toc-number">1.</span> <span class="toc-text">threadSafetyStore</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FIFO"><span class="toc-number">2.</span> <span class="toc-text">FIFO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LRU"><span class="toc-number">3.</span> <span class="toc-text">LRU</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UndeltaStore"><span class="toc-number">4.</span> <span class="toc-text">UndeltaStore</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Listwatch"><span class="toc-number">5.</span> <span class="toc-text">Listwatch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Event-mux"><span class="toc-number">6.</span> <span class="toc-text">Event mux</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reflector"><span class="toc-number">7.</span> <span class="toc-text">Reflector</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Controller"><span class="toc-number">8.</span> <span class="toc-text">Controller</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Informer"><span class="toc-number">9.</span> <span class="toc-text">Informer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#相关参考"><span class="toc-number">10.</span> <span class="toc-text">相关参考</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2019 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

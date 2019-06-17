@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>git using tips | Wangzhezhe&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="主要介绍了常见的git分支的组织方式，git使用时候常用到的命令行的操作方式，自己平时使用git的时候遇到的一些常见的情况和处理方式，以及自己使用中的感想。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git using tips">
+<meta property="og:url" content="http://yoursite.com/2018/06/25/git-using-tips/index.html">
+<meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
+<meta property="og:description" content="主要介绍了常见的git分支的组织方式，git使用时候常用到的命令行的操作方式，自己平时使用git的时候遇到的一些常见的情况和处理方式，以及自己使用中的感想。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-11T01:03:21.633Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git using tips">
+<meta name="twitter:description" content="主要介绍了常见的git分支的组织方式，git使用时候常用到的命令行的操作方式，自己平时使用git的时候遇到的一些常见的情况和处理方式，以及自己使用中的感想。">
+  
+    <link rel="alternate" href="/atom.xml" title="Wangzhezhe&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wangzhezhe&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Writing is nature&#39;s way of letting you know how sloppy your thinking is.</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-git-using-tips" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/25/git-using-tips/" class="article-date">
+  <time datetime="2018-06-25T12:49:43.000Z" itemprop="datePublished">2018-06-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/git/">git</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      git using tips
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>主要介绍了常见的git分支的组织方式，git使用时候常用到的命令行的操作方式，自己平时使用git的时候遇到的一些常见的情况和处理方式，以及自己使用中的感想。<br><a id="more"></a></p>
+<h3 id="让git分支有章可循"><a href="#让git分支有章可循" class="headerlink" title="让git分支有章可循"></a>让git分支有章可循</h3><p>具体的代码组织方式是因人而异的，但是总是有一些“最佳实践”或者是“过来人的经验”。实际上大家总是因为偷懒，不按照这些经验来操作，都喜欢“简单粗暴”的方式，然而这些所谓的“最佳实践”，才是真正的通往所谓的专业人员的道路。自己应该多想想这些最佳实践的由来，它们为什么是这样规定，下面是一种比较常见的组织方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">|--- master</span><br><span class="line">   |--- hotfix</span><br><span class="line">|--- develop</span><br><span class="line">|--- feature</span><br><span class="line">   |--- feature/a</span><br><span class="line">   |--- feature/b</span><br><span class="line">   |--- feature/c</span><br><span class="line">   ...</span><br></pre></td></tr></table></figure>
+<p>实际的组织应该是和公司的生产开发流程有关的，以上这个算个解基本例子，主要的分支包括master，developer，以及feature分支。master是线上的环境，develop对应的是stage的环境，feature是具体的功能开发时候相关的分支。每次开发的时候，开发人员从feature分支上fork出新的分支，之后开发新功能点，merge到feature分支，各种测试调整之后，merge到develop分支，之后develop分支定期merge上线到master分支。有紧急的bug可以从master分支直接fork出hotfix修复。feature分支不可以越过develop来merge到develop。</p>
+<p>这样做最明显的一个好处就是冲突发生的问题，因为master的来源仅仅是develop，所以也不会出现很多的冲突问题，所以不会频繁的对master分支进行更新，仅仅是develop测试好，已经确定版本升级的时候才更新。</p>
+<p>自己的项目可以省略develop分支，但是feature分支必须有，这样才能有章可循，每个独立的小功能必须有独立的commit以及详细的描述。虽然说起来都没有什么难的，但是实际总不容易做到。</p>
+<h3 id="用于“生存”的相关命令"><a href="#用于“生存”的相关命令" class="headerlink" title="用于“生存”的相关命令"></a>用于“生存”的相关命令</h3><p>操作每一个命令的时候，要清楚自己操作的是本地仓库中的分支，还是远程仓库中的分支。本地分支可以有多个，远程分支也有多个，其中部分是相互对应的。</p>
+<h4 id="信息查看"><a href="#信息查看" class="headerlink" title="信息查看"></a>信息查看</h4><p><code>git config -l</code> 可以展示本地git仓库的配置信息</p>
+<p><code>git remote -v</code> 可以查看当前配置文件中已经配置的远程分支有哪些，有一些远程分支设置了别名，比如最常见的origin。</p>
+<p><code>git branch -l</code> 可以查看本地所有的分支，包括本地有的，以及从远程仓库上同步下来的。</p>
+<h4 id="具体操作"><a href="#具体操作" class="headerlink" title="具体操作"></a>具体操作</h4><p>对应于第一部分中介绍的分支结构大概的操作流程是，先从远程仓库把代码clone下来，然后从feature分支上创建一个自己的分支（特别关键的一步）然后修改完之后，提一个commit，之后手动到git仓库中查看提一个pr(pull request)，希望将修改merge feature分支中，之后自己以及其他的一起合作的开发者检查完pr中修改代码，发现修改的地方没有冗余，测试通过，没有问题之后，确认merge到feature分支中。好的pr习惯可以记录整个程序开发的流程，确保每个功能都是实实在在的，每次升级都有记录，不会造成冗余以及整个代码的“失控”。以上操作涉及到的git命令：</p>
+<p><code>git branch &lt;new branch name&gt;</code> 创建新的分支，具体分支的删除，以及更细节的查看可以通过branch的子命令来进行</p>
+<p><code>git checkout &lt;new branch name&gt;</code> 切换到新创建的某个分支</p>
+<p><code>git status</code> 查看有哪些文件被修改</p>
+<p><code>git add &lt;文件名&gt;</code> 把希望被git记录下来的修改文件加入其中，一般为了方便直接git add .这样的一些不好的地方就是一些二进制文件可以也被记录进来，可以采用.gitignore的方式将类似二进制文件的不需要记录的内容放在特定的目录下。</p>
+<p><code>git commit -m &quot;commit message&quot;</code> 创建commit并添加修改信息。</p>
+<p><code>git commit --amend</code> 这样会将当前的修改append到上次的commit中，同时还可以对之前的commit信息进行多次的修改。</p>
+<p><code>git push &lt;远程项目的地址&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;</code>具体在push的时候可以使用对应的一些参数，这里的主机名可以使用最原始的，也可以使用别名。比如这个操作<code>git push -f http://10.10.102.101:8000/gitlab/jiaweizhou/k8apitransform.git wangzhe:wangzhe</code> 强制用本地的wangzhe分支覆盖掉了远程主机上某个具体项目中的wangzhe分支。</p>
+<p>之后都是按照这个过程操作，一个功能开发完成之后，在本地就可以把对应的分支删除掉了。</p>
+<h3 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h3><p>这一部分是不断更新的，有遇到新的情况就记录一下</p>
+<h4 id="fork了主库的代码之后如何更新"><a href="#fork了主库的代码之后如何更新" class="headerlink" title="fork了主库的代码之后如何更新"></a>fork了主库的代码之后如何更新</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
+<p>以上命令查看当前环境中的远程仓库的key:value信息，通常fork下来的库其中的信息类似于这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">origin	https://github.com/&lt;local repo&gt; (fetch)</span><br><span class="line">origin	https://github.com/&lt;local repo&gt; (push)</span><br></pre></td></tr></table></figure>
+<p>此时如果想同时更新远程仓库的代码的话，需要将远程仓库的repo也添加到本地，通常用upstream关键字来标记：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add upstream &lt;addr of main repo&gt;</span><br></pre></td></tr></table></figure>
+<p>添加完成之后再执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -r</span><br></pre></td></tr></table></figure>
+<p>就可以列出自己的仓库中以及远程的仓库中所有的分支信息，之后就可以根据需要将本地的分支check到对应的分支之后进行git pull操作拉取对应仓库的代码了。</p>
+<h4 id="冲突的处理"><a href="#冲突的处理" class="headerlink" title="冲突的处理"></a>冲突的处理</h4><p><strong>使用git merge处理冲突</strong></p>
+<p>最开始的时候遇到冲突也调整不好，最后操作就是重新来过，冲突处理相关的两个命令就是<code>git merge</code>与<code>git rebase</code>。</p>
+<p>比如在提交之前，别人已经将feature分支进行了更新，自己在提交之间，之后会落后一些commit，此时可能别人修改的内容你在自己的分支上也进行了修改，遵循先来后到的原则，既然别人已经先提交了，你就得在别人的版本上进行开发，首先和别人的版本达到一致，然后再进行提交。具体的操作如下：</p>
+<p><code>git fetch &lt;远程主机名&gt; &lt;分支名&gt;</code> 将最新的远程分支拿到本地，直接<code>git fetch</code>的话，会取回远程主机上所有的分支。</p>
+<p><code>git status</code> 查看一下当前自己所在的分支，是不是需要提交的那个分支，如果不是的话，记得checkout回来。</p>
+<p><code>git merge &lt;远程feature分支 比如像upstream/feature&gt;</code> 将远程的feature分支merge到当前的分支，如果出现冲突，手动修改，修改成最新提交的内容，把本地的内容修改成为别人最新提交的内容，修改完成之后，进行<code>git add</code>操，之后作再进行以上的merge操作，直到没有冲突出现，就可以提交。</p>
+<p>关于<code>git rebase</code>与<code>git merge</code>的区别可以参考网上的其他资料，自己具体使用rebase较少，主要是分支历史记录上的区别。</p>
+<p><strong>使用git rebase处理冲突</strong></p>
+<p>最近遇到的处理冲突的是情况是这样的，我在很久之前提交了一个pr，这个pr一直在进行各种修改和验证，没有合入，直到最近要合并，结果出现了冲突，我用上面的git merge操作进行合并，处理完使用git log查看，记录类似下面这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fix conflicts</span><br><span class="line">a&apos;s commit</span><br><span class="line">b&apos;s commit</span><br><span class="line">c&apos;s commit</span><br><span class="line">my first commit</span><br></pre></td></tr></table></figure>
+<p>这样在我的pr的页面上就会显示出fix conflicts以及my first commit这两个的git log的信息。负责人在审核我的代码的时候，希望我能将这两个commit合并。这个时候就要用到git rebase了,通过rebase处理完冲突之后git log会像下面这样显示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">my first commit</span><br><span class="line">a&apos;s commit</span><br><span class="line">b&apos;s commit</span><br><span class="line">c&apos;s commit</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>这正是我们想要的结果。具体的原理于细节网上的参考比较多，不再这里细致介绍了,具体操作如下：</p>
+<p><code>git checkout</code> 切换到提交my first commit的分支上（通过fork主库再向自己的库提交代码之后merge到主库的这种场景）</p>
+<p><code>git fetch upstream mainbranch</code> 这里的mainbranch是主库上的发生冲突的分支</p>
+<p><code>git rebase upstream mainbranch</code> 这里会进行一些自动的merge操作，有冲突的地方会标记出来</p>
+<p>之后手动将冲突部分修改成最新的内容，之后git add</p>
+<p>然后继续执行 <code>git rebase –continue</code> 就可以将整个的rebase操作完成</p>
+<p>最后实现的结果就是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">my first commit</span><br><span class="line">a&apos;s commit</span><br><span class="line">b&apos;s commit</span><br><span class="line">c&apos;s commit</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>最后通过push操作将对应的分支更行，就满足了需求。</p>
+<p><strong>更新的一种方式</strong> 就是先把当前要提交的branch 比如 <code>cbranch</code> 重命名成<code>cbranch_old</code> 之后切换到最新的分支上 比如 <code>upstream/master</code> 之后从最新的分支上重新checkout出来<code>cbranch</code> 最后把<code>cbranch_old</code> merge 到这个新的分支上，整体的思路是把旧的branch给merge到新的branch上来 具体可以参考这个(<a href="https://stackoverflow.com/questions/6248231/git-rebase-after-previous-git-merge" target="_blank" rel="noopener">https://stackoverflow.com/questions/6248231/git-rebase-after-previous-git-merge</a>)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git checkout my-branch</span><br><span class="line">git branch -m my-branch-old</span><br><span class="line">git checkout master</span><br><span class="line">git checkout -b my-branch</span><br><span class="line">git merge --squash my-branch-old</span><br><span class="line">git commit</span><br></pre></td></tr></table></figure>
+<h4 id="合并多个commit"><a href="#合并多个commit" class="headerlink" title="合并多个commit"></a>合并多个commit</h4><p>比如在某次修改中提交了多个commit，之后再提pr的时候，希望将这些commit合并成一个，此时需要用到git rebase的操作，关于rebase的操作，<a href="https://github.com/Jisuanke/tech-exp/issues/13" target="_blank" rel="noopener">这一篇</a>介绍的很细致，这里就不再赘述了，注意每次编辑的时候只需要把最上面的一个commit设置pick操作，剩余的都设置squash操作即可。</p>
+<h4 id="追踪文件的历史变化"><a href="#追踪文件的历史变化" class="headerlink" title="追踪文件的历史变化"></a>追踪文件的历史变化</h4><p>按照顺序思维考虑，可以知道具体某个commit于其他的commit相比哪些部分的代码都进行了改动，但是换一个角度如果想要知道当前的某个文件中的某一部分代码是通过哪个commit所引入的？这时需要如何操作？</p>
+<p>比如在每次进行了更改之后，在git add 之前希望再确认以下更改是不是正确，可以通过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff FILE_NAME</span><br></pre></td></tr></table></figure>
+<p>查看文件的更改记录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git blame FILE_NAME</span><br></pre></td></tr></table></figure>
+<p>上面这个命令可以显示出具体文件的某一行的最后一次的改动。具体的显示格式为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">commit ID | 代码提交作者 | 提交时间 | 代码位于文件中的行数 | 实际代码</span><br></pre></td></tr></table></figure>
+<p>获取到对应的commit id之后就可以通过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git show commit_id</span><br></pre></td></tr></table></figure>
+<p>查看具体的某次commit行为都修改了哪些文件。对于类似的比较操作最好还是能有一个图形界面来显示，这样操作起来会更容易，特别是对于比较两次版本提交的代码的时候。</p>
+<p>还有一种使用方式是查看某个文件自诞生以来的所有的变化情况：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --follow &lt;文件名&gt;</span><br></pre></td></tr></table></figure>
+<p>这样会显示出所有的对于这个文件进行更改的log信息，可以看到这个文件都发生过哪些变化,通过commit的信息深入地了解代码发生变化的原因。</p>
+<h4 id="gitignore文件"><a href="#gitignore文件" class="headerlink" title=".gitignore文件"></a>.gitignore文件</h4><p>.gitignore文件的作用就是告诉hgit当前目录中那些文件夹是不需要被追踪的，这些文件夹中可能放着一些二进制文件，或者用于本地测试的临时文件，具体语法的细节可以参考最后列出的网站。</p>
+<h4 id="submodule使用0"><a href="#submodule使用0" class="headerlink" title="submodule使用0"></a>submodule使用0</h4><h4 id="开源项目中的fork操作"><a href="#开源项目中的fork操作" class="headerlink" title="开源项目中的fork操作"></a>开源项目中的fork操作</h4><p><a href="http://it.taocms.org/10/5831.htm" target="_blank" rel="noopener">参考</a></p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>熟悉了命令行的操作之后，使用界面的操作可以提高效率，主要是涉及到代码修改地方的比较。<br>mac上 source tree，linux上可以使用 smart git。</p>
+<p>设置了ssh key之后如果使用https仍然需要使用username以及password，使用ssh protocol的话就不需要再输入用户名和密码了，这个总是容易忘记，具体可以参考<a href="https://stackoverflow.com/questions/21095054/ssh-key-still-asking-for-password-and-passphrase" target="_blank" rel="noopener">这个</a>.</p>
+<p>之前在本地修改编辑然后把代码上传到remote server的时候都习惯使用beyond compare, 最近发现使用github来同步也是一个比较好的操作，在local machine上git push 之后在remote server上git pull 一个好处就是修改可以按照commit的方式进行，比如一次没改好的话，使用commit –amend的方式可以在原来的commit基础上再进行修改，这样每次修改的目的都变得比较明确了。</p>
+<h3 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h3><p>比较全的介绍git命令的网站</p>
+<p><a href="https://git-scm.com/docs" target="_blank" rel="noopener">https://git-scm.com/docs</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/25/git-using-tips/" data-id="cjwu1nniw0016ggy0u9q47v8q" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2018/06/25/linux-env/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          linux env
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/06/23/blogconfig/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">开始使用新blog</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#让git分支有章可循"><span class="toc-number">1.</span> <span class="toc-text">让git分支有章可循</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用于“生存”的相关命令"><span class="toc-number">2.</span> <span class="toc-text">用于“生存”的相关命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#信息查看"><span class="toc-number">2.1.</span> <span class="toc-text">信息查看</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#具体操作"><span class="toc-number">2.2.</span> <span class="toc-text">具体操作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进阶使用"><span class="toc-number">3.</span> <span class="toc-text">进阶使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fork了主库的代码之后如何更新"><span class="toc-number">3.1.</span> <span class="toc-text">fork了主库的代码之后如何更新</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#冲突的处理"><span class="toc-number">3.2.</span> <span class="toc-text">冲突的处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#合并多个commit"><span class="toc-number">3.3.</span> <span class="toc-text">合并多个commit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#追踪文件的历史变化"><span class="toc-number">3.4.</span> <span class="toc-text">追踪文件的历史变化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#gitignore文件"><span class="toc-number">3.5.</span> <span class="toc-text">.gitignore文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#submodule使用0"><span class="toc-number">3.6.</span> <span class="toc-text">submodule使用0</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#开源项目中的fork操作"><span class="toc-number">3.7.</span> <span class="toc-text">开源项目中的fork操作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他"><span class="toc-number">4.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#相关资源"><span class="toc-number">5.</span> <span class="toc-text">相关资源</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2019 John Doe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

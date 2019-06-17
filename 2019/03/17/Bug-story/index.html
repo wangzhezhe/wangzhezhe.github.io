@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Bug story | Wangzhezhe&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="主要记录自己在项目中比较记忆犹新的各种bug IP 配置描述127.0.0.1与eth1的ip弄错。在stage环境上，没有做网络的限制，通过127.0.0.1可以访问到swarm的服务，在线上环境，有网络的限制，还能通过eth1的ip访问到swarm的服务，在数据插入的时候，没有留意，开始以为一直是swarm的问题，后来发现，原来是数据库ip配制的问题。 表面原因，ip配制错误 深层原因，连接信">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bug story">
+<meta property="og:url" content="http://yoursite.com/2019/03/17/Bug-story/index.html">
+<meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
+<meta property="og:description" content="主要记录自己在项目中比较记忆犹新的各种bug IP 配置描述127.0.0.1与eth1的ip弄错。在stage环境上，没有做网络的限制，通过127.0.0.1可以访问到swarm的服务，在线上环境，有网络的限制，还能通过eth1的ip访问到swarm的服务，在数据插入的时候，没有留意，开始以为一直是swarm的问题，后来发现，原来是数据库ip配制的问题。 表面原因，ip配制错误 深层原因，连接信">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-11T00:55:01.669Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Bug story">
+<meta name="twitter:description" content="主要记录自己在项目中比较记忆犹新的各种bug IP 配置描述127.0.0.1与eth1的ip弄错。在stage环境上，没有做网络的限制，通过127.0.0.1可以访问到swarm的服务，在线上环境，有网络的限制，还能通过eth1的ip访问到swarm的服务，在数据插入的时候，没有留意，开始以为一直是swarm的问题，后来发现，原来是数据库ip配制的问题。 表面原因，ip配制错误 深层原因，连接信">
+  
+    <link rel="alternate" href="/atom.xml" title="Wangzhezhe&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wangzhezhe&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Writing is nature&#39;s way of letting you know how sloppy your thinking is.</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Bug-story" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/17/Bug-story/" class="article-date">
+  <time datetime="2019-03-17T19:18:16.000Z" itemprop="datePublished">2019-03-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/story/">story</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Bug story
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>主要记录自己在项目中比较记忆犹新的各种bug</p>
+<h3 id="IP-配置"><a href="#IP-配置" class="headerlink" title="IP 配置"></a>IP 配置</h3><h4 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h4><p>127.0.0.1与eth1的ip弄错。在stage环境上，没有做网络的限制，通过127.0.0.1可以访问到swarm的服务，在线上环境，有网络的限制，还能通过eth1的ip访问到swarm的服务，在数据插入的时候，没有留意，开始以为一直是swarm的问题，后来发现，原来是数据库ip配制的问题。</p>
+<p>表面原因，ip配制错误</p>
+<p>深层原因，连接信息应该通过环境变量传入进来，比如像数据库连接信息，swarm client 以及 etcd client 这种信息，这个就是代买编写的规范性方面所遇到的问题，连接信息一定要通过环境变量加载进来，或者配置文件，写成配置文件的话，就相当于是启动的时候传入了几个参数。</p>
+<p>缺乏容器里外的概念，应用都是在容器里面启动的，127.0.0.1怎么可能访问到容器外面的网络呢，除非都是用net=host的模式。</p>
+<p>在stage环境上，竟然加上了net=host参数，但是在线上环境，可能没有加上，还是因为线上环境和stage环境的配置不一致所导致的。</p>
+<h3 id="环境变量配置"><a href="#环境变量配置" class="headerlink" title="环境变量配置"></a>环境变量配置</h3><h4 id="描述-1"><a href="#描述-1" class="headerlink" title="描述"></a>描述</h4><p>给原来的老项目中添加一个报警功能，通过docker compose文件的方式来启动，因为要在里面添加一些新的环境变量，修改的时候不够小心，把一个关键的环境变量（原来是true）设置成了truei导致程序启动的时候，每次api返回一个错误。</p>
+<p>表面原因，做工作不够细致。深层次原因，程序对于环境变量的检测不到位，没有进行input参数的检测，比如输入的参数如果不是false或者true会怎样，自己输出的日志信息也不够详细，导致出了问题难定位。即使给api返回了错误的信息，也应该在本程序的日志这里留一个对应的记录才行。</p>
+<p>之前的程序在给api返回的信息中，指明了环境表变量的问题，但是本身没有log输出，这样就导致了在出现问题之后，很难进行排查。虽然给api也返回了信息，但是显然环境变量这边的信息不是api传过来的，是程序启动时候设置进去的，不管api怎么样，这个参数都是要设置的，这样在程序启动这边，就应该打印有对应的log信息。</p>
+<h3 id="json解析的问题"><a href="#json解析的问题" class="headerlink" title="json解析的问题"></a>json解析的问题</h3><p>在使用Golang进行json解析的时候，想当然地把结构体中的字段的首字母定义成了小写的形式。老员工仔细看一眼就能看出来，一提醒我我也能知道，但是自己在主动些的时候就是有异常然后json 解析不成功，由于在一个大的已有项目中进行更改很难去把问题限制在一个比较小的范围因此出了问题常常不确定是哪部分导致的，这种字段大小写的问题实在是不应该犯的。</p>
+<h3 id="listkeys的问题"><a href="#listkeys的问题" class="headerlink" title="listkeys的问题"></a>listkeys的问题</h3><p>在我们的项目中有一个接口是通过输入的volumename查找对应的volumeid，具体实现的逻辑如下，函数的输入参数是searchName，函数逻辑是，先列出当前所有的volume信息，之后对这些volume信息遍历，如果遍历的时候发现volumename==searchName，count+1，如果最后count值==0或者&gt;1就会报错。这样的逻辑其实默认假设了list时候返回的信息是没有重复的，或者说返回的是一个set或是map。然而实际情况是list所有的volume信息的时候，返回的数据是一个list，这个list中出现了好多重复的元素比如[volumeida:volumenamea，volumeida:volumenamea]这样如果searchName是volumeName的话，计数值就为2，然而实际是仅有一个volume的。这就是考虑输入参数不周全的问题。因为涉及多层的调用，所以在调用之前最好是假设对方的接口是不牢靠的，处理之前一定要考虑到各种情况，即使没有办法规避也要留有debug的日志信息。比如这个问题是重新添加了list的打印，然后build代码，放在线上运行才发现原来接口返回的信息本身就有问题（如果接口定义的时候返回一个map或者set也就没有这种问题了），整个过程浪费了好多时间和心力。</p>
+<h3 id="写成了-的问题"><a href="#写成了-的问题" class="headerlink" title="==写成了=的问题"></a>==写成了=的问题</h3><p>这种问题虽然是很基本，但是常常跌倒在这里，有时候感叹，我靠，怎么会是这样，这不科学啊，回过头来再仔细一看原来是==写成了=。对于这种问题，还是老老实实地通过单元测试来解决比较好，不要心存侥幸，觉得自己的程序就没有问题，一定要用测试说话，求是求是，用测试来证明自己的函数没问题，并不是自己拍胸脯随便说说。</p>
+<h3 id="c中的segmentation-fault的问题"><a href="#c中的segmentation-fault的问题" class="headerlink" title="c中的segmentation fault的问题"></a>c中的segmentation fault的问题</h3><p>一次是malloc()后面的数字写错了，本来应该是写成 malloc(rindex-lindex)结果写成了malloc(sizeof(rindex-lindex))<br>一次是空间定义的小了</p>
+<p>一个tips就是看上下文，也就是看输入和输出</p>
+<p>实在不行就是用笨办法，大致定位到出错的函数，然后打点往下走，看在哪一步的时候程序有报错，这个方法虽然慢一些，但最后往往都能找到出错的地方。</p>
+<p>主要是代码常常写的不完整，没有检测函数的返回值，导致即使malloc没有成功也不知道是由于什么原因导致的，直接在malloc的过程中就给报错了。</p>
+<p>对malloc这种裸的内存操作一定要对输入参数考虑充分，边界条件考虑清楚。一个是习惯问题，一个是经验问题。</p>
+<p>使用多了golang的编程模型就觉得其他的语言各种不严谨与随意或者说是灵活，因为golang就是在代码里强制地返回error然后程序必须处理这个error，虽然有时候看起来繁琐，但是可以让所有的可能的问题最准确的定位出来，代码中bug出现的概率首先就小了很多，即使是有错误也能很快定位了。</p>
+<h3 id="安装nvidia-driver"><a href="#安装nvidia-driver" class="headerlink" title="安装nvidia driver"></a>安装nvidia driver</h3><p>之前帮同学安装nvidia driver 开始是双系统，每次装好都说有个脚本不能运行然后安装失败，smi无法于nvidia通信， 后来把windows卸载了，只装ubuntu14.04之后又参考了这个教程 <a href="https://gist.github.com/wangruohui/df039f0dc434d6486f5d4d098aa52d07" target="_blank" rel="noopener">https://gist.github.com/wangruohui/df039f0dc434d6486f5d4d098aa52d07</a> 才弄好，主要是在bios设置中有一个secure boot option没有修改， 导致有些内核模块没法写入到系统， 总之driver的问题不仅仅是软件的问题，应该把软件和硬件看成一个整体然后全方位的考虑，暂时先写在这里，万一以后自己也要装driver就省去好多事了，从这个角度看双系统还是有风险的，也可能是driver相互冲突，还是单系统加虚拟机的方式比较好用。</p>
+<p>同学想替换server上的cuda 9 到 cuda 10 但是按照官方的教程 每次在<code>apt-get update</code>之后 都还是原先 cuda 9 的安装包 后来仔细查抄 <code>/etc/source</code> 也就是 apt-get 的源文件时候才发现 当前的机器有一个默认的source配置 那个配置中有一个默认的cuda的列表 猜想可能是那个列表中的默认的信息把new added的source给覆盖了 结果吧default的list注释掉之后 再<code>apt-get update</code>之后就能识别出新的cuda10了 这种配置的问题常常让人很费解 会因为一个很小的地方就花费掉很多的时间 这里mark一下 </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/17/Bug-story/" data-id="cjwu1nnhh0000ggy0ve7mh7xq" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2019/04/20/c-review/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          c++review
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/09/10/numerical-method-for-engineer-notes/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">numerical_method_for_engineer_notes</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#IP-配置"><span class="toc-number">1.</span> <span class="toc-text">IP 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#描述"><span class="toc-number">1.1.</span> <span class="toc-text">描述</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#环境变量配置"><span class="toc-number">2.</span> <span class="toc-text">环境变量配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#描述-1"><span class="toc-number">2.1.</span> <span class="toc-text">描述</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#json解析的问题"><span class="toc-number">3.</span> <span class="toc-text">json解析的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#listkeys的问题"><span class="toc-number">4.</span> <span class="toc-text">listkeys的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#写成了-的问题"><span class="toc-number">5.</span> <span class="toc-text">==写成了=的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c中的segmentation-fault的问题"><span class="toc-number">6.</span> <span class="toc-text">c中的segmentation fault的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装nvidia-driver"><span class="toc-number">7.</span> <span class="toc-text">安装nvidia driver</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2019 John Doe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

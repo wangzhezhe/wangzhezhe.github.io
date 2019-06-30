@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
 <meta property="og:description" content="主要记录自己在项目中比较记忆犹新的各种bug IP 配置描述127.0.0.1与eth1的ip弄错。在stage环境上，没有做网络的限制，通过127.0.0.1可以访问到swarm的服务，在线上环境，有网络的限制，还能通过eth1的ip访问到swarm的服务，在数据插入的时候，没有留意，开始以为一直是swarm的问题，后来发现，原来是数据库ip配制的问题。 表面原因，ip配制错误 深层原因，连接信">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-11T00:55:01.669Z">
+<meta property="og:updated_time" content="2019-06-30T04:30:36.178Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Bug story">
 <meta name="twitter:description" content="主要记录自己在项目中比较记忆犹新的各种bug IP 配置描述127.0.0.1与eth1的ip弄错。在stage环境上，没有做网络的限制，通过127.0.0.1可以访问到swarm的服务，在线上环境，有网络的限制，还能通过eth1的ip访问到swarm的服务，在数据插入的时候，没有留意，开始以为一直是swarm的问题，后来发现，原来是数据库ip配制的问题。 表面原因，ip配制错误 深层原因，连接信">
@@ -101,12 +101,13 @@
         <!-- Table of Contents -->
         
         <p>主要记录自己在项目中比较记忆犹新的各种bug</p>
-<h3 id="IP-配置"><a href="#IP-配置" class="headerlink" title="IP 配置"></a>IP 配置</h3><h4 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h4><p>127.0.0.1与eth1的ip弄错。在stage环境上，没有做网络的限制，通过127.0.0.1可以访问到swarm的服务，在线上环境，有网络的限制，还能通过eth1的ip访问到swarm的服务，在数据插入的时候，没有留意，开始以为一直是swarm的问题，后来发现，原来是数据库ip配制的问题。</p>
+<h3 id="IP-配置"><a href="#IP-配置" class="headerlink" title="IP 配置"></a>IP 配置</h3><p><strong>描述</strong><br>127.0.0.1与eth1的ip弄错。在stage环境上，没有做网络的限制，通过127.0.0.1可以访问到swarm的服务，在线上环境，有网络的限制，还能通过eth1的ip访问到swarm的服务，在数据插入的时候，没有留意，开始以为一直是swarm的问题，后来发现，原来是数据库ip配制的问题。</p>
 <p>表面原因，ip配制错误</p>
 <p>深层原因，连接信息应该通过环境变量传入进来，比如像数据库连接信息，swarm client 以及 etcd client 这种信息，这个就是代买编写的规范性方面所遇到的问题，连接信息一定要通过环境变量加载进来，或者配置文件，写成配置文件的话，就相当于是启动的时候传入了几个参数。</p>
 <p>缺乏容器里外的概念，应用都是在容器里面启动的，127.0.0.1怎么可能访问到容器外面的网络呢，除非都是用net=host的模式。</p>
 <p>在stage环境上，竟然加上了net=host参数，但是在线上环境，可能没有加上，还是因为线上环境和stage环境的配置不一致所导致的。</p>
-<h3 id="环境变量配置"><a href="#环境变量配置" class="headerlink" title="环境变量配置"></a>环境变量配置</h3><h4 id="描述-1"><a href="#描述-1" class="headerlink" title="描述"></a>描述</h4><p>给原来的老项目中添加一个报警功能，通过docker compose文件的方式来启动，因为要在里面添加一些新的环境变量，修改的时候不够小心，把一个关键的环境变量（原来是true）设置成了truei导致程序启动的时候，每次api返回一个错误。</p>
+<h3 id="环境变量配置"><a href="#环境变量配置" class="headerlink" title="环境变量配置"></a>环境变量配置</h3><p><strong>描述</strong></p>
+<p>给原来的老项目中添加一个报警功能，通过docker compose文件的方式来启动，因为要在里面添加一些新的环境变量，修改的时候不够小心，把一个关键的环境变量（原来是true）设置成了truei导致程序启动的时候，每次api返回一个错误。</p>
 <p>表面原因，做工作不够细致。深层次原因，程序对于环境变量的检测不到位，没有进行input参数的检测，比如输入的参数如果不是false或者true会怎样，自己输出的日志信息也不够详细，导致出了问题难定位。即使给api返回了错误的信息，也应该在本程序的日志这里留一个对应的记录才行。</p>
 <p>之前的程序在给api返回的信息中，指明了环境表变量的问题，但是本身没有log输出，这样就导致了在出现问题之后，很难进行排查。虽然给api也返回了信息，但是显然环境变量这边的信息不是api传过来的，是程序启动时候设置进去的，不管api怎么样，这个参数都是要设置的，这样在程序启动这边，就应该打印有对应的log信息。</p>
 <h3 id="json解析的问题"><a href="#json解析的问题" class="headerlink" title="json解析的问题"></a>json解析的问题</h3><p>在使用Golang进行json解析的时候，想当然地把结构体中的字段的首字母定义成了小写的形式。老员工仔细看一眼就能看出来，一提醒我我也能知道，但是自己在主动些的时候就是有异常然后json 解析不成功，由于在一个大的已有项目中进行更改很难去把问题限制在一个比较小的范围因此出了问题常常不确定是哪部分导致的，这种字段大小写的问题实在是不应该犯的。</p>
@@ -124,7 +125,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/17/Bug-story/" data-id="cjwzm6xnb000109y0ctigmr0c" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/03/17/Bug-story/" data-id="cjxj501r60003quy0zb4q3uhq" class="article-share-link">分享</a>
       
       
       
@@ -221,7 +222,7 @@
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#IP-配置"><span class="toc-number">1.</span> <span class="toc-text">IP 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#描述"><span class="toc-number">1.1.</span> <span class="toc-text">描述</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#环境变量配置"><span class="toc-number">2.</span> <span class="toc-text">环境变量配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#描述-1"><span class="toc-number">2.1.</span> <span class="toc-text">描述</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#json解析的问题"><span class="toc-number">3.</span> <span class="toc-text">json解析的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#listkeys的问题"><span class="toc-number">4.</span> <span class="toc-text">listkeys的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#写成了-的问题"><span class="toc-number">5.</span> <span class="toc-text">==写成了=的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c中的segmentation-fault的问题"><span class="toc-number">6.</span> <span class="toc-text">c中的segmentation fault的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装nvidia-driver"><span class="toc-number">7.</span> <span class="toc-text">安装nvidia driver</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#IP-配置"><span class="toc-number">1.</span> <span class="toc-text">IP 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#环境变量配置"><span class="toc-number">2.</span> <span class="toc-text">环境变量配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#json解析的问题"><span class="toc-number">3.</span> <span class="toc-text">json解析的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#listkeys的问题"><span class="toc-number">4.</span> <span class="toc-text">listkeys的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#写成了-的问题"><span class="toc-number">5.</span> <span class="toc-text">==写成了=的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c中的segmentation-fault的问题"><span class="toc-number">6.</span> <span class="toc-text">c中的segmentation fault的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装nvidia-driver"><span class="toc-number">7.</span> <span class="toc-text">安装nvidia driver</span></a></li></ol>
           </div>
       </div>
     </div>

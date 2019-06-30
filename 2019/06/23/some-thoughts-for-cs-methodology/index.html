@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Some thoughts for cs methodology | Wangzhezhe&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="方法和实践总是相辅相成的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Some thoughts for cs methodology">
+<meta property="og:url" content="http://yoursite.com/2019/06/23/some-thoughts-for-cs-methodology/index.html">
+<meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
+<meta property="og:description" content="方法和实践总是相辅相成的。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-30T04:31:08.586Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Some thoughts for cs methodology">
+<meta name="twitter:description" content="方法和实践总是相辅相成的。">
+  
+    <link rel="alternate" href="/atom.xml" title="Wangzhezhe&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wangzhezhe&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Writing is nature&#39;s way of letting you know how sloppy your thinking is.</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-some-thoughts-for-cs-methodology" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/23/some-thoughts-for-cs-methodology/" class="article-date">
+  <time datetime="2019-06-23T15:09:33.000Z" itemprop="datePublished">2019-06-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/methodology/">methodology</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Some thoughts for cs methodology
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>方法和实践总是相辅相成的。<br><a id="more"></a></p>
+<h3 id="粗调与精调"><a href="#粗调与精调" class="headerlink" title="粗调与精调"></a>粗调与精调</h3><p>adaptive refinement mesh</p>
+<p><a href="https://en.wikipedia.org/wiki/Adaptive_mesh_refinement" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Adaptive_mesh_refinement</a></p>
+<p>简单的问题，如何用最少的次数测一个球在几楼的时候被摔碎</p>
+<p>参数调优的问题，先采用大的span确定范围，然后在采用小的span细致调整。</p>
+<h3 id="分类的思路"><a href="#分类的思路" class="headerlink" title="分类的思路"></a>分类的思路</h3><p>最近上了一些dp的课程，在理解题目背景的情况下，解决dp问题的核心是用到两个思路，一个是后向考虑的思路，也就是说最后一步是什么样的case然后从后往前推理，还有一个是分类的思路，对于最后一步的case采用分情况讨论的方式进行进一步分析，有时候分类讨论可能需要加上更多一个维度的数据。分类讨论常常是能让推理再进行下去的一个常用手段，有的时候找不到方向了，或者不知道当前自己研究的问题到底是个什么，这个时候就把自己已经知道的内容放在大的picture下面捋一捋，然后问问自己每个分叉的枝叶上的内容有没有考虑清楚，这个时候就可以发现没有考虑清楚的枝叶，有的时候甚至会发现一些模糊的枝叶和可能长出新的地方的枝叶，这个时候就容易找到目标和方向了，在科学的大树上的某个细小分叉上，你就可以做出自己的contribution然后为了这个大树的茂盛做出自己的一点微小贡献。再YY一下你可以说自己是人类知识大树的园丁或者是知识之网的编造者，或者有时候想象人类的知识是一个巨大的蜘蛛网，看也看不到边，你是上面的一个小蜘蛛，有的小蜘蛛会学一些捕食技能，利用这个大的蜘蛛网抓一些昆虫，安安稳稳，生活的更好，你更愿意走到蜘蛛网的边界的地方，想办法让这个蜘蛛网变得更牢固一些，或是再把这个网的边界拓展拓展，边界的地方可能不太安全，看不清前面一不小心有个风吹雨打也容易掉下去，可能因为考虑怎么编那个蜘蛛网就耽误了学习打猎技能的时间搞不好还会饿肚子，但总体来看这个工作一旦做出来就是有价值的，可以为更多小蜘蛛来继续服务的。</p>
+<h3 id="对一切编号Index"><a href="#对一切编号Index" class="headerlink" title="对一切编号Index"></a>对一切编号Index</h3><p>显而易见的地方就是关系型数据库中的主键 就是id 作为index<br>在分布式系统里或者是多线程的程序 也是习惯上给每一个thread一个id 通过id找到对应的thread 或者 program 之后许多operation都需要在id的基础上进行 比如说partition 某个id对应的thread会去处理某一块的数据 等等</p>
+<h3 id="关于手段与目的-具体技术与使用场景"><a href="#关于手段与目的-具体技术与使用场景" class="headerlink" title="关于手段与目的, 具体技术与使用场景"></a>关于手段与目的, 具体技术与使用场景</h3><p>cs本身 还是说cs在某一个场景下的应用</p>
+<h3 id="论文与知识，无限与有限"><a href="#论文与知识，无限与有限" class="headerlink" title="论文与知识，无限与有限"></a>论文与知识，无限与有限</h3><p>论文的数量是无限的，只要人类在发展就有新的知识产生，但是知识增加的速度赶不上论文增加的速度，好多论文是在使用过去的知识的基础上然后做了一小步的工作，看论文的过程并不是说看过了就没事了，应该是focuse on constructing knowledge topology然后没看一篇论文把topology更完善一点，这样也能从整个topology的更大的视角上来衡量这个论文的整体价值。</p>
+<p>对于考虑某个工作的价值在哪里的时候，最容易的一个问题就是:如果没有这个工作，将会怎么样，是不是某个事情没法做了，是不是某个数据不够好了等等。</p>
+<h3 id="量级优化的核心"><a href="#量级优化的核心" class="headerlink" title="量级优化的核心"></a>量级优化的核心</h3><p>找出重复的计算，减少重复的计算，具体减少的过程可以通过优化数据结构来达到减枝的效果，或者通过近似计算，降低一些精度来通过牺牲20%的准确度来提升80%的时间效率。优化的目的更care的是数量级的优化，比如从 O(n^2) O(logn) O(n) 这样的优化比较有意义，那种常数项的优化意义并不是很大。特别是并行的case，在很大的input数据下通常才能看出效果，要是数据本身比较小，那时间复杂度就并不是一个有意义的metric</p>
+<h3 id="从naive的方式开始"><a href="#从naive的方式开始" class="headerlink" title="从naive的方式开始"></a>从naive的方式开始</h3><p>很多时候不知道自己在做什么，特别是某个research方面的问题，然后常常会是止步不前。难以定位问题，move forward 这个时候就回到一个状态就是问问自己，naive的方案是什么。已经用了几次，基本尚可，因为好多时候不是在解决一个新的问题，而是在优化原因的问题，只要往general了说，似乎没有什么问题是新的问题，这样就比较好地能确定下来自己的motivation，之后再考虑考虑naive的方案能不能实现，这算是前进了一步，通过naive的solution大致就能明白自己的task是什么了，然后再想naive的方案中哪里有不足的地方，就能进一步优化，然后明确一些细节，看看距离target的方案在哪里，这样就能一点一点move forward然后明确自己做的东西的大致方向而不至于在原地打转。</p>
+<p>就好比你爬一座山一样，站在山顶往山脚下看，感觉是一个巨大的飞跃，但是从山顶的最高一级台阶看倒数第二个的台阶，却又是很微小的提升和改进，所以似乎一下搞个大新闻这种思路并不是很现实，大方向在那里，点滴积累走一步看一步可能是比较显示的改变。</p>
+<h3 id="系统性思维"><a href="#系统性思维" class="headerlink" title="系统性思维"></a>系统性思维</h3><p>其实和分类的角度有点类似：</p>
+<p><a href="https://thesystemsthinker.com/systems-thinking-what-why-when-where-and-how/" target="_blank" rel="noopener">https://thesystemsthinker.com/systems-thinking-what-why-when-where-and-how/</a></p>
+<p>把整体打散成不同的维度 之后从每个维度单个地去看事情 每次只是从一个变量的方向对事情进行比较 之后把不同维度组合起来 从整体的角度来分析一个事情</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/23/some-thoughts-for-cs-methodology/" data-id="cjxj501s9001equy0wl3g65q2" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/24/c-metaprogramming/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          c++ meta programming crash course
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/22/They-write-blog/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">They write blog</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#粗调与精调"><span class="toc-number">1.</span> <span class="toc-text">粗调与精调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类的思路"><span class="toc-number">2.</span> <span class="toc-text">分类的思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对一切编号Index"><span class="toc-number">3.</span> <span class="toc-text">对一切编号Index</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于手段与目的-具体技术与使用场景"><span class="toc-number">4.</span> <span class="toc-text">关于手段与目的, 具体技术与使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#论文与知识，无限与有限"><span class="toc-number">5.</span> <span class="toc-text">论文与知识，无限与有限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#量级优化的核心"><span class="toc-number">6.</span> <span class="toc-text">量级优化的核心</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从naive的方式开始"><span class="toc-number">7.</span> <span class="toc-text">从naive的方式开始</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#系统性思维"><span class="toc-number">8.</span> <span class="toc-text">系统性思维</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2019 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

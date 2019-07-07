@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
 <meta property="og:description" content="主要整理c/c++ call python 以及 python call c/c++ 的基本使用。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-01T22:17:00.351Z">
+<meta property="og:updated_time" content="2019-07-03T21:38:07.688Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Seamless calling between python and c&#x2F;c++">
 <meta name="twitter:description" content="主要整理c/c++ call python 以及 python call c/c++ 的基本使用。">
@@ -116,6 +116,7 @@
 <p>using embed to put the intepreter in c/c++</p>
 <p><strong>use cpython</strong></p>
 <p>official documents:<br><a href="https://docs.python.org/2/extending/embedding.html" target="_blank" rel="noopener">https://docs.python.org/2/extending/embedding.html</a></p>
+<p>即使使用了pybind11，最后编译成的.so文件还是cpython的</p>
 <h3 id="关于一个实际bug的解决"><a href="#关于一个实际bug的解决" class="headerlink" title="关于一个实际bug的解决"></a>关于一个实际bug的解决</h3><p>具体可以参考<a href="https://stackoverflow.com/questions/54170779/fatal-python-error-cant-initialize-threads-for-interpreter-when-calling-python" target="_blank" rel="noopener">这个</a></p>
 <p>最终的原因是由于一个函数和系统的函数命名一样了，导致的这个错误 （不使用namespace的缺点）</p>
 <p>虽然仅仅知道怎么解决，还不知道原因为什么是这样，但这个过程有一些收获</p>
@@ -148,7 +149,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/24/seamless-calling-between-python-and-c-c/" data-id="cjxl8f98a001d5iy0z338xybb" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/24/seamless-calling-between-python-and-c-c/" data-id="cjxtbkpo6001epb0a2md2d4vt" class="article-share-link">分享</a>
       
       
       

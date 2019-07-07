@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
 <meta property="og:description" content="shell的内容平时多多少少会使用到，说道底是经验积累问题，虽然每次总能找到最后的答案，但是总不能每次一用到就一句一句去搜索吧，还是按照场景整理在一起比较方便，先整理在这，然后持续更新。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-01T21:46:16.819Z">
+<meta property="og:updated_time" content="2019-07-06T00:13:30.163Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="bash tips">
 <meta name="twitter:description" content="shell的内容平时多多少少会使用到，说道底是经验积累问题，虽然每次总能找到最后的答案，但是总不能每次一用到就一句一句去搜索吧，还是按照场景整理在一起比较方便，先整理在这，然后持续更新。">
@@ -178,6 +178,9 @@
 <p>关于linux中的输出重定向的问题可以参考这个(<a href="https://www.jb51.net/article/64183.htm" target="_blank" rel="noopener">https://www.jb51.net/article/64183.htm</a>)</p>
 <p>关于输入输出的重定向 1 2 的写法：</p>
 <p><a href="https://superuser.com/questions/436586/why-redirect-output-to-21-and-12" target="_blank" rel="noopener">https://superuser.com/questions/436586/why-redirect-output-to-21-and-12</a></p>
+<h4 id="关于IO-buffer"><a href="#关于IO-buffer" class="headerlink" title="关于IO buffer"></a>关于IO buffer</h4><p>直接运行程序的时候，printf的结果可以输出到terminal中，但有时候使用了重定向之后，结果就无法输出，除非等程序运行结束。具体比如参考<a href="https://stackoverflow.com/questions/56909660/fails-to-redirect-the-output-into-file?noredirect=1#comment100364173_56909660" target="_blank" rel="noopener">这个</a>或者参考<a href="https://unix.stackexchange.com/questions/25372/turn-off-buffering-in-pipe" target="_blank" rel="noopener">这个</a> 主要是因为IO buffer的原因导致结果不会直接输出</p>
+<p>一种方式是使用 expect 工具的 <code>unbuffer</code> command 作为临时调试使用，这个时候不管是重定向还是使用pipeline都可以work。或者是在输出的时候使用<code>std::endl</code>强制进行flush。</p>
+<p>另外一种是使用比较完备的log工具，会直接将log信息记录写在打开的文件中而并非是通过标准输出。事实上参考<a href="https://en.cppreference.com/w/cpp/io/manip/endl" target="_blank" rel="noopener">这里</a>可以看到 line-buffer 的概念，什么时候flush是个问题，频繁的flush会造成performance issue，但是一个flush信息也没有又回造成难以交互，总之是个tradeoff，有趣的是使用<code>std::endl</code>代替<code>\n</code>结尾可以强制地进行flush。</p>
 <h4 id="通过grep命令判断是否截取出相关的内容"><a href="#通过grep命令判断是否截取出相关的内容" class="headerlink" title="通过grep命令判断是否截取出相关的内容"></a>通过grep命令判断是否截取出相关的内容</h4><p>首先是grep的那一套操作，如果不需要grep的内容输出，可以将输出结果重定向到null中。<br>之后通过if_exist=$?返回上一条命令，也就是grep那个命令的状态码，之后再用一个if操作来判断状态码是0还是1，如果是1的话，说明grep操作的确截取到了相关的内容，如果为0的话，说明grep命令并没有截取到相关的内容。注意有的时候ps命令与grep结合，希望搜索出特定的进程信息，这个时候容易吧grep本身的进程也显示出来，此时可以使用-v参数，在这个搜索命令的最后部分加上|grep -v grep 把含义grep关键字的内容从搜索结果中去掉。</p>
 <h3 id="零碎的知识点"><a href="#零碎的知识点" class="headerlink" title="零碎的知识点"></a>零碎的知识点</h3><p><strong>脚本中开头部分</strong></p>
 <p>一般比较常用的是写成 #!/bin/bash ，其中“#!”表示要位这个shell脚本指定一个解释器，当然后面还可以添加其他的内容，具体可以参考这个(<a href="https://blog.csdn.net/cjsycyl/article/details/7927727" target="_blank" rel="noopener">https://blog.csdn.net/cjsycyl/article/details/7927727</a>)</p>
@@ -213,7 +216,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/bash-tips/" data-id="cjxl8f99r002q5iy0nfyuu1ht" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/bash-tips/" data-id="cjxtbkpps002spb0addw4g9v0" class="article-share-link">分享</a>
       
       
       
@@ -310,7 +313,7 @@
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#用于“生存”的基本命令"><span class="toc-number">1.</span> <span class="toc-text">用于“生存”的基本命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#几种常用到的shell脚本"><span class="toc-number">2.</span> <span class="toc-text">几种常用到的shell脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#脚本写在一行"><span class="toc-number">2.1.</span> <span class="toc-text">脚本写在一行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#判断某个文件-变量是否存在"><span class="toc-number">2.2.</span> <span class="toc-text">判断某个文件/变量是否存在</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#关于循环"><span class="toc-number">2.3.</span> <span class="toc-text">关于循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#让许多台机器使用ssh的方式进行通信"><span class="toc-number">2.4.</span> <span class="toc-text">让许多台机器使用ssh的方式进行通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在后台静默运行某个程序"><span class="toc-number">2.5.</span> <span class="toc-text">在后台静默运行某个程序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#通过grep命令判断是否截取出相关的内容"><span class="toc-number">2.6.</span> <span class="toc-text">通过grep命令判断是否截取出相关的内容</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#零碎的知识点"><span class="toc-number">3.</span> <span class="toc-text">零碎的知识点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他参考资源"><span class="toc-number">4.</span> <span class="toc-text">其他参考资源</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#用于“生存”的基本命令"><span class="toc-number">1.</span> <span class="toc-text">用于“生存”的基本命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#几种常用到的shell脚本"><span class="toc-number">2.</span> <span class="toc-text">几种常用到的shell脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#脚本写在一行"><span class="toc-number">2.1.</span> <span class="toc-text">脚本写在一行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#判断某个文件-变量是否存在"><span class="toc-number">2.2.</span> <span class="toc-text">判断某个文件/变量是否存在</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#关于循环"><span class="toc-number">2.3.</span> <span class="toc-text">关于循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#让许多台机器使用ssh的方式进行通信"><span class="toc-number">2.4.</span> <span class="toc-text">让许多台机器使用ssh的方式进行通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在后台静默运行某个程序"><span class="toc-number">2.5.</span> <span class="toc-text">在后台静默运行某个程序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#关于IO-buffer"><span class="toc-number">2.6.</span> <span class="toc-text">关于IO buffer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#通过grep命令判断是否截取出相关的内容"><span class="toc-number">2.7.</span> <span class="toc-text">通过grep命令判断是否截取出相关的内容</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#零碎的知识点"><span class="toc-number">3.</span> <span class="toc-text">零碎的知识点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他参考资源"><span class="toc-number">4.</span> <span class="toc-text">其他参考资源</span></a></li></ol>
           </div>
       </div>
     </div>

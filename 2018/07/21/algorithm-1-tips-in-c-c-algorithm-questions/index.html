@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
 <meta property="og:description" content="练习题目总是断断续续的，因此感觉从来也没有在某一个时间段内达到很高的水平，总是隔一段时间再做题有些基本的内容就忘记了（发人深思）。而且平时项目里用c/c++并没有那么频繁，有一些零零碎碎的操作不便于快速回忆，于是那些做题目时会用到的内容还是梳理在一起比较好，也相当于是一个系统整理了。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-13T02:47:26.044Z">
+<meta property="og:updated_time" content="2019-10-06T20:42:06.702Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Algorithm(1) tips in c&#x2F;c++ algorithm questions">
 <meta name="twitter:description" content="练习题目总是断断续续的，因此感觉从来也没有在某一个时间段内达到很高的水平，总是隔一段时间再做题有些基本的内容就忘记了（发人深思）。而且平时项目里用c/c++并没有那么频繁，有一些零零碎碎的操作不便于快速回忆，于是那些做题目时会用到的内容还是梳理在一起比较好，也相当于是一个系统整理了。">
@@ -144,7 +144,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;string&gt; words;</span><br><span class="line">int leftIdx  = 0;</span><br><span class="line">int rightIdx = 0;</span><br><span class="line">while (rightIdx &lt; str.size())</span><br><span class="line">&#123;</span><br><span class="line">    while (rightIdx &lt; str.size() &amp;&amp; str[rightIdx] != &apos; &apos;)</span><br><span class="line">        rightIdx++;</span><br><span class="line">    words.push_back(str.substr(leftIdx, rightIdx-leftIdx));</span><br><span class="line">    leftIdx  = rightIdx+1;</span><br><span class="line">    rightIdx = rightIdx+1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>注意</strong>这里的substr要特别留意一下，主要是两个参数的含义，第一个参数为子数组的起始位置，第二个参数是字数组的长度，就是从起始位置开始，往后延伸多少个数字。（之前有一次机试的时候 把这里理解成了右边界 导致浪费了很多时间调试 这些小地方一定要注意）</p>
 <p>有时可能会用到string转化成为字符串数组的操作：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">string 是c++标准库里面其中一个，封装了对字符串的操作 </span><br><span class="line">把string转换为char* 有3中方法： </span><br><span class="line">1.data </span><br><span class="line">如： </span><br><span class="line">string str=&quot;abc&quot;; </span><br><span class="line">const char *p=str.data(); </span><br><span class="line">2.c_str </span><br><span class="line">如：string str=&quot;gdfd&quot;; </span><br><span class="line">    char *p=str.c_str(); </span><br><span class="line">    比如在使用atoi函数将一个string类型的字符串转化为int类型的时候，就需要用这个操作。</span><br><span class="line">3.copy </span><br><span class="line">比如 </span><br><span class="line">string str=&quot;hello&quot;; </span><br><span class="line">char p[40]; </span><br><span class="line">str.copy(p,5,0); //这里5，代表复制几个字符，0代表复制的位置</span><br><span class="line">*(p+5)=&apos;/0&apos;; //要手动加上结束符</span><br><span class="line">cout &lt;&lt;p;</span><br></pre></td></tr></table></figure>
+<p>string 是c++标准库里面其中一个，封装了对字符串的操作<br>把string转换为char* 有3中方法：<br>1.data </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">string str=&quot;abc&quot;; </span><br><span class="line">const char *p=str.data();</span><br></pre></td></tr></table></figure>
+<p>2.c_str </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">string str=&quot;gdfd&quot;; </span><br><span class="line">char *p=str.c_str();</span><br></pre></td></tr></table></figure>
+<p>比如在使用atoi函数将一个string类型的字符串转化为int类型的时候，就需要用这个操作。<br>还要注意下<code>c_str</code>与<code>data</code>的区别，<code>data()</code>函数返回的内容没有以<code>\0</code>结尾，而<code>c_str()</code>返回的是str，并且以<code>\0</code>结尾<br>3.copy<br>比如 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">string str=&quot;hello&quot;; </span><br><span class="line">char p[40]; </span><br><span class="line">str.copy(p,5,0); //这里5，代表复制几个字符，0代表复制的位置</span><br><span class="line">*(p+5)=&apos;/0&apos;; //要手动加上结束符</span><br><span class="line">cout &lt;&lt;p;</span><br></pre></td></tr></table></figure>
 <p>string扩容，如果对于原来的string直接进行操作的话，直接.resize()这样就好。</p>
 <p>要是在后面继续添加元素，直接：<br>添加元素 直接 string s=”abc” s=s+”new string” 这样就可以</p>
 <h4 id="char-char-string-三者的相互转化"><a href="#char-char-string-三者的相互转化" class="headerlink" title="char* char[] string 三者的相互转化"></a>char* char[] string 三者的相互转化</h4><p>以下是一个三种不同类型的元素进行转化的例子</p>
@@ -164,7 +169,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/21/algorithm-1-tips-in-c-c-algorithm-questions/" data-id="ck01jgtwg003ygx54eyfir7bw" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/07/21/algorithm-1-tips-in-c-c-algorithm-questions/" data-id="ck2bxa0ic003z9p6sfw5sdrl9" class="article-share-link">分享</a>
       
       
       

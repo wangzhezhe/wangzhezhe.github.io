@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
 <meta property="og:description" content="主要记录自己在项目中比较记忆犹新的各种bug IP 配置描述127.0.0.1与eth1的ip弄错。在stage环境上，没有做网络的限制，通过127.0.0.1可以访问到swarm的服务，在线上环境，有网络的限制，还能通过eth1的ip访问到swarm的服务，在数据插入的时候，没有留意，开始以为一直是swarm的问题，后来发现，原来是数据库ip配制的问题。 表面原因，ip配制错误 深层原因，连接信">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-30T04:30:36.178Z">
+<meta property="og:updated_time" content="2019-09-12T14:37:28.699Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Bug story">
 <meta name="twitter:description" content="主要记录自己在项目中比较记忆犹新的各种bug IP 配置描述127.0.0.1与eth1的ip弄错。在stage环境上，没有做网络的限制，通过127.0.0.1可以访问到swarm的服务，在线上环境，有网络的限制，还能通过eth1的ip访问到swarm的服务，在数据插入的时候，没有留意，开始以为一直是swarm的问题，后来发现，原来是数据库ip配制的问题。 表面原因，ip配制错误 深层原因，连接信">
@@ -119,13 +119,17 @@
 <p>主要是代码常常写的不完整，没有检测函数的返回值，导致即使malloc没有成功也不知道是由于什么原因导致的，直接在malloc的过程中就给报错了。</p>
 <p>对malloc这种裸的内存操作一定要对输入参数考虑充分，边界条件考虑清楚。一个是习惯问题，一个是经验问题。</p>
 <p>使用多了golang的编程模型就觉得其他的语言各种不严谨与随意或者说是灵活，因为golang就是在代码里强制地返回error然后程序必须处理这个error，虽然有时候看起来繁琐，但是可以让所有的可能的问题最准确的定位出来，代码中bug出现的概率首先就小了很多，即使是有错误也能很快定位了。</p>
+<p>general的方法就是compile的时候使用DEBUG参数，然后使用 gdb –args 参数，再加上bt，在加上print stack information。</p>
 <h3 id="安装nvidia-driver"><a href="#安装nvidia-driver" class="headerlink" title="安装nvidia driver"></a>安装nvidia driver</h3><p>之前帮同学安装nvidia driver 开始是双系统，每次装好都说有个脚本不能运行然后安装失败，smi无法于nvidia通信， 后来把windows卸载了，只装ubuntu14.04之后又参考了这个教程 <a href="https://gist.github.com/wangruohui/df039f0dc434d6486f5d4d098aa52d07" target="_blank" rel="noopener">https://gist.github.com/wangruohui/df039f0dc434d6486f5d4d098aa52d07</a> 才弄好，主要是在bios设置中有一个secure boot option没有修改， 导致有些内核模块没法写入到系统， 总之driver的问题不仅仅是软件的问题，应该把软件和硬件看成一个整体然后全方位的考虑，暂时先写在这里，万一以后自己也要装driver就省去好多事了，从这个角度看双系统还是有风险的，也可能是driver相互冲突，还是单系统加虚拟机的方式比较好用。</p>
 <p>同学想替换server上的cuda 9 到 cuda 10 但是按照官方的教程 每次在<code>apt-get update</code>之后 都还是原先 cuda 9 的安装包 后来仔细查抄 <code>/etc/source</code> 也就是 apt-get 的源文件时候才发现 当前的机器有一个默认的source配置 那个配置中有一个默认的cuda的列表 猜想可能是那个列表中的默认的信息把new added的source给覆盖了 结果吧default的list注释掉之后 再<code>apt-get update</code>之后就能识别出新的cuda10了 这种配置的问题常常让人很费解 会因为一个很小的地方就花费掉很多的时间 这里mark一下 </p>
+<h3 id="upper-case-and-lower-case"><a href="#upper-case-and-lower-case" class="headerlink" title="upper case and lower case"></a>upper case and lower case</h3><p>回想起来很久的时候，帮亲戚家弄宽带，各种接线配置，到了最后一步，当时还是拨号上网那种，输入密码的时候总是有错误，链接不上种种。折腾好久，各个部分检查，最后才发现是因为输入密码的时候大小写出现了问题。好多时候都是因为一个小的condiguration反反复复折腾好久，it’s life。</p>
+<h3 id="polling-frequency-and-the-scheduler-strategy"><a href="#polling-frequency-and-the-scheduler-strategy" class="headerlink" title="polling frequency and the scheduler strategy"></a>polling frequency and the scheduler strategy</h3><p>这两个问题其实还蛮有启发，就是说要care到整个software stack 的各个环节。首先是scheduler strategy的问题，使用的是srun on super computer。之前都是采用默认参数，也没有留意。后来发现，同时run several task的时候，后面的task就没有被调度上，虽然还有额外的资源。后来各种debug之后才发现，默认的case下，task会占用node上所有的memory资源，如果正好6个node，正好6个process，这个时候6个node的资源都会被占用。虽然可能每个process仅仅占用一个core。使用了–mem-per-cpu=1000 进行限制之后就没有这个问题了。有的时候不使用某些参数并不是说这些参数就不存在了或者it will be fine if I doesn’t care it，要注意默认值。</p>
+<p>还有一个默认值的问题是使用一个I/O的libraray。比如要是自己实现的话，肯定有一个polling的机制，就是每隔一段时间pull一下，看看是否ok。自己之前忽略了这一点。但后来仔细查看，发现libraray中有相关的设置，并且可以通过外部的参数来控制这个变量。这个启发就是，在使用library之前也要对它的关键行为或者关键参数有一定的了解，这样在集成到自己的程序中的时候，对于那些感到莫名其妙的问题才不至于手忙脚乱，无从下手。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/17/Bug-story/" data-id="ck01jgtsz0004gx54uacs2dn4" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/03/17/Bug-story/" data-id="ck2bxa0hc00319p6sq713mj6p" class="article-share-link">分享</a>
       
       
       
@@ -222,7 +226,7 @@
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#IP-配置"><span class="toc-number">1.</span> <span class="toc-text">IP 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#环境变量配置"><span class="toc-number">2.</span> <span class="toc-text">环境变量配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#json解析的问题"><span class="toc-number">3.</span> <span class="toc-text">json解析的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#listkeys的问题"><span class="toc-number">4.</span> <span class="toc-text">listkeys的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#写成了-的问题"><span class="toc-number">5.</span> <span class="toc-text">==写成了=的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c中的segmentation-fault的问题"><span class="toc-number">6.</span> <span class="toc-text">c中的segmentation fault的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装nvidia-driver"><span class="toc-number">7.</span> <span class="toc-text">安装nvidia driver</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#IP-配置"><span class="toc-number">1.</span> <span class="toc-text">IP 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#环境变量配置"><span class="toc-number">2.</span> <span class="toc-text">环境变量配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#json解析的问题"><span class="toc-number">3.</span> <span class="toc-text">json解析的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#listkeys的问题"><span class="toc-number">4.</span> <span class="toc-text">listkeys的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#写成了-的问题"><span class="toc-number">5.</span> <span class="toc-text">==写成了=的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c中的segmentation-fault的问题"><span class="toc-number">6.</span> <span class="toc-text">c中的segmentation fault的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装nvidia-driver"><span class="toc-number">7.</span> <span class="toc-text">安装nvidia driver</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#upper-case-and-lower-case"><span class="toc-number">8.</span> <span class="toc-text">upper case and lower case</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#polling-frequency-and-the-scheduler-strategy"><span class="toc-number">9.</span> <span class="toc-text">polling frequency and the scheduler strategy</span></a></li></ol>
           </div>
       </div>
     </div>

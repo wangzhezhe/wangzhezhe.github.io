@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
 <meta property="og:description" content="关于c c++ libraries互相linking的问题。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-04T23:35:15.218Z">
+<meta property="og:updated_time" content="2020-03-03T07:05:16.699Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="library linking between c and cpp">
 <meta name="twitter:description" content="关于c c++ libraries互相linking的问题。">
@@ -108,13 +108,17 @@
 <p>这个是目标library的symbol</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-bash-4.2$ nm libfoo.so </span><br><span class="line">...</span><br><span class="line">00000000000006a4 T _fini</span><br><span class="line">0000000000000685 T foo</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>可以看到里面的symbol是不一样的，究其原因就是编译main文件的时候采用的是cpp的compiler(main.cpp文件)，而编译libfoo的时候采用的是c的compiler(foo.c)。具体fix的手段一种是采用相同的compiler，比如都使用cpp的，或者是都使用c的。或者是按照<a href="https://stackoverflow.com/questions/18877437/undefined-reference-to-errors-when-linking-static-c-library-with-c-code" target="_blank" rel="noopener">stackoverflow</a>这里的解释，采用<code>extern C</code>的关键字来强制地按照c的方式进行编译。</p>
-<p>具体使用CMake的时候，由于它会根据后缀自动选择，因此最好显示地指定compiler或者使用的语言</p>
+<p>具体使用CMake的时候，由于它会根据后缀自动选择，因此最好显示地指定compiler或者使用的语言。在一些完全用c写的library中，通常会加上如下的预编译命令来规避这个问题。</p>
+<p>比如在.h 文件中进行如下定义</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#ifdef __cplusplus</span><br><span class="line">extern &quot;C&quot; &#123;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">//the content of the .h file</span><br><span class="line"></span><br><span class="line">#ifdef __cplusplus</span><br><span class="line">&#125;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<p><a href="https://stackoverflow.com/questions/3789340/combining-c-and-c-how-does-ifdef-cplusplus-work" target="_blank" rel="noopener">这个例子</a>说的内容比较详细，由于主要影响的是link阶段而不是compile阶段，因此在.h文件中加上相关的操作即可。</p>
 <h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p><a href="https://stackoverflow.com/questions/18877437/undefined-reference-to-errors-when-linking-static-c-library-with-c-code" target="_blank" rel="noopener">https://stackoverflow.com/questions/18877437/undefined-reference-to-errors-when-linking-static-c-library-with-c-code</a></p>
+<p><a href="https://stackoverflow.com/questions/3789340/combining-c-and-c-how-does-ifdef-cplusplus-work" target="_blank" rel="noopener">https://stackoverflow.com/questions/3789340/combining-c-and-c-how-does-ifdef-cplusplus-work</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/04/library-linking-between-c-and-cpp/" data-id="ck2bxa0g400159p6s0isocpij" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/08/04/library-linking-between-c-and-cpp/" data-id="ck9dxuh07001gmbs6alg70dj2" class="article-share-link">分享</a>
       
       
       
@@ -234,7 +238,7 @@
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2019 zhe&nbsp;|&nbsp;
+      &copy; 2014 - 2020 zhe&nbsp;|&nbsp;
       主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">

@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
 <meta property="og:description" content="主要介绍了常见的git分支的组织方式，git使用时候常用到的命令行的操作方式，自己平时使用git的时候遇到的一些常见的情况和处理方式，以及自己使用中的感想。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-27T02:34:19.474Z">
+<meta property="og:updated_time" content="2019-12-06T16:44:47.368Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git using tips">
 <meta name="twitter:description" content="主要介绍了常见的git分支的组织方式，git使用时候常用到的命令行的操作方式，自己平时使用git的时候遇到的一些常见的情况和处理方式，以及自己使用中的感想。">
@@ -116,7 +116,7 @@
 <p><code>git status</code> 查看有哪些文件被修改</p>
 <p><code>git add &lt;文件名&gt;</code> 把希望被git记录下来的修改文件加入其中，一般为了方便直接git add .这样的一些不好的地方就是一些二进制文件可以也被记录进来，可以采用.gitignore的方式将类似二进制文件的不需要记录的内容放在特定的目录下。</p>
 <p><code>git commit -m &quot;commit message&quot;</code> 创建commit并添加修改信息。</p>
-<p><code>git commit --amend</code> 这样会将当前的修改append到上次的commit中，同时还可以对之前的commit信息进行多次的修改。</p>
+<p><code>git commit --amend</code> 这样会将当前的修改append到上次的commit中，同时还可以对之前的commit信息进行多次的修改。注意区别 <code>-f</code> 与 <code>--force-with-lease</code> 两种方式。一般<code>amend</code>之后再使用<code>-force-with-lease</code>是比较安全的操作，具体可以参考<a href="https://stackoverflow.com/questions/52823692/git-push-force-with-lease-vs-force" target="_blank" rel="noopener">这个</a>。</p>
 <p><code>git push &lt;远程项目的地址&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;</code>具体在push的时候可以使用对应的一些参数，这里的主机名可以使用最原始的，也可以使用别名。比如这个操作<code>git push -f http://10.10.102.101:8000/gitlab/jiaweizhou/k8apitransform.git wangzhe:wangzhe</code> 强制用本地的wangzhe分支覆盖掉了远程主机上某个具体项目中的wangzhe分支。</p>
 <p>之后都是按照这个过程操作，一个功能开发完成之后，在本地就可以把对应的分支删除掉了。</p>
 <h3 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h3><p>这一部分是不断更新的，有遇到新的情况就记录一下</p>
@@ -149,7 +149,7 @@
 <p>最后实现的结果就是</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">my first commit</span><br><span class="line">a&apos;s commit</span><br><span class="line">b&apos;s commit</span><br><span class="line">c&apos;s commit</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>最后通过push操作将对应的分支更行，就满足了需求。</p>
-<h4 id="间断commit合并"><a href="#间断commit合并" class="headerlink" title="间断commit合并**"></a>间断commit合并**</h4><p>将间断的commit合并成一个的方式</p>
+<h4 id="间断commit合并"><a href="#间断commit合并" class="headerlink" title="间断commit合并"></a>间断commit合并</h4><p>将间断的commit合并成一个的方式</p>
 <p>就是先把当前要提交的branch 比如 <code>cbranch</code> 重命名成<code>cbranch_old</code> 之后切换到最新的分支上 比如 <code>upstream/master</code> 之后从最新的分支上重新checkout出来<code>cbranch</code> 最后把<code>cbranch_old</code> merge 到这个新的分支上，整体的思路是把旧的branch给merge到新的branch上来 具体可以参考这个(<a href="https://stackoverflow.com/questions/6248231/git-rebase-after-previous-git-merge" target="_blank" rel="noopener">https://stackoverflow.com/questions/6248231/git-rebase-after-previous-git-merge</a>)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git checkout my-branch</span><br><span class="line">git branch -m my-branch-old</span><br><span class="line">git checkout master</span><br><span class="line">git checkout -b my-branch</span><br><span class="line">git merge --squash my-branch-old</span><br><span class="line">git commit</span><br></pre></td></tr></table></figure>
 <p><strong>注意</strong></p>
@@ -185,7 +185,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/25/git-using-tips/" data-id="ck2bxa0hj003c9p6so3v6tzjm" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/06/25/git-using-tips/" data-id="ck9dxuh1r003nmbs6z0qby96j" class="article-share-link">分享</a>
       
       
       
@@ -282,7 +282,7 @@
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#让git分支有章可循"><span class="toc-number">1.</span> <span class="toc-text">让git分支有章可循</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用于“生存”的相关命令"><span class="toc-number">2.</span> <span class="toc-text">用于“生存”的相关命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#信息查看"><span class="toc-number">2.1.</span> <span class="toc-text">信息查看</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#具体操作"><span class="toc-number">2.2.</span> <span class="toc-text">具体操作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进阶使用"><span class="toc-number">3.</span> <span class="toc-text">进阶使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fork了主库的代码之后如何更新"><span class="toc-number">3.1.</span> <span class="toc-text">fork了主库的代码之后如何更新</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#冲突的处理"><span class="toc-number">3.2.</span> <span class="toc-text">冲突的处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#间断commit合并"><span class="toc-number">3.3.</span> <span class="toc-text">间断commit合并**</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#合并多个commit"><span class="toc-number">3.4.</span> <span class="toc-text">合并多个commit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#追踪文件的历史变化"><span class="toc-number">3.5.</span> <span class="toc-text">追踪文件的历史变化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#gitignore文件"><span class="toc-number">3.6.</span> <span class="toc-text">.gitignore文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多个git-repo-使用不同ssh-key"><span class="toc-number">4.</span> <span class="toc-text">多个git repo 使用不同ssh key</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#submodule使用"><span class="toc-number">4.1.</span> <span class="toc-text">submodule使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#开源项目中的fork操作"><span class="toc-number">4.2.</span> <span class="toc-text">开源项目中的fork操作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他"><span class="toc-number">5.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#相关资源"><span class="toc-number">6.</span> <span class="toc-text">相关资源</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#让git分支有章可循"><span class="toc-number">1.</span> <span class="toc-text">让git分支有章可循</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用于“生存”的相关命令"><span class="toc-number">2.</span> <span class="toc-text">用于“生存”的相关命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#信息查看"><span class="toc-number">2.1.</span> <span class="toc-text">信息查看</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#具体操作"><span class="toc-number">2.2.</span> <span class="toc-text">具体操作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进阶使用"><span class="toc-number">3.</span> <span class="toc-text">进阶使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fork了主库的代码之后如何更新"><span class="toc-number">3.1.</span> <span class="toc-text">fork了主库的代码之后如何更新</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#冲突的处理"><span class="toc-number">3.2.</span> <span class="toc-text">冲突的处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#间断commit合并"><span class="toc-number">3.3.</span> <span class="toc-text">间断commit合并</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#合并多个commit"><span class="toc-number">3.4.</span> <span class="toc-text">合并多个commit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#追踪文件的历史变化"><span class="toc-number">3.5.</span> <span class="toc-text">追踪文件的历史变化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#gitignore文件"><span class="toc-number">3.6.</span> <span class="toc-text">.gitignore文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多个git-repo-使用不同ssh-key"><span class="toc-number">4.</span> <span class="toc-text">多个git repo 使用不同ssh key</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#submodule使用"><span class="toc-number">4.1.</span> <span class="toc-text">submodule使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#开源项目中的fork操作"><span class="toc-number">4.2.</span> <span class="toc-text">开源项目中的fork操作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他"><span class="toc-number">5.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#相关资源"><span class="toc-number">6.</span> <span class="toc-text">相关资源</span></a></li></ol>
           </div>
       </div>
     </div>
@@ -305,7 +305,7 @@
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2019 zhe&nbsp;|&nbsp;
+      &copy; 2014 - 2020 zhe&nbsp;|&nbsp;
       主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">

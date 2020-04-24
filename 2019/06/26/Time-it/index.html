@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
 <meta property="og:description" content="在使用profiling之类的工具之前，更灵活简单的方式就是设置timer">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-07T20:08:48.887Z">
+<meta property="og:updated_time" content="2020-02-04T13:12:23.045Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Time it">
 <meta name="twitter:description" content="在使用profiling之类的工具之前，更灵活简单的方式就是设置timer">
@@ -124,13 +124,14 @@
 <p>time 提供了两种方式 一种是tick record，每发一次请求记录一次时间，另一种是time span的形式，只记录开始和结束的时间。</p>
 <p>除此之外这个工具还提供了两种用于测试的message communication pattern。一种是shared space，另外一种是message queue，具体在README中有介绍，这里就不再赘述。</p>
 <p>总之用profile之前，针对性地设置timer然后运行bentchmark也是一种测量performance的方式。如果这个方法找不到bottleneck再使用profiling的工具。</p>
+<h3 id="timer-in-parallel-processing"><a href="#timer-in-parallel-processing" class="headerlink" title="timer in parallel processing"></a>timer in parallel processing</h3><p>这里有两点需要注意，第一个是在time之前要使用barrier的primitives，这样才能确保不同thread/process的timer是准确的。第二个是求平均值的问题，经常使用的是reduce的primitives。比如<code>MPI_Reduce</code>把不同process的timer汇集到一个process中之后再求平均值。</p>
 <h3 id="关于timer的误区"><a href="#关于timer的误区" class="headerlink" title="关于timer的误区"></a>关于timer的误区</h3><p>量级的timer才有意义(算法优化上的意义)，根据时间复杂度O(n)的定义，也是n在很大数量的时候O(n)才有意义。有几次是对于很小的几分几秒进行测量，就没什么意义，最起码在算法上没什么意义，这个时候的strategy就是把这个差异放大，比如这个operation执行了100或者1000次，这个时候的时间，或者是输入的data变得很大的时候，这个时候的时间比较有意义。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://stackoverflow.com/questions/27618032/i-o-bound-performance-speedup/27618217" target="_blank" rel="noopener">https://stackoverflow.com/questions/27618032/i-o-bound-performance-speedup/27618217</a> </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/26/Time-it/" data-id="ck2bxa0ff000b9p6sua8zdjih" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/26/Time-it/" data-id="ck9dxugzh000fmbs6zm6nsyd1" class="article-share-link">分享</a>
       
       
       
@@ -227,7 +228,7 @@
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#concepts-about-time-and-performance"><span class="toc-number">1.</span> <span class="toc-text">concepts about time and performance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c中的timer方式"><span class="toc-number">2.</span> <span class="toc-text">c中的timer方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c-中的timer方式"><span class="toc-number">3.</span> <span class="toc-text">c++中的timer方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#timer-for-distributed-components"><span class="toc-number">4.</span> <span class="toc-text">timer for distributed components</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于timer的误区"><span class="toc-number">5.</span> <span class="toc-text">关于timer的误区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#concepts-about-time-and-performance"><span class="toc-number">1.</span> <span class="toc-text">concepts about time and performance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c中的timer方式"><span class="toc-number">2.</span> <span class="toc-text">c中的timer方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c-中的timer方式"><span class="toc-number">3.</span> <span class="toc-text">c++中的timer方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#timer-for-distributed-components"><span class="toc-number">4.</span> <span class="toc-text">timer for distributed components</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#timer-in-parallel-processing"><span class="toc-number">5.</span> <span class="toc-text">timer in parallel processing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于timer的误区"><span class="toc-number">6.</span> <span class="toc-text">关于timer的误区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">7.</span> <span class="toc-text">Reference</span></a></li></ol>
           </div>
       </div>
     </div>
@@ -250,7 +251,7 @@
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2019 zhe&nbsp;|&nbsp;
+      &copy; 2014 - 2020 zhe&nbsp;|&nbsp;
       主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">

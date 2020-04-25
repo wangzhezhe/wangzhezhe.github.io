@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>area cover | Wangzhezhe&#39;s Blog</title>
+  <title>Area cover | Wangzhezhe&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="判断某个area是否被已有area cover的算法以及其在实践中的应用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="area cover">
+<meta property="og:title" content="Area cover">
 <meta property="og:url" content="http://yoursite.com/2020/04/16/Area-cover/index.html">
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
 <meta property="og:description" content="判断某个area是否被已有area cover的算法以及其在实践中的应用">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-04-24T11:20:10.795Z">
+<meta property="og:updated_time" content="2020-04-24T11:22:55.598Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="area cover">
+<meta name="twitter:title" content="Area cover">
 <meta name="twitter:description" content="判断某个area是否被已有area cover的算法以及其在实践中的应用">
   
     <link rel="alternate" href="/atom.xml" title="Wangzhezhe&#39;s Blog" type="application/atom+xml">
@@ -90,7 +90,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      area cover
+      Area cover
     </h1>
   
 
@@ -109,11 +109,12 @@
 <p>于是在新的server中打算提供一个算法，就是检测某个指定的partition是否已经被cover。这个说起来好像挺容易，具体还是参考了stack over flow 上的<a href="https://stackoverflow.com/questions/4397226/algorithm-required-to-determine-if-a-rectangle-is-completely-covered-by-another" target="_blank" rel="noopener">答案</a>。开始的时候还以为要用segment tree 什么的判断是否cover，但是这里的方法很简洁，并且支持不同维度的data，不论data dim 是 1 2 3 或者是更高的维度，都能支持。</p>
 <p>首先每个 server 都知道自己所负责的domain的范围是什么（这个由DHT决定），当前的server中存储了一些数据的metadata，然后一个query过来，要看这个query是否被这些已经存在的 metadata 完全覆盖。比如一个server 负责的是 [1,20]，然后有一些数据比[1,5],[6,8],[10,15] 存储在这个server中，如果query是[1,8]则返回true，因为[1,8]中的元素都已经存在于server中，如果是[1,10]则返回false，因为9号元素不在这个server中。 这里用到的思路大致如下。首先建立一个query set, 这个set在开始的时候只有一个元素，就是query的范围。然后是遍历metadata中已经有的元素，对于每个被遍历到的元素，在遍历query set中的元素，如果没有重叠，则继续，如果query set中的元素被覆盖，则对应元素从query set 中pop出来，如果有重叠的部分，则重叠的部分消去，原本的query set中的元素被分解成为两个元素，重新加入到query set中。最后查看query set中是否还有元素。如果为空则被cover，否则就没有被cover。 </p>
 <p>这个算法的好处是适用于不同维度的数据，复杂的地方就是2维或者3维的时候，将原来的元素分解可能会比较麻烦。</p>
+<p>当然这里是原本的元素是比较规则的rectangle，就是与xyz轴平行。如果更复杂的图形可能就涉及到了计算几何中的一些方法，需要用到segment tree之类的方法扫过整个空间那样操作，这个暂时就不具体深究了。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/16/Area-cover/" data-id="ck9dye2gc0000mes6ohdg6q5q" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/04/16/Area-cover/" data-id="ck9f48hlo0004259djylhbubu" class="article-share-link">分享</a>
       
       
       
@@ -217,6 +218,10 @@
       <ul>
         
           <li>
+            <a href="/2020/04/24/single-core-with-multithreading/">single core with multiprocess</a>
+          </li>
+        
+          <li>
             <a href="/2020/04/23/block-nonblock-sync-nonasync/">block/nonblock,sync/nonasync,event-driven/data-driven</a>
           </li>
         
@@ -225,15 +230,11 @@
           </li>
         
           <li>
-            <a href="/2020/04/16/Area-cover/">area cover</a>
+            <a href="/2020/04/16/Area-cover/">Area cover</a>
           </li>
         
           <li>
             <a href="/2020/03/03/c-multiple-defination/">c-multiple-defination</a>
-          </li>
-        
-          <li>
-            <a href="/2019/12/31/Newyear-story/">Newyear_story</a>
           </li>
         
       </ul>

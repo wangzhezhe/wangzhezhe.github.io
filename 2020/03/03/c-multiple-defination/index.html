@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
 <meta property="og:description" content="several typical case that trigger the error of “multiple defination”">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-03-03T06:38:51.461Z">
+<meta property="og:updated_time" content="2020-04-24T11:23:50.239Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="c-multiple-defination">
 <meta name="twitter:description" content="several typical case that trigger the error of “multiple defination”">
@@ -104,13 +104,13 @@
 <a id="more"></a>
 <p>1 the most obvious reason is the typo, you may declare a function several times.</p>
 <p>2 the second reason is that, you declare functions in .h file and implement the function at the .c file, but you forgot to use the <code># ifdefine</code> at the beginning of the .h file and <code>#endif</code> at the end of the file,  or there are some typos here.</p>
-<p>3 if you want to declare a variable in .h file, you need to declare it by using <code>extern</code> keyword and init it at the .c file instead of using it direactly.</p>
+<p>3 if you want to declare a variable in .h file, you need to declare it by using <code>extern</code> keyword and init it at the .c files instead of using it direactly.</p>
 <p>4 you may only want a <code>.h</code> file for some util functions and this utils file might be included by several .c file, it is better to use the <code>static inline</code> at the <code>.h</code> file to declare every functions in this case.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/03/c-multiple-defination/" data-id="ck9dxugzr000tmbs6x8gcpllk" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/03/03/c-multiple-defination/" data-id="ck9f48hmb000t259dj1lvc8ce" class="article-share-link">分享</a>
       
       
       
@@ -166,7 +166,7 @@
       <strong class="article-nav-caption">上一篇</strong>
       <div class="article-nav-title">
         
-          area cover
+          Area cover
         
       </div>
     </a>
@@ -214,6 +214,10 @@
       <ul>
         
           <li>
+            <a href="/2020/04/24/single-core-with-multithreading/">single core with multiprocess</a>
+          </li>
+        
+          <li>
             <a href="/2020/04/23/block-nonblock-sync-nonasync/">block/nonblock,sync/nonasync,event-driven/data-driven</a>
           </li>
         
@@ -222,15 +226,11 @@
           </li>
         
           <li>
-            <a href="/2020/04/16/Area-cover/">area cover</a>
+            <a href="/2020/04/16/Area-cover/">Area cover</a>
           </li>
         
           <li>
             <a href="/2020/03/03/c-multiple-defination/">c-multiple-defination</a>
-          </li>
-        
-          <li>
-            <a href="/2019/12/31/Newyear-story/">Newyear_story</a>
           </li>
         
       </ul>

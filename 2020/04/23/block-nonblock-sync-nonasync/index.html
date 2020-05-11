@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
 <meta property="og:description" content="整理下关于block/nonblock以及sync/async,还有data depedency,还有event-driving programming 的关系和在实践中的一些体会。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-04-24T10:51:05.771Z">
+<meta property="og:updated_time" content="2020-05-05T10:20:33.239Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="block&#x2F;nonblock,sync&#x2F;nonasync,event-driven&#x2F;data-driven">
 <meta name="twitter:description" content="整理下关于block/nonblock以及sync/async,还有data depedency,还有event-driving programming 的关系和在实践中的一些体会。">
@@ -27,6 +27,19 @@
   
   <link rel="stylesheet" href="/css/style.css">
   
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
 
 </head>
 
@@ -131,8 +144,12 @@
 <p>不论是blocking还是non-blocking的方式，在data传输完成之后都可以使用sync或者async的方式处理数据。使用sync的方式就是继续往后运行，使用async的方式就是启动一个新的thread来处理数据。</p>
 <p>这里要说明一个问题，对于存在data depedency的task，并且在资源分配之初就确定了所要执行的任务的方式，具体使用何种IO其实并不是一个很关键的问题。就像你去参加考试，主要任务就是回答试卷，如果这个task已经提前确定好了（code已经确认好），在试卷发下来之前你是不可能做别的事情的，这个时候试卷怎么发其实对你来说并不是一个重要的事情，因为在试卷发下来之前，你都会处在block的状态。至于是通过一个listening或者watcher的方式来block还是说通过不断地查看试卷发下来没，对于caller自己来说是没有太大区别的（当然使用listening或者watcher的方式会减少一些traffic 的overhead）。</p>
 <p>对于另外一个场景，就是计算资源不是binded到某个特定的task上而是可以server多个task的情况，这样使用async的IO才能有点作用。比如一个device，在wechat listening 消息的时候，你还可以看vedio。但是对于wechat本身所占用的资源(某个Process)来看，如果没有message，它也没什其他的事情可以做，只能listenning，这是因为它的task和data是存在depedent的关系的。但是从更高的device的视角来看，wechat的task和vedio的task是不存在depedency的关系的，所以对于一个device来说，使用async IO 或者 IO multiplexing是有价值的。vedio在传输数据的时候wechat也可以传输数据，没有data depedency的task也能同时运行。还有就是在HPC上，比如assign了一些资源，启动这个process的时候总是要知道做什么task吧，如果这个task的data没有得到满足，那这个task就是一直waiting的状态了，资源就会闲置着，也没什么其他的用处。</p>
-<h4 id="对应到simulation-analytics-vis的应用"><a href="#对应到simulation-analytics-vis的应用" class="headerlink" title="对应到simulation-analytics-vis的应用"></a>对应到simulation-analytics-vis的应用</h4><p>通过这么多的分析，大概有这么一个原则，如果一个workflow，data 是确定的，ddata pattern是确定的，启动什么task去做什么事情是确定的，那大概不需要event programming。哪里有不确定的地方，哪里就有event programming可以发挥作用的地方。具体来看SAV的应用，似乎只有analytics是不确定的，也就是说可能根据不同的data pattern去执行不同的logic flow，而sim是确定的，vis(或者说是output)也是相对比较确定的。</p>
+<h4 id="对应到simulation-analytics-vis的应用"><a href="#对应到simulation-analytics-vis的应用" class="headerlink" title="对应到simulation-analytics-vis的应用"></a>对应到simulation-analytics-vis的应用</h4><p>通过这么多的分析，大概有这么一个原则，如果一个workflow，data 是确定的，data pattern是确定的，启动什么task去做什么事情是确定的，那大概不需要event programming。哪里有不确定的地方，哪里就有event programming可以发挥作用的地方。具体来看SAV的应用，似乎只有analytics是不确定的，也就是说可能根据不同的data pattern去执行不同的logic flow，而sim是确定的，vis(或者说是output)也是相对比较确定的。</p>
 <p>simulation通常去用所有的resource做processing，因此要想实现async的操作，总是需要有额外的task execution的framework来操作。</p>
+<p>从获取数据的角度，默认的情况是consumer知道要获取什么样的数据，比如<code>variable_a</code> step 为 1-10, lower bound 与 upper bound 分别为 [0,0,0] 到 [512,512,512]。这个时候client只需要不断地去发query然后poll这个数据，问data staging service这个数据是否存在，返回的是是否存在的信息，这个query的部分可以不不采用distributed的形式，比如仅仅用rank=0的 process 去进行query即可。如果data确实存在，就可以用distributed的形式来进行query，比如启动多个thread/process，每个仅仅query指定的partition。</p>
+<p>如果是data driven的形式，这个时候可能说，我只知道care的varaible叫做<code>variable_a</code>但是我不知道具体哪一个step的数据会被产生出来放到staging中，比如可能是step 1 2 3 也可能是step 1 2 8 这个时候处理的方式有两种，一个是使用一个event queue去存和某个variable相关的event(也可以看做是一种metadata)，比如step 1 2 3 的数据存进staging service之后，会另外把一个event信息放到指定的queue，然后作为consumer来说，就是send query给这个queue，如果有信息，就从这个queue中取信息出来然后可以开启一个或者多个thread/process去pull对应的data，对应的event会从queue中被pop出去(这里shared space的model并不适用，因为event的信息并不需要被持久化，只需要被consume)。如果没有event，那么queue还是始终保持在empty的状态，client收不到对应的信息，就会一直空pull。 </p>
+<p>还有一种方式就是利用主动notify的方式去传递event，这个时候需要consumer要有一个listening的操作，通常情况下可能是一个server，相比于之前的把event放在一个固定的queue里，这个操作可能是把event直接发给那个server的address（前提就是需要这个consumer进行一个subscribe的操作）。然后consumer一旦收到这个event就会启动故一个新的handler的操作。这种case如果使用multithread的话可能比较适合于unstructured parallel programming。因为需要一个thread/process/node pool。</p>
+<p>client端获取event的操作通常可以是一个叫做watcher的API(就像etcd中的那样)，根据以上两种不同的实现方式，可以是不断地pull event queue也可以是启动一个server，然后等待event被发送过来。从这个角度来讲，event可以被视为一种更加一般化的metadata。</p>
 <h3 id="regerence"><a href="#regerence" class="headerlink" title="regerence"></a>regerence</h3><p>data driven</p>
 <p><a href="https://en.wikipedia.org/wiki/Data-driven_programming" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Data-driven_programming</a></p>
 <p>event driven </p>
@@ -143,11 +160,12 @@
 <p>nonlinear nature</p>
 <p><a href="https://solace.com/blog/downside-event-driven-architecture/" target="_blank" rel="noopener">https://solace.com/blog/downside-event-driven-architecture/</a></p>
 <p>pubs sub register/subscribed event and get the coresponding notification</p>
+<p>这一篇说的比较系统 (有一些相关的理论上的比较分析)<br>Communication and Optimization Aspects of Parallel Programming Models on Hybrid Architectures<br><a href="https://journals.sagepub.com/doi/pdf/10.1177/1094342003017001005" target="_blank" rel="noopener">https://journals.sagepub.com/doi/pdf/10.1177/1094342003017001005</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/23/block-nonblock-sync-nonasync/" data-id="ck9f4z7w5003maw9d5j4o68uf" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/04/23/block-nonblock-sync-nonasync/" data-id="cka1urulx004cn6s69xgtaukx" class="article-share-link">分享</a>
       
       
       

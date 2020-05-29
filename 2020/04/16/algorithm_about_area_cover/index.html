@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>cpp forward declaration | Wangzhezhe&#39;s Blog</title>
+  <title>algorithm about area cover | Wangzhezhe&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="forward declaration and the friend class about the cpp.">
+  <meta name="description" content="判断某个area是否被已有area cover的算法以及其在实践中的应用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="cpp forward declaration">
-<meta property="og:url" content="http://yoursite.com/2020/05/28/cpp-forward-declaration/index.html">
+<meta property="og:title" content="algorithm about area cover">
+<meta property="og:url" content="http://yoursite.com/2020/04/16/algorithm_about_area_cover/index.html">
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
-<meta property="og:description" content="forward declaration and the friend class about the cpp.">
+<meta property="og:description" content="判断某个area是否被已有area cover的算法以及其在实践中的应用">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-05-29T02:34:29.947Z">
+<meta property="og:updated_time" content="2020-05-29T02:41:12.343Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="cpp forward declaration">
-<meta name="twitter:description" content="forward declaration and the friend class about the cpp.">
+<meta name="twitter:title" content="algorithm about area cover">
+<meta name="twitter:description" content="判断某个area是否被已有area cover的算法以及其在实践中的应用">
   
     <link rel="alternate" href="/atom.xml" title="Wangzhezhe&#39;s Blog" type="application/atom+xml">
   
@@ -85,14 +85,14 @@ ga('send', 'pageview');
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-cpp-forward-declaration" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-algorithm_about_area_cover" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/05/28/cpp-forward-declaration/" class="article-date">
-  <time datetime="2020-05-29T02:33:17.000Z" itemprop="datePublished">2020-05-28</time>
+    <a href="/2020/04/16/algorithm_about_area_cover/" class="article-date">
+  <time datetime="2020-04-16T14:49:24.000Z" itemprop="datePublished">2020-04-16</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/c-c/">c/c++</a>
+    <a class="article-category-link" href="/categories/algorithm/">algorithm</a>
   </div>
 
   </div>
@@ -103,7 +103,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      cpp forward declaration
+      algorithm about area cover
     </h1>
   
 
@@ -113,27 +113,21 @@ ga('send', 'pageview');
       
         <!-- Table of Contents -->
         
-        <p>forward declaration and the friend class about the cpp.</p>
+        <p>判断某个area是否被已有area cover的算法以及其在实践中的应用</p>
 <a id="more"></a>
-<p>c++ forward declaration and friend function</p>
-<h3 id="forward-declaration"><a href="#forward-declaration" class="headerlink" title="forward declaration"></a>forward declaration</h3><p>For the implementation, if two class has the hierarchy relationship, such as A will call the B and B may hold the pointer to the A, in this case, it is suitable to use the forward declaration when defining the class B.</p>
-<p>Another solution for this part is to extract the public part used by A and B, then both A and B will refer to C, but the C does not need to hold the references to the A and B directly. Before using the forward declaration, it is important to consider if you could adjust the functions in classes and split another class to satisfy a clearer hierarchical relationship.</p>
-<p>If we did not use the object-oriented programing, we may want to register separate functions to the program, in this case, we can use the forward declaration if the self-defined functions want to access other class instances defined in the system.</p>
-<p>This <a href="https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718" target="_blank" rel="noopener">answer</a> provides a very good explanation and examples. I just list some points that need to pay attention to.</p>
-<p>When we try to eliminate reference cyle and use the forward declaration, check the .h file and avoid the cycle of reference here.   Then you could include the .h file (where the parent class is defined) of the parent class at the .cpp file (not the .h file) of the child class to make the forward declaration works. It is ok to forward declare the parent class at the .h file of the child class.</p>
-<h3 id="friend-class"><a href="#friend-class" class="headerlink" title="friend class"></a>friend class</h3><p>Sometimes I declare all elements in the class as the public items. In this case, I do not need to use a friend class. It is not a good thing to do.  Sometimes I use more struct than the class to avoid the private member. I know it is not recommended. If you follow the rule of declaring the class and set the public/private members wisely, it might be necessary to declare a friend class sometimes to let dedicated class to access the private member of the current class. <a href="https://www.geeksforgeeks.org/friend-class-function-cpp/" target="_blank" rel="noopener">Here</a> are some examples.</p>
-<h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a href="https://www.geeksforgeeks.org/what-are-forward-declarations-in-c/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/what-are-forward-declarations-in-c/</a></p>
-<p><a href="https://www.geeksforgeeks.org/friend-class-function-cpp/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/friend-class-function-cpp/</a></p>
-<p>forward declaration</p>
-<p><a href="https://stackoverflow.com/questions/625799/resolve-build-errors-due-to-circular-dependency-amongst-classes" target="_blank" rel="noopener">https://stackoverflow.com/questions/625799/resolve-build-errors-due-to-circular-dependency-amongst-classes</a></p>
-<p><a href="https://www.gamedev.net/forums/topic/562671-invalid-use-of-incomplete-type-and-forward-declaration/" target="_blank" rel="noopener">https://www.gamedev.net/forums/topic/562671-invalid-use-of-incomplete-type-and-forward-declaration/</a></p>
-<p><a href="https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718" target="_blank" rel="noopener">https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718</a></p>
-<p>good material<br><a href="https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718" target="_blank" rel="noopener">https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718</a></p>
+<p>大部分的coding工作可能更像是glue。设计好合适的data abstraction以及interface，按照合适的语言部署到合适的platform上。很多时候关键的问题都被解决好了，剩下的似乎就是把不同小部分的模块组成在一起的操作了。</p>
+<p>最近终于有了一个把实际的algorithm使用到一个framework中的体会。具体问题背景是这样的: 对于一个in-memory的data management system, 不同partition的data是分布式地存储在不同的node上，不仅仅raw data 是分布式地存储，这些raw data 的metadat 也是分布式地进行存储。那在query的时候怎么能知道这些data是不是都avaliable了？比如一个data被分成了10个partition,可能传输的时候只有5个到了data management service里，这个时候一个query过来，如何知道这个数据还没传输完整？</p>
+<p>之前的一种方式是在client端使用lock，比如在准备传data的时候加一个lock，然后在data传送完成之后再加一个lock。在query的过程中，如果发现指定的数据已被lock，就返回正在处理的状态。这个方法虽然可行，但总是引入了额外复杂的机制，比如client在传数据之前还要设置lock，增加了额外的复杂操作，这就让人很不爽。</p>
+<p>作为一个负责任的distributed data management server，最起码应该知道过来的数据是不是完整的啊，这个怎么能让client通过distributed lock的方式去控制呢，感觉像是甩锅的操作。况且之前的code中的lock机制也实现的不怎么好，总是莫名其妙的卡在一个地方，让人感到很郁闷，无从下手。</p>
+<p>于是在新的server中打算提供一个算法，就是检测某个指定的partition是否已经被cover。这个说起来好像挺容易，具体还是参考了stack over flow 上的<a href="https://stackoverflow.com/questions/4397226/algorithm-required-to-determine-if-a-rectangle-is-completely-covered-by-another" target="_blank" rel="noopener">答案</a>。开始的时候还以为要用segment tree 什么的判断是否cover，但是这里的方法很简洁，并且支持不同维度的data，不论data dim 是 1 2 3 或者是更高的维度，都能支持。</p>
+<p>首先每个 server 都知道自己所负责的domain的范围是什么（这个由DHT决定），当前的server中存储了一些数据的metadata，然后一个query过来，要看这个query是否被这些已经存在的 metadata 完全覆盖。比如一个server 负责的是 [1,20]，然后有一些数据比[1,5],[6,8],[10,15] 存储在这个server中，如果query是[1,8]则返回true，因为[1,8]中的元素都已经存在于server中，如果是[1,10]则返回false，因为9号元素不在这个server中。 这里用到的思路大致如下。首先建立一个query set, 这个set在开始的时候只有一个元素，就是query的范围。然后是遍历metadata中已经有的元素，对于每个被遍历到的元素，在遍历query set中的元素，如果没有重叠，则继续，如果query set中的元素被覆盖，则对应元素从query set 中pop出来，如果有重叠的部分，则重叠的部分消去，原本的query set中的元素被分解成为两个元素，重新加入到query set中。最后查看query set中是否还有元素。如果为空则被cover，否则就没有被cover。 </p>
+<p>这个算法的好处是适用于不同维度的数据，复杂的地方就是2维或者3维的时候，将原来的元素分解可能会比较麻烦。</p>
+<p>当然这里是原本的元素是比较规则的rectangle，就是与xyz轴平行。如果更复杂的图形可能就涉及到了计算几何中的一些方法，需要用到segment tree之类的方法扫过整个空间那样操作，这个暂时就不具体深究了。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/28/cpp-forward-declaration/" data-id="ckarlmoqy000xpj85dfezw7d3" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/04/16/algorithm_about_area_cover/" data-id="ckarlnxez0000pq85y4v5cojj" class="article-share-link">分享</a>
       
       
       
@@ -185,10 +179,19 @@ ga('send', 'pageview');
     
 <nav id="article-nav">
   
+    <a href="/2020/04/19/about-computing-tasks-and-deep-learning-tranning/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          about computing tasks and deep learning tranning
+        
+      </div>
+    </a>
   
-    <a href="/2020/05/28/rule-of-three-five/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2020/03/03/c-multiple-defination/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">rule of three/five</div>
+      <div class="article-nav-title">c-multiple-defination</div>
     </a>
   
 </nav>
@@ -215,24 +218,42 @@ ga('send', 'pageview');
     <aside id="sidebar">
   
     
-    <div class="widget-wrap">
+  
     
-      <div class="widget" id="toc-widget-fixed">
-      
-        <strong class="toc-title">文章目录</strong>
-        <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#forward-declaration"><span class="toc-number">1.</span> <span class="toc-text">forward declaration</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#friend-class"><span class="toc-number">2.</span> <span class="toc-text">friend class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">3.</span> <span class="toc-text">references</span></a></li></ol>
-          </div>
-      </div>
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title recent-posts">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/28/cpp-forward-declaration/">cpp forward declaration</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/28/rule-of-three-five/">rule of three/five</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/24/single-core-with-multithreading/">single core with multiprocess</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/23/block-nonblock-sync-nonasync/">block/nonblock,sync/nonasync,event-driven/data-driven</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/about-computing-tasks-and-deep-learning-tranning/">about computing tasks and deep learning tranning</a>
+          </li>
+        
+      </ul>
     </div>
+  </div>
 
-  
-    
-
-  
-    
-  
-    
   
     
 

@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>c-multiple-defination | Wangzhezhe&#39;s Blog</title>
+  <title>cpp forward declaration | Wangzhezhe&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="several typical case that trigger the error of “multiple defination”">
+  <meta name="description" content="forward declaration and the friend class about the cpp.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="c-multiple-defination">
-<meta property="og:url" content="http://yoursite.com/2020/03/03/c-multiple-defination/index.html">
+<meta property="og:title" content="cpp forward declaration">
+<meta property="og:url" content="http://yoursite.com/2020/05/28/cpp-forward-declaration/index.html">
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
-<meta property="og:description" content="several typical case that trigger the error of “multiple defination”">
+<meta property="og:description" content="forward declaration and the friend class about the cpp.">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-04-24T11:23:50.239Z">
+<meta property="og:updated_time" content="2020-05-29T02:34:29.947Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="c-multiple-defination">
-<meta name="twitter:description" content="several typical case that trigger the error of “multiple defination”">
+<meta name="twitter:title" content="cpp forward declaration">
+<meta name="twitter:description" content="forward declaration and the friend class about the cpp.">
   
     <link rel="alternate" href="/atom.xml" title="Wangzhezhe&#39;s Blog" type="application/atom+xml">
   
@@ -85,10 +85,10 @@ ga('send', 'pageview');
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-c-multiple-defination" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-cpp-forward-declaration" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/03/03/c-multiple-defination/" class="article-date">
-  <time datetime="2020-03-03T06:30:28.000Z" itemprop="datePublished">2020-03-03</time>
+    <a href="/2020/05/28/cpp-forward-declaration/" class="article-date">
+  <time datetime="2020-05-29T02:33:17.000Z" itemprop="datePublished">2020-05-28</time>
 </a>
     
   <div class="article-category">
@@ -103,7 +103,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      c-multiple-defination
+      cpp forward declaration
     </h1>
   
 
@@ -113,17 +113,27 @@ ga('send', 'pageview');
       
         <!-- Table of Contents -->
         
-        <p>several typical case that trigger the error of “multiple defination” </p>
+        <p>forward declaration and the friend class about the cpp.</p>
 <a id="more"></a>
-<p>1 the most obvious reason is the typo, you may declare a function several times.</p>
-<p>2 the second reason is that, you declare functions in .h file and implement the function at the .c file, but you forgot to use the <code># ifdefine</code> at the beginning of the .h file and <code>#endif</code> at the end of the file,  or there are some typos here.</p>
-<p>3 if you want to declare a variable in .h file, you need to declare it by using <code>extern</code> keyword and init it at the .c files instead of using it direactly.</p>
-<p>4 you may only want a <code>.h</code> file for some util functions and this utils file might be included by several .c file, it is better to use the <code>static inline</code> at the <code>.h</code> file to declare every functions in this case.</p>
+<p>c++ forward declaration and friend function</p>
+<h3 id="forward-declaration"><a href="#forward-declaration" class="headerlink" title="forward declaration"></a>forward declaration</h3><p>For the implementation, if two class has the hierarchy relationship, such as A will call the B and B may hold the pointer to the A, in this case, it is suitable to use the forward declaration when defining the class B.</p>
+<p>Another solution for this part is to extract the public part used by A and B, then both A and B will refer to C, but the C does not need to hold the references to the A and B directly. Before using the forward declaration, it is important to consider if you could adjust the functions in classes and split another class to satisfy a clearer hierarchical relationship.</p>
+<p>If we did not use the object-oriented programing, we may want to register separate functions to the program, in this case, we can use the forward declaration if the self-defined functions want to access other class instances defined in the system.</p>
+<p>This <a href="https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718" target="_blank" rel="noopener">answer</a> provides a very good explanation and examples. I just list some points that need to pay attention to.</p>
+<p>When we try to eliminate reference cyle and use the forward declaration, check the .h file and avoid the cycle of reference here.   Then you could include the .h file (where the parent class is defined) of the parent class at the .cpp file (not the .h file) of the child class to make the forward declaration works. It is ok to forward declare the parent class at the .h file of the child class.</p>
+<h3 id="friend-class"><a href="#friend-class" class="headerlink" title="friend class"></a>friend class</h3><p>Sometimes I declare all elements in the class as the public items. In this case, I do not need to use a friend class. It is not a good thing to do.  Sometimes I use more struct than the class to avoid the private member. I know it is not recommended. If you follow the rule of declaring the class and set the public/private members wisely, it might be necessary to declare a friend class sometimes to let dedicated class to access the private member of the current class. <a href="https://www.geeksforgeeks.org/friend-class-function-cpp/" target="_blank" rel="noopener">Here</a> are some examples.</p>
+<h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a href="https://www.geeksforgeeks.org/what-are-forward-declarations-in-c/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/what-are-forward-declarations-in-c/</a></p>
+<p><a href="https://www.geeksforgeeks.org/friend-class-function-cpp/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/friend-class-function-cpp/</a></p>
+<p>forward declaration</p>
+<p><a href="https://stackoverflow.com/questions/625799/resolve-build-errors-due-to-circular-dependency-amongst-classes" target="_blank" rel="noopener">https://stackoverflow.com/questions/625799/resolve-build-errors-due-to-circular-dependency-amongst-classes</a></p>
+<p><a href="https://www.gamedev.net/forums/topic/562671-invalid-use-of-incomplete-type-and-forward-declaration/" target="_blank" rel="noopener">https://www.gamedev.net/forums/topic/562671-invalid-use-of-incomplete-type-and-forward-declaration/</a></p>
+<p><a href="https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718" target="_blank" rel="noopener">https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718</a></p>
+<p>good material<br><a href="https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718" target="_blank" rel="noopener">https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/03/c-multiple-defination/" data-id="ckarlgvxl000toc855y21pb3d" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/05/28/cpp-forward-declaration/" data-id="ckarlgvxo000yoc85742qbflq" class="article-share-link">分享</a>
       
       
       
@@ -175,19 +185,10 @@ ga('send', 'pageview');
     
 <nav id="article-nav">
   
-    <a href="/2020/04/16/Area-cover/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">
-        
-          Area cover
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/12/31/Newyear-story/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/05/28/rule-of-three-five/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">Newyear_story</div>
+      <div class="article-nav-title">rule of three/five</div>
     </a>
   
 </nav>
@@ -214,42 +215,24 @@ ga('send', 'pageview');
     <aside id="sidebar">
   
     
-  
+    <div class="widget-wrap">
     
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title recent-posts">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2020/05/28/cpp-forward-declaration/">cpp forward declaration</a>
-          </li>
-        
-          <li>
-            <a href="/2020/05/28/rule-of-three-five/">rule of three/five</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/24/single-core-with-multithreading/">single core with multiprocess</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/23/block-nonblock-sync-nonasync/">block/nonblock,sync/nonasync,event-driven/data-driven</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/19/about-computing-tasks-and-deep-learning-tranning/">about computing tasks and deep learning tranning</a>
-          </li>
-        
-      </ul>
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#forward-declaration"><span class="toc-number">1.</span> <span class="toc-text">forward declaration</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#friend-class"><span class="toc-number">2.</span> <span class="toc-text">friend class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">3.</span> <span class="toc-text">references</span></a></li></ol>
+          </div>
+      </div>
     </div>
-  </div>
 
+  
+    
+
+  
+    
+  
+    
   
     
 

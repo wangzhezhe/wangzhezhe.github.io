@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
 <meta property="og:description" content="discuss the rule of three/five in cpp.">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-05-28T15:57:16.544Z">
+<meta property="og:updated_time" content="2020-06-16T07:55:33.633Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="rule of three&#x2F;five">
 <meta name="twitter:description" content="discuss the rule of three/five in cpp.">
@@ -127,6 +127,7 @@ ga('send', 'pageview');
 <p>We need to figure out the lvalue and the rvalue before discussing more details. <a href="https://josephmansfield.uk/articles/lvalue-rvalue-metaphor.html" target="_blank" rel="noopener">this article</a> provides a good explanation.</p>
 <p>So the <code>&amp;&amp;</code> represents the rvalue in cpp. and the last two rules are necessary if we use the move semantics. The original become unavalible after using the move related semantics.</p>
 <p>This <a href="https://www.educative.io/edpresso/what-is-a-move-constructor-in-cpp" target="_blank" rel="noopener">article</a> provides a good explanation about why we need to use the rvalue and the move semantics. The main reason is to avoid the performance overhead, since the object is constructed for the orignal case when we execute the copy operation. Basically, there are two opeject, you assign values of one object two another, then both of them are deleted at last. But essentially, when you execute operations such as put a instance into a vector, you may want to provide a new view from the data structure’s view. The original instance might not useful anymore. In that case, in the move constructor, you just need to transfer the ownership of the data from the original instance to the new instance to avoid the extra data copy operation. Then the original instance become invalid. But the two destructors are also need to be called when the program is out of the scope. </p>
+<p>Attention, the object that is moved out from the container might still hold the relevent resources, it is necessary to destroy objects that are moved out from the container when design the move constructor. refer to <a href="https://stackoverflow.com/questions/20589025/why-is-the-destructor-call-after-the-stdmove-necessary" target="_blank" rel="noopener">this answer</a>, or refer to this <a href="https://xgitlab.cels.anl.gov/sds/thallium/commit/1dcd8e1ec8e223d21f1c4c5796ba62ae35ee1bc1" target="_blank" rel="noopener">commit</a> to see how to correct a move constructor, originally, there is potential issue of the memory leak, but after the updates, the original object is deleted firstly to make the container empty, then the move operations are executed.</p>
 <h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p>why to use the rvalue<br><a href="https://www.educative.io/edpresso/what-is-a-move-constructor-in-cpp" target="_blank" rel="noopener">https://www.educative.io/edpresso/what-is-a-move-constructor-in-cpp</a></p>
 <p>problem of double free (use reference instead of copy)</p>
 <p><a href="http://www.cplusplus.com/forum/general/29640/" target="_blank" rel="noopener">http://www.cplusplus.com/forum/general/29640/</a> </p>
@@ -138,7 +139,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/28/rule-of-three-five/" data-id="ckarlmorj0021pj859rm077mg" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/05/28/rule-of-three-five/" data-id="ckbre0on600215wwz92truitm" class="article-share-link">分享</a>
       
       
       

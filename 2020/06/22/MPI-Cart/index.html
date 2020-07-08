@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
 <meta property="og:description" content="This article aims to introduce how to use the MPI and the cartition grid to solve a Poisson equation.">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-06-23T03:48:37.759Z">
+<meta property="og:updated_time" content="2020-06-28T04:14:28.986Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MPI_Cart">
 <meta name="twitter:description" content="This article aims to introduce how to use the MPI and the cartition grid to solve a Poisson equation.">
@@ -118,9 +118,11 @@ ga('send', 'pageview');
 <p>Introduce the MPI cartision tools to show how to solve some real world problem such as numerical equations. We discusse the MPI cart firstly, then we will show how to use it to solve 2D possion equation and 3d laplasian equation from the scratch. </p>
 <p>this is the basic scripts about using MPI cartisian tool to solve the possion equations, and the related videos are listed as follows:</p>
 <p>generate the grid mesh by MPI Cartesian<br><a href="https://www.youtube.com/watch?v=R9qoLC95SzU" target="_blank" rel="noopener">https://www.youtube.com/watch?v=R9qoLC95SzU</a></p>
-<p>get the neighbours cell id by MPI Cartesian<br><a href="https://www.youtube.com/watch?v=SmoIFYBWW0E" target="_blank" rel="noopener">https://www.youtube.com/watch?v=SmoIFYBWW0E</a></p>
+<p>get the neighbour cell id by MPI Cartesian<br><a href="https://www.youtube.com/watch?v=SmoIFYBWW0E" target="_blank" rel="noopener">https://www.youtube.com/watch?v=SmoIFYBWW0E</a></p>
 <p>solving the Poisson equation by serial program<br><a href="https://www.youtube.com/watch?v=najbwGUSZO0" target="_blank" rel="noopener">https://www.youtube.com/watch?v=najbwGUSZO0</a></p>
-<p>solving the Poisson equation by parallel program (one cell for one process)<br><a href="https://www.youtube.com/watch?v=EnNoj0WKteM" target="_blank" rel="noopener">https://www.youtube.com/watch?v=EnNoj0WKteM</a></p>
+<p>solving the Poisson equation by parallel program (one cell for one process)<br><a href="https://youtu.be/EnNoj0WKteM" target="_blank" rel="noopener">https://youtu.be/EnNoj0WKteM</a></p>
+<p>solving the Poisson equation by parallel program (multiple cells for one process)<br><a href="https://youtu.be/mUeFWnntbC4" target="_blank" rel="noopener">https://youtu.be/mUeFWnntbC4</a></p>
+<p>source code<br><a href="https://github.com/wangzhezhe/5MPPT/tree/master/mpi_example/possionhybrid" target="_blank" rel="noopener">https://github.com/wangzhezhe/5MPPT/tree/master/mpi_example/possionhybrid</a></p>
 <h3 id="Prerequest"><a href="#Prerequest" class="headerlink" title="Prerequest"></a>Prerequest</h3><p>We assumed that you have already understand the basic knowledge about the MPI such as send/recive broadcast and reduce.</p>
 <p>If you are unfamiliar with those concepts, this tutorial is a good place to start.<a href="https://mpitutorial.com/tutorials/" target="_blank" rel="noopener">here</a> </p>
 <h3 id="construct-cartision-grid"><a href="#construct-cartision-grid" class="headerlink" title="construct cartision grid"></a>construct cartision grid</h3><p>Besides the basic API used in the message communication such as send and recv, MPI also provides several practical tools, the typical one is MPI Cartesian.</p>
@@ -208,6 +210,7 @@ ga('send', 'pageview');
 <p>The source code can be found <a href="https://github.com/wangzhezhe/5MPPT/tree/master/mpi_example/possionhybrid" target="_blank" rel="noopener">here</a>, for the configuration of the 800 times 800 square, if we use the hybrid parallel with 4 process and every process udpate 200 times 200 data block, it only use around 1/5 time compared with the serial version. The program can be optimized further by all kinds of optimization strategies. And we will discuss these strategies in other blogs.</p>
 <h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a href="https://www.mpich.org/static/docs/latest/www3/MPI_Cart_create.html" target="_blank" rel="noopener">https://www.mpich.org/static/docs/latest/www3/MPI_Cart_create.html</a></p>
 <p><a href="https://www.mpich.org/static/docs/latest/www3/MPI_Cart_shift.html" target="_blank" rel="noopener">https://www.mpich.org/static/docs/latest/www3/MPI_Cart_shift.html</a></p>
+<p>MPI vector type<br><a href="https://pages.tacc.utexas.edu/~eijkhout/pcse/html/mpi-data.html#Vectortype" target="_blank" rel="noopener">https://pages.tacc.utexas.edu/~eijkhout/pcse/html/mpi-data.html#Vectortype</a></p>
 <p>possion equation discritizatio</p>
 <p><a href="https://www.youtube.com/watch?v=bLiaz-IHX_Y" target="_blank" rel="noopener">https://www.youtube.com/watch?v=bLiaz-IHX_Y</a></p>
 <p>dim_create</p>
@@ -219,7 +222,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/22/MPI-Cart/" data-id="ckbre0op3004b5wwzcfyvw4yt" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/06/22/MPI-Cart/" data-id="ckcd6k1wt004bb2wvl2owudj8" class="article-share-link">分享</a>
       
       
       

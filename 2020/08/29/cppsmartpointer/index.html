@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>cppsmartpointer | Wangzhezhe&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="some tips and typical use examples about the cpp smart pointers">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cppsmartpointer">
+<meta property="og:url" content="http://yoursite.com/2020/08/29/cppsmartpointer/index.html">
+<meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
+<meta property="og:description" content="some tips and typical use examples about the cpp smart pointers">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-08-29T16:19:09.455Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cppsmartpointer">
+<meta name="twitter:description" content="some tips and typical use examples about the cpp smart pointers">
+  
+    <link rel="alternate" href="/atom.xml" title="Wangzhezhe&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wangzhezhe&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Writing is nature&#39;s way of letting you know how sloppy your thinking is.</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-cppsmartpointer" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/29/cppsmartpointer/" class="article-date">
+  <time datetime="2020-08-29T13:31:37.000Z" itemprop="datePublished">2020-08-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/c-c/">c/c++</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      cppsmartpointer
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>some tips and typical use examples about the cpp smart pointers</p>
+<a id="more"></a>
+<p>Use <code>std::unique_ptr</code> for exclusive-ownership resource management.<br><code>std::shared_ptr</code> for shared-ownership resource management.</p>
+<h3 id="unique-pointer"><a href="#unique-pointer" class="headerlink" title="unique_pointer"></a>unique_pointer</h3><p>For example, we have a class like this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class foo &#123;</span><br><span class="line"> public:</span><br><span class="line">  // default constructor</span><br><span class="line">  foo() &#123; std::cout &lt;&lt; &quot;foo constructor is called&quot; &lt;&lt; std::endl; &#125;</span><br><span class="line">  // copy constructor</span><br><span class="line">  foo(const foo&amp; other) &#123;</span><br><span class="line">    std::cout &lt;&lt; &quot;foo copy constructor is called&quot; &lt;&lt; std::endl;</span><br><span class="line">  &#125;</span><br><span class="line">  // move constructor</span><br><span class="line">  foo(foo&amp;&amp; other) &#123;</span><br><span class="line">    std::cout &lt;&lt; &quot;foo move constructor is called&quot; &lt;&lt; std::endl;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // destructor</span><br><span class="line">  ~foo() &#123; std::cout &lt;&lt; &quot;foo destructor is called&quot; &lt;&lt; std::endl; &#125;</span><br><span class="line"></span><br><span class="line">  // assignment</span><br><span class="line">  foo&amp; operator=(const foo&amp; t) &#123;</span><br><span class="line">    std::cout &lt;&lt; &quot;foo assignment operator is called&quot; &lt;&lt; std::endl;</span><br><span class="line">    return *this;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // move assignment</span><br><span class="line">  foo&amp; operator=(foo&amp;&amp; other) &#123;</span><br><span class="line">    std::cout &lt;&lt; &quot;foo move assignment operator is called&quot; &lt;&lt; std::endl;</span><br><span class="line">    return *this;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>and we could test this class by unique ptr for several cases:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">int main() &#123;</span><br><span class="line">  std::cout &lt;&lt; &quot;start test1&quot; &lt;&lt; std::endl;</span><br><span class="line">  foo* f = new foo();</span><br><span class="line">  std::unique_ptr&lt;foo&gt; uptr1(f);</span><br><span class="line"></span><br><span class="line">  // std::cout &lt;&lt; &quot;start test2&quot; &lt;&lt; std::endl;</span><br><span class="line">  // std::unique_ptr&lt;foo&gt; uptr2(f);</span><br><span class="line">  // there is sig fault if the delete will be called twice for the unique ptr</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; &quot;start test3&quot; &lt;&lt; std::endl;</span><br><span class="line">  std::unique_ptr&lt;foo&gt; uptr3(new foo());</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; &quot;start test4&quot; &lt;&lt; std::endl;</span><br><span class="line">  foo* f4 = new foo();</span><br><span class="line">  // c++14 feature</span><br><span class="line">  std::unique_ptr&lt;foo&gt; uptr4 = std::make_unique&lt;foo&gt;(foo());</span><br><span class="line"></span><br><span class="line">  // this is the prefered way than use new direactly</span><br><span class="line">  std::cout &lt;&lt; &quot;start test5&quot; &lt;&lt; std::endl;</span><br><span class="line">  std::unique_ptr&lt;foo&gt; uptr5 = std::make_unique&lt;foo&gt;();</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; &quot;finish tests&quot; &lt;&lt; std::endl;</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//////output//////</span><br><span class="line">start test1</span><br><span class="line">foo constructor is called</span><br><span class="line">start test3</span><br><span class="line">foo constructor is called</span><br><span class="line">start test4</span><br><span class="line">foo constructor is called</span><br><span class="line">foo constructor is called</span><br><span class="line">foo move constructor is called</span><br><span class="line">foo destructor is called</span><br><span class="line">start test5</span><br><span class="line">foo constructor is called</span><br><span class="line">finish tests</span><br><span class="line">foo destructor is called</span><br><span class="line">foo destructor is called</span><br><span class="line">foo destructor is called</span><br><span class="line">foo destructor is called</span><br></pre></td></tr></table></figure>
+<p>let’s analyse the related test cases,  </p>
+<p>For the test1, we use new to allocate the memory and then use this pointer to init the unique pointer. </p>
+<p>For test2, we let the two unique pointer to point to the same raw pointer, this will cause the memory problem, since the delete function is called twice.</p>
+<p>For test3, there is not much differences compared with the test1</p>
+<p>For test4, we use the <code>make_unique</code>, if the parameters of the make unique is an class instance, the move constructor is called and the original class will be deleted. and the object is constructed twice according to the log, it shows that the unique ptr create an copy for the original object and delete the original one.</p>
+<p>For the test5, which is also the prefered approach for init the unique pointer compared with the new operation, the default constructor is only called once and the created object is managed by the unique pointer. refer to the item21 for the effective modern cpp for more details.</p>
+<p>If we try to copy the unique pointer by this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::unique_ptr&lt;foo&gt; uptr6 = uptr5;</span><br></pre></td></tr></table></figure>
+<p>there is error message like this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error: call to implicitly-deleted copy constructor of &apos;std::unique_ptr&lt;foo&gt;&apos;</span><br></pre></td></tr></table></figure>
+<p>since the unique pointer is exclusive and the copy constructor of this class is deleted, the compiler does not allow us to execute the  copy operation for the unique ptr.</p>
+<h3 id="shared-pointer"><a href="#shared-pointer" class="headerlink" title="shared_pointer"></a>shared_pointer</h3><p><strong>create shared pointer from raw pointer</strong></p>
+<p>this is that same with the deleter</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">void deleter(Sample * x)</span><br><span class="line">&#123;</span><br><span class="line">	std::cout &lt;&lt; &quot;DELETER FUNCTION CALLED\n&quot;;</span><br><span class="line">	delete[] x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main ()&#123;</span><br><span class="line"></span><br><span class="line">Sample * p3 = new Sample[3];</span><br><span class="line">std::shared_ptr&lt;Sample&gt; g;</span><br><span class="line">g.reset (p3,deleter);</span><br><span class="line">... </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>get raw pointer from shared pointer</strong> </p>
+<p>just use <code>ptr.get()</code> </p>
+<p><strong>copy the contents pointed by raw data into the shared pointer space</strong></p>
+<p>There are two solutions, </p>
+<p>first is to reset the shared pointer to the memory space where raw pointer pointed to, use the reset function of the shared pointer. refer to <a href="https://stackoverflow.com/questions/21589595/does-using-reset-on-a-stdshared-ptr-delete-all-instances" target="_blank" rel="noopener">this</a>. In this case, there is only one memory space.</p>
+<p>second is that the shared pointer will point to the new allocated space, and it will get data from the raw space, the <code>std::copy</code> function could be used in this case, copy data from the source to the destination.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::copy(rpt,rpt+elemSize,sharedPtr.get())</span><br></pre></td></tr></table></figure>
+<p><strong>when the destructor will be called</strong></p>
+<p>The destructor of the shared pointer will be called when there is no reference bind with the memory space.</p>
+<p>for example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;memory&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">struct Sample</span><br><span class="line">&#123;</span><br><span class="line">	Sample()</span><br><span class="line">	&#123;</span><br><span class="line">		std::cout &lt;&lt; &quot;CONSTRUCTOR of Sample\n&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">	~Sample()</span><br><span class="line">	&#123;</span><br><span class="line">		std::cout &lt;&lt; &quot;DESTRUCTOR of Sample\n&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">// function that calls the delete [] on received pointer</span><br><span class="line">void deleter(Sample * x)</span><br><span class="line">&#123;</span><br><span class="line">	std::cout &lt;&lt; &quot;DELETER FUNCTION CALLED\n&quot;;</span><br><span class="line">	delete[] x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::shared_ptr&lt;Sample&gt; g;</span><br><span class="line"></span><br><span class="line">void testShare()&#123;</span><br><span class="line">	// Creating a shared+ptr with custom deleter</span><br><span class="line">	std::shared_ptr&lt;Sample&gt; p3(new Sample[3], deleter);</span><br><span class="line">    g=p3;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    testShare();</span><br><span class="line"></span><br><span class="line">    std::cout&lt;&lt;&quot;ok for executing test share&quot; &lt;&lt;std::endl;</span><br><span class="line">    std::cout&lt;&lt;&quot;do sth else&quot; &lt;&lt;std::endl;</span><br><span class="line">    sleep(2);</span><br><span class="line">	</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>destructor will be called after the <code>testShare();</code> if there is no shared pointer in global domain, the object will be release after <code>testShare()</code> function.</p>
+<p>If we use the same object to test the shred ptr, there are following outputs:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">int main() &#123;</span><br><span class="line">  std::cout &lt;&lt; &quot;start test1&quot; &lt;&lt; std::endl;</span><br><span class="line">  foo* f = new foo();</span><br><span class="line">  std::shared_ptr&lt;foo&gt; uptr1(f);</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; &quot;start test2&quot; &lt;&lt; std::endl;</span><br><span class="line">  //this case is not ok</span><br><span class="line">  //std::shared_ptr&lt;foo&gt; uptr2(f);</span><br><span class="line">  //this case is ok</span><br><span class="line">  std::shared_ptr&lt;foo&gt; uptr2 = uptr1;</span><br><span class="line">  // there is sig fault if the delete will be called twice for the unique ptr</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; &quot;start test3&quot; &lt;&lt; std::endl;</span><br><span class="line">  std::shared_ptr&lt;foo&gt; uptr3(new foo());</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; &quot;start test4&quot; &lt;&lt; std::endl;</span><br><span class="line">  foo* f4 = new foo();</span><br><span class="line">  // c++14 feature</span><br><span class="line">  std::shared_ptr&lt;foo&gt; uptr4 = std::make_shared&lt;foo&gt;(foo());</span><br><span class="line"></span><br><span class="line">  // this is the prefered way than use new direactly</span><br><span class="line">  std::cout &lt;&lt; &quot;start test5&quot; &lt;&lt; std::endl;</span><br><span class="line">  std::shared_ptr&lt;foo&gt; uptr5 = std::make_shared&lt;foo&gt;();</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; &quot;start test6&quot; &lt;&lt; std::endl;</span><br><span class="line">  std::shared_ptr&lt;foo&gt; uptr6 = uptr5;</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; &quot;finish tests&quot; &lt;&lt; std::endl;</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//////output//////</span><br><span class="line">start test1</span><br><span class="line">foo constructor is called</span><br><span class="line">start test2</span><br><span class="line">start test3</span><br><span class="line">foo constructor is called</span><br><span class="line">start test4</span><br><span class="line">foo constructor is called</span><br><span class="line">foo constructor is called</span><br><span class="line">foo move constructor is called</span><br><span class="line">foo destructor is called</span><br><span class="line">start test5</span><br><span class="line">foo constructor is called</span><br><span class="line">start test6</span><br><span class="line">finish tests</span><br><span class="line">foo destructor is called</span><br><span class="line">foo destructor is called</span><br><span class="line">foo destructor is called</span><br><span class="line">foo destructor is called</span><br></pre></td></tr></table></figure>
+<p>we could see that it is ok to copy the shared pointer back and forth between each other, but we could not init two shared pointer based on one raw pointer. if we use the following operation for the test2:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;foo&gt; uptr2(f);</span><br></pre></td></tr></table></figure>
+<p>there is also memory problem such as:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pointer being freed was not allocated</span><br></pre></td></tr></table></figure>
+<p>since the new shared pointer does not know that this pointer have managed by the the other raw pointer. The workable way is just copy the shared pointer between each other if it is needed by other classes or function such as this way:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;foo&gt; uptr2 = uptr1;</span><br></pre></td></tr></table></figure>
+<p>instead of creating a new shared pointer based on the same raw pointer.</p>
+<h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a href="http://www.cplusplus.com/reference/memory/unique_ptr/unique_ptr/" target="_blank" rel="noopener">http://www.cplusplus.com/reference/memory/unique_ptr/unique_ptr/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/08/29/cppsmartpointer/" data-id="ckefve5td0012cfs6tkol8lcz" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/08/09/caculate-process-layout/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">caculate process layout</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#unique-pointer"><span class="toc-number">1.</span> <span class="toc-text">unique_pointer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shared-pointer"><span class="toc-number">2.</span> <span class="toc-text">shared_pointer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">3.</span> <span class="toc-text">references</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2020 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

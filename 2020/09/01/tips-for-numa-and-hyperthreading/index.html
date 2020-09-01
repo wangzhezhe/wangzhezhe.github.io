@@ -12,12 +12,12 @@
 <meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
 <meta property="og:description" content="there are some confusion about the NUMA and hyperthreading when execute the multi processes/threads testing or evaluation on clusters, take some notes here.">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/2020/09/01/tips-for-numa-and-hyperthreading/images/topo.png">
-<meta property="og:updated_time" content="2020-09-01T10:35:34.450Z">
+<meta property="og:image" content="http://yoursite.com/images/topo.png">
+<meta property="og:updated_time" content="2020-09-01T10:42:44.275Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tips for numa and hyperthreading">
 <meta name="twitter:description" content="there are some confusion about the NUMA and hyperthreading when execute the multi processes/threads testing or evaluation on clusters, take some notes here.">
-<meta name="twitter:image" content="http://yoursite.com/2020/09/01/tips-for-numa-and-hyperthreading/images/topo.png">
+<meta name="twitter:image" content="http://yoursite.com/images/topo.png">
   
     <link rel="alternate" href="/atom.xml" title="Wangzhezhe&#39;s Blog" type="application/atom+xml">
   
@@ -133,7 +133,7 @@ ga('send', 'pageview');
 <p>The command <code>numactl -H</code> can be used to show the numa domain</p>
 <p>For the large scale testing on specific cluster or supercomputer, the configuration is important, this is a good article on <a href="https://docs.nersc.gov/jobs/affinity/" target="_blank" rel="noopener">cori cluster</a> about the affinity. There are sevearal levels, the first is the node level, which means that you may run tests several time and each time, the tasks are running on machines with same type of configurations. Mayber the partition parameter is important here.</p>
 <p>Here is an exmaple of the node topology for a cluster node that we used in this parts.</p>
-<p><img src="./images/topo.png" alt="drawing" width="400"></p>
+<p><img src="/images/topo.png" width="600"></p>
 <p><strong>bind to cores</strong></p>
 <p>For example, one specific cluster. there are following commands can be used to check the core affinity:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ srun -C haswell -n 8 -c 8 check-mpi.intel.cori</span><br><span class="line">srun: job 33939938 queued and waiting for resources</span><br><span class="line">srun: job 33939938 has been allocated resources</span><br><span class="line">Hello from rank 0, on nid01161. (core affinity = 0-3,32-35)</span><br><span class="line">Hello from rank 1, on nid01161. (core affinity = 16-19,48-51)</span><br><span class="line">Hello from rank 2, on nid01161. (core affinity = 4-7,36-39)</span><br><span class="line">Hello from rank 3, on nid01161. (core affinity = 20-23,52-55)</span><br><span class="line">Hello from rank 4, on nid01161. (core affinity = 8-11,40-43)</span><br><span class="line">Hello from rank 5, on nid01161. (core affinity = 24-27,56-59)</span><br><span class="line">Hello from rank 6, on nid01161. (core affinity = 12-15,44-47)</span><br><span class="line">Hello from rank 7, on nid01161. (core affinity = 28-31,60-63)</span><br></pre></td></tr></table></figure>
@@ -162,7 +162,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/01/tips-for-numa-and-hyperthreading/" data-id="ckejtg0jz0048lus6g9ohxmy5" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/09/01/tips-for-numa-and-hyperthreading/" data-id="ckejtp0e9004jvgs61dox7m9x" class="article-share-link">分享</a>
       
       
       

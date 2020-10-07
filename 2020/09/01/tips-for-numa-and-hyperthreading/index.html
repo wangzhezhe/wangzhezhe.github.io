@@ -13,7 +13,7 @@
 <meta property="og:description" content="there are some confusion about the NUMA and hyperthreading when execute the multi processes/threads testing or evaluation on clusters, take some notes here.">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/images/topo.png">
-<meta property="og:updated_time" content="2020-09-01T10:42:44.275Z">
+<meta property="og:updated_time" content="2020-09-01T10:45:27.334Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tips for numa and hyperthreading">
 <meta name="twitter:description" content="there are some confusion about the NUMA and hyperthreading when execute the multi processes/threads testing or evaluation on clusters, take some notes here.">
@@ -117,7 +117,7 @@ ga('send', 'pageview');
         
         <p>there are some confusion about the NUMA and hyperthreading when execute the multi processes/threads testing or evaluation on clusters, take some notes here.</p>
 <a id="more"></a>
-<h3 id="hyperthreading"><a href="#hyperthreading" class="headerlink" title="hyperthreading"></a>hyperthreading</h3><p><strong>how the slurm consider about the hyperthreading</strong></p>
+<h3 id="Hyperthreading"><a href="#Hyperthreading" class="headerlink" title="Hyperthreading"></a>Hyperthreading</h3><p><strong>how the slurm consider about the hyperthreading</strong></p>
 <p>For the slurm, one core refer to one logical cpu core. For example in this <a href="https://docs.nersc.gov/jobs/affinity/" target="_blank" rel="noopener">documentation</a>:</p>
 <p>srun option “-c”: Set the value as “number of logical cores (CPUs) per MPI task” for MPI and hybrid MPI/OpenMP jobs. The “-c” flag is optional for fully packed pure MPI jobs.</p>
 <p>If there is one physical cpu but there are two hyperthreading, there are two cores for slurm schduler. The interesting metaphors about the hyperthreading is cashier desk in canteen， if there is one line and one faculty set here to process the check for every one, this is one physical cpu and one logical cpu. If there are two lines and one faculaty sit in the middle, it looks that two people can be processes concurently, this is called one physical cpu with two hyperthreading (two logical cpu)</p>
@@ -162,7 +162,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/01/tips-for-numa-and-hyperthreading/" data-id="ckejtp0e9004jvgs61dox7m9x" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/09/01/tips-for-numa-and-hyperthreading/" data-id="ckfyut0b6004of95uu77dk7j4" class="article-share-link">分享</a>
       
       
       
@@ -214,6 +214,15 @@ ga('send', 'pageview');
     
 <nav id="article-nav">
   
+    <a href="/2020/09/05/dynamic-membership/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          dynamic membership
+        
+      </div>
+    </a>
+  
   
     <a href="/2020/08/29/cppsmartpointer/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
@@ -250,7 +259,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#hyperthreading"><span class="toc-number">1.</span> <span class="toc-text">hyperthreading</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NUMA"><span class="toc-number">2.</span> <span class="toc-text">NUMA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scheduler’s-perspective"><span class="toc-number">3.</span> <span class="toc-text">scheduler’s perspective</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">4.</span> <span class="toc-text">references</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hyperthreading"><span class="toc-number">1.</span> <span class="toc-text">Hyperthreading</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NUMA"><span class="toc-number">2.</span> <span class="toc-text">NUMA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scheduler’s-perspective"><span class="toc-number">3.</span> <span class="toc-text">scheduler’s perspective</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">4.</span> <span class="toc-text">references</span></a></li></ol>
           </div>
       </div>
     </div>

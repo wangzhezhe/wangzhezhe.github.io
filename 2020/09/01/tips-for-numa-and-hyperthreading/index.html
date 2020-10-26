@@ -13,7 +13,7 @@
 <meta property="og:description" content="there are some confusion about the NUMA and hyperthreading when execute the multi processes/threads testing or evaluation on clusters, take some notes here.">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/images/topo.png">
-<meta property="og:updated_time" content="2020-09-01T10:45:27.334Z">
+<meta property="og:updated_time" content="2020-10-14T08:20:43.321Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tips for numa and hyperthreading">
 <meta name="twitter:description" content="there are some confusion about the NUMA and hyperthreading when execute the multi processes/threads testing or evaluation on clusters, take some notes here.">
@@ -152,6 +152,9 @@ ga('send', 'pageview');
 <p>in this case, the processes are allocated into the same numa domain cpus but the granularity is the domain level instead of the cpu level.</p>
 <p>For the ideal case:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rank 0 is scheduled to 0-3, 32-35</span><br><span class="line">rank 1 is scheduled to 4-7,36-39</span><br><span class="line">rank 2 is scheduled to 8-11, 40-43</span><br><span class="line">rank 4 is scheduled to 12-15,44-47</span><br></pre></td></tr></table></figure>
+<h3 id="pgas"><a href="#pgas" class="headerlink" title="pgas"></a>pgas</h3><p>The support to the numa architecture from the perspective of the programming view, this is a good online resources</p>
+<p><a href="https://www.youtube.com/watch?v=Y02Al0Dc6XU" target="_blank" rel="noopener">https://www.youtube.com/watch?v=Y02Al0Dc6XU</a></p>
+<p>There is another layer of the programming language that specify if it is the local memory or the remote memory compare with the flat shared memory.</p>
 <h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p>numa and hyperthreading<br><a href="https://frankdenneman.nl/2010/10/07/numa-hyperthreading-and-numa-preferht/" target="_blank" rel="noopener">https://frankdenneman.nl/2010/10/07/numa-hyperthreading-and-numa-preferht/</a></p>
 <p>cori docs<br><a href="https://docs.nersc.gov/jobs/affinity/" target="_blank" rel="noopener">https://docs.nersc.gov/jobs/affinity/</a></p>
 <p>UMA and NUMA<br><a href="https://software.intel.com/content/www/us/en/develop/articles/optimizing-applications-for-numa.html" target="_blank" rel="noopener">https://software.intel.com/content/www/us/en/develop/articles/optimizing-applications-for-numa.html</a></p>
@@ -162,7 +165,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/01/tips-for-numa-and-hyperthreading/" data-id="ckfyut0b6004of95uu77dk7j4" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/09/01/tips-for-numa-and-hyperthreading/" data-id="ckgq3k5wc005iu7s6lh2839u7" class="article-share-link">分享</a>
       
       
       
@@ -259,7 +262,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hyperthreading"><span class="toc-number">1.</span> <span class="toc-text">Hyperthreading</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NUMA"><span class="toc-number">2.</span> <span class="toc-text">NUMA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scheduler’s-perspective"><span class="toc-number">3.</span> <span class="toc-text">scheduler’s perspective</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">4.</span> <span class="toc-text">references</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hyperthreading"><span class="toc-number">1.</span> <span class="toc-text">Hyperthreading</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NUMA"><span class="toc-number">2.</span> <span class="toc-text">NUMA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scheduler’s-perspective"><span class="toc-number">3.</span> <span class="toc-text">scheduler’s perspective</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pgas"><span class="toc-number">4.</span> <span class="toc-text">pgas</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">5.</span> <span class="toc-text">references</span></a></li></ol>
           </div>
       </div>
     </div>

@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Bug story | Wangzhezhe&#39;s Blog</title>
+  <title>Bug story | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="主要记录自己在项目中比较记忆犹新的各种bug degbug的方法论虽说debug更多的时候是工程问题，但是很好的debug技巧和工具能加速问题排查的过程。 gdb and print gdb总是第一个想到的工具，gdb --args &amp;lt;commands&amp;gt; 如果对于具体的命令使用不熟练就多print一些信息，memory的问题使用valgrind等等。 test case 对于比较大规模">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Bug story">
 <meta property="og:url" content="http://yoursite.com/2019/03/17/Bug-story/index.html">
-<meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
+<meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="主要记录自己在项目中比较记忆犹新的各种bug degbug的方法论虽说debug更多的时候是工程问题，但是很好的debug技巧和工具能加速问题排查的过程。 gdb and print gdb总是第一个想到的工具，gdb --args &amp;lt;commands&amp;gt; 如果对于具体的命令使用不熟练就多print一些信息，memory的问题使用valgrind等等。 test case 对于比较大规模">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-10-07T03:42:25.182Z">
+<meta property="og:updated_time" content="2020-12-01T01:56:40.116Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Bug story">
 <meta name="twitter:description" content="主要记录自己在项目中比较记忆犹新的各种bug degbug的方法论虽说debug更多的时候是工程问题，但是很好的debug技巧和工具能加速问题排查的过程。 gdb and print gdb总是第一个想到的工具，gdb --args &amp;lt;commands&amp;gt; 如果对于具体的命令使用不熟练就多print一些信息，memory的问题使用valgrind等等。 test case 对于比较大规模">
   
-    <link rel="alternate" href="/atom.xml" title="Wangzhezhe&#39;s Blog" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -74,7 +74,7 @@ ga('send', 'pageview');
     </div>
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">Wangzhezhe&#39;s Blog</a>
+        <a href="/" id="logo">AverageMind</a>
       </h1>
       
         <h2 id="subtitle-wrap">
@@ -168,11 +168,17 @@ ga('send', 'pageview');
 <p>Here is recap:</p>
 <p>Choose auto x when you want to work with copies.<br>Choose auto &amp;x when you want to work with original items and may modify them.<br>Choose auto const &amp;x when you want to work with original items and will not modify them.</p>
 <h3 id="dynamic-or-static-link-in-python"><a href="#dynamic-or-static-link-in-python" class="headerlink" title="dynamic or static link in python"></a>dynamic or static link in python</h3><p>More details are recorded here (<a href="https://discourse.paraview.org/t/undefined-symbol-pyexc-valueerror/5494/4)" target="_blank" rel="noopener">https://discourse.paraview.org/t/undefined-symbol-pyexc-valueerror/5494/4)</a>, firstly I found that some function related with python is not linked, but I do not know the reason. Actually, this is caused by the static version of the python. At this time, I may try to use python2, it will solve the probelm. The python 2 on that cluater allows the dynamic link and is compiled with the .so file. It is importatnt to consider the root reason or ask other people to get more insights instead of just worrying about the issue. It looks that the good practice is to install an anaconda and avoid those issues.</p>
+<h3 id="关于c的规范编程"><a href="#关于c的规范编程" class="headerlink" title="关于c的规范编程"></a>关于c的规范编程</h3><p>high level的语言写的多了，很容易忽略一些编程规范， 简单的例子比如c的array，申请了一段连续的空间之后是否初始化了合适的值，还有使用pointer的之后是否检查了null，space使用完成之后是否很好地释放掉。说起来都是老生常谈的话题了，最近又因为这样的错误浪费了不少时间，说起来都是一些小错误，但有时候由于各种error propatation却又是花费了很多时间来反复调整。在这里再强调一下，总而言之以遇到相关的代码的时候就在心里给自己提个醒。至于错误的定位，如果实在没有什么好的线索，把关键函数的输入的变量打印出来，多rank的时候把rank信息也打印出来，说起来似乎很简单，感觉是一个比较万能的方法，通过这样的方法，之前确实解决了不少问题，在和别人沟通的时候，也比较convincing。</p>
+<h3 id="about-the-length-of-the-int"><a href="#about-the-length-of-the-int" class="headerlink" title="about the length of the int"></a>about the length of the int</h3><p>these is differences between the int and the int32 <a href="https://www.quora.com/Is-using-int32_t-preferred-to-using-int-in-modern-C-C++-programming" target="_blank" rel="noopener">https://www.quora.com/Is-using-int32_t-preferred-to-using-int-in-modern-C-C++-programming</a><br>currently, the size of the int is 4B for the 64bit system and 2B for the 32bit system. I mistakenly use the int64 to parse the int, and casued the error propagate between the program. It takes some time to find this issue. Be careful about the data length anyway. There is extra padding if misuse the int32 and int64, that will cause the unexpected behaviours. One reason that it is hard to debug is that the unexpected errors might be caused by these mistakes and it is hard to trace the actual error. The one workable way in general is to come back to the last point that you could make tings sucess, maybe the original impoementation, for example, if you tries to provide a new communicator, and you may need to come back to original communicator and to see if it works first. When you have sth that can works well, you could start to add new things or tries to replace particular subfunction, and try to add your modification/updates step by step to narrow down the problem.</p>
+<p>some other discussions about how integer is read out from the memory address, alignment issue, how the alignment can avoid multiple memory access with the cost of the data padding.<br>(<a href="https://softwareengineering.stackexchange.com/questions/363370/how-does-a-cpu-load-multiple-bytes-at-once-if-memory-is-byte-addressed" target="_blank" rel="noopener">https://softwareengineering.stackexchange.com/questions/363370/how-does-a-cpu-load-multiple-bytes-at-once-if-memory-is-byte-addressed</a>)</p>
+<h3 id="virtual-for-the-destructor"><a href="#virtual-for-the-destructor" class="headerlink" title="virtual for the destructor"></a>virtual for the destructor</h3><p>I forgot to add the virtual key word at the destructor of the class defination when there is inheritance. In this case, the destructor of the child class is not called. Refer to this for more details</p>
+<p><a href="https://www.quantstart.com/articles/C-Virtual-Destructors-How-to-Avoid-Memory-Leaks/" target="_blank" rel="noopener">https://www.quantstart.com/articles/C-Virtual-Destructors-How-to-Avoid-Memory-Leaks/</a></p>
+<p>This might cause the potential memory leak issue.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/17/Bug-story/" data-id="ckgswmm360050xrs66e5zx9dt" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/03/17/Bug-story/" data-id="ckjqxrqmd005v8ll0kwlxudo3" class="article-share-link">分享</a>
       
       
       
@@ -269,7 +275,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#degbug的方法论"><span class="toc-number">1.</span> <span class="toc-text">degbug的方法论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IP-配置"><span class="toc-number">2.</span> <span class="toc-text">IP 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#环境变量配置"><span class="toc-number">3.</span> <span class="toc-text">环境变量配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#json解析的问题"><span class="toc-number">4.</span> <span class="toc-text">json解析的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#listkeys的问题"><span class="toc-number">5.</span> <span class="toc-text">listkeys的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#写成了-的问题"><span class="toc-number">6.</span> <span class="toc-text">==写成了=的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c中的segmentation-fault的问题"><span class="toc-number">7.</span> <span class="toc-text">c中的segmentation fault的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装nvidia-driver"><span class="toc-number">8.</span> <span class="toc-text">安装nvidia driver</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#upper-case-and-lower-case"><span class="toc-number">9.</span> <span class="toc-text">upper case and lower case</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#polling-frequency-and-the-scheduler-strategy"><span class="toc-number">10.</span> <span class="toc-text">polling frequency and the scheduler strategy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于-h文件的引用顺序"><span class="toc-number">11.</span> <span class="toc-text">关于.h文件的引用顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于gcc版本的问题"><span class="toc-number">12.</span> <span class="toc-text">关于gcc版本的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#几个南辕北辙的问题"><span class="toc-number">13.</span> <span class="toc-text">几个南辕北辙的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#degbug-三重境界"><span class="toc-number">14.</span> <span class="toc-text">degbug 三重境界</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wait-one-and-wait-any"><span class="toc-number">15.</span> <span class="toc-text">wait one and wait any</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Relocation-truncated-to-fit"><span class="toc-number">16.</span> <span class="toc-text">Relocation truncated to fit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#about-the-auto-key-word-in-c"><span class="toc-number">17.</span> <span class="toc-text">about the auto key word in c++</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dynamic-or-static-link-in-python"><span class="toc-number">18.</span> <span class="toc-text">dynamic or static link in python</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#degbug的方法论"><span class="toc-number">1.</span> <span class="toc-text">degbug的方法论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IP-配置"><span class="toc-number">2.</span> <span class="toc-text">IP 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#环境变量配置"><span class="toc-number">3.</span> <span class="toc-text">环境变量配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#json解析的问题"><span class="toc-number">4.</span> <span class="toc-text">json解析的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#listkeys的问题"><span class="toc-number">5.</span> <span class="toc-text">listkeys的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#写成了-的问题"><span class="toc-number">6.</span> <span class="toc-text">==写成了=的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c中的segmentation-fault的问题"><span class="toc-number">7.</span> <span class="toc-text">c中的segmentation fault的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装nvidia-driver"><span class="toc-number">8.</span> <span class="toc-text">安装nvidia driver</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#upper-case-and-lower-case"><span class="toc-number">9.</span> <span class="toc-text">upper case and lower case</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#polling-frequency-and-the-scheduler-strategy"><span class="toc-number">10.</span> <span class="toc-text">polling frequency and the scheduler strategy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于-h文件的引用顺序"><span class="toc-number">11.</span> <span class="toc-text">关于.h文件的引用顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于gcc版本的问题"><span class="toc-number">12.</span> <span class="toc-text">关于gcc版本的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#几个南辕北辙的问题"><span class="toc-number">13.</span> <span class="toc-text">几个南辕北辙的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#degbug-三重境界"><span class="toc-number">14.</span> <span class="toc-text">degbug 三重境界</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wait-one-and-wait-any"><span class="toc-number">15.</span> <span class="toc-text">wait one and wait any</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Relocation-truncated-to-fit"><span class="toc-number">16.</span> <span class="toc-text">Relocation truncated to fit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#about-the-auto-key-word-in-c"><span class="toc-number">17.</span> <span class="toc-text">about the auto key word in c++</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dynamic-or-static-link-in-python"><span class="toc-number">18.</span> <span class="toc-text">dynamic or static link in python</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于c的规范编程"><span class="toc-number">19.</span> <span class="toc-text">关于c的规范编程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#about-the-length-of-the-int"><span class="toc-number">20.</span> <span class="toc-text">about the length of the int</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#virtual-for-the-destructor"><span class="toc-number">21.</span> <span class="toc-text">virtual for the destructor</span></a></li></ol>
           </div>
       </div>
     </div>
@@ -292,7 +298,7 @@ ga('send', 'pageview');
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2020 zhe&nbsp;|&nbsp;
+      &copy; 2014 - 2021 zhe&nbsp;|&nbsp;
       主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">

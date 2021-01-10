@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>what are you working on | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Some thoughts about the classification of CS related topic. Why it is not enough to divide the CS topics into the system track, algorithm track and the middleware track.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="what are you working on">
+<meta property="og:url" content="http://yoursite.com/2020/12/13/what-are-you-working-on/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Some thoughts about the classification of CS related topic. Why it is not enough to divide the CS topics into the system track, algorithm track and the middleware track.">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-12-14T03:38:22.651Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="what are you working on">
+<meta name="twitter:description" content="Some thoughts about the classification of CS related topic. Why it is not enough to divide the CS topics into the system track, algorithm track and the middleware track.">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Writing is nature&#39;s way of letting you know how sloppy your thinking is.</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-what-are-you-working-on" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/13/what-are-you-working-on/" class="article-date">
+  <time datetime="2020-12-14T02:50:45.000Z" itemprop="datePublished">2020-12-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/methodology/">methodology</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      what are you working on
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Some thoughts about the classification of CS related topic. Why it is not enough to divide the CS topics into the system track, algorithm track and the middleware track. </p>
+<a id="more"></a>
+<p>It is still hard for me to explain what I am working to others, especially to the people that are not working on this major. Previously, I try to explain whole picture from the perspective of the algorithm, system and the application, but it is still too obscure for other peoples. And I found a new framework here. </p>
+<p>Maybe I could explain it in this way. Two focus aspects (or the world view) are the data and resource in the domain of the CS</p>
+<p>For the aspects of the data, it includes the data generation, data transfer, data processing and data storage or indexing</p>
+<p>For the aspects of the resources, it inluces the computation, networking and storage resources.</p>
+<p>Then basically, it is easy to use this view to analyse particular things. People usually work in differnt context or semantics, for exmaple, the IOT, cloud computing, Edge computing, HPC, robotics, etc. Let’s try to see how to use the presentes angle to analyse these domains.</p>
+<p>Let’s see IOT and the edge computing, the data come from the edge device, then it might be transfered to central device maybe at the data center, after some processing, the decision will be made, the output is the processed information useful for people to make decision, or the algorithm can make the decision (data processing). When the decision is made, the decision is transfered to the device (data transfering) and control the resources (resource management), the simple case is lifting the barrier in the park lot, the complictaed case might be adjusting the engine of the space ship. </p>
+<p>You could see that real workable project includes both aspects of data and resource. People may focuse on differnt part and optimize it, that is why it is hard to explain what they do to others, since it is not easy to consider the whole picture if we dive into particular part too much.</p>
+<p>For other context such as the HPC/Cloud related work, the model from different scientific domain will generate the simulation data (data generation), or the log message from the user information, when they try to generate the data, they need the computing resource, and use it. If we want to manage it such as allocating or releasing the resources, we need all kinds of resource management tool (such as slurm or k8s), When we want to use resource properly, we need compiling tool and the programming language. Then we may need to transfer data between different devices for further processing, we need to utilize the data transfer medium such as disk or networking, and the data index methods. that is the position of the data I/O and storage. Then for the data processing, we use differemt methmetical model or visulization tools to get some insights. When we get some results, then we can adjust the simulation based on the insights.</p>
+<p>It is easy to find a position for what you are working on by this framework, namely the data angle and the resource angle. Previously, we use the system, algorithm and middleware track to classify the CS topics, basically we only consider things in static way without the thoughts of the high level workflow. And it is hard for people to understand it as a whole. Besides, it is not good for the project’s view, since you may neglect the upstram and downstream if you just scope your work as the system or the algorithm part. You may lose the motivation that how your piece will contribute to the whole project.</p>
+<p>One typical case is that the middleware related project such as the storage part, if you neglact the idea of upstream and downstrem, it is easy to generate sth that is not useful. Since the goal of the project is to support the loop of data generation, transfer, processing and decision apply to the resource/device or users.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/12/13/what-are-you-working-on/" data-id="ckjqxrqjt00318ll05viokwrj" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2021/01/10/cppTypeTips/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          cppTypeTips
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/12/02/programming-story/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Programming Story</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title recent-posts">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/10/cppTypeTips/">cppTypeTips</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/13/what-are-you-working-on/">what are you working on</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/02/programming-story/">Programming Story</a>
+          </li>
+        
+          <li>
+            <a href="/2020/10/26/case-study-for-thread-pool/">A case study for thread pool</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/22/algorithm-bigo-notation-md/">algorithm_bigO_notation.md</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

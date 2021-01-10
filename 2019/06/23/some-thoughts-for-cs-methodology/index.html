@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Some thoughts for cs methodology | Wangzhezhe&#39;s Blog</title>
+  <title>Some thoughts for CS methodology | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="方法和实践总是相辅相成的。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Some thoughts for cs methodology">
+<meta property="og:title" content="Some thoughts for CS methodology">
 <meta property="og:url" content="http://yoursite.com/2019/06/23/some-thoughts-for-cs-methodology/index.html">
-<meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
+<meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="方法和实践总是相辅相成的。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-24T14:36:02.477Z">
+<meta property="og:updated_time" content="2020-11-30T02:41:58.461Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Some thoughts for cs methodology">
+<meta name="twitter:title" content="Some thoughts for CS methodology">
 <meta name="twitter:description" content="方法和实践总是相辅相成的。">
   
-    <link rel="alternate" href="/atom.xml" title="Wangzhezhe&#39;s Blog" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -74,7 +74,7 @@ ga('send', 'pageview');
     </div>
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">Wangzhezhe&#39;s Blog</a>
+        <a href="/" id="logo">AverageMind</a>
       </h1>
       
         <h2 id="subtitle-wrap">
@@ -103,7 +103,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      Some thoughts for cs methodology
+      Some thoughts for CS methodology
     </h1>
   
 
@@ -134,11 +134,13 @@ ga('send', 'pageview');
 <h3 id="paddding-and-alignment"><a href="#paddding-and-alignment" class="headerlink" title="paddding and alignment"></a>paddding and alignment</h3><p>比如struct的空间优化问题，本质上是牺牲一点存储空间来达到高效的access的目的。</p>
 <p>比如MPI gather message的时候，不同的 process 会使用相同大小的存储空间。</p>
 <p>就类似于快递物流都是使用标准化的箱子统一运送，虽然有一些空间上的浪费，但是标准化之后会方便整个流程的操作</p>
+<p>This is also typical when we set the header part of the file. For example when we write sth into a file, the length of the header is always fixed. This part can contain more informations about the actual contents. Maybe there are some resoundant space in this part, but it is necessary to make it fixed.</p>
+<h3 id="the-namespace-and-the-isolation"><a href="#the-namespace-and-the-isolation" class="headerlink" title="the namespace and the isolation"></a>the namespace and the isolation</h3><p>It is natual to scope your code or things to do into a specific space, or privilage. For the program level, when you create a class, you may make some varaibles or some functinos private and make others public. For the program level, you may need to use the namespace to scope the avaliblity of the varaible to avoid the conflicts with other system library. Even if there is no capability of the namespace for programming language such as c, we may set a scope prefix manually such as <code>projectname_var1</code>. This is because it is easy to confuse the name with other libraraies, there are some common keywords such as file, memory, which are used widely in different libraries.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/23/some-thoughts-for-cs-methodology/" data-id="ckgswmm14002lxrs6d6gd6auz" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/23/some-thoughts-for-cs-methodology/" data-id="ckjqxrql8004s8ll00tmmhp5j" class="article-share-link">分享</a>
       
       
       
@@ -235,7 +237,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#粗调与精调"><span class="toc-number">1.</span> <span class="toc-text">粗调与精调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类的思路"><span class="toc-number">2.</span> <span class="toc-text">分类的思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对一切编号Index"><span class="toc-number">3.</span> <span class="toc-text">对一切编号Index</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于手段与目的-具体技术与使用场景"><span class="toc-number">4.</span> <span class="toc-text">关于手段与目的, 具体技术与使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#论文与知识，无限与有限"><span class="toc-number">5.</span> <span class="toc-text">论文与知识，无限与有限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#量级优化的核心"><span class="toc-number">6.</span> <span class="toc-text">量级优化的核心</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从naive的方式开始"><span class="toc-number">7.</span> <span class="toc-text">从naive的方式开始</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#系统性思维"><span class="toc-number">8.</span> <span class="toc-text">系统性思维</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#what-assumption-and-using-senorios"><span class="toc-number">9.</span> <span class="toc-text">what assumption and using senorios</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#consider-interface-first"><span class="toc-number">10.</span> <span class="toc-text">consider interface first</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#paddding-and-alignment"><span class="toc-number">11.</span> <span class="toc-text">paddding and alignment</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#粗调与精调"><span class="toc-number">1.</span> <span class="toc-text">粗调与精调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类的思路"><span class="toc-number">2.</span> <span class="toc-text">分类的思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对一切编号Index"><span class="toc-number">3.</span> <span class="toc-text">对一切编号Index</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于手段与目的-具体技术与使用场景"><span class="toc-number">4.</span> <span class="toc-text">关于手段与目的, 具体技术与使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#论文与知识，无限与有限"><span class="toc-number">5.</span> <span class="toc-text">论文与知识，无限与有限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#量级优化的核心"><span class="toc-number">6.</span> <span class="toc-text">量级优化的核心</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从naive的方式开始"><span class="toc-number">7.</span> <span class="toc-text">从naive的方式开始</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#系统性思维"><span class="toc-number">8.</span> <span class="toc-text">系统性思维</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#what-assumption-and-using-senorios"><span class="toc-number">9.</span> <span class="toc-text">what assumption and using senorios</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#consider-interface-first"><span class="toc-number">10.</span> <span class="toc-text">consider interface first</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#paddding-and-alignment"><span class="toc-number">11.</span> <span class="toc-text">paddding and alignment</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#the-namespace-and-the-isolation"><span class="toc-number">12.</span> <span class="toc-text">the namespace and the isolation</span></a></li></ol>
           </div>
       </div>
     </div>
@@ -258,7 +260,7 @@ ga('send', 'pageview');
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2020 zhe&nbsp;|&nbsp;
+      &copy; 2014 - 2021 zhe&nbsp;|&nbsp;
       主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">

@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Wangzhezhe&#39;s Blog</title>
+  <title>AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
-<meta property="og:title" content="Wangzhezhe&#39;s Blog">
+<meta property="og:title" content="AverageMind">
 <meta property="og:url" content="http://yoursite.com/page/7/index.html">
-<meta property="og:site_name" content="Wangzhezhe&#39;s Blog">
+<meta property="og:site_name" content="AverageMind">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Wangzhezhe&#39;s Blog">
+<meta name="twitter:title" content="AverageMind">
   
-    <link rel="alternate" href="/atom.xml" title="Wangzhezhe&#39;s Blog" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -70,7 +70,7 @@ ga('send', 'pageview');
     </div>
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">Wangzhezhe&#39;s Blog</a>
+        <a href="/" id="logo">AverageMind</a>
       </h1>
       
         <h2 id="subtitle-wrap">
@@ -82,6 +82,159 @@ ga('send', 'pageview');
 </header>
       <div class="outer">
         <section id="main">
+  
+
+    
+      <article id="post-golang-servmux" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/15/golang-servmux/" class="article-date">
+  <time datetime="2019-06-15T16:14:52.000Z" itemprop="datePublished">2019-06-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/golang/">golang</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/15/golang-servmux/">golang servmux</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>主要是介绍golang中servermux的相关内容，还有一些在golang中的http的基本知识，最后还大致介绍了go-restful的库。整体上想的话，步骤应该是比较简单的，首先写好对应的路由要执行的函数，之后就是把路由信息注册到某个地方，信息过来再分发给对应的路由。</p>
+        
+          <p class="article-more-link">
+            <a href="/2019/06/15/golang-servmux/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/15/golang-servmux/" data-id="ckjqxrqm3005p8ll0adtljqqh" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+    
+
+  
+
+    
+      <article id="post-golang-context-tips" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/15/golang-context-tips/" class="article-date">
+  <time datetime="2019-06-15T16:07:15.000Z" itemprop="datePublished">2019-06-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/golang/">golang</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/15/golang-context-tips/">golang context tips</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>golang context tips<br>主要介绍golang context 包的基本使用以及需要注意的地方。</p>
+        
+          <p class="article-more-link">
+            <a href="/2019/06/15/golang-context-tips/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/15/golang-context-tips/" data-id="ckjqxrqkv004a8ll0ml400h0n" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+    
+
+  
+
+    
+      <article id="post-k8s-cache-tips" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/15/k8s-cache-tips/" class="article-date">
+  <time datetime="2019-06-15T15:54:34.000Z" itemprop="datePublished">2019-06-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/golang/">golang</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/15/k8s-cache-tips/">k8s cache tips</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在程序中经常需要用到内存缓存，说简单一点就是一个map。这里以k8s中的canche为例看看好的缓存机制是如何设计的以及有哪些需要注意的地方，以后在程序中遇到类似的缓存相关的问题就可以直接拿过来使用。这部分的介绍不需要对k8s的背景知识有任何的了解，但是了解了缓存机制之后再看一些相关的组件比如kube-controller，多少会更有一些更加全局的认识对于k8s自身业务代码的深入理解也会有所帮助，甚至可以按照自己的业务逻辑和场景实现一个定制的controller。</p>
+        
+          <p class="article-more-link">
+            <a href="/2019/06/15/k8s-cache-tips/#more">继续阅读全文 »</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/15/k8s-cache-tips/" data-id="ckjqxrqmh00618ll0qqoopklz" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+ 
+
+
+    
+
   
 
     
@@ -120,7 +273,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/15/golang-struct-using-tips/" data-id="ckgswmm22004cxrs6gdgfg69y" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/15/golang-struct-using-tips/" data-id="ckjqxrqky004f8ll0du6varb8" class="article-share-link">分享</a>
       
       
       
@@ -171,7 +324,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/15/Algorithm-7-hash-table-and-two-pointers-1/" data-id="ckgswmm35004zxrs6muksyzxn" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/15/Algorithm-7-hash-table-and-two-pointers-1/" data-id="ckjqxrqlr00548ll0ic2idvef" class="article-share-link">分享</a>
       
       
       
@@ -222,7 +375,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/15/algorithm-6-two-numbers-sum-and-multiply/" data-id="ckgswmm1w0042xrs623h01hiv" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/15/algorithm-6-two-numbers-sum-and-multiply/" data-id="ckjqxrqkr00438ll0hgzkoje5" class="article-share-link">分享</a>
       
       
       
@@ -273,7 +426,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/13/algorithm-5-hash-table-and-two-pointers-2/" data-id="ckgswmm1v0041xrs6xnrh5kz9" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/13/algorithm-5-hash-table-and-two-pointers-2/" data-id="ckjqxrqkq00428ll0bt0dcmqb" class="article-share-link">分享</a>
       
       
       
@@ -324,7 +477,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/13/algorithm-4-linked-list/" data-id="ckgswmm3q005sxrs6976501tz" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/13/algorithm-4-linked-list/" data-id="ckjqxrqme005w8ll07lxav5xc" class="article-share-link">分享</a>
       
       
       
@@ -375,7 +528,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/13/algorithm-3-stack-and-queue/" data-id="ckgswmm3e0058xrs6g6r7xrgd" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/13/algorithm-3-stack-and-queue/" data-id="ckjqxrqlv00598ll0uz36qj2a" class="article-share-link">分享</a>
       
       
       
@@ -426,160 +579,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/12/algorithm-2-sorting/" data-id="ckgswmm3d0056xrs6426pnc6g" class="article-share-link">分享</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
- 
-
-
-    
-
-  
-
-    
-      <article id="post-func-pointer" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/10/func-pointer/" class="article-date">
-  <time datetime="2019-06-11T01:17:32.000Z" itemprop="datePublished">2019-06-10</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/c-c/">c/c++</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/10/func-pointer/">funcPointer, callBack and depedencies</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Funcpointer and Callback<br>This article mainly talk about the using of the function pointer and the call back function in c/c++.</p>
-        
-          <p class="article-more-link">
-            <a href="/2019/06/10/func-pointer/#more">继续阅读全文 »</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/10/func-pointer/" data-id="ckgswmm0i001kxrs6skdgh61h" class="article-share-link">分享</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
- 
-
-
-    
-
-  
-
-    
-      <article id="post-入职培训C" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/10/入职培训C/" class="article-date">
-  <time datetime="2019-06-11T01:08:00.000Z" itemprop="datePublished">2019-06-10</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/c-c/">c/c++</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/10/入职培训C/">入职培训C</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>入职培训感想</p>
-        
-          <p class="article-more-link">
-            <a href="/2019/06/10/入职培训C/#more">继续阅读全文 »</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/10/入职培训C/" data-id="ckgswmm2h004txrs6lwjygrza" class="article-share-link">分享</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
- 
-
-
-    
-
-  
-
-    
-      <article id="post-liteide" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/06/10/liteide/" class="article-date">
-  <time datetime="2019-06-11T01:04:28.000Z" itemprop="datePublished">2019-06-10</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/golang/">golang</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/10/liteide/">liteide</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>介绍一些在使用liteide (专门用在golang中) 过程中配置方面的一些坑，持续整理。<br>
-        
-          <p class="article-more-link">
-            <a href="/2019/06/10/liteide/#more">继续阅读全文 »</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/10/liteide/" data-id="ckgswmm0t0023xrs6fum1tejb" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/12/algorithm-2-sorting/" data-id="ckjqxrqlw005b8ll0x30iviyo" class="article-share-link">分享</a>
       
       
       
@@ -596,7 +596,7 @@ ga('send', 'pageview');
 
 
   <nav id="page-nav">
-    <a class="extend prev" rel="prev" href="/page/6/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/">下一页&raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/6/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/8/">下一页&raquo;</a>
   </nav>
 </section>
            
@@ -616,23 +616,23 @@ ga('send', 'pageview');
       <ul>
         
           <li>
+            <a href="/2021/01/10/cppTypeTips/">cppTypeTips</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/13/what-are-you-working-on/">what are you working on</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/02/programming-story/">Programming Story</a>
+          </li>
+        
+          <li>
             <a href="/2020/10/26/case-study-for-thread-pool/">A case study for thread pool</a>
           </li>
         
           <li>
             <a href="/2020/09/22/algorithm-bigo-notation-md/">algorithm_bigO_notation.md</a>
-          </li>
-        
-          <li>
-            <a href="/2020/09/19/tech-path/">tech path</a>
-          </li>
-        
-          <li>
-            <a href="/2020/09/05/dynamic-membership/">dynamic membership</a>
-          </li>
-        
-          <li>
-            <a href="/2020/09/01/tips-for-numa-and-hyperthreading/">tips for numa and hyperthreading</a>
           </li>
         
       </ul>
@@ -650,7 +650,7 @@ ga('send', 'pageview');
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2020 zhe&nbsp;|&nbsp;
+      &copy; 2014 - 2021 zhe&nbsp;|&nbsp;
       主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">

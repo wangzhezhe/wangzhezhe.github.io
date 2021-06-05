@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>cpp std function | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="some tips about the cpp std::function">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpp std function">
+<meta property="og:url" content="http://yoursite.com/2021/05/11/cpp-std-function/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="some tips about the cpp std::function">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2021-05-12T02:45:23.609Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cpp std function">
+<meta name="twitter:description" content="some tips about the cpp std::function">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Writing is nature&#39;s way of letting you know how sloppy your thinking is.</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-cpp-std-function" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/05/11/cpp-std-function/" class="article-date">
+  <time datetime="2021-05-11T15:03:01.000Z" itemprop="datePublished">2021-05-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/c-c/">c/c++</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      cpp std function
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>some tips about the cpp std::function</p>
+<a id="more"></a>
+<p>The main contents here come from the <a href="https://en.cppreference.com/w/cpp/utility/functional/function" target="_blank" rel="noopener">https://en.cppreference.com/w/cpp/utility/functional/function</a>, I just found that the std::function is a good callable abstraction in cpp, and take some notes here.</p>
+<h3 id="defination"><a href="#defination" class="headerlink" title="defination"></a>defination</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">template&lt; class R, class... Args &gt;</span><br><span class="line">class function&lt;R(Args...)&gt;;</span><br></pre></td></tr></table></figure>
+<p>It is straight forward, since we only need the return data type (R), the input data type (Args…) for a callable.</p>
+<p>For instances</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">void print_num(int i)&#123;...&#125;</span><br><span class="line">std::function&lt;void(int)&gt; f_display = print_num;</span><br></pre></td></tr></table></figure>
+<p>For defination of the std::function, we just need to specify the void and int in its defination.</p>
+<h3 id="examples"><a href="#examples" class="headerlink" title="examples"></a>examples</h3><p>the flexibility of std::function is the wrapp the different callable in cpp, although it might not a necessary things from the perspective of the system programming, it is good to grasp it for quickly understanding other people’s code.</p>
+<p>this is the whole function examples from the cpp references, and I added more comments </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;functional&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line"> </span><br><span class="line">struct Foo &#123;</span><br><span class="line">    Foo(int num) : num_(num) &#123;&#125;</span><br><span class="line">    void print_add(int i) const &#123; std::cout &lt;&lt; num_+i &lt;&lt; &apos;\n&apos;; &#125;</span><br><span class="line">    int num_;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">void print_num(int i)</span><br><span class="line">&#123;</span><br><span class="line">    std::cout &lt;&lt; i &lt;&lt; &apos;\n&apos;;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">struct PrintNum &#123;</span><br><span class="line">    void operator()(int i) const</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; i &lt;&lt; &apos;\n&apos;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    // store a free function</span><br><span class="line">    // this is the basic usage of the function as a wrapper</span><br><span class="line">    // the code is more clean compared with define a function pointer</span><br><span class="line">    std::function&lt;void(int)&gt; f_display = print_num;</span><br><span class="line">    f_display(-9);</span><br><span class="line"> </span><br><span class="line">    // store a lambda</span><br><span class="line">    // this may looks more general since we basically do not care about the</span><br><span class="line">    // type of the input parameter and return parameters </span><br><span class="line">    // we can call different functions with the lambda expression</span><br><span class="line">    std::function&lt;void()&gt; f_display_42 = []() &#123; print_num(42); &#125;;</span><br><span class="line">    f_display_42();</span><br><span class="line"> </span><br><span class="line">    // store the result of a call to std::bind</span><br><span class="line">    // this may more like the grammar suger and we bind the function with a particular parameter</span><br><span class="line">    // we can also wrap it by the std::function</span><br><span class="line">    std::function&lt;void()&gt; f_display_31337 = std::bind(print_num, 31337);</span><br><span class="line">    f_display_31337();</span><br><span class="line"> </span><br><span class="line">    // store a call to a member function</span><br><span class="line">    // it looks fancy to call a member function of the instance</span><br><span class="line">    // the first parameter should be the reference of the instance</span><br><span class="line">    // we need to use &amp; when assign the member function to the std::function but we do not need the &amp; for the common function previously</span><br><span class="line">    std::function&lt;void(const Foo&amp;, int)&gt; f_add_display = &amp;Foo::print_add;</span><br><span class="line">    const Foo foo(314159);</span><br><span class="line">    f_add_display(foo, 1);</span><br><span class="line">    f_add_display(314159, 1);</span><br><span class="line"> </span><br><span class="line">    // store a call to a data member accessor</span><br><span class="line">    std::function&lt;int(Foo const&amp;)&gt; f_num = &amp;Foo::num_;</span><br><span class="line">    std::cout &lt;&lt; &quot;num_: &quot; &lt;&lt; f_num(foo) &lt;&lt; &apos;\n&apos;;</span><br><span class="line"> </span><br><span class="line">    // store a call to a member function and object</span><br><span class="line">    using std::placeholders::_1;</span><br><span class="line">    std::function&lt;void(int)&gt; f_add_display2 = std::bind( &amp;Foo::print_add, foo, _1 );</span><br><span class="line">    f_add_display2(2);</span><br><span class="line"> </span><br><span class="line">    // store a call to a member function and object ptr</span><br><span class="line">    std::function&lt;void(int)&gt; f_add_display3 = std::bind( &amp;Foo::print_add, &amp;foo, _1 );</span><br><span class="line">    f_add_display3(3);</span><br><span class="line"> </span><br><span class="line">    // store a call to a function object</span><br><span class="line">    // the PrintNum is a kind of functor in this case that overload the () operator</span><br><span class="line">    std::function&lt;void(int)&gt; f_display_obj = PrintNum();</span><br><span class="line">    f_display_obj(18);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/* output</span><br><span class="line">-9</span><br><span class="line">42</span><br><span class="line">31337</span><br><span class="line">314160</span><br><span class="line">314160</span><br><span class="line">num_: 314159</span><br><span class="line">314161</span><br><span class="line">314162</span><br><span class="line">18</span><br><span class="line"></span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+<h3 id="more-examples"><a href="#more-examples" class="headerlink" title="more examples"></a>more examples</h3><p>In one project, we use the function as a wrapper for factory pattern.</p>
+<p>this is the key data structure:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::unordered_map&lt;std::string,</span><br><span class="line">                std::function&lt;std::unique_ptr&lt;Backend&gt;(const PipelineFactoryArgs&amp;)&gt;&gt; create_fn;</span><br></pre></td></tr></table></figure>
+<p>the key of the map is the identifier of the backend, the value of the map is a std::function wrapper. For this wrapper, the return value is a unique pointer which hold the backend class, and the input parameter is the pipelineFactorArgs.</p>
+<p>when we init the map, the code (registration function) looks like this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">template&lt;typename BackendType&gt;</span><br><span class="line">class __ColzaBackendRegistration &#123;</span><br><span class="line">    ...</span><br><span class="line">    public:</span><br><span class="line"></span><br><span class="line">    __ColzaBackendRegistration(const std::string&amp; backend_name)</span><br><span class="line">    &#123;</span><br><span class="line">        colza::PipelineFactory::create_fn[backend_name] = [](const colza::PipelineFactoryArgs&amp; args) &#123;</span><br><span class="line">            return BackendType::create(args);</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>we can see that one anonimous function (lambda function) is used here to wrap the creat function. the BackendType is sent from the template parameter. By this way, we can achieve the creation for anytype of the backend by creating a new backend registration class. </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/05/11/cpp-std-function/" data-id="ckpjyz9ic001v9os69b8m1ouc" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2021/05/22/presentation-taolu/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          presentation-taolu
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/04/26/Reading-Story-History-Art/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Reading Story (History,Art)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#defination"><span class="toc-number">1.</span> <span class="toc-text">defination</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#examples"><span class="toc-number">2.</span> <span class="toc-text">examples</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#more-examples"><span class="toc-number">3.</span> <span class="toc-text">more examples</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2021 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

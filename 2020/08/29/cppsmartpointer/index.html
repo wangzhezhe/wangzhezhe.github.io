@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>cppsmartpointer | AverageMind</title>
+  <title>cpp smart pointer | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="some tips and typical use examples about the cpp smart pointers">
 <meta property="og:type" content="article">
-<meta property="og:title" content="cppsmartpointer">
+<meta property="og:title" content="cpp smart pointer">
 <meta property="og:url" content="http://yoursite.com/2020/08/29/cppsmartpointer/index.html">
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="some tips and typical use examples about the cpp smart pointers">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-08-29T16:19:09.455Z">
+<meta property="og:updated_time" content="2021-05-12T03:08:21.103Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="cppsmartpointer">
+<meta name="twitter:title" content="cpp smart pointer">
 <meta name="twitter:description" content="some tips and typical use examples about the cpp smart pointers">
   
     <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
@@ -103,7 +103,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      cppsmartpointer
+      cpp smart pointer
     </h1>
   
 
@@ -155,12 +155,25 @@ ga('send', 'pageview');
 <p>since the new shared pointer does not know that this pointer have managed by the the other raw pointer. The workable way is just copy the shared pointer between each other if it is needed by other classes or function such as this way:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;foo&gt; uptr2 = uptr1;</span><br></pre></td></tr></table></figure>
 <p>instead of creating a new shared pointer based on the same raw pointer.</p>
+<h3 id="more-discussion"><a href="#more-discussion" class="headerlink" title="more discussion"></a>more discussion</h3><p>This is a <a href="https://www.zhihu.com/question/319277442" target="_blank" rel="noopener">good question</a> that discuss all aspects about the shared pointer.</p>
+<p>Instead of describing these details, just mention some key concepts.</p>
+<p>The first is the RAII, see <a href="https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Re-raii" target="_blank" rel="noopener">details here</a>, it is a good habit to clean things finally after you initilize and use it.</p>
+<p>Another concept is the ownership, if we do not need the ownership, the <code>T*</code> is a good thing to do. </p>
+<p><code>What pointers are not good at is representing ownership and directly
+support safe iteration</code> (<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1408r0.pdf)" target="_blank" rel="noopener">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1408r0.pdf)</a>. </p>
+<p>That means when you need to represent the ownership, it is prefered to use the unique pointer or shared pointer, when you need to iterate things, it is good to use suitable stl to wrap your object.</p>
+<p>But it looks that the <code>weak_ptr</code> is a <a href="https://stackoverflow.com/questions/16760334/whats-the-difference-between-raw-pointer-and-weak-ptr" target="_blank" rel="noopener">more suitable thing</a> to provide the ability of access particular object but not own it, since we can know if the original object is destroyed or not, the raw pointer can not achieve this. Basically, if you care more about the safety than performance (or the simplicity of the interface), the shared ptr and weak ptr is good thing, other wise, just make sure what you point to by the raw pointer is sth alive manully.</p>
+<p>just as the description <a href="http://www.cplusplus.com/reference/memory/unique_ptr/get/" target="_blank" rel="noopener">here</a>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Notice that a call to this function does not make unique_ptr release ownership of the pointer (i.e., it is still responsible for deleting the managed data at some point). Therefore, the value returned by this function shall not be used to construct a new managed pointer.</span><br></pre></td></tr></table></figure>
+<p>when you get the raw pointer from the unique pointer, just make sure that you only access it, but not own it. So you have the readable privilage, or write privilage some times, but you are not supposed to erase or construct other things based on it.</p>
+<p>So where will we use the raw pointer in cpp world? I am still not sure, it looks that the raw pointer is a more low level abstraction in cpp world, and we can always find the replacement of the raw pointer such as reference in the function parameter and the smart pointer to own the object. The raw pointer is the foundation for these things, for example, the reference is <a href="https://www.zhihu.com/question/37608201" target="_blank" rel="noopener">implemented</a> by const pointer.</p>
+<p>When we have decided to use the smart pointer, just try to avoid delete things based on the raw pointer. Another thing is that, when we decide to use the shared pointer, just copy it back and forth instead of using the reference. Since the copy operation will increase the count, but if we use the reference, the count might not increase and the original object can be erased, such as the issue described <a href="https://www.zhihu.com/question/319277442" target="_blank" rel="noopener">here, the longest answer</a></p>
 <h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a href="http://www.cplusplus.com/reference/memory/unique_ptr/unique_ptr/" target="_blank" rel="noopener">http://www.cplusplus.com/reference/memory/unique_ptr/unique_ptr/</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/29/cppsmartpointer/" data-id="cknxb67at001nd5s6y4ve0mvd" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/08/29/cppsmartpointer/" data-id="ckpjyz9jq00489os6z2d92zue" class="article-share-link">分享</a>
       
       
       
@@ -257,7 +270,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#unique-pointer"><span class="toc-number">1.</span> <span class="toc-text">unique_pointer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shared-pointer"><span class="toc-number">2.</span> <span class="toc-text">shared_pointer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">3.</span> <span class="toc-text">references</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#unique-pointer"><span class="toc-number">1.</span> <span class="toc-text">unique_pointer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shared-pointer"><span class="toc-number">2.</span> <span class="toc-text">shared_pointer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#more-discussion"><span class="toc-number">3.</span> <span class="toc-text">more discussion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">4.</span> <span class="toc-text">references</span></a></li></ol>
           </div>
       </div>
     </div>

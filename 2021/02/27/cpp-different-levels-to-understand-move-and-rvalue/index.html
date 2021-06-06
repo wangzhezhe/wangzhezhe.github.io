@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="Concepts about move rvalue and forward etc, in cpp, it seems important and ambiguous for the most of the people, we try to understand thoese concepts in different levels.">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2021-06-06T10:10:44.262Z">
+<meta property="og:updated_time" content="2021-06-06T10:36:38.951Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cpp different levels to understand move and rvalue">
 <meta name="twitter:description" content="Concepts about move rvalue and forward etc, in cpp, it seems important and ambiguous for the most of the people, we try to understand thoese concepts in different levels.">
@@ -156,6 +156,7 @@ ga('send', 'pageview');
 <p>However, we can achieve different version of the move assignment operator based on the flexibility of rvalue reference notation. Since we get rid of the const limitation in this case, so it is flexible to update the inner value. For example, we can update the move assignment operator:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ResourceOwnerWithMove&amp; operator=(ResourceOwnerWithMove&amp;&amp; other) &#123;</span><br><span class="line">  printf(&quot;move assignment constructor without copy and swap based on %s\n&quot;,</span><br><span class="line">         other.theResource-&gt;c_str());</span><br><span class="line">  theResource = other.theResource;</span><br><span class="line">  other.theResource = nullptr;</span><br><span class="line">  return *this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>In this way, the original pointer is set as null and we assign it to the pointer at the left side of the object. In this way, we avoid the copy of the inner object and just transfer the ownership of the inner value.</p>
+<h3 id="range-based-for-loop"><a href="#range-based-for-loop" class="headerlink" title="range based for loop"></a>range based for loop</h3><p>refer to this <a href="https://stackoverflow.com/questions/13130708/what-is-the-advantage-of-using-forwarding-references-in-range-based-for-loops/13130795#13130795" target="_blank" rel="noopener">question</a></p>
 <h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a href="http://thbecker.net/articles/rvalue_references/section_03.html" target="_blank" rel="noopener">http://thbecker.net/articles/rvalue_references/section_03.html</a></p>
 <p><a href="https://juejin.cn/post/6844903497075294216" target="_blank" rel="noopener">https://juejin.cn/post/6844903497075294216</a></p>
 <p><a href="https://stackoverflow.com/questions/24828074/passing-rvalue-reference-to-const-lvalue-reference-paremeter" target="_blank" rel="noopener">https://stackoverflow.com/questions/24828074/passing-rvalue-reference-to-const-lvalue-reference-paremeter</a></p>
@@ -165,7 +166,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/02/27/cpp-different-levels-to-understand-move-and-rvalue/" data-id="ckpl0z7cc004549s611lnw675" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2021/02/27/cpp-different-levels-to-understand-move-and-rvalue/" data-id="ckpl1w20w0045css6gjltyzcs" class="article-share-link">分享</a>
       
       
       
@@ -262,7 +263,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#if-we-can-take-the-addresses"><span class="toc-number">1.</span> <span class="toc-text">if we can take the addresses</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#before-the-rvalue-reference"><span class="toc-number">2.</span> <span class="toc-text">before the rvalue reference</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#basic-move-semantic"><span class="toc-number">3.</span> <span class="toc-text">basic move semantic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#copy-constructor-vs-the-move-constructor"><span class="toc-number">4.</span> <span class="toc-text">copy constructor vs the move constructor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">5.</span> <span class="toc-text">references</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#if-we-can-take-the-addresses"><span class="toc-number">1.</span> <span class="toc-text">if we can take the addresses</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#before-the-rvalue-reference"><span class="toc-number">2.</span> <span class="toc-text">before the rvalue reference</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#basic-move-semantic"><span class="toc-number">3.</span> <span class="toc-text">basic move semantic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#copy-constructor-vs-the-move-constructor"><span class="toc-number">4.</span> <span class="toc-text">copy constructor vs the move constructor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#range-based-for-loop"><span class="toc-number">5.</span> <span class="toc-text">range based for loop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">6.</span> <span class="toc-text">references</span></a></li></ol>
           </div>
       </div>
     </div>

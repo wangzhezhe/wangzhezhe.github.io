@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="some tips and typical use examples about the cpp smart pointers">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2021-05-12T03:08:21.103Z">
+<meta property="og:updated_time" content="2021-06-25T02:12:17.350Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cpp smart pointer">
 <meta name="twitter:description" content="some tips and typical use examples about the cpp smart pointers">
@@ -131,6 +131,7 @@ ga('send', 'pageview');
 <p>there is error message like this:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error: call to implicitly-deleted copy constructor of &apos;std::unique_ptr&lt;foo&gt;&apos;</span><br></pre></td></tr></table></figure>
 <p>since the unique pointer is exclusive and the copy constructor of this class is deleted, the compiler does not allow us to execute the  copy operation for the unique ptr.</p>
+<p><strong>decide if the unique pointer is empty</strong><br>The function returns true whenever the stored pointer is not a null pointer, thus returning the same as: <code>get()!=nullptr</code></p>
 <h3 id="shared-pointer"><a href="#shared-pointer" class="headerlink" title="shared_pointer"></a>shared_pointer</h3><p><strong>create shared pointer from raw pointer</strong></p>
 <p>this is that same with the deleter</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">void deleter(Sample * x)</span><br><span class="line">&#123;</span><br><span class="line">	std::cout &lt;&lt; &quot;DELETER FUNCTION CALLED\n&quot;;</span><br><span class="line">	delete[] x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main ()&#123;</span><br><span class="line"></span><br><span class="line">Sample * p3 = new Sample[3];</span><br><span class="line">std::shared_ptr&lt;Sample&gt; g;</span><br><span class="line">g.reset (p3,deleter);</span><br><span class="line">... </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -173,7 +174,7 @@ support safe iteration</code> (<a href="http://www.open-std.org/jtc1/sc22/wg21/d
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/29/cppsmartpointer/" data-id="ckptrk1yu004aops67ug2pxod" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/08/29/cppsmartpointer/" data-id="ckr25zii9003rvxut1cg370iy" class="article-share-link">分享</a>
       
       
       

@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="主要介绍Linux使用中的几种关键的环境变量，包括PATH,LD_LIBRARY_PATH，gcc的-I参数以及-L参数">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-02T02:34:26.153Z">
+<meta property="og:updated_time" content="2021-10-07T21:27:56.432Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="crucial env and paramters for c&#x2F;c++ compiling">
 <meta name="twitter:description" content="主要介绍Linux使用中的几种关键的环境变量，包括PATH,LD_LIBRARY_PATH，gcc的-I参数以及-L参数">
@@ -119,6 +119,52 @@ ga('send', 'pageview');
 <h3 id="LD-LIBRARY-PATH"><a href="#LD-LIBRARY-PATH" class="headerlink" title="LD_LIBRARY_PATH"></a><code>LD_LIBRARY_PATH</code></h3><p>这个变量用来设置在程序<strong>加载运行</strong>的时候寻找<strong>动态链接库</strong>的路径，使用<code>ldd &lt;二进制文件&gt;</code> 可以查看到这个excutable file使用的动态链接库在哪个路径下。使用了<code>LD_LIBRARY_PATH</code>之后，系统再找动态链接文件的时候就会从<code>LD_LIBRARY_PATH</code>所指定的路径中查找。</p>
 <p>还有一个变量是<code>LIBRARY_PATH</code>是在程序编译期间用来查找动态链接库的路径，也可以使用gcc的-L参数来指定。</p>
 <p>直接设置<code>LD_LIBRARY_PATH</code>可能不是一个好的方式（比较hack的方式），可以设置<code>/etc/ld.so.conf.d</code>(比如Ubuntu)在这个文件中设置需要添加的library所在的路径，之后可以通过<code>sudo ldconfig</code>来升级system更新到最新的libs，具体可以参考<a href="https://stackoverflow.com/questions/13428910/how-to-set-the-environmental-variable-ld-library-path-in-linux" target="_blank" rel="noopener">这个</a></p>
+<h3 id="other-key-parameters-from-the-system-aspects"><a href="#other-key-parameters-from-the-system-aspects" class="headerlink" title="other key parameters from the system aspects"></a>other key parameters from the system aspects</h3><p>One good example is the spck env setting. Ensentally, it will modify these key variables after we loading a new spack environment (a set of variables under the spack view will be set into these key variables).</p>
+<p>I copy this form from the spack official <a href="https://spack.readthedocs.io/en/latest/environments.html" target="_blank" rel="noopener">documents</a>:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Paths</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PATH</td>
+<td>bin</td>
+</tr>
+<tr>
+<td>MANPATH</td>
+<td>man, share/man</td>
+</tr>
+<tr>
+<td>ACLOCAL_PATH</td>
+<td>share/aclocal</td>
+</tr>
+<tr>
+<td>LD_LIBRARY_PATH</td>
+<td>lib, lib64</td>
+</tr>
+<tr>
+<td>LIBRARY_PATH</td>
+<td>lib, lib64</td>
+</tr>
+<tr>
+<td>CPATH</td>
+<td>include</td>
+</tr>
+<tr>
+<td>PKG_CONFIG_PATH</td>
+<td>lib/pkgconfig, lib64/pkgconfig, share/pkgconfig</td>
+</tr>
+<tr>
+<td>CMAKE_PREFIX_PATH</td>
+<td>.</td>
+</tr>
+</tbody>
+</table>
+<p>This table contains typical system level env, we disucssed the <code>PATH</code>, <code>LD_PATH</code> and <code>LD_LIBRARY_PATH</code>. The <code>CPATH</code> is easy to understand, we need to find the header files. In particular, it specifies a list of directories to be searched as if specified with -I, but after any paths given with -I options on the command line. This environment variable is used regardless of which language is being preprocessed.</p>
+<p><code>PKG_CONFIG_PATH</code> is a environment variable that specifies additional paths in which pkg-config will search for its .pc files. The pkg-config’s searching path can be specified by this env. The .pc file that describes the information of the package will be put into the search dir of the pkg-config search path.</p>
 <h3 id="linking的时候设置-so文件的查询路径"><a href="#linking的时候设置-so文件的查询路径" class="headerlink" title="linking的时候设置.so文件的查询路径"></a>linking的时候设置.so文件的查询路径</h3><p>若果在编译链接时加入-L参数，在实际运行的时候可能会出现类似如下的情况：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-bash-4.2$ ldd metaserver</span><br><span class="line">	linux-vdso.so.1 =&gt;  (0x00007ffef8fb1000)</span><br><span class="line">	libprotobuf.so.19 =&gt; not found</span><br><span class="line">	libgrpc++.so.1 =&gt; not found</span><br><span class="line">	libgrpc.so.7 =&gt; not found</span><br><span class="line">	libgrpc++_reflection.so.1 =&gt; not found</span><br><span class="line">	libpthread.so.0 =&gt; /lib64/libpthread.so.0 (0x00007f0dae8aa000)</span><br></pre></td></tr></table></figure>
 <p>这是一种情况就是将.so所在的文件添加到<code>LD_LIBRARY_PATH</code>中，将如下命令<code>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:&lt;path_to_dir_of_libs&gt;</code>放在./profile中，每次自动执行，另一种是set the linking path explicitly, such as <a href="https://stackoverflow.com/questions/6562403/i-dont-understand-wl-rpath-wl" target="_blank" rel="noopener">this</a>. add following info when linking:</p>
@@ -140,7 +186,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/27/crucial-env-in-c-c/" data-id="ckr268kw1001zz6utzxigpu7d" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/06/27/crucial-env-in-c-c/" data-id="ckuho23km001zap0a6wislard" class="article-share-link">分享</a>
       
       
       
@@ -237,7 +283,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#PATH"><span class="toc-number">1.</span> <span class="toc-text">PATH</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LD-LIBRARY-PATH"><span class="toc-number">2.</span> <span class="toc-text">LD_LIBRARY_PATH</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#linking的时候设置-so文件的查询路径"><span class="toc-number">3.</span> <span class="toc-text">linking的时候设置.so文件的查询路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gcc-L-l-与-I（big-i）"><span class="toc-number">4.</span> <span class="toc-text">gcc -L -l 与 -I（big i）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考资料"><span class="toc-number">5.</span> <span class="toc-text">参考资料</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#PATH"><span class="toc-number">1.</span> <span class="toc-text">PATH</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LD-LIBRARY-PATH"><span class="toc-number">2.</span> <span class="toc-text">LD_LIBRARY_PATH</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#other-key-parameters-from-the-system-aspects"><span class="toc-number">3.</span> <span class="toc-text">other key parameters from the system aspects</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#linking的时候设置-so文件的查询路径"><span class="toc-number">4.</span> <span class="toc-text">linking的时候设置.so文件的查询路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gcc-L-l-与-I（big-i）"><span class="toc-number">5.</span> <span class="toc-text">gcc -L -l 与 -I（big i）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考资料"><span class="toc-number">6.</span> <span class="toc-text">参考资料</span></a></li></ol>
           </div>
       </div>
     </div>

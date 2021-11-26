@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="Some tips about the paper editing.">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2021-06-26T03:13:02.227Z">
+<meta property="og:updated_time" content="2021-10-27T22:06:02.946Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Editing-taolu">
 <meta name="twitter:description" content="Some tips about the paper editing.">
@@ -124,14 +124,20 @@ ga('send', 'pageview');
 <p>默认都是一般现在时<br>在related work中描述别人已经完成的工作用过去时态<br>然后在最后的summary一段使用过去时或者完成时。</p>
 <p>更多的例子可以参考reference中的 天文物理类英文科技论文写作的常见问题 一文</p>
 <h3 id="logic"><a href="#logic" class="headerlink" title="logic"></a>logic</h3><p>对于自己而言常容易弄混的是总分和因果的logic。Typical的总分就是section开始的时候用处比较多，比如这个section介绍design，之后 in particular, we discuss sub case 1, sub case 2 and sub case 3. These subcase describe a particular aspects of the design. 因果的logic 就是有明显的conclusion和reason，比如这个现象是什么，为什么是这样，然后得出什么结论。</p>
-<p>一些误用的地方就是容易过早地给出conclusion，造成不够convincing的表述。这里要特别注意，对于描述为什么这样做而不是那样做的时候，要做好铺垫。即使是类似 “we can continue discuss how a is influenced by b” 这样的话也是有效的铺垫，尽量避免直接表述 “a is larger than b” 这样的结论。</p>
+<p>一些误用的地方就是容易过早地给出conclusion，造成不够convincing的表述。这里要特别注意，对于描述为什么这样做而不是那样做的时候，要做好铺垫。即使是类似 “we can continue discuss how a is influenced by b” 这样的话也是有效的铺垫，尽量避免直接表述 “a is larger than b” 这样的结论。就算和别人说话时候也是，要找点那种娓娓道来的感觉。</p>
+<h3 id="Shrink-the-paper"><a href="#Shrink-the-paper" class="headerlink" title="Shrink the paper"></a>Shrink the paper</h3><p>paper似乎就像是一个含着水的海绵，只要想办法挤，总是能使它越来越dry并且越来越tight. 常用的方式有以下一些：</p>
+<p><code>\setlength{\textfloatsep}{0pt}</code> 这个会减少一些图片与文字之间的距离，要是还有的距离比较大，就使用<code>\vspace{-10pt}</code> 一般是图片的caption部分和图片之间，总有一些可以缩小的空隙。</p>
+<p>然后看看段落的末尾，是否有那种dangling sentences或者是dangling words, 这样的词改掉之后可以得到一些额外的空隙。</p>
+<p>再一个就是看related work，有些没必要用的就可以省去，有些references会夹带一些没用的内容，比如像notes什么的，这些也可以删去。</p>
+<p>通常这各种操作时候，就基本上能够满足页面的要求了，一般也就是超过个半页的样子。如果还是没有满足，就说明实在是有一些冗余的内容，这个时候就需要在review一下整个文章，合并一下段落，然后对于一些可说可不说的信息就直接省去就好。</p>
+<h3 id="indent"><a href="#indent" class="headerlink" title="indent"></a>indent</h3><p>一般thesis的edit常常在title或者subsection的第一行不采用indent，这就比较奇怪，有的template是默认每段开始都使用indent有的是首段不用。看到这个<a href="https://ask.metafilter.com/18872/No-indentation-of-initial-paragraphs" target="_blank" rel="noopener">讨论</a>之后有一些恍然大悟的感觉。indent的目的就是为了在段落和段落之间进行区分，既然第一段直接紧连着标题，那就不用做什么区分了。而且这样看起来也整洁一些。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>This is a really good one for Chinese students</p>
 <p><a href="https://arxiv.org/pdf/1011.5973.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1011.5973.pdf</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/06/21/Editing-taolu/" data-id="ckuho23jm0005ap0aiwefzmr1" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2021/06/21/Editing-taolu/" data-id="ckwh0srsc0007zv0ahu3pq09l" class="article-share-link">分享</a>
       
       
       
@@ -228,7 +234,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#the-a"><span class="toc-number">1.</span> <span class="toc-text">the, a</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tense"><span class="toc-number">2.</span> <span class="toc-text">tense</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#logic"><span class="toc-number">3.</span> <span class="toc-text">logic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#the-a"><span class="toc-number">1.</span> <span class="toc-text">the, a</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tense"><span class="toc-number">2.</span> <span class="toc-text">tense</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#logic"><span class="toc-number">3.</span> <span class="toc-text">logic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shrink-the-paper"><span class="toc-number">4.</span> <span class="toc-text">Shrink the paper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#indent"><span class="toc-number">5.</span> <span class="toc-text">indent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a></li></ol>
           </div>
       </div>
     </div>

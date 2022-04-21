@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Algorithm(8)_Tree | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="The typical algorithm questions based on the tree structure.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Algorithm(8)_Tree">
+<meta property="og:url" content="http://yoursite.com/2022/04/21/Algorithm-8-Tree/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="The typical algorithm questions based on the tree structure.">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2022-04-21T20:28:10.693Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Algorithm(8)_Tree">
+<meta name="twitter:description" content="The typical algorithm questions based on the tree structure.">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Writing is nature&#39;s way of letting you know how sloppy your thinking is.</a>
+        </h2>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Algorithm-8-Tree" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/04/21/Algorithm-8-Tree/" class="article-date">
+  <time datetime="2022-04-21T20:22:42.000Z" itemprop="datePublished">2022-04-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Algorithm(8)_Tree
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>The typical algorithm questions based on the tree structure.</p>
+<a id="more"></a>
+<p>This article describes several key considerations of the tree and binary search tree, we first describe the commonly techniques and thinking perspectives to solve these type of problems and then we list several specific problem and there soluations, we may put these solutions into different blogs in future.</p>
+<p>The list of sample questions come from <a href="https://docs.google.com/spreadsheets/d/1yRCOJ8KysRVkq0O9IlDriT01tC6lzPapmFO4PCmDJQA/edit#gid=972946549" target="_blank" rel="noopener">here</a></p>
+<p>This is also a good resource to classify all kinds of problems.</p>
+<h3 id="Key-techniques-and-considerations"><a href="#Key-techniques-and-considerations" class="headerlink" title="Key techniques and considerations"></a>Key techniques and considerations</h3><ul>
+<li><p>(1) Classification of the tree node, instead of classifying it into the leaf or null leaf, just assume it is null or not null, or more complex form such as 968 (covered or not covered, 450 is also a good classification example, leaf node, have 1 child, have two child) </p>
+</li>
+<li><p>(2) From up to bottom, the lower level nodes need the information of the upper level nodes.</p>
+</li>
+<li><p>(3) From bottom to up, the left and right child tree returns root or specific value, the upper level nodes needs the information of the lower level nodes or subtrees.</p>
+</li>
+<li><p>(4) Bst tree, the in order traverse (LNR) is the array with ascending values</p>
+</li>
+<li><p>(5) Typical strategy to insert or delete the node, how to acquire the parent pointer for different questions (the 450 can be a complex one for this type)</p>
+</li>
+</ul>
+<p>Here are some key thinking perspectives, these ideas can also be used to solving other problems, these steps are useful especially when you do not have ideas for solving current problem </p>
+<ul>
+<li><p>Consider the data structure adopted by the problem, from the domain specific problem to a cs algorithm problem, this step is comparatively simple for easy or medium question</p>
+</li>
+<li><p>Confirm the type of problem, typically type of problem is modify, search specific results or compute optimization situation. After confirming this, we can further move to another step.</p>
+</li>
+<li><p>For the problem of searching, we first need to figure out the total status and the total combinations, then we use the constrains and the techniques discussed above to narrow down these situations. For the problem of modifying, just be caring of common operations for create delete nodes, the tricks of keeping parent pointer etc.</p>
+</li>
+<li><p>Other specific type of problems (such as search possible solutions) are related to tree, but not totally related, we use another blog to discuss these questions (parathesis match, work search, sudoku problem, queens problem and puzzle problem).</p>
+</li>
+</ul>
+<h3 id="Typical-questions-Traverse-tree"><a href="#Typical-questions-Traverse-tree" class="headerlink" title="Typical questions: Traverse tree"></a>Typical questions: Traverse tree</h3><p><strong>94. Binary Tree Inorder Traversal</strong></p>
+<p>This is really typical one, the inorder traversal represents the LNR traversal. The node type is divided into nullptr or not nullptr, this can be the basic framework for more complicated algorithm. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; inorderTraversal(TreeNode* root) &#123;</span><br><span class="line">        vector&lt;int&gt; ans; </span><br><span class="line">        help(root, ans);  </span><br><span class="line">        return ans;  </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    void help(TreeNode* root, vector&lt;int&gt;&amp; ans)&#123;</span><br><span class="line">        if(root==nullptr)&#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // left</span><br><span class="line">        help(root-&gt;left,ans);</span><br><span class="line">        // current</span><br><span class="line">        ans.push_back(root-&gt;val);</span><br><span class="line">        // right</span><br><span class="line">        help(root-&gt;right, ans);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>144 and 145 are similar problems, they are preorder (NLR) and postorder (LRN) traversal, respectively. 589 and 590 is the N children problem.</p>
+<p><strong>429. N-ary Tree Level Order Traversal</strong></p>
+<p>how to process the height information? There is no associated variable defination in the tree structure. This is the code that use the BFS style code based on the queue. The key idea that label the level is to <em>remember the queuesize after each level</em>. Then at the next iteration, we just need to pop out the node in the previous level, and then the remaning elements are nodes on the current level. We do similar things and move to the next iteration step by step.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">// Definition for a Node.</span><br><span class="line">class Node &#123;</span><br><span class="line">public:</span><br><span class="line">    int val;</span><br><span class="line">    vector&lt;Node*&gt; children;</span><br><span class="line"></span><br><span class="line">    Node() &#123;&#125;</span><br><span class="line"></span><br><span class="line">    Node(int _val) &#123;</span><br><span class="line">        val = _val;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Node(int _val, vector&lt;Node*&gt; _children) &#123;</span><br><span class="line">        val = _val;</span><br><span class="line">        children = _children;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">*/</span><br><span class="line">// Time complexity O(n)</span><br><span class="line">// Space complexity O(n)</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    queue&lt;Node*&gt; q;</span><br><span class="line">    vector&lt;vector&lt;int&gt;&gt; levelOrder(Node* root) &#123;</span><br><span class="line">        vector&lt;vector&lt;int&gt;&gt; ans;</span><br><span class="line">        vector&lt;int&gt; temp;</span><br><span class="line">        help(root, ans, temp, true);</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">    void help(Node* root,vector&lt;vector&lt;int&gt;&gt;&amp; ans,vector&lt;int&gt;&amp; temp, bool iflast)&#123;</span><br><span class="line">        //put the temp into the ans if switch the height</span><br><span class="line">        //if the current node is null, hit a new level, then push</span><br><span class="line">        if(root==nullptr)&#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;   </span><br><span class="line">        q.push(root);</span><br><span class="line">        int levelsize = q.size();</span><br><span class="line">        while(q.empty()==false)&#123;</span><br><span class="line">            while(levelsize&gt;0)&#123;        </span><br><span class="line">                levelsize--;</span><br><span class="line">                Node* curr=q.front();</span><br><span class="line">                temp.push_back(curr-&gt;val);</span><br><span class="line">                q.pop();</span><br><span class="line"></span><br><span class="line">                for(int i=0;i&lt;curr-&gt;children.size();i++)&#123;</span><br><span class="line">                    q.push(curr-&gt;children[i]);</span><br><span class="line">                &#125;                </span><br><span class="line">            &#125;    </span><br><span class="line">            // this layer finish</span><br><span class="line">            ans.push_back(temp);</span><br><span class="line">            temp.clear();</span><br><span class="line">            // current queue size, there are qsize element</span><br><span class="line">            // the elements in the queue are elements at a new level now</span><br><span class="line">            levelsize = q.size();</span><br><span class="line">        &#125;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>The code can also be written in an <a href="https://zxi.mytechroad.com/blog/tree/leetcode-107-binary-tree-level-order-traversal-ii/" target="_blank" rel="noopener">recursive way</a>. The general framework of recursion is easy to write, the key part is that we set the depth and insert the associated elements into the proper position. We also insert the empty array into the ans vector during the recursion process. The code of the recursive way is more clean.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;vector&lt;int&gt;&gt; levelOrder(Node* root) &#123;</span><br><span class="line">        vector&lt;vector&lt;int&gt;&gt; ans;</span><br><span class="line">        help(root, ans, 0);</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    void help(Node* root, vector&lt;vector&lt;int&gt;&gt;&amp;ans, int depth)&#123;</span><br><span class="line">        if(root==nullptr)&#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        //if the new layer</span><br><span class="line">        if(ans.size()&lt;(depth+1))&#123;</span><br><span class="line">            ans.push_back(&#123;&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        // visit node</span><br><span class="line">        ans[depth].push_back(root-&gt;val);</span><br><span class="line">        // call children recursively</span><br><span class="line">        for(auto child: root-&gt;children)&#123;</span><br><span class="line">            help(child, ans, depth+1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Similar problem:<br>107: its input data structure is the binary tree, which is the simplified version of the 429. The 107 require the output sequence from the bottom to up. So we only need to add <code>reverse(ans.begin(), ans.end())</code> before returning the ans.</p>
+<p>104 is also similar one, just compute the maxdepth of the tree direactly.</p>
+<p><strong>987. Vertical Order Traversal of a Binary Tree</strong></p>
+<p>Using the data structure in a wise way is the key for this question. The first key of the map indicates the column, the second key indicates the row, the multiset indicates there are multiple elements in same column, row index and the elements is stored in ascending manner, and the elements can also be repeated in the set.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;vector&lt;int&gt;&gt; verticalTraversal(TreeNode* root) &#123;</span><br><span class="line">        // why use the multiset: check this data [3,1,4,0,2,2]</span><br><span class="line">        map&lt;int, map&lt;int, multiset&lt;int&gt;&gt;&gt; mymap;</span><br><span class="line">        helper(root, mymap, 0, 0);</span><br><span class="line">        vector&lt;vector&lt;int&gt;&gt; ans (mymap.size());</span><br><span class="line">        int i=0;</span><br><span class="line">        for(auto it:mymap)&#123;</span><br><span class="line">            for(auto itmapset : it.second)&#123;</span><br><span class="line">                for(auto itset: itmapset.second)&#123;</span><br><span class="line">                    //printf(&quot;itset %d\n&quot;,itset);</span><br><span class="line">                    ans[i].push_back(itset);                    </span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    void helper(TreeNode* root, map&lt;int, map&lt;int, multiset&lt;int&gt;&gt;&gt;&amp; mymap, int row, int column)&#123;</span><br><span class="line">        if(root==nullptr)&#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        mymap[column][row].insert(root-&gt;val);</span><br><span class="line">        //children</span><br><span class="line">        //left</span><br><span class="line">        helper(root-&gt;left, mymap, row+1, column-1);</span><br><span class="line">        //right</span><br><span class="line">        helper(root-&gt;right, mymap, row+1, column+1);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Compared with using a grid, using the ordered map is more simple, other soluation also use the pair as the key of the map</p>
+<p>Similar questions:</p>
+<p>1302, just sum up the deepest leaves, the question is, how do we know it is the deepest leaves. The idea is just using a spearate depth variable and keep the newest value, then add varaible into the sum </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">// one solution for 1302</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int maxDepth=0;</span><br><span class="line">    int layersum = 0;</span><br><span class="line">    int deepestLeavesSum(TreeNode* root) &#123;</span><br><span class="line">        helper(root, 0);</span><br><span class="line">        return layersum;</span><br><span class="line">    &#125;</span><br><span class="line">    void helper(TreeNode* root, int currDepth)&#123;</span><br><span class="line">        if(root==nullptr)&#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        //visit node, add some trim operation </span><br><span class="line">        if(root-&gt;left==nullptr &amp;&amp; root-&gt;right==nullptr)&#123;</span><br><span class="line">            if(currDepth&gt;maxDepth)&#123;</span><br><span class="line">                maxDepth =  currDepth;</span><br><span class="line">                layersum = 0;</span><br><span class="line">            &#125;</span><br><span class="line">            if(currDepth == maxDepth)&#123;</span><br><span class="line">                layersum = layersum + root-&gt;val;</span><br><span class="line">            &#125;          </span><br><span class="line">        &#125;</span><br><span class="line">        //move to the children</span><br><span class="line">        helper(root-&gt;left,currDepth+1);</span><br><span class="line">        helper(root-&gt;right,currDepth+1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="Typical-questions-search-particular-properties-of-the-tree"><a href="#Typical-questions-search-particular-properties-of-the-tree" class="headerlink" title="Typical questions: search particular properties of the tree"></a>Typical questions: search particular properties of the tree</h3><p><strong>Compare if trees are same, mirror or satisfies certain constraints</strong></p>
+<p>100 check the same tree, we can use any type of iteration method discussed above, if there is null equal during the recursive process, return the false, otherwise, return true.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">// be carefule for the several special cases for deciding the same tree</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isSameTree(TreeNode* p, TreeNode* q) &#123;</span><br><span class="line">        if(p==nullptr &amp;&amp; q)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        if(p &amp;&amp; q==nullptr)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        if(p &amp;&amp; q)&#123;</span><br><span class="line">            //visit</span><br><span class="line">            if(p-&gt;val != q-&gt;val)&#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">        </span><br><span class="line">            //check the child</span><br><span class="line">            bool leftSame = isSameTree(p-&gt;left, q-&gt;left);</span><br><span class="line">            </span><br><span class="line">            if(leftSame==false)&#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">        </span><br><span class="line">            bool rightSame = isSameTree(p-&gt;right, q-&gt;right);</span><br><span class="line"></span><br><span class="line">            if(rightSame==false)&#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;       </span><br><span class="line">        return true;     </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>572 Subtree of Another Tree, this is the updated version for comparing if two trees are same with each other. Traverse the original tree based on NLR sequence, if the node value equals with the subroot value, executed comparision operation. Otherwise, continue check.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">//572. Subtree of Another Tree</span><br><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isSubtree(TreeNode* root, TreeNode* subRoot) &#123;</span><br><span class="line">        //edge cases</span><br><span class="line">        if(!root &amp;&amp; !subRoot)&#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        if(!subRoot)&#123;</span><br><span class="line">            // subroot is null but root is not</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        if(!root)&#123;</span><br><span class="line">            // the root is null but subRoot is not null</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        //go through left and right</span><br><span class="line">        bool leftContain = isSubtree(root-&gt;left, subRoot);</span><br><span class="line">        bool rightContain = isSubtree(root-&gt;right, subRoot);</span><br><span class="line">        </span><br><span class="line">        if(leftContain || rightContain)&#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        if(leftContain == false &amp;&amp; rightContain==false)&#123;</span><br><span class="line">            if(root-&gt;val == subRoot-&gt;val)&#123;</span><br><span class="line">                bool same=isSameTree(root, subRoot);</span><br><span class="line">                if(same)&#123;</span><br><span class="line">                    return true;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;            </span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    bool isSameTree(TreeNode* p, TreeNode* q) &#123;</span><br><span class="line">        if(p==nullptr &amp;&amp; q)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        if(p &amp;&amp; q==nullptr)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        if(p &amp;&amp; q)&#123;</span><br><span class="line">            //visit</span><br><span class="line">            if(p-&gt;val != q-&gt;val)&#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">        </span><br><span class="line">            //check the child</span><br><span class="line">            bool leftSame = isSameTree(p-&gt;left, q-&gt;left);</span><br><span class="line">            </span><br><span class="line">            if(leftSame==false)&#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">        </span><br><span class="line">            bool rightSame = isSameTree(p-&gt;right, q-&gt;right);</span><br><span class="line"></span><br><span class="line">            if(rightSame==false)&#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;       </span><br><span class="line">        return true;     </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>The above code reuse the function of 100, it still looks a little bit complicated and error prone. For the edge cases, we need to consider four situations and confirm the case that one of the child is nullptr. It also uses the idea of compare left part then compare the right part, since there is a return value of the function. For example, after deciding that the left part do not contain subtree, the right part does not contain subtree and the current root does not contains subtree, we can returns the false.</p>
+<p>The 101 symmetric tree is also a similar question, the condition of mirror is just reverse the left and right, one case is right to left, another case is right to left, to decide if they are equal. This is similar with previous one, the difference is the traversal sequence. The origianl thought is to use LNR to traverse left and use RNL to traverse right, then compare the results. But this input <code>[1,2,2,2,null,2]</code> have the same results eigher for LNR and RNL. So it is not uniquely to decide if two parts are mirror of each other. Although the result is straightforward, it is not easy to provide the reuslts at the first glance.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isSymmetric(TreeNode* root) &#123;</span><br><span class="line">        if(root==nullptr)&#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        return Compare(root-&gt;left, root-&gt;right);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    bool Compare(TreeNode* p, TreeNode* q)&#123;</span><br><span class="line">        if(p==nullptr &amp;&amp; q)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        if(p &amp;&amp; q == nullptr)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        if(p &amp;&amp; q)&#123;</span><br><span class="line">            //visit</span><br><span class="line">            if(p-&gt;val != q-&gt;val)&#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            bool leftSame = Compare(p-&gt;left, q-&gt;right);</span><br><span class="line">            if(leftSame==false)&#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            bool rightSame = Compare(p-&gt;right, q-&gt;left);</span><br><span class="line">            if(rightSame==false)&#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;             </span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>110 check if the tree is balanced. This is a little bit special, since it introduce the idea from the bottom to up. Namely, the helper function returns some information and this information will be used by the upper level. These type of paradigm is used a lot when modify the tree structure.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool isBalanced(TreeNode* root) &#123;</span><br><span class="line">        int height=0;</span><br><span class="line">        return helper(root, height);  </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    bool helper(TreeNode* root, int&amp; height)&#123;</span><br><span class="line">        if(!root)&#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        //left balanced</span><br><span class="line">        int leftHeight=0;</span><br><span class="line">        bool leftBalanced = helper(root-&gt;left, leftHeight);</span><br><span class="line"></span><br><span class="line">        //right balanced</span><br><span class="line">        int rightHeight=0;</span><br><span class="line">        bool rightBalanced = helper(root-&gt;right, rightHeight);         </span><br><span class="line">        height=max(leftHeight,rightHeight)+1;</span><br><span class="line">        </span><br><span class="line">        //check diff</span><br><span class="line">        if(leftBalanced &amp;&amp; rightBalanced)&#123;</span><br><span class="line">            if(abs(leftHeight-rightHeight)&lt;=1)&#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>min or max path of the tree</strong></p>
+<p>111 check the minimum depth. It also use the similar strategy. Check the min depth of the left and right part, and then return the min of the left and right value plus one. Be careful for processing the null node. Since we just return 0 direactly. When we compare the return value, this node is not accounted into the depth of the tree. For the test case such as <code>[2,null,3,null,4,null,5,null,6]</code>, the return value is 5. When we check the min value, we do not consider the return value with the 0. Since the leaf node is the node with no children. Which should return 1 at least.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">// 111 Minimum Depth of Binary Tree</span><br><span class="line">class Solution &#123;</span><br><span class="line">    int mindepth = 0;</span><br><span class="line">public:</span><br><span class="line">    int minDepth(TreeNode* root) &#123;</span><br><span class="line">        return helper(root);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    int helper(TreeNode* root)&#123;</span><br><span class="line">        if(root==nullptr)&#123;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        //ldepth</span><br><span class="line">        int ldepth =  helper(root-&gt;left);     </span><br><span class="line"></span><br><span class="line">        //rdpeth</span><br><span class="line">        int rdepth=helper(root-&gt;right);     </span><br><span class="line">        </span><br><span class="line">        //current depth</span><br><span class="line">        int currdepth = 0;</span><br><span class="line">                </span><br><span class="line">        if(ldepth==0 &amp;&amp; rdepth !=0)&#123;</span><br><span class="line">            currdepth = rdepth+1;</span><br><span class="line">        &#125;else if (rdepth==0 &amp;&amp; ldepth!=0)&#123;</span><br><span class="line">            currdepth = ldepth+1;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            currdepth = min (ldepth, rdepth)+1;        </span><br><span class="line">        &#125;</span><br><span class="line">        return currdepth;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="Typical-questions-Modify-the-tree-structure"><a href="#Typical-questions-Modify-the-tree-structure" class="headerlink" title="Typical questions: Modify the tree structure"></a>Typical questions: Modify the tree structure</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2022/04/21/Algorithm-8-Tree/" data-id="cl29gfnx400631x0akqf46c8r" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ <script src="/jquery/jquery.min.js"></script>
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/03/20/phd-story/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">PhD story</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Key-techniques-and-considerations"><span class="toc-number">1.</span> <span class="toc-text">Key techniques and considerations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Typical-questions-Traverse-tree"><span class="toc-number">2.</span> <span class="toc-text">Typical questions: Traverse tree</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Typical-questions-search-particular-properties-of-the-tree"><span class="toc-number">3.</span> <span class="toc-text">Typical questions: search particular properties of the tree</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Typical-questions-Modify-the-tree-structure"><span class="toc-number">4.</span> <span class="toc-text">Typical questions: Modify the tree structure</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ <script src="/jquery/jquery.min.js"></script>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+ <script src="/js/is.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/elevator.js"></script>
+  </div>
+</body>
+</html>

@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="队列和栈相关的笔试面试题，栈和队列自然是基础中的基础了，罗列了一些基本的，总之不要着急，在纸上理清楚之后再去实现，实现起来反而是非常快的，有一些地方是不常用到，比如通过栈来比较大小，进行排序等等操作。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-14T01:29:56.183Z">
+<meta property="og:updated_time" content="2022-04-21T20:24:00.135Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Algorithm(3) stack and queue questions">
 <meta name="twitter:description" content="队列和栈相关的笔试面试题，栈和队列自然是基础中的基础了，罗列了一些基本的，总之不要着急，在纸上理清楚之后再去实现，实现起来反而是非常快的，有一些地方是不常用到，比如通过栈来比较大小，进行排序等等操作。">
@@ -124,7 +124,7 @@ ga('send', 'pageview');
 <li><strong>平时所使用的递归函数，实质上使用了系统提供的系统函数栈，递归函数的处理过程可以看做是一个函数进栈出栈的过程</strong>，任何递归函数可以实现的功能，都可以用非递归的方式实现。</li>
 <li>在c++ 的题目中，常常用一个vector来模拟栈操作，注意看那个元素为栈顶，pop操作，相当于v.pop _back删除队尾的元素，push操作，相当于v.push _back，在队尾插入一个元素，top操作，相当于return v[len-1]，返回最后一个元素。</li>
 </ul>
-<p>###获取最小值的栈<br>特殊功能的栈，在实现栈的基本功能的基础上，再实现返回栈中最小元素的操作getmin，要求，pop，push，getMin操作的时间复杂度都是O(1)。设计的栈类可使用现成的结构。</p>
+<h3 id="获取最小值的栈"><a href="#获取最小值的栈" class="headerlink" title="获取最小值的栈"></a>获取最小值的栈</h3><p>特殊功能的栈，在实现栈的基本功能的基础上，再实现返回栈中最小元素的操作getmin，要求，pop，push，getMin操作的时间复杂度都是O(1)。设计的栈类可使用现成的结构。</p>
 <ul>
 <li>思路，入栈的时候，用一个array，每次插入或者弹出一个元素的时候，进行排序。</li>
 <li>采用两个栈 栈一 用于正常操作 用于元素正常入栈出栈 栈二 保存每一步的最小值 主要是栈二的压入以及弹出的规则 核心思想 用stackmin的栈保存每一步的最小值</li>
@@ -198,7 +198,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/13/algorithm-3-stack-and-queue/" data-id="cl1saepiq00682k0a7fqkbmpy" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/13/algorithm-3-stack-and-queue/" data-id="cl29gfnx700681x0a1f2rgn4m" class="article-share-link">分享</a>
       
       
       
@@ -295,7 +295,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本性质"><span class="toc-number">1.</span> <span class="toc-text">基本性质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用两个栈实现队列-支持（add-pull-peak）基本题目了"><span class="toc-number">2.</span> <span class="toc-text">用两个栈实现队列 支持（add pull peak）基本题目了</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用两个队列实现一个栈"><span class="toc-number">3.</span> <span class="toc-text">用两个队列实现一个栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现栈的逆序操作-要一点技巧-特别能体现递归的技巧"><span class="toc-number">4.</span> <span class="toc-text">实现栈的逆序操作 要一点技巧 特别能体现递归的技巧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#利用一个额外的栈进行排序-小复杂"><span class="toc-number">5.</span> <span class="toc-text">利用一个额外的栈进行排序(小复杂)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#滑动窗口（难度较高）"><span class="toc-number">6.</span> <span class="toc-text">滑动窗口（难度较高）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MaxTree-（比较发散的题目-本质上还是stack用于比较大小的应用）"><span class="toc-number">7.</span> <span class="toc-text">MaxTree （比较发散的题目 本质上还是stack用于比较大小的应用）</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本性质"><span class="toc-number">1.</span> <span class="toc-text">基本性质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取最小值的栈"><span class="toc-number">2.</span> <span class="toc-text">获取最小值的栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用两个栈实现队列-支持（add-pull-peak）基本题目了"><span class="toc-number">3.</span> <span class="toc-text">用两个栈实现队列 支持（add pull peak）基本题目了</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用两个队列实现一个栈"><span class="toc-number">4.</span> <span class="toc-text">用两个队列实现一个栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现栈的逆序操作-要一点技巧-特别能体现递归的技巧"><span class="toc-number">5.</span> <span class="toc-text">实现栈的逆序操作 要一点技巧 特别能体现递归的技巧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#利用一个额外的栈进行排序-小复杂"><span class="toc-number">6.</span> <span class="toc-text">利用一个额外的栈进行排序(小复杂)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#滑动窗口（难度较高）"><span class="toc-number">7.</span> <span class="toc-text">滑动窗口（难度较高）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MaxTree-（比较发散的题目-本质上还是stack用于比较大小的应用）"><span class="toc-number">8.</span> <span class="toc-text">MaxTree （比较发散的题目 本质上还是stack用于比较大小的应用）</span></a></li></ol>
           </div>
       </div>
     </div>

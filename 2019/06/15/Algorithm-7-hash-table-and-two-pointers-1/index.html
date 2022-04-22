@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="整理一下leetcode里面关于 2sum 3sum 的几个问题，后面还补充了几个two pointer的其他问题，主要是longest sub str with at most K distinct characters的问题。关于 hanshtable 以及 two pointer的应用，由于在实现上不像树、图那些在结构上比较复杂，大多是灵光一闪，或者是绕一两个弯就能想到的，面试也是各种常考，">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-15T15:27:20.220Z">
+<meta property="og:updated_time" content="2022-04-22T00:18:20.882Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Algorithm(7) hash table and two pointers(1)">
 <meta name="twitter:description" content="整理一下leetcode里面关于 2sum 3sum 的几个问题，后面还补充了几个two pointer的其他问题，主要是longest sub str with at most K distinct characters的问题。关于 hanshtable 以及 two pointer的应用，由于在实现上不像树、图那些在结构上比较复杂，大多是灵光一闪，或者是绕一两个弯就能想到的，面试也是各种常考，">
@@ -186,13 +186,13 @@ ga('send', 'pageview');
 </li>
 </ul>
 <h3 id="Longest-Substring-with-At-Most-Two-Distinct-Characters"><a href="#Longest-Substring-with-At-Most-Two-Distinct-Characters" class="headerlink" title="Longest Substring with At Most Two Distinct Characters"></a>Longest Substring with At Most Two Distinct Characters</h3><p>Total Accepted: 1167 Total Submissions: 3961<br>Given a string, find the length of the longest substring T that contains at most 2 distinct characters.<br>For example,Given s = “eceba”,<br>T is “ece” which its length is 3.</p>
-<p><strong>大致思路</strong><br>这个题目改收费的了，从网上看到了别人的解答，这个问题最一般的情况是 at most K Distinct Characters。整个框架还是一样的，说白了就是，两指针从头遍历，有点滑动窗口的意思，不断调整两个窗口的边界。此外还需要一个存储出现次数的count数组，关键是存储position的策略，比如”ececebad”这种，当k=2的时候，当第三次到e的时候，l指针应该到第一个e后面的一个位置。这里就不太好存储位置了，因为如果有第四个e的时候，此时l要到第二个e的后一个位置，所以可以参考这个(<a href="http://www.cnblogs.com/x1957/p/4123301.html)，对于k个位置的时候，要注意对k进行适当的分类。比如比如k" target="_blank" rel="noopener">http://www.cnblogs.com/x1957/p/4123301.html)，对于k个位置的时候，要注意对k进行适当的分类。比如比如k</a>&lt;0，以及s.size()&lt;k 这些情况要怎么处理。具体可以参考这个(<a href="http://blog.csdn.net/martin_liang/article/details/45648985" target="_blank" rel="noopener">http://blog.csdn.net/martin_liang/article/details/45648985</a>)</p>
+<p><strong>大致思路</strong><br>这个题目改收费的了，从网上看到了别人的解答，这个问题最一般的情况是 at most K Distinct Characters。整个框架还是一样的，说白了就是，两指针从头遍历，有点滑动窗口的意思，不断调整两个窗口的边界。此外还需要一个存储出现次数的count数组，关键是存储position的策略，比如”ececebad”这种，当k=2的时候，当第三次到e的时候，l指针应该到第一个e后面的一个位置。这里就不太好存储位置了，因为如果有第四个e的时候，此时l要到第二个e的后一个位置，所以可以参考<a href="http://www.cnblogs.com/x1957/p/4123301.html" target="_blank" rel="noopener">这个</a>，对于k个位置的时候，要注意对k进行适当的分类。比如比如k&lt;0，以及s.size()&lt;k 这些情况要怎么处理。具体可以参考这个(<a href="http://blog.csdn.net/martin_liang/article/details/45648985" target="_blank" rel="noopener">http://blog.csdn.net/martin_liang/article/details/45648985</a>)</p>
 <p>当count数目大于K的时候，l就向右移动，一直到对应的元素出现位置，之后count-1,之后l移动到这个元素的下一个位置就更新完成了，不用一个专门的position来存储位置信息。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/15/Algorithm-7-hash-table-and-two-pointers-1/" data-id="cl29gfnx500641x0azdmwcvle" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/15/Algorithm-7-hash-table-and-two-pointers-1/" data-id="cl2ay72j60063tc0aa4gajf4a" class="article-share-link">分享</a>
       
       
       

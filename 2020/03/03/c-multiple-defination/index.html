@@ -112,7 +112,8 @@ ga('send', 'pageview');
         <!-- Table of Contents -->
         
         <p>several typical case that trigger the error of “multiple defination” </p>
-<a id="more"></a>
+<span id="more"></span>
+
 <p>1 the most obvious reason is the typo, you may declare a function several times.</p>
 <p>2 the second reason is that, you declare functions in .h file and implement the function at the .c file, but you forgot to use the <code># ifdefine</code> at the beginning of the .h file and <code>#endif</code> at the end of the file,  or there are some typos here.</p>
 <p>3 if you want to declare a variable in .h file, you need to declare it by using <code>extern</code> keyword and init it at the .c files instead of using it direactly.</p>
@@ -121,7 +122,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/03/c-multiple-defination/" data-id="cl49ds6oj002yuamcnzmms1ig" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/03/03/c-multiple-defination/" data-id="cl4a104ik003789mc1pwo1xr0" class="article-share-link">分享</a>
       
       
       

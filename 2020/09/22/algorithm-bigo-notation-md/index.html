@@ -112,7 +112,8 @@ ga('send', 'pageview');
         <!-- Table of Contents -->
         
         <p>Typical notataion about the algorithm complexity and some thoughts</p>
-<a id="more"></a>
+<span id="more"></span>
+
 <p>when consider a specific optimization, it might makes sense if it decrease the upper bound, otherwise, the optimization in the constant item maybe meaningless. When considering the optimization for a system, it might makes sense if you consider it from the complexity aspects.</p>
 <h3 id="big-theta-notation"><a href="#big-theta-notation" class="headerlink" title="big theta notation"></a>big theta notation</h3><p>When we use big-Θ notation, we’re saying that we have an asymptotically tight bound on the running time. “Asymptotically” because it matters for only large values of nnn. “Tight bound” because we’ve nailed the running time to within a constant factor above and below.</p>
 <h3 id="big-O-notation"><a href="#big-O-notation" class="headerlink" title="big O notation"></a>big O notation</h3><p>big-omega, asymptotic upper bound, It would be convenient to have a form of asymptotic notation that means “the running time grows at most this much, but it could grow more slowly.” We use “big-O” notation for just such occasions.</p>
@@ -122,12 +123,12 @@ ga('send', 'pageview');
 <h3 id="about-the-research-stuff"><a href="#about-the-research-stuff" class="headerlink" title="about the research stuff"></a>about the research stuff</h3><p>The consideration about the notation explains why it is important to consider the metrics for research work. you always need to improve particular metric in most of the cases. How time can be saved? use better algoeithm, use parallel resources or reduce unnecessary things. It is slways good to consider what metric are you using. I may use the workflow running time previously, but I found that it might be better to consider the overhead, since we could not decrease the time spent on the simulation, and we do not instrument into the simulation actually. </p>
 <p>There are different angle when there are components running concurently, the bottleneck might be the important one. consider the simulation and analytics case. if the simulation its self is the bottleneck for the whole workflow, it might not much useful to decrease the analytics time or other related overhead. Another issue is the globle optimizaiton or the local optimization, namely if you need to anticipate the future or just current information are ok.</p>
 <p>I may get lost sometimes, things the project I do may not have a good metric or performance improvement, some times I even can find a such metric. Maybe consider from the application’s perspective is really important, try to do sth that is good for particular application. This is an important knife to provides a new solutions.</p>
-<h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a href="https://www.khanacademy.org/computing/computer-science/algorithms/asymptotic-notation/a/big-big-theta-notation" target="_blank" rel="noopener">https://www.khanacademy.org/computing/computer-science/algorithms/asymptotic-notation/a/big-big-theta-notation</a></p>
+<h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a target="_blank" rel="noopener" href="https://www.khanacademy.org/computing/computer-science/algorithms/asymptotic-notation/a/big-big-theta-notation">https://www.khanacademy.org/computing/computer-science/algorithms/asymptotic-notation/a/big-big-theta-notation</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/22/algorithm-bigo-notation-md/" data-id="cl49ds6oh002euamcfy8n83zu" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/09/22/algorithm-bigo-notation-md/" data-id="cl4a104ih002l89mc2i3ehwmn" class="article-share-link">分享</a>
       
       
       

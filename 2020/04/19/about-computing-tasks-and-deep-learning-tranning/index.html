@@ -112,24 +112,24 @@ ga('send', 'pageview');
         <!-- Table of Contents -->
         
         <p>关于计算任务以及deep learning tranning</p>
-<a id="more"></a>
-<p>最近总算有了一点觉悟和进展，能从计算任务的角度去考虑一些问题而不是仅仅关注与存储和管理。 同学说deep learning是HPC最火的应用，也真是如此。同样的工具，不同的场景，热度真是不尽相同。比如deep learning的training的过程是很typical的计算任务，主要是计算卷积以及gradient(<a href="https://arxiv.org/pdf/1609.04747.pdf)" target="_blank" rel="noopener">https://arxiv.org/pdf/1609.04747.pdf)</a>, 而对于科学计算的simulation的任务，很典型的就是解方程组(<a href="https://people.eecs.berkeley.edu/~demmel/cs267-1995/lecture24/lecture24.html)。但是市场关注度上就不可同日而语。" target="_blank" rel="noopener">https://people.eecs.berkeley.edu/~demmel/cs267-1995/lecture24/lecture24.html)。但是市场关注度上就不可同日而语。</a></p>
-<p>有时候在思考核心的东西在哪里。比如tensorflow这个dataflow(<a href="https://blog.csdn.net/weixin_42008209/article/details/82714844" target="_blank" rel="noopener">https://blog.csdn.net/weixin_42008209/article/details/82714844</a>) 可能单独的计算算子都是很典型的，但是怎么能很好的表达出来是一个难点。或者说这样表达出来就形成了一个有价值的model，这是比较有意义的。</p>
+<span id="more"></span>
+<p>最近总算有了一点觉悟和进展，能从计算任务的角度去考虑一些问题而不是仅仅关注与存储和管理。 同学说deep learning是HPC最火的应用，也真是如此。同样的工具，不同的场景，热度真是不尽相同。比如deep learning的training的过程是很typical的计算任务，主要是计算卷积以及gradient(<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1609.04747.pdf">https://arxiv.org/pdf/1609.04747.pdf</a>), 而对于科学计算的simulation的任务，很典型的就是解方程组(<a target="_blank" rel="noopener" href="https://people.eecs.berkeley.edu/~demmel/cs267-1995/lecture24/lecture24.html)%E3%80%82%E4%BD%86%E6%98%AF%E5%B8%82%E5%9C%BA%E5%85%B3%E6%B3%A8%E5%BA%A6%E4%B8%8A%E5%B0%B1%E4%B8%8D%E5%8F%AF%E5%90%8C%E6%97%A5%E8%80%8C%E8%AF%AD%E3%80%82">https://people.eecs.berkeley.edu/~demmel/cs267-1995/lecture24/lecture24.html)。但是市场关注度上就不可同日而语。</a></p>
+<p>有时候在思考核心的东西在哪里。比如tensorflow这个dataflow(<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42008209/article/details/82714844">https://blog.csdn.net/weixin_42008209/article/details/82714844</a>) 可能单独的计算算子都是很典型的，但是怎么能很好的表达出来是一个难点。或者说这样表达出来就形成了一个有价值的model，这是比较有意义的。</p>
 <p>从parallel的模型上看，主要是针对TPU以及GPU，对于MPI和CPU的场景不是太支持，当然也有GRPC+MPI 的使用场景，但并非主流。这样显然就更接地气吧，相比使用几百几千code的MPI代码，可能workstation+GPU的场景更接地气。所以更多关注的是计算过程如何在GPU上实现，比如在tensorflow的core中可以找到很多Eigen算子的GPU实现。</p>
 <p>工程上的完备性，可能这里好一点，那里好一点，结合在一起就是很powerful的东西。看一些资料上说，最初也是基于google 内部的numerical computing的libraray，网络上比如结合了GRPC以及code generation的方式，易用性上通过python接口和graph的方式，从单一的computation library升级到一个deep learning的engine，各种细节结合起来就使得整个libraray变得有用且完善。当然这些是从工程的角度上理解。</p>
-<p>但是从research的角度上讲，或者从工具和目的的角度上讲，一方面从learning本身的知识上了解这个dataflow为何是这样，某个算子的选择为何是这样。从与cs的角度结合起来就是distribtued case下的各种情况是如何实现的。特别是一些计算的primitives是如何实现的。比如allreduce，在GPU层面，在不同worker层面。比如现在的primitives都是使用compiler生成优化之后的code，从而适配与不同的硬件(<a href="https://github.com/tensorflow/tensorflow/blob/8d22a4426ef476b455379835bfb1047e4b7a2075/tensorflow/compiler/xla/g3doc/index.md)，而不是hard" target="_blank" rel="noopener">https://github.com/tensorflow/tensorflow/blob/8d22a4426ef476b455379835bfb1047e4b7a2075/tensorflow/compiler/xla/g3doc/index.md)，而不是hard</a> coded的方式。</p>
-<p>还有一个层面就是，由于DP的data flow 比较复杂，就出现了data parallelism以及model paralllesim两种方式，scientifc的那些application最多是data parallelesim。具体在这里(<a href="https://www.tensorflow.org/guide/distributed_training)列出了各种traning的strategy" target="_blank" rel="noopener">https://www.tensorflow.org/guide/distributed_training)列出了各种traning的strategy</a></p>
-<p>而且DP的Model还有一个特性就是参数比较多,中间的参数需要不断更新，而这些场景显然是typical的HPC应用中不常能见到的，比如参考这个(<a href="https://www.youtube.com/watch?v=bRMGoPqsn20)。" target="_blank" rel="noopener">https://www.youtube.com/watch?v=bRMGoPqsn20)。</a></p>
+<p>但是从research的角度上讲，或者从工具和目的的角度上讲，一方面从learning本身的知识上了解这个dataflow为何是这样，某个算子的选择为何是这样。从与cs的角度结合起来就是distribtued case下的各种情况是如何实现的。特别是一些计算的primitives是如何实现的。比如allreduce，在GPU层面，在不同worker层面。比如现在的primitives都是使用compiler生成优化之后的code，从而适配与不同的硬件(<a target="_blank" rel="noopener" href="https://github.com/tensorflow/tensorflow/blob/8d22a4426ef476b455379835bfb1047e4b7a2075/tensorflow/compiler/xla/g3doc/index.md)%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AFhard">https://github.com/tensorflow/tensorflow/blob/8d22a4426ef476b455379835bfb1047e4b7a2075/tensorflow/compiler/xla/g3doc/index.md)，而不是hard</a> coded的方式。</p>
+<p>还有一个层面就是，由于DP的data flow 比较复杂，就出现了data parallelism以及model paralllesim两种方式，scientifc的那些application最多是data parallelesim。具体在这里(<a target="_blank" rel="noopener" href="https://www.tensorflow.org/guide/distributed_training)%E5%88%97%E5%87%BA%E4%BA%86%E5%90%84%E7%A7%8Dtraning%E7%9A%84strategy">https://www.tensorflow.org/guide/distributed_training)列出了各种traning的strategy</a></p>
+<p>而且DP的Model还有一个特性就是参数比较多,中间的参数需要不断更新，而这些场景显然是typical的HPC应用中不常能见到的，比如参考这个(<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=bRMGoPqsn20)%E3%80%82">https://www.youtube.com/watch?v=bRMGoPqsn20)。</a></p>
 <p>不管是grpc还是IR，背后都有一个自动化生成代码然后适配与各种backend的思想。</p>
 <p>相比与传统的HPC应用，deep learning的应用简直是日新月异。</p>
-<h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p>源码分析的一个blog<br><a href="http://jcf94.com/2017/02/04/2017-02-04-tensorflow/" target="_blank" rel="noopener">http://jcf94.com/2017/02/04/2017-02-04-tensorflow/</a></p>
-<p>deep learning的中间层 IR<br><a href="https://zhuanlan.zhihu.com/p/29254171" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29254171</a></p>
-<p>distributed tensorflow traning<br><a href="https://www.youtube.com/watch?v=bRMGoPqsn20" target="_blank" rel="noopener">https://www.youtube.com/watch?v=bRMGoPqsn20</a></p>
+<h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p>源码分析的一个blog<br><a target="_blank" rel="noopener" href="http://jcf94.com/2017/02/04/2017-02-04-tensorflow/">http://jcf94.com/2017/02/04/2017-02-04-tensorflow/</a></p>
+<p>deep learning的中间层 IR<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/29254171">https://zhuanlan.zhihu.com/p/29254171</a></p>
+<p>distributed tensorflow traning<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=bRMGoPqsn20">https://www.youtube.com/watch?v=bRMGoPqsn20</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/19/about-computing-tasks-and-deep-learning-tranning/" data-id="cl49ds6of0020uamcbn7ez3jt" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/04/19/about-computing-tasks-and-deep-learning-tranning/" data-id="cl4a104ig002489mc2yb19h54" class="article-share-link">分享</a>
       
       
       

@@ -112,9 +112,10 @@ ga('send', 'pageview');
         <!-- Table of Contents -->
         
         <p>主要记录下multithreading提升performance的一些点。</p>
-<a id="more"></a>
+<span id="more"></span>
+
 <h3 id="overlap-communication-with-computing"><a href="#overlap-communication-with-computing" class="headerlink" title="overlap communication with computing"></a>overlap communication with computing</h3><p>首先要明确的一点是，一个core在单位时间内只能运行一个thread。如果已经指定好说一个program只能使用一个core，那么multithread仅仅是timeslicing而已，这样到底有没有效率？</p>
-<p>具体可以参考<a href="https://www.quora.com/If-a-computer-has-only-one-CPU-do-multi-threaded-programs-provide-any-performance-improvements-over-single-threaded-programs" target="_blank" rel="noopener">这个</a>。</p>
+<p>具体可以参考<a target="_blank" rel="noopener" href="https://www.quora.com/If-a-computer-has-only-one-CPU-do-multi-threaded-programs-provide-any-performance-improvements-over-single-threaded-programs">这个</a>。</p>
 <p>整理一下，唯一的好处就是来源于IO与computing的overlapping。如果对于计算密集型的application，那其实没有什么帮助，反而增加了额外的不同thread之间context switching的overhead，对于IO成分比较多的应用，一个thread在IO的时候可以将另外一个thread调度到core上来执行，这样总是保持cpu busy，在总体上可以节省时间。</p>
 <p>当然在实际操作中，如果是multithread的program，通常让一个program占用多个cores。在实际的操作中，资源管理的软件cloud的环境中使用k8s+docker比较多，HPC的环境下使用slurm比较多，不管使用哪种软件，对于资源管理的core的划分的本质是类似的。就拿slurm的参数举例子吧，如果用srun启动一个process，然后指定<code>--cpus-per-task</code>为 k，就相当于这个process使用k个cores。</p>
 <p>那么还有另外一个问题，同样是k个core，假设在同一个node上，到底是使用k个process 效率比较高还是一个process但通过multithreaing来使用k个cores效率比较高？</p>
@@ -126,19 +127,19 @@ ga('send', 'pageview');
 <p>从计算形式上来看，可以有structured parallel以及unstructured parallel。openMP 2.x 版本是structured parallel的典型代表，比如把一个for loop去用multithread的形式处理。在3.0版本之后，openMP也支持了task parallelsim也叫做unstructured parallelism在使用形式上就类似与thread pool的形式。从中取一个thread或者是新创建一个thread然后不管内部运行的是什么，具体调度由特定的thread scheduler来完成。这篇论文里介绍了很多相关的细节：</p>
 <p>Ayguadé E, Copty N, Duran A, et al. The design of OpenMP tasks[J]. IEEE Transactions on Parallel and Distributed Systems, 2008, 20(3): 404-418.</p>
 <p>从数据和task的关系来看，可以是single task multiple data 或者是 single data multiple task。single task(instruction) multiple data 就是说同样的程序代码，然后把它所用与不同的数据分片上。反过来，就是同样的数据，去执行不同的任务。比如同样的数据，一个thread去基于这个数据做新的迭代，一个thread去将这个数据传输给其他的task，进行communication等等，这种形式的parallel更适合用task based 的方式，也就是unstructured parallel的方式。或者可以这么说，data parallelism的好处自不必说，把大的任务分解成小的任务，加快问题解决，这里说到底还是N:N的关系，N个人process对应N个data partition。那么task parallelism 的好处到底在哪里？特别是彼此有依赖关系的task。可能一个点就是在iteration的环境中，比如典型的像simulation，通过overlapping IO以及computing(体系结构课本里的那种pipeline的方式), 能让CPU被更高效的利用，因为毕竟说到底CPU是不同task共同share的资源，N:1的源头是在这里。</p>
-<p>从具体使用的硬件来看，就是CPU, GPU , TPU, FPGA 等等，比如MPI+openMP 这是利用multicore的CPU, MPI+CUDA就是利用CPU以及GPU等等，从软件层面上看，还是怎么把问题映射到对应的硬件上，从硬件层面上看就有各种优化比如<a href="http://www.icl.utk.edu/~luszczek/teaching/courses/fall2016/cosc462/pdf/W44L1%20-%20MPI%20+%20CUDA.pdf" target="_blank" rel="noopener">这里</a>介绍如果通过统一的address space, rdma, gpudirect来实现GPU device上的数据不经过CPU直接传送到其他GPU上。</p>
+<p>从具体使用的硬件来看，就是CPU, GPU , TPU, FPGA 等等，比如MPI+openMP 这是利用multicore的CPU, MPI+CUDA就是利用CPU以及GPU等等，从软件层面上看，还是怎么把问题映射到对应的硬件上，从硬件层面上看就有各种优化比如<a target="_blank" rel="noopener" href="http://www.icl.utk.edu/~luszczek/teaching/courses/fall2016/cosc462/pdf/W44L1%20-%20MPI%20+%20CUDA.pdf">这里</a>介绍如果通过统一的address space, rdma, gpudirect来实现GPU device上的数据不经过CPU直接传送到其他GPU上。</p>
 <p>还有一个有疑惑的地方就是，multithread的scheduler如何知道当前的thread开始执行IO操作了从而把它调离CPU然后再将一个新的thread调度上来，这部分之后再具体整理。</p>
-<h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a href="https://www.epcc.ed.ac.uk/sites/default/files/PDF/mixedMode3.pdf" target="_blank" rel="noopener">https://www.epcc.ed.ac.uk/sites/default/files/PDF/mixedMode3.pdf</a></p>
-<p><a href="http://downloads.hindawi.com/journals/sp/2010/951739.pdf" target="_blank" rel="noopener">http://downloads.hindawi.com/journals/sp/2010/951739.pdf</a></p>
-<p><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.108.1318&amp;rep=rep1&amp;type=pdf" target="_blank" rel="noopener">http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.108.1318&amp;rep=rep1&amp;type=pdf</a></p>
-<p>unstructured parallelism in openMP<br>good explanation<br><a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4553700" target="_blank" rel="noopener">https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4553700</a></p>
-<p><a href="https://www.quora.com/If-a-computer-has-only-one-CPU-do-multi-threaded-programs-provide-any-performance-improvements-over-single-threaded-programs" target="_blank" rel="noopener">https://www.quora.com/If-a-computer-has-only-one-CPU-do-multi-threaded-programs-provide-any-performance-improvements-over-single-threaded-programs</a></p>
-<p><a href="https://stackoverflow.com/questions/31988595/how-do-multiple-threads-run-on-single-core-cpu" target="_blank" rel="noopener">https://stackoverflow.com/questions/31988595/how-do-multiple-threads-run-on-single-core-cpu</a></p>
+<h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a target="_blank" rel="noopener" href="https://www.epcc.ed.ac.uk/sites/default/files/PDF/mixedMode3.pdf">https://www.epcc.ed.ac.uk/sites/default/files/PDF/mixedMode3.pdf</a></p>
+<p><a target="_blank" rel="noopener" href="http://downloads.hindawi.com/journals/sp/2010/951739.pdf">http://downloads.hindawi.com/journals/sp/2010/951739.pdf</a></p>
+<p><a target="_blank" rel="noopener" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.108.1318&amp;rep=rep1&amp;type=pdf">http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.108.1318&amp;rep=rep1&amp;type=pdf</a></p>
+<p>unstructured parallelism in openMP<br>good explanation<br><a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4553700">https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4553700</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.quora.com/If-a-computer-has-only-one-CPU-do-multi-threaded-programs-provide-any-performance-improvements-over-single-threaded-programs">https://www.quora.com/If-a-computer-has-only-one-CPU-do-multi-threaded-programs-provide-any-performance-improvements-over-single-threaded-programs</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/31988595/how-do-multiple-threads-run-on-single-core-cpu">https://stackoverflow.com/questions/31988595/how-do-multiple-threads-run-on-single-core-cpu</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/24/single-core-with-multithreading/" data-id="cl49ds6oz006euamchtovxosf" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/04/24/single-core-with-multithreading/" data-id="cl4a104iw006i89mc4djga9gj" class="article-share-link">分享</a>
       
       
       

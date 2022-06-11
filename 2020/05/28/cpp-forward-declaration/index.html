@@ -112,26 +112,27 @@ ga('send', 'pageview');
         <!-- Table of Contents -->
         
         <p>forward declaration and the friend class about the cpp.</p>
-<a id="more"></a>
+<span id="more"></span>
+
 <p>c++ forward declaration and friend function</p>
 <h3 id="forward-declaration"><a href="#forward-declaration" class="headerlink" title="forward declaration"></a>forward declaration</h3><p>For the implementation, if two class has the hierarchy relationship, such as A will call the B and B may hold the pointer to the A, in this case, it is suitable to use the forward declaration when defining the class B.</p>
 <p>Another solution for this part is to extract the public part used by A and B, then both A and B will refer to C, but the C does not need to hold the references to the A and B directly. Before using the forward declaration, it is important to consider if you could adjust the functions in classes and split another class to satisfy a clearer hierarchical relationship.</p>
 <p>If we did not use the object-oriented programing, we may want to register separate functions to the program, in this case, we can use the forward declaration if the self-defined functions want to access other class instances defined in the system.</p>
-<p>This <a href="https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718" target="_blank" rel="noopener">answer</a> provides a very good explanation and examples. I just list some points that need to pay attention to.</p>
+<p>This <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718">answer</a> provides a very good explanation and examples. I just list some points that need to pay attention to.</p>
 <p>When we try to eliminate reference cyle and use the forward declaration, check the .h file and avoid the cycle of reference here.   Then you could include the .h file (where the parent class is defined) of the parent class at the .cpp file (not the .h file) of the child class to make the forward declaration works. It is ok to forward declare the parent class at the .h file of the child class.</p>
-<h3 id="friend-class"><a href="#friend-class" class="headerlink" title="friend class"></a>friend class</h3><p>Sometimes I declare all elements in the class as the public items. In this case, I do not need to use a friend class. It is not a good thing to do.  Sometimes I use more struct than the class to avoid the private member. I know it is not recommended. If you follow the rule of declaring the class and set the public/private members wisely, it might be necessary to declare a friend class sometimes to let dedicated class to access the private member of the current class. <a href="https://www.geeksforgeeks.org/friend-class-function-cpp/" target="_blank" rel="noopener">Here</a> are some examples.</p>
-<h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a href="https://www.geeksforgeeks.org/what-are-forward-declarations-in-c/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/what-are-forward-declarations-in-c/</a></p>
-<p><a href="https://www.geeksforgeeks.org/friend-class-function-cpp/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/friend-class-function-cpp/</a></p>
+<h3 id="friend-class"><a href="#friend-class" class="headerlink" title="friend class"></a>friend class</h3><p>Sometimes I declare all elements in the class as the public items. In this case, I do not need to use a friend class. It is not a good thing to do.  Sometimes I use more struct than the class to avoid the private member. I know it is not recommended. If you follow the rule of declaring the class and set the public&#x2F;private members wisely, it might be necessary to declare a friend class sometimes to let dedicated class to access the private member of the current class. <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/friend-class-function-cpp/">Here</a> are some examples.</p>
+<h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/what-are-forward-declarations-in-c/">https://www.geeksforgeeks.org/what-are-forward-declarations-in-c/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/friend-class-function-cpp/">https://www.geeksforgeeks.org/friend-class-function-cpp/</a></p>
 <p>forward declaration</p>
-<p><a href="https://stackoverflow.com/questions/625799/resolve-build-errors-due-to-circular-dependency-amongst-classes" target="_blank" rel="noopener">https://stackoverflow.com/questions/625799/resolve-build-errors-due-to-circular-dependency-amongst-classes</a></p>
-<p><a href="https://www.gamedev.net/forums/topic/562671-invalid-use-of-incomplete-type-and-forward-declaration/" target="_blank" rel="noopener">https://www.gamedev.net/forums/topic/562671-invalid-use-of-incomplete-type-and-forward-declaration/</a></p>
-<p><a href="https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718" target="_blank" rel="noopener">https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718</a></p>
-<p>good material<br><a href="https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718" target="_blank" rel="noopener">https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/625799/resolve-build-errors-due-to-circular-dependency-amongst-classes">https://stackoverflow.com/questions/625799/resolve-build-errors-due-to-circular-dependency-amongst-classes</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.gamedev.net/forums/topic/562671-invalid-use-of-incomplete-type-and-forward-declaration/">https://www.gamedev.net/forums/topic/562671-invalid-use-of-incomplete-type-and-forward-declaration/</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718">https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718</a></p>
+<p>good material<br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718">https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/28/cpp-forward-declaration/" data-id="cl49ds6om003iuamcbawc0lvp" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/05/28/cpp-forward-declaration/" data-id="cl4a104ik003f89mceq5v9r13" class="article-share-link">分享</a>
       
       
       

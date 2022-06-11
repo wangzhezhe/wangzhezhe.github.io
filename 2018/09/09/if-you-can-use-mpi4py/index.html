@@ -112,26 +112,29 @@ ga('send', 'pageview');
         <!-- Table of Contents -->
         
         <p>主要是介绍在python中如何使用mpi以及如何将其中的communicator实例传递给 c code</p>
-<a id="more"></a>
+<span id="more"></span>
+
 <p>之前项目的interface是c的，提供了一些c和fortran的interface 但是obviously要想让这种in-memory的staging项目使用的更方便，显然是需要和python这种 high expressive（compare with c） 语言来结合，目前好多library的方式都是上层用Python，内核使用c或者更高效的语，就像pytorch这种，这让我觉得python对于底层库的wrapper的技术是个lucrative的事情，算是表达能力与易用性的某种结合。</p>
-<p>对于mpi4py本身的使用上来看，<a href="https://mpi4py.readthedocs.io/en/stable/" target="_blank" rel="noopener">文档里</a>已经说明的很详细了。</p>
-<p>对于从python code 中传递mpi communicator给c，主要使用的是两种方式，一个是通过swig比如<a href="https://bitbucket.org/mpi4py/mpi4py/src/master/demo/wrap-swig/" target="_blank" rel="noopener">这个例子</a> 另外一个是直接通过ctypes然后自己写函数进行转换，比如这个<a href="https://bitbucket.org/mpi4py/mpi4py/src/master/demo/wrap-c/" target="_blank" rel="noopener">例子</a> 在最本质上，都是将一个python的object转化成为一个c的objct，只不过使用swig的话，中间有些过程被自动完成了。</p>
-<h3 id="常见的using-case"><a href="#常见的using-case" class="headerlink" title="常见的using case"></a>常见的using case</h3><h3 id="安装使用过程中遇到的问题"><a href="#安装使用过程中遇到的问题" class="headerlink" title="安装使用过程中遇到的问题"></a>安装使用过程中遇到的问题</h3><p>具体可以参考<a href="https://bitbucket.org/mpi4py/mpi4py/issues/107/problem-to-run-swig-demo-attempting-to-use" target="_blank" rel="noopener">这个</a></p>
+<p>对于mpi4py本身的使用上来看，<a target="_blank" rel="noopener" href="https://mpi4py.readthedocs.io/en/stable/">文档里</a>已经说明的很详细了。</p>
+<p>对于从python code 中传递mpi communicator给c，主要使用的是两种方式，一个是通过swig比如<a target="_blank" rel="noopener" href="https://bitbucket.org/mpi4py/mpi4py/src/master/demo/wrap-swig/">这个例子</a> 另外一个是直接通过ctypes然后自己写函数进行转换，比如这个<a target="_blank" rel="noopener" href="https://bitbucket.org/mpi4py/mpi4py/src/master/demo/wrap-c/">例子</a> 在最本质上，都是将一个python的object转化成为一个c的objct，只不过使用swig的话，中间有些过程被自动完成了。</p>
+<h3 id="常见的using-case"><a href="#常见的using-case" class="headerlink" title="常见的using case"></a>常见的using case</h3><h3 id="安装使用过程中遇到的问题"><a href="#安装使用过程中遇到的问题" class="headerlink" title="安装使用过程中遇到的问题"></a>安装使用过程中遇到的问题</h3><p>具体可以参考<a target="_blank" rel="noopener" href="https://bitbucket.org/mpi4py/mpi4py/issues/107/problem-to-run-swig-demo-attempting-to-use">这个</a></p>
 <p>一个是</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">relocation R_X86_64_32S against `_Py_NotImplementedStruct&apos; can not be used when making a shared object</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">relocation R_X86_64_32S against `_Py_NotImplementedStruct&#x27; can not be used when making a shared object</span><br></pre></td></tr></table></figure>
+
 <p>据说是应为编译python的时候没有加上shared enable的flag，后来在我们自己的系统上根据matainer的提示，去掉demon中python-config脚本的这一行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">libs.append(&apos;-lpython&apos; + pyver + abiflags)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">libs.append(&#x27;-lpython&#x27; + pyver + abiflags)</span><br></pre></td></tr></table></figure>
 <p>就是说-shared参数后面不使用-l参数去找python的链接库，这样直接编译也没问题，但是还是不知道为什么会这样，感觉就是在编译的时候不需要将python通过动态链接的方式放进来，如果加上的话，再使用ldd会出现如下的结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">libpython3.5m.so.1.0 =&gt; /sw/xk6/python/3.5.1/sles11.3_gnu4.9.0/lib/libpython3.5m.so.1.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">libpython3.5m.so.1.0 =&gt; /sw/xk6/python/3.5.1/sles11.3_gnu4.9.0/lib/libpython3.5m.so.1.0</span><br></pre></td></tr></table></figure>
 <p>但是不加的话也能正常运行，具体原理是什么还不太清楚</p>
 <p>另外一个是在调用mpi方法的时候会出现</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Attempting to use an MPI routine before initializing MPICH</span><br></pre></td></tr></table></figure>
-<p>这个原因住主要是两个库(一个是通过swig/mpi4py编译好的python的extension，另一个是mpi4py本身所使用的MPI.so&lt;/site-packages/mpi4py/&gt;)在使用dynamic link的时候链接了不同的底层mpi库，就是没有使用同一个mpi library所导致的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Attempting to use an MPI routine before initializing MPICH</span><br></pre></td></tr></table></figure>
+
+<p>这个原因住主要是两个库(一个是通过swig&#x2F;mpi4py编译好的python的extension，另一个是mpi4py本身所使用的MPI.so&lt;&#x2F;site-packages&#x2F;mpi4py&#x2F;&gt;)在使用dynamic link的时候链接了不同的底层mpi库，就是没有使用同一个mpi library所导致的。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/09/09/if-you-can-use-mpi4py/" data-id="cl49ds6or004xuamct2i7pz4g" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/09/09/if-you-can-use-mpi4py/" data-id="cl4a104iq005089mc6ggf6fp3" class="article-share-link">分享</a>
       
       
       

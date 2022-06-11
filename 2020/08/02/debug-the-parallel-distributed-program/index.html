@@ -112,15 +112,16 @@ ga('send', 'pageview');
         <!-- Table of Contents -->
         
         <p>some tips about debugging the parallel or distributed program</p>
-<a id="more"></a>
-<p>The debug of the parallel/distributed program is daunting, it mainly becasue information from different programs are mexed together in particular log fies, and you may not sure which happens first. Here are some tips.</p>
-<h4 id="use-process-id-or-thread-id"><a href="#use-process-id-or-thread-id" class="headerlink" title="use process id or thread id"></a>use process id or thread id</h4><p>distributed program may execute similar instructions, therefore, the practical way to identifies them is to add the id in the debug message such as printwithrank. This id can be used to trace the message printed by a particular process/thread.</p>
-<h4 id="do-not-check-the-log-file-direactly"><a href="#do-not-check-the-log-file-direactly" class="headerlink" title="do not check the log file direactly"></a>do not check the log file direactly</h4><p>it is hard to find the valuable information if you check the log file direactly, the wise strategy is to use the grep to filter the key messages you printed. And to check if it satisfies your expectation. For example, if you try to debug the send/recv primitives. Print the information at the key places and check if the number of the send message match with the number of the recv messages by grepping the key words based on the log files.</p>
+<span id="more"></span>
+
+<p>The debug of the parallel&#x2F;distributed program is daunting, it mainly becasue information from different programs are mexed together in particular log fies, and you may not sure which happens first. Here are some tips.</p>
+<h4 id="use-process-id-or-thread-id"><a href="#use-process-id-or-thread-id" class="headerlink" title="use process id or thread id"></a>use process id or thread id</h4><p>distributed program may execute similar instructions, therefore, the practical way to identifies them is to add the id in the debug message such as printwithrank. This id can be used to trace the message printed by a particular process&#x2F;thread.</p>
+<h4 id="do-not-check-the-log-file-direactly"><a href="#do-not-check-the-log-file-direactly" class="headerlink" title="do not check the log file direactly"></a>do not check the log file direactly</h4><p>it is hard to find the valuable information if you check the log file direactly, the wise strategy is to use the grep to filter the key messages you printed. And to check if it satisfies your expectation. For example, if you try to debug the send&#x2F;recv primitives. Print the information at the key places and check if the number of the send message match with the number of the recv messages by grepping the key words based on the log files.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/02/debug-the-parallel-distributed-program/" data-id="cl49ds6on003vuamcz75u6qto" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/08/02/debug-the-parallel-distributed-program/" data-id="cl4a104im003z89mc7foh0yx1" class="article-share-link">分享</a>
       
       
       

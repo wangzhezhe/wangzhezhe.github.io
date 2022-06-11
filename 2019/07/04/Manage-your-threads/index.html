@@ -112,55 +112,59 @@ ga('send', 'pageview');
         <!-- Table of Contents -->
         
         <p>刚开始programming的时候也不会考虑multithread之类的概念。只是顺序写出来就好，逐渐涉及到一些performance的问题时，好多情况需要了解清楚thread到底是被如何管理的，就是所谓的thread model，这里谈谈自己的体会。</p>
-<a id="more"></a>
-<h3 id="Thread-Pool"><a href="#Thread-Pool" class="headerlink" title="Thread Pool"></a>Thread Pool</h3><p>C++的simple thread pool <a href="https://github.com/progschj/ThreadPool" target="_blank" rel="noopener">https://github.com/progschj/ThreadPool</a><br>虽然程序简单，但是有很多的star，主要是方便定制方便集成。</p>
+<span id="more"></span>
+
+<h3 id="Thread-Pool"><a href="#Thread-Pool" class="headerlink" title="Thread Pool"></a>Thread Pool</h3><p>C++的simple thread pool <a target="_blank" rel="noopener" href="https://github.com/progschj/ThreadPool">https://github.com/progschj/ThreadPool</a><br>虽然程序简单，但是有很多的star，主要是方便定制方便集成。</p>
 <p>使用thread pool的场景</p>
 <ul>
 <li>server端的程序，过来一个request就从thread pool中取一个thread进行操作，然后返回结果。如果不使用thread pool的话，在很短的时间内有很多的request发送到server端，这个时候server会在很短的时间内启动很多的thread，这个时候cpu会频繁地进行threads之间的context switch导致实际的处理request的能力变低</li>
-<li>thread 本身的逻辑比较复杂，没法用openmp那种不同的数据同样的code来执行。 </li>
+<li>thread 本身的逻辑比较复杂，没法用openmp那种不同的数据同样的code来执行。</li>
 </ul>
 <h3 id="Openmp"><a href="#Openmp" class="headerlink" title="Openmp"></a>Openmp</h3><p>typical的使用场景是single node case 下for loop的优化，更多的是用于计算类的优化，比如reduction，sum之类的操作。</p>
 <h3 id="MPI"><a href="#MPI" class="headerlink" title="MPI"></a>MPI</h3><p>使用MPI最开始还是用于计算的任务，multiple node下的计算任务。虽然有很多的node，但是在大规模thread的环境下，这些node对于程序来看并没有什么本质的区别。code本身还是SIMD的样子，通过不同的rankid来对每个process进行标记。MPI使用的实际是multi-process，具体的通信也是multi-process之间进行通信。</p>
 <p>run one rank on one node:</p>
 <p><strong>using mpi to control this</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mpirun --map-by node -np 4</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mpirun --map-by node -np 4</span><br></pre></td></tr></table></figure>
+
 <p><strong>using srun to control this</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">srun -n 4 -N 4</span><br></pre></td></tr></table></figure>
-<h3 id="MPI-thread-pool"><a href="#MPI-thread-pool" class="headerlink" title="MPI + thread pool"></a>MPI + thread pool</h3><p>参考<a href="https://stackoverflow.com/questions/41411019/what-is-the-advantage-if-any-of-mpi-threads-parallelization-vs-mpi-only" target="_blank" rel="noopener">这个</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">srun -n 4 -N 4</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="MPI-thread-pool"><a href="#MPI-thread-pool" class="headerlink" title="MPI + thread pool"></a>MPI + thread pool</h3><p>参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/41411019/what-is-the-advantage-if-any-of-mpi-threads-parallelization-vs-mpi-only">这个</a></p>
 <p>MPI更suitable的场景是，使用multiple core on different nodes and let them do similar task to get the results which better for parallel.</p>
 <p>遇到过一个in-memory的data base的项目，这个项目是MPI程序，每一个MPI process是一个独立的可以接受请求的服务，对于接受请求的服务来说，按理说一个node上启动一个就够了，因为这个program是管理memory资源的，一个program上只需要一个就能access到这个node上所有的memory资源，但另外一个问题是，这个服务没有很好用的rpc库，每个rpc都是一个单独地process，没法实现那种一个request过来，启动一个thread进行处理的操作。但是单独一个MPI process 在一个node上处理request的效率又很低，于是就每个NODE上启动4-5个MPI process，然后说这样可以提升一些request的处理能力。但这种操作相当于是把原来一个node上的完整的memory划分成了4-5份，然后每个node管理一份，很鸡肋。</p>
 <p>这里感觉在archetecture的时候就没有考虑清楚，首先对于scalability，如果这是一个computing的项目，比如说是simulation或者是某个algorithm这种计算型很重的任务，scalability就是使用更多的core之后看时间会不会减少。</p>
 <p>如果说这个项目是一个data base的项目，scalability应该是使用了很多的node之后，处理request的时间怎么样，然后throughput怎样。因为这里care的是memory资源而不是cpu core。</p>
 <p>除非是那种每个process相似度很高的任务，可以直接不考虑communication或者data load 直接处理。对于更多的项目是comutation与network or IO 型的任务互相混合的。比如读一点数据处理一些任务，这个时候读数据是IO操作，处理任务是computation操作，比较好的是使用 MPI+cuda 或者 MPI+openmp 这里MPI的作用是保证每个node上启动一个program进行IO操作，因为MPI process提供了ID，进行distributed的管理也比较方便，比如服务发现啊，或者sharding，partition之类的操作。然后openmp或者thread pool进行 on node 的multithread 操作。</p>
-<p>如果是很整齐的并行处理比如一个for loop那种，使用openmp/cuda这种模型比较直接，如果是网络的那种，有可能request多，有可能request少，使用thread pool比较实际。</p>
+<p>如果是很整齐的并行处理比如一个for loop那种，使用openmp&#x2F;cuda这种模型比较直接，如果是网络的那种，有可能request多，有可能request少，使用thread pool比较实际。</p>
 <p>总之是不同的工具适用于不同的情况。那种hybrid更像是hierachy的管理，group manager之间负责数据的通信和loading，group内部负责并行计算（一个节点上的thread）。而纯粹的MPI相当于是扁平化的跨节点的thread pool 只有core的概念没有节点的概念。</p>
 <p>如果是单纯的server然后每个node上run一个，甚至不需要使用MPI，比如可以将ip写在parallel file system上，然后client把这些ip都存起来。或者在cloud的环境下就通过third party的工具比如etcd或者redis进行服务注册或者发现。</p>
-<p>mpi的一个好处就是可以对thread进行id的分配，这样进行data partision之后hash计算也比较容易，这似乎是这个场景下唯一的好处了，因为通信的话显然用现有的rpc库比较实际。或者另外一种solution是把所有的ip注册在master process上（比如id=0）client从这个ip=0的node上进行服务发现，这本质上与使用third party的工具是一样的。</p>
+<p>mpi的一个好处就是可以对thread进行id的分配，这样进行data partision之后hash计算也比较容易，这似乎是这个场景下唯一的好处了，因为通信的话显然用现有的rpc库比较实际。或者另外一种solution是把所有的ip注册在master process上（比如id&#x3D;0）client从这个ip&#x3D;0的node上进行服务发现，这本质上与使用third party的工具是一样的。</p>
 <p>想想要是不用mpi或者third party的工具仅仅用parallel file system 还真不容易实现，因为要给没给server一个id，使用third party的话，先注册的就是id小的，然后可以自增，就是所谓的sorted key 使用MPI的化，本身就是自带了id。</p>
 <h3 id="TBB"><a href="#TBB" class="headerlink" title="TBB"></a>TBB</h3><p>task based parallelism</p>
-<p><a href="https://www.fz-juelich.de/ias/jsc/EN/Expertise/Workshops/Conferences/CSAM-2015/Programme/lecture7a_gonnet-pdf.pdf?__blob=publicationFile" target="_blank" rel="noopener">https://www.fz-juelich.de/ias/jsc/EN/Expertise/Workshops/Conferences/CSAM-2015/Programme/lecture7a_gonnet-pdf.pdf?__blob=publicationFile</a></p>
-<p><a href="http://theory.stanford.edu/~aiken/ecp/ecp.pdf" target="_blank" rel="noopener">http://theory.stanford.edu/~aiken/ecp/ecp.pdf</a></p>
-<p><a href="https://github.com/cpp-taskflow/cpp-taskflow" target="_blank" rel="noopener">https://github.com/cpp-taskflow/cpp-taskflow</a></p>
-<p>the flow graph<br><a href="https://www.threadingbuildingblocks.org/tutorial-intel-tbb-flow-graph" target="_blank" rel="noopener">https://www.threadingbuildingblocks.org/tutorial-intel-tbb-flow-graph</a></p>
-<p>go routine vs task parallel library<br><a href="https://stackoverflow.com/questions/51962682/implementation-of-go-routines-vs-task-parallel-library" target="_blank" rel="noopener">https://stackoverflow.com/questions/51962682/implementation-of-go-routines-vs-task-parallel-library</a></p>
-<h3 id="CPU-Affinity"><a href="#CPU-Affinity" class="headerlink" title="CPU Affinity"></a>CPU Affinity</h3><p>到cpu affinity级别的优化就是单节点上比较细粒度的优化，具体可以参考<a href="https://eli.thegreenplace.net/2016/c11-threads-affinity-and-hyperthreading/" target="_blank" rel="noopener">这一篇</a>，其中有诸多关于c++ 使用thread提供的工具的例子，以及cpu affinity的技术细节，在实际的项目中常常没有用到很细节的优化，比如那种针对某个archetecture进行参数优化的情况。</p>
+<p><a target="_blank" rel="noopener" href="https://www.fz-juelich.de/ias/jsc/EN/Expertise/Workshops/Conferences/CSAM-2015/Programme/lecture7a_gonnet-pdf.pdf?__blob=publicationFile">https://www.fz-juelich.de/ias/jsc/EN/Expertise/Workshops/Conferences/CSAM-2015/Programme/lecture7a_gonnet-pdf.pdf?__blob=publicationFile</a></p>
+<p><a target="_blank" rel="noopener" href="http://theory.stanford.edu/~aiken/ecp/ecp.pdf">http://theory.stanford.edu/~aiken/ecp/ecp.pdf</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cpp-taskflow/cpp-taskflow">https://github.com/cpp-taskflow/cpp-taskflow</a></p>
+<p>the flow graph<br><a target="_blank" rel="noopener" href="https://www.threadingbuildingblocks.org/tutorial-intel-tbb-flow-graph">https://www.threadingbuildingblocks.org/tutorial-intel-tbb-flow-graph</a></p>
+<p>go routine vs task parallel library<br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/51962682/implementation-of-go-routines-vs-task-parallel-library">https://stackoverflow.com/questions/51962682/implementation-of-go-routines-vs-task-parallel-library</a></p>
+<h3 id="CPU-Affinity"><a href="#CPU-Affinity" class="headerlink" title="CPU Affinity"></a>CPU Affinity</h3><p>到cpu affinity级别的优化就是单节点上比较细粒度的优化，具体可以参考<a target="_blank" rel="noopener" href="https://eli.thegreenplace.net/2016/c11-threads-affinity-and-hyperthreading/">这一篇</a>，其中有诸多关于c++ 使用thread提供的工具的例子，以及cpu affinity的技术细节，在实际的项目中常常没有用到很细节的优化，比如那种针对某个archetecture进行参数优化的情况。</p>
 <p>具体涉及到的内容角较多，列出一些比较实用的点：</p>
 <p>查看cpu的topology可以使用lstopo进行查看，可以很直接的看到各个cache的大小</p>
-<p>具体c++11 thread 如何bind cpu 可以参考<a href="https://github.com/eliben/code-for-blog/tree/master/2016/threads-affinity" target="_blank" rel="noopener">这里</a>的示例代码，这里包括了通过代码查看cpu信息以及使用hwloc library。</p>
+<p>具体c++11 thread 如何bind cpu 可以参考<a target="_blank" rel="noopener" href="https://github.com/eliben/code-for-blog/tree/master/2016/threads-affinity">这里</a>的示例代码，这里包括了通过代码查看cpu信息以及使用hwloc library。</p>
 <p>context switch</p>
-<p><a href="https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch" target="_blank" rel="noopener">https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch</a></p>
-<p><a href="https://eli.thegreenplace.net/2018/measuring-context-switching-and-memory-overheads-for-linux-threads/" target="_blank" rel="noopener">https://eli.thegreenplace.net/2018/measuring-context-switching-and-memory-overheads-for-linux-threads/</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch">https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch</a></p>
+<p><a target="_blank" rel="noopener" href="https://eli.thegreenplace.net/2018/measuring-context-switching-and-memory-overheads-for-linux-threads/">https://eli.thegreenplace.net/2018/measuring-context-switching-and-memory-overheads-for-linux-threads/</a></p>
 <p>同时running 的thread的数目最好和core的数目一致，这样可以避免context switch</p>
-<p><a href="https://stackoverflow.com/questions/25933912/should-i-bind-spinning-thread-to-the-certain-core" target="_blank" rel="noopener">https://stackoverflow.com/questions/25933912/should-i-bind-spinning-thread-to-the-certain-core</a></p>
-<p><a href="https://stackoverflow.com/questions/14170127/pros-and-cons-of-cpu-affinity" target="_blank" rel="noopener">https://stackoverflow.com/questions/14170127/pros-and-cons-of-cpu-affinity</a></p>
-<p>cpu affinity<br><a href="https://www.linuxjournal.com/article/6799" target="_blank" rel="noopener">https://www.linuxjournal.com/article/6799</a></p>
-<p>thread handle<br><a href="https://stackoverflow.com/questions/24645880/set-cpu-affinity-when-create-a-thread" target="_blank" rel="noopener">https://stackoverflow.com/questions/24645880/set-cpu-affinity-when-create-a-thread</a></p>
-<p>thread affinity and hyper threading<br><a href="https://dzone.com/articles/c11-threads-affinity-and-hyperthreading-1" target="_blank" rel="noopener">https://dzone.com/articles/c11-threads-affinity-and-hyperthreading-1</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/25933912/should-i-bind-spinning-thread-to-the-certain-core">https://stackoverflow.com/questions/25933912/should-i-bind-spinning-thread-to-the-certain-core</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/14170127/pros-and-cons-of-cpu-affinity">https://stackoverflow.com/questions/14170127/pros-and-cons-of-cpu-affinity</a></p>
+<p>cpu affinity<br><a target="_blank" rel="noopener" href="https://www.linuxjournal.com/article/6799">https://www.linuxjournal.com/article/6799</a></p>
+<p>thread handle<br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/24645880/set-cpu-affinity-when-create-a-thread">https://stackoverflow.com/questions/24645880/set-cpu-affinity-when-create-a-thread</a></p>
+<p>thread affinity and hyper threading<br><a target="_blank" rel="noopener" href="https://dzone.com/articles/c11-threads-affinity-and-hyperthreading-1">https://dzone.com/articles/c11-threads-affinity-and-hyperthreading-1</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/04/Manage-your-threads/" data-id="cl49ds6ob0011uamcrgq9rjit" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/07/04/Manage-your-threads/" data-id="cl4a104ic000y89mc4o4i4rij" class="article-share-link">分享</a>
       
       
       

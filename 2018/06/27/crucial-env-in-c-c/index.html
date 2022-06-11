@@ -111,14 +111,16 @@ ga('send', 'pageview');
       
         <!-- Table of Contents -->
         
-        <p>主要介绍Linux使用中的几种关键的环境变量，包括<code>PATH</code>,<code>LD_LIBRARY_PATH</code>，gcc的-I参数以及-L参数<br><a id="more"></a></p>
-<p>c/c++的程序在编译的时候就是一件很麻烦的事情，往往需要各种环境变量的设置找到对应的库。</p>
-<h3 id="PATH"><a href="#PATH" class="headerlink" title="PATH"></a>PATH</h3><p><code>PATH</code>是系统范围的变量，每个shell都有自己的path，系统会从path所指定的路径下面寻找execuatble file。修改的时候一种是临时使用<code>export PATH=$PATH:&lt;new path&gt;</code> 添加，另外一种是将export命令放在<code>.bashrc</code>之类的配置文件中。还有一个问题，多个同名称的excuatable在不同的路径下面，如何保证系统执行的是最新的版本。比如<a href="https://stackoverflow.com/questions/413493/choosing-between-multiple-executables-with-same-name-in-linux" target="_blank" rel="noopener">这个问题</a>，根据其中的回答，系统是按照先来后到的顺序查找excutable的，这样可以使用<code>export PATH = &lt;new path&gt;:$PATH</code> 来保证将自己需要的path放在变量的最前面的部分。</p>
+        <p>主要介绍Linux使用中的几种关键的环境变量，包括<code>PATH</code>,<code>LD_LIBRARY_PATH</code>，gcc的-I参数以及-L参数</p>
+<span id="more"></span>
+
+<p>c&#x2F;c++的程序在编译的时候就是一件很麻烦的事情，往往需要各种环境变量的设置找到对应的库。</p>
+<h3 id="PATH"><a href="#PATH" class="headerlink" title="PATH"></a>PATH</h3><p><code>PATH</code>是系统范围的变量，每个shell都有自己的path，系统会从path所指定的路径下面寻找execuatble file。修改的时候一种是临时使用<code>export PATH=$PATH:&lt;new path&gt;</code> 添加，另外一种是将export命令放在<code>.bashrc</code>之类的配置文件中。还有一个问题，多个同名称的excuatable在不同的路径下面，如何保证系统执行的是最新的版本。比如<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/413493/choosing-between-multiple-executables-with-same-name-in-linux">这个问题</a>，根据其中的回答，系统是按照先来后到的顺序查找excutable的，这样可以使用<code>export PATH = &lt;new path&gt;:$PATH</code> 来保证将自己需要的path放在变量的最前面的部分。</p>
 <h3 id="LD-LIBRARY-PATH"><a href="#LD-LIBRARY-PATH" class="headerlink" title="LD_LIBRARY_PATH"></a><code>LD_LIBRARY_PATH</code></h3><p>这个变量用来设置在程序<strong>加载运行</strong>的时候寻找<strong>动态链接库</strong>的路径，使用<code>ldd &lt;二进制文件&gt;</code> 可以查看到这个excutable file使用的动态链接库在哪个路径下。使用了<code>LD_LIBRARY_PATH</code>之后，系统再找动态链接文件的时候就会从<code>LD_LIBRARY_PATH</code>所指定的路径中查找。</p>
 <p>还有一个变量是<code>LIBRARY_PATH</code>是在程序编译期间用来查找动态链接库的路径，也可以使用gcc的-L参数来指定。</p>
-<p>直接设置<code>LD_LIBRARY_PATH</code>可能不是一个好的方式（比较hack的方式），可以设置<code>/etc/ld.so.conf.d</code>(比如Ubuntu)在这个文件中设置需要添加的library所在的路径，之后可以通过<code>sudo ldconfig</code>来升级system更新到最新的libs，具体可以参考<a href="https://stackoverflow.com/questions/13428910/how-to-set-the-environmental-variable-ld-library-path-in-linux" target="_blank" rel="noopener">这个</a></p>
+<p>直接设置<code>LD_LIBRARY_PATH</code>可能不是一个好的方式（比较hack的方式），可以设置<code>/etc/ld.so.conf.d</code>(比如Ubuntu)在这个文件中设置需要添加的library所在的路径，之后可以通过<code>sudo ldconfig</code>来升级system更新到最新的libs，具体可以参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/13428910/how-to-set-the-environmental-variable-ld-library-path-in-linux">这个</a></p>
 <h3 id="other-key-parameters-from-the-system-aspects"><a href="#other-key-parameters-from-the-system-aspects" class="headerlink" title="other key parameters from the system aspects"></a>other key parameters from the system aspects</h3><p>One good example is the spck env setting. Ensentally, it will modify these key variables after we loading a new spack environment (a set of variables under the spack view will be set into these key variables).</p>
-<p>I copy this form from the spack official <a href="https://spack.readthedocs.io/en/latest/environments.html" target="_blank" rel="noopener">documents</a>:</p>
+<p>I copy this form from the spack official <a target="_blank" rel="noopener" href="https://spack.readthedocs.io/en/latest/environments.html">documents</a>:</p>
 <table>
 <thead>
 <tr>
@@ -126,18 +128,17 @@ ga('send', 'pageview');
 <th>Paths</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>PATH</td>
 <td>bin</td>
 </tr>
 <tr>
 <td>MANPATH</td>
-<td>man, share/man</td>
+<td>man, share&#x2F;man</td>
 </tr>
 <tr>
 <td>ACLOCAL_PATH</td>
-<td>share/aclocal</td>
+<td>share&#x2F;aclocal</td>
 </tr>
 <tr>
 <td>LD_LIBRARY_PATH</td>
@@ -153,38 +154,38 @@ ga('send', 'pageview');
 </tr>
 <tr>
 <td>PKG_CONFIG_PATH</td>
-<td>lib/pkgconfig, lib64/pkgconfig, share/pkgconfig</td>
+<td>lib&#x2F;pkgconfig, lib64&#x2F;pkgconfig, share&#x2F;pkgconfig</td>
 </tr>
 <tr>
 <td>CMAKE_PREFIX_PATH</td>
 <td>.</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>This table contains typical system level env, we disucssed the <code>PATH</code>, <code>LD_PATH</code> and <code>LD_LIBRARY_PATH</code>. The <code>CPATH</code> is easy to understand, we need to find the header files. In particular, it specifies a list of directories to be searched as if specified with -I, but after any paths given with -I options on the command line. This environment variable is used regardless of which language is being preprocessed.</p>
 <p><code>PKG_CONFIG_PATH</code> is a environment variable that specifies additional paths in which pkg-config will search for its .pc files. The pkg-config’s searching path can be specified by this env. The .pc file that describes the information of the package will be put into the search dir of the pkg-config search path.</p>
 <h3 id="linking的时候设置-so文件的查询路径"><a href="#linking的时候设置-so文件的查询路径" class="headerlink" title="linking的时候设置.so文件的查询路径"></a>linking的时候设置.so文件的查询路径</h3><p>若果在编译链接时加入-L参数，在实际运行的时候可能会出现类似如下的情况：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-bash-4.2$ ldd metaserver</span><br><span class="line">	linux-vdso.so.1 =&gt;  (0x00007ffef8fb1000)</span><br><span class="line">	libprotobuf.so.19 =&gt; not found</span><br><span class="line">	libgrpc++.so.1 =&gt; not found</span><br><span class="line">	libgrpc.so.7 =&gt; not found</span><br><span class="line">	libgrpc++_reflection.so.1 =&gt; not found</span><br><span class="line">	libpthread.so.0 =&gt; /lib64/libpthread.so.0 (0x00007f0dae8aa000)</span><br></pre></td></tr></table></figure>
-<p>这是一种情况就是将.so所在的文件添加到<code>LD_LIBRARY_PATH</code>中，将如下命令<code>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:&lt;path_to_dir_of_libs&gt;</code>放在./profile中，每次自动执行，另一种是set the linking path explicitly, such as <a href="https://stackoverflow.com/questions/6562403/i-dont-understand-wl-rpath-wl" target="_blank" rel="noopener">this</a>. add following info when linking:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-bash-4.2$ ldd metaserver</span><br><span class="line">	linux-vdso.so.1 =&gt;  (0x00007ffef8fb1000)</span><br><span class="line">	libprotobuf.so.19 =&gt; not found</span><br><span class="line">	libgrpc++.so.1 =&gt; not found</span><br><span class="line">	libgrpc.so.7 =&gt; not found</span><br><span class="line">	libgrpc++_reflection.so.1 =&gt; not found</span><br><span class="line">	libpthread.so.0 =&gt; /lib64/libpthread.so.0 (0x00007f0dae8aa000)</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
+<p>这是一种情况就是将.so所在的文件添加到<code>LD_LIBRARY_PATH</code>中，将如下命令<code>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:&lt;path_to_dir_of_libs&gt;</code>放在.&#x2F;profile中，每次自动执行，另一种是set the linking path explicitly, such as <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/6562403/i-dont-understand-wl-rpath-wl">this</a>. add following info when linking:</p>
 <p>for example:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-L$(PATH_GRPC)/lib -L$(PATH_PROTO)/lib -Wl,-rpath $(PATH_GRPC)/lib -Wl,-rpath $(PATH_PROTO)/lib</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-L$(PATH_GRPC)/lib -L$(PATH_PROTO)/lib -Wl,-rpath $(PATH_GRPC)/lib -Wl,-rpath $(PATH_PROTO)/lib</span><br></pre></td></tr></table></figure>
+
 <p>这样编译出来的binary在通过<code>ldd</code>查看时，就会直接找到.so文件的位置了。</p>
-<h3 id="gcc-L-l-与-I（big-i）"><a href="#gcc-L-l-与-I（big-i）" class="headerlink" title="gcc -L -l 与 -I（big i）"></a>gcc -L -l 与 -I（big i）</h3><p>具体的可以参考<a href="https://stackoverflow.com/questions/29468211/gcc-difference-between-l-and-l-option-and-how-to-provide-complete-path-to-a-l" target="_blank" rel="noopener">这个</a>或者gcc的<a href="https://gcc.gnu.org/onlinedocs/gcc-2.95.2/gcc_2.html#SEC13" target="_blank" rel="noopener">参数说明</a>文档</p>
+<h3 id="gcc-L-l-与-I（big-i）"><a href="#gcc-L-l-与-I（big-i）" class="headerlink" title="gcc -L -l 与 -I（big i）"></a>gcc -L -l 与 -I（big i）</h3><p>具体的可以参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/29468211/gcc-difference-between-l-and-l-option-and-how-to-provide-complete-path-to-a-l">这个</a>或者gcc的<a target="_blank" rel="noopener" href="https://gcc.gnu.org/onlinedocs/gcc-2.95.2/gcc_2.html#SEC13">参数说明</a>文档</p>
 <p><code>-larchive</code> Add archive file archive to the list of files to link. ld will search its path-list for occurrences of libarchive.a for every archive specified. 也就是说在编译的时候如果使用了某个<strong>动态链接库</strong>可以通过-l参数设置进来</p>
 <p><code>-Lsearchdir</code> Add path searchdir to the list of paths that ld will search for archive libraries and ld control scripts. 如果使用-L参数，则会在指定的目录下搜索，之后在link的时候从对应的目录下找到需要的文件</p>
-<p><code>-I dir</code> 表示<a href="https://gcc.gnu.org/onlinedocs/gcc/Directory-Options.html#index-I" target="_blank" rel="noopener">include path</a>， Add the directory dir to the list of directories to be searched for header files during preprocessing，使用了-I参数之后就会从这个路径下找头文件。</p>
-<p><code>-shared</code> Produce a shared object which can then be linked with other objects to form an executable. Not all systems support this option. You must also specify <code>-fpic</code> or <code>-fPIC</code> on some systems when you specify this option.</p>
+<p><code>-I dir</code> 表示<a target="_blank" rel="noopener" href="https://gcc.gnu.org/onlinedocs/gcc/Directory-Options.html#index-I">include path</a>， Add the directory dir to the list of directories to be searched for header files during preprocessing，使用了-I参数之后就会从这个路径下找头文件。</p>
+<p><code>-shared</code> Produce a shared object which can then be linked with other objects to form an executable. Not all systems support this option. You must also specify <code>-fpic</code> or <code>-fPIC</code> on some systems when you specify this option.</p>
 <h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p>介绍<code>PATH／LD_LIBRARY_PATH</code></p>
-<p><a href="https://blog.csdn.net/wangeen/article/details/8159500" target="_blank" rel="noopener">https://blog.csdn.net/wangeen/article/details/8159500</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wangeen/article/details/8159500">https://blog.csdn.net/wangeen/article/details/8159500</a></p>
 <p>为什么不建议用<code>LD_LIBRARY_PATH</code></p>
-<p><a href="http://xahlee.info/UnixResource_dir/_/ldpath.html" target="_blank" rel="noopener">http://xahlee.info/UnixResource_dir/_/ldpath.html</a></p>
-<p>option for linking<br><a href="https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html" target="_blank" rel="noopener">https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html</a></p>
-<p>这个资料很好 有全部的gcc参数<br><a href="https://gcc.gnu.org/onlinedocs/gcc/Option-Index.html#Option-Index_op_letter-I" target="_blank" rel="noopener">https://gcc.gnu.org/onlinedocs/gcc/Option-Index.html#Option-Index_op_letter-I</a></p>
+<p><a target="_blank" rel="noopener" href="http://xahlee.info/UnixResource_dir/_/ldpath.html">http://xahlee.info/UnixResource_dir/_/ldpath.html</a></p>
+<p>option for linking<br><a target="_blank" rel="noopener" href="https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html">https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html</a></p>
+<p>这个资料很好 有全部的gcc参数<br><a target="_blank" rel="noopener" href="https://gcc.gnu.org/onlinedocs/gcc/Option-Index.html#Option-Index_op_letter-I">https://gcc.gnu.org/onlinedocs/gcc/Option-Index.html#Option-Index_op_letter-I</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/27/crucial-env-in-c-c/" data-id="cl49ds6on003quamcf8f9q5kv" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/06/27/crucial-env-in-c-c/" data-id="cl4a104im003v89mc0ujicfjh" class="article-share-link">分享</a>
       
       
       

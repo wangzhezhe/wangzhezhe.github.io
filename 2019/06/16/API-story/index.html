@@ -112,9 +112,10 @@ ga('send', 'pageview');
         <!-- Table of Contents -->
         
         <p>主要是整理 Restful api设计时候的一些体会以及别人的实践经验。</p>
-<a id="more"></a>
+<span id="more"></span>
+
 <h3 id="restful-api-设计-Tips"><a href="#restful-api-设计-Tips" class="headerlink" title="restful api 设计 Tips"></a>restful api 设计 Tips</h3><p>涉及到多个组件协作的时候，对外暴露api的这种，api抽象的这种问题更多的是一个经验问题，不是像一个算法那样，有着明确的流程或者对错。而一般对于经验性的问题，往往都没有特别明确的对错的限制，这一类的问题都有一些所谓的规范和原则在里面的，就比如对于代码格式规范，比如golang的规范，golang code review，比如google的代码格式规范。偶尔看到了微信公众号”嘀嗒嘀嗒”中一篇文章，把结合自己的体会整理一下。</p>
-<h4 id="返回状态码"><a href="#返回状态码" class="headerlink" title="返回状态码"></a>返回状态码</h4><p>返回码的话，是很再常见不过的了，但是实际上使用的时候，常常太过随意，不够规范，这一点子自己要调整过来，比如这个文章(<a href="https://www.cnblogs.com/liulei/archive/2010/05/25/1743315.html)就整理的很好，关于返回码的具体含义。总之，按照规范进行设计是一个既简单又不简单的事情。" target="_blank" rel="noopener">https://www.cnblogs.com/liulei/archive/2010/05/25/1743315.html)就整理的很好，关于返回码的具体含义。总之，按照规范进行设计是一个既简单又不简单的事情。</a></p>
+<h4 id="返回状态码"><a href="#返回状态码" class="headerlink" title="返回状态码"></a>返回状态码</h4><p>返回码的话，是很再常见不过的了，但是实际上使用的时候，常常太过随意，不够规范，这一点子自己要调整过来，比如这个文章(<a target="_blank" rel="noopener" href="https://www.cnblogs.com/liulei/archive/2010/05/25/1743315.html)%E5%B0%B1%E6%95%B4%E7%90%86%E7%9A%84%E5%BE%88%E5%A5%BD%EF%BC%8C%E5%85%B3%E4%BA%8E%E8%BF%94%E5%9B%9E%E7%A0%81%E7%9A%84%E5%85%B7%E4%BD%93%E5%90%AB%E4%B9%89%E3%80%82%E6%80%BB%E4%B9%8B%EF%BC%8C%E6%8C%89%E7%85%A7%E8%A7%84%E8%8C%83%E8%BF%9B%E8%A1%8C%E8%AE%BE%E8%AE%A1%E6%98%AF%E4%B8%80%E4%B8%AA%E6%97%A2%E7%AE%80%E5%8D%95%E5%8F%88%E4%B8%8D%E7%AE%80%E5%8D%95%E7%9A%84%E4%BA%8B%E6%83%85%E3%80%82">https://www.cnblogs.com/liulei/archive/2010/05/25/1743315.html)就整理的很好，关于返回码的具体含义。总之，按照规范进行设计是一个既简单又不简单的事情。</a></p>
 <h4 id="同时考虑上下游"><a href="#同时考虑上下游" class="headerlink" title="同时考虑上下游"></a>同时考虑上下游</h4><p>考虑上游的话，就是输入信息的检查，不要对上游的输入信息的正确性做任何假设，上游可能输出一些奇怪的字符，或者很长的字符，导致程序发生未知错误。</p>
 <p>考虑下游的话，就是返回码的正确性检验，一定要按照规定的方式返回对应的返回码，这样下游的调用方再调用api的时候才能有更明确的状态，不要随便修改返回字段的格式，特别是线上的项目，因为不知道下游是怎么处理的，所以返回的字段一旦发生了改变，下游的处理上可能会出现未知的错误。</p>
 <p>说白了就是做到瞻前顾后，上下游都要考虑到。</p>
@@ -123,7 +124,7 @@ ga('send', 'pageview');
 <p>不同层次的资源类型也可以通过label来识别，比如docker engine层面的label，容器层面的label。对于k8s来说，pod，service，rc几个层次的资源之间都是通过label来进行group和资源控制的。</p>
 <h4 id="认证和授权"><a href="#认证和授权" class="headerlink" title="认证和授权"></a>认证和授权</h4><p>这部分自己也没有太多的经验，可以参考之前kube-apiserver的实现，理想情况是尽量安全，但是尽量安全的话，也意味着授权部分的代码实现复杂程度很高，常用的是username+password的方式，还有一种情况是在header中添加bare token进行认证。</p>
 <h3 id="关于幂等性"><a href="#关于幂等性" class="headerlink" title="关于幂等性"></a>关于幂等性</h3><p>幂等性的根本问题在于对并发问题的处理上，好多时候，对外暴露的api都需要满足幂等性（似乎只是一个本身被默认的性质了）。当然这是一个数学概念，从数学的角度上，不做过多的深入理解，从程序本身的角度上来看，就是一次调用一个http请求，和多次调用一个http请求，所产生的行为应该是一致的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">每次对外暴露一个新的api之后，一定要考虑一下这个api自身的幂等性，做一下假设，梳理一下整条逻辑，并发处理的时候，或者多次处理的时候，是否还符合幂等性</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">每次对外暴露一个新的api之后，一定要考虑一下这个api自身的幂等性，做一下假设，梳理一下整条逻辑，并发处理的时候，或者多次处理的时候，是否还符合幂等性</span><br></pre></td></tr></table></figure>
 <p>最近就遇到了一个幂等性没有被处理好的http请求的例子。 一般一个http请求，如果整个过程中涉及到的环节比较多的话，或者时间比较长的话，在实际进行操作的时候，就容易违反幂等性的设计原则（总是先验地任务请求是一个一个过来的，即一个请求被处理完之后再过来一个请求，实际上并非是这样的）。</p>
 <p>一般遇到幂等性的问题，可以从api的耦合度上进行考虑，看是否需要对api进行更细粒度的拆分，还是有就是程序上的原因，是否在一个api的proccess还在处理的过程中，另一个api请求已经过来，在这个过程中，是否会发生异常。也就是在并发处理上，是否有把各种情况都考虑的周到。比如一个完整的流程中会有1，2，3，4多个小的步骤，第一个请求在执行到某个步骤的时候，第二个请求又进来，这样会不会有冲突，是第一个请求又重新被执行呢，还是说由于上一次操作没有被执行完，就直接抛弃这个请求，就是说原子性的粒度要被控制在哪个范围。</p>
 <p>从这个角度上来看，对外暴露api，特别是暴露那些会引起系统内部状态发生改变的api，是一件十分严谨又十分有技术含量的事情，因为你需要把用户的各种行为都要考虑到，分类处理要全面，考虑到不同行为对系统造成的影响是否符合业务本身的逻辑定义，而实际上用户的行为往往是很难被全面预料到的。</p>
@@ -134,7 +135,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/API-story/" data-id="cl49ds6o00000uamcb0h5n10n" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/API-story/" data-id="cl4a104i4000189mc0rb70iey" class="article-share-link">分享</a>
       
       
       

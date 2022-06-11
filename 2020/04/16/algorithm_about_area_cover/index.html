@@ -112,12 +112,13 @@ ga('send', 'pageview');
         <!-- Table of Contents -->
         
         <p>判断某个area是否被已有area cover的算法以及其在实践中的应用</p>
-<a id="more"></a>
+<span id="more"></span>
+
 <p>大部分的coding工作可能更像是glue。设计好合适的data abstraction以及interface，按照合适的语言部署到合适的platform上。很多时候关键的问题都被解决好了，剩下的似乎就是把不同小部分的模块组成在一起的操作了。</p>
 <p>最近终于有了一个把实际的algorithm使用到一个framework中的体会。具体问题背景是这样的: 对于一个in-memory的data management system, 不同partition的data是分布式地存储在不同的node上，不仅仅raw data 是分布式地存储，这些raw data 的metadat 也是分布式地进行存储。那在query的时候怎么能知道这些data是不是都avaliable了？比如一个data被分成了10个partition,可能传输的时候只有5个到了data management service里，这个时候一个query过来，如何知道这个数据还没传输完整？</p>
 <p>之前的一种方式是在client端使用lock，比如在准备传data的时候加一个lock，然后在data传送完成之后再加一个lock。在query的过程中，如果发现指定的数据已被lock，就返回正在处理的状态。这个方法虽然可行，但总是引入了额外复杂的机制，比如client在传数据之前还要设置lock，增加了额外的复杂操作，这就让人很不爽。</p>
 <p>作为一个负责任的distributed data management server，最起码应该知道过来的数据是不是完整的啊，这个怎么能让client通过distributed lock的方式去控制呢，感觉像是甩锅的操作。况且之前的code中的lock机制也实现的不怎么好，总是莫名其妙的卡在一个地方，让人感到很郁闷，无从下手。</p>
-<p>于是在新的server中打算提供一个算法，就是检测某个指定的partition是否已经被cover。这个说起来好像挺容易，具体还是参考了stack over flow 上的<a href="https://stackoverflow.com/questions/4397226/algorithm-required-to-determine-if-a-rectangle-is-completely-covered-by-another" target="_blank" rel="noopener">答案</a>。开始的时候还以为要用segment tree 什么的判断是否cover，但是这里的方法很简洁，并且支持不同维度的data，不论data dim 是 1 2 3 或者是更高的维度，都能支持。</p>
+<p>于是在新的server中打算提供一个算法，就是检测某个指定的partition是否已经被cover。这个说起来好像挺容易，具体还是参考了stack over flow 上的<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/4397226/algorithm-required-to-determine-if-a-rectangle-is-completely-covered-by-another">答案</a>。开始的时候还以为要用segment tree 什么的判断是否cover，但是这里的方法很简洁，并且支持不同维度的data，不论data dim 是 1 2 3 或者是更高的维度，都能支持。</p>
 <p>首先每个 server 都知道自己所负责的domain的范围是什么（这个由DHT决定），当前的server中存储了一些数据的metadata，然后一个query过来，要看这个query是否被这些已经存在的 metadata 完全覆盖。比如一个server 负责的是 [1,20]，然后有一些数据比[1,5],[6,8],[10,15] 存储在这个server中，如果query是[1,8]则返回true，因为[1,8]中的元素都已经存在于server中，如果是[1,10]则返回false，因为9号元素不在这个server中。 这里用到的思路大致如下。首先建立一个query set, 这个set在开始的时候只有一个元素，就是query的范围。然后是遍历metadata中已经有的元素，对于每个被遍历到的元素，在遍历query set中的元素，如果没有重叠，则继续，如果query set中的元素被覆盖，则对应元素从query set 中pop出来，如果有重叠的部分，则重叠的部分消去，原本的query set中的元素被分解成为两个元素，重新加入到query set中。最后查看query set中是否还有元素。如果为空则被cover，否则就没有被cover。 </p>
 <p>这个算法的好处是适用于不同维度的数据，复杂的地方就是2维或者3维的时候，将原来的元素分解可能会比较麻烦。</p>
 <p>当然这里是原本的元素是比较规则的rectangle，就是与xyz轴平行。如果更复杂的图形可能就涉及到了计算几何中的一些方法，需要用到segment tree之类的方法扫过整个空间那样操作，这个暂时就不具体深究了。</p>
@@ -125,7 +126,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/16/algorithm_about_area_cover/" data-id="cl49ds6oi002uuamcs1b8vjrv" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/04/16/algorithm_about_area_cover/" data-id="cl4a104ih002j89mc9ko7dx4x" class="article-share-link">分享</a>
       
       
       

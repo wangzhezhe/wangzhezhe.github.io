@@ -113,9 +113,9 @@ ga('send', 'pageview');
         
         <p>大概是开学之前的一些体会。</p>
 <p>竟然有了一点sorting things的意识，不管是对于收拾屋子里的东西还是整理开发机的环境。本质上都是建立index，然后降低complexity，每次只关注整个system上的一个局部的事情，还是条理清晰地去divide it into different modules。</p>
-<p>比如开发机的上的环境，在熟悉了cmake之后意识到 source tree, build tree 以及 install tree的划分思路，比如在home dir中，有cworkspace, pyworkspace, goworkspace等等，在cworkspace中，划分目录是src, build, install 之后比如rapidjson的package，source放在src目录中，build的目录全都以<code>build_</code>开头，install的目录全都以<code>install_</code>开头，这样的好处是不会把文件弄混，找起来也比较方便。对于home dir 比较小的，就按照同样的规则在/tmp或者/scratch的目录下进行划分。</p>
+<p>比如开发机的上的环境，在熟悉了cmake之后意识到 source tree, build tree 以及 install tree的划分思路，比如在home dir中，有cworkspace, pyworkspace, goworkspace等等，在cworkspace中，划分目录是src, build, install 之后比如rapidjson的package，source放在src目录中，build的目录全都以<code>build_</code>开头，install的目录全都以<code>install_</code>开头，这样的好处是不会把文件弄混，找起来也比较方便。对于home dir 比较小的，就按照同样的规则在&#x2F;tmp或者&#x2F;scratch的目录下进行划分。</p>
 <p>那些老员工常常不进行install，其实build之后大部分的文件都已经具备了，install就仅仅是把需要的文件拷贝到指定的地方，使用cmake的话，已经有<code>.cmake</code>，即使是在build dir下也能找到合适的.so文件，有的时候多install一下反而会有一些额外的错误，比如有的.so文件找不到，毕竟多一个操作就多一个错误的可能性。</p>
-<p>才发现原来学校的ilab是很好的平台了，一般的集群没有配置parallel file system，HPC的机器通常都是用script提交任务，想获得交互的机器通常都会限制权限，不小心在login上执行了任务还会被freeze account(事实上后来发现 仅仅是多加个srun就行了 但是以前这个意识不是很好)，而这些在ilab上都不用考虑，登上去各种交互操作debug还是很方便的。以前觉得hard disk比较小，不方便，现在才发现原来是自己的使用方式不对。src文件就放在backup的home dir下，build dir就放在 /tmp 或者是类似的 存储大文件的file system 下。之前总觉得不方便的原因是自己把src dir和build dir mix 到了一起，这样很多build过程中的冗余文件也都被包括在内了，目录也是很凌乱。</p>
+<p>才发现原来学校的ilab是很好的平台了，一般的集群没有配置parallel file system，HPC的机器通常都是用script提交任务，想获得交互的机器通常都会限制权限，不小心在login上执行了任务还会被freeze account(事实上后来发现 仅仅是多加个srun就行了 但是以前这个意识不是很好)，而这些在ilab上都不用考虑，登上去各种交互操作debug还是很方便的。以前觉得hard disk比较小，不方便，现在才发现原来是自己的使用方式不对。src文件就放在backup的home dir下，build dir就放在 &#x2F;tmp 或者是类似的 存储大文件的file system 下。之前总觉得不方便的原因是自己把src dir和build dir mix 到了一起，这样很多build过程中的冗余文件也都被包括在内了，目录也是很凌乱。</p>
 <p>所谓在software的管理上变得有经验的过程就是，以前都是有apt-get管理的packge现在很多都是自己管理了。在使用HPC之前，总觉得系统没有sudo权限自己就没法使用了，之后用了HPC，慢慢了解到不论是auto tool 的 configure 都是可以配置 prefix 的。才知道不是所有的内容都要放在需要sudo权限的目录下。</p>
 <p>实习的时候虽然只有一个single node的pc，但也做了很多事，甚至是MPI的程序，其实真正使用HPC的时候就是program debuging ready 然后在HPC上仅仅变换一下 -n 后面的数字 然后run各种实验。真正大量的时间还是花在debuging的时间上，这个时候仅仅使用small level的数据集在single node server上 debug 就足够了，哪怕是MPI的程序。</p>
 <p>有时候又想自己是不是太把自己的工作当回事儿搞得很沉重，想想这些年来做的事情，尽管是很努力地想着怎么能把影响力扩大，增长时间，但是真正能算得上是有影响力的却没有几件，这就让我反思，自己着急忙慌的，到底是为了什么。着急忙慌地把事情做好，到底有什么意义。特别是code层面，每当自己尝试construct一个稍微大一点的事情的时候，最后总是搞的一团糟。</p>
@@ -126,7 +126,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/09/01/sorting-story/" data-id="cl49ds6oz006cuamc1s6e0363" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/09/01/sorting-story/" data-id="cl4a104ix006m89mcd191el3i" class="article-share-link">分享</a>
       
       
       

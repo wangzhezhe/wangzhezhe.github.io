@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>One libraray about cpp object serilization | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Discuss one exmaple library about cpp serilization and unserilization">
+<meta property="og:type" content="article">
+<meta property="og:title" content="One libraray about cpp object serilization">
+<meta property="og:url" content="http://yoursite.com/2021/02/07/one-libraray-about-cpp-object-serilization/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Discuss one exmaple library about cpp serilization and unserilization">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-02-07T08:50:42.000Z">
+<meta property="article:modified_time" content="2021-02-07T09:52:24.000Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-one-libraray-about-cpp-object-serilization" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/02/07/one-libraray-about-cpp-object-serilization/" class="article-date">
+  <time datetime="2021-02-07T08:50:42.000Z" itemprop="datePublished">2021-02-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/c-c/">c/c++</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      One libraray about cpp object serilization
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Discuss one exmaple library about cpp serilization and unserilization</p>
+<a id="more"></a>
+<p>Unlike the golang or java that provide the official serilization and decirilization libraray, we may need to use the third part library for the object serilization and decirilization. One example library that we want to introduce is this library: cereal (<a href="https://github.com/USCiLab/cereal)" target="_blank" rel="noopener">https://github.com/USCiLab/cereal)</a>. There are detailed documents about how to use this library. We just put an small example here to show some ideas about this library.</p>
+<p>Just like many convenient cpp tool libraray, we only need to include the header file in order to use the cereal.</p>
+<p>this is an exmaple code</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;cereal/archives/binary.hpp&gt;</span><br><span class="line">#include &lt;cereal/archives/xml.hpp&gt;</span><br><span class="line">#include &lt;cereal/types/vector.hpp&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;sstream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line"></span><br><span class="line">class Object &#123;</span><br><span class="line"> public:</span><br><span class="line">  Object()&#123;&#125;;</span><br><span class="line">  Object(unsigned width, unsigned height, unsigned depth, double z_offset,</span><br><span class="line">         float range = 1.2, unsigned nblocks = 1)</span><br><span class="line">      : m_width(width),</span><br><span class="line">        m_height(height),</span><br><span class="line">        m_depth(depth + 1),</span><br><span class="line">        m_extents(6),</span><br><span class="line">        m_origin(3),</span><br><span class="line">        m_data(width * height * (depth + 1)),</span><br><span class="line">        m_z_offset(z_offset),</span><br><span class="line">        m_range(range),</span><br><span class="line">        m_nblocks(nblocks) &#123;</span><br><span class="line">    // initilization</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Object(const Object&amp;) = default;</span><br><span class="line">  Object(Object&amp;&amp;) = default;</span><br><span class="line">  Object&amp; operator=(const Object&amp;) = default;</span><br><span class="line">  Object&amp; operator=(Object&amp;&amp;) = default;</span><br><span class="line">  ~Object() = default;</span><br><span class="line"></span><br><span class="line">  bool compare(Object&amp; other) &#123;</span><br><span class="line">    if (other.m_width != m_width || other.m_height != m_height ||</span><br><span class="line">        other.m_depth != m_depth) &#123;</span><br><span class="line">      std::cout &lt;&lt; &quot;unequal part1&quot; &lt;&lt; std::endl;</span><br><span class="line">      return false;</span><br><span class="line">    &#125;</span><br><span class="line">    if (other.m_z_offset != m_z_offset || other.m_range != m_range ||</span><br><span class="line">        other.m_nblocks != m_nblocks) &#123;</span><br><span class="line">      std::cout &lt;&lt; &quot;unequal part2&quot; &lt;&lt; std::endl;</span><br><span class="line">      return false;</span><br><span class="line">    &#125;</span><br><span class="line">    if (other.m_extents.size() != m_extents.size() ||</span><br><span class="line">        other.m_origin.size() != m_origin.size() ||</span><br><span class="line">        other.m_data.size() != m_data.size()) &#123;</span><br><span class="line">      std::cout &lt;&lt; &quot;unequal part3&quot; &lt;&lt; std::endl;</span><br><span class="line">      return false;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i = 0; i &lt; m_extents.size(); i++) &#123;</span><br><span class="line">      if (other.m_extents[i] != m_extents[i]) &#123;</span><br><span class="line">        std::cout &lt;&lt; &quot;unequal m_extents&quot; &lt;&lt; std::endl;</span><br><span class="line">        return false;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i = 0; i &lt; m_origin.size(); i++) &#123;</span><br><span class="line">      if (other.m_origin[i] != m_origin[i]) &#123;</span><br><span class="line">        std::cout &lt;&lt; &quot;unequal m_origin&quot; &lt;&lt; std::endl;</span><br><span class="line">        return false;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i = 0; i &lt; m_data.size(); i++) &#123;</span><br><span class="line">      if (other.m_data[i] != m_data[i]) &#123;</span><br><span class="line">        std::cout &lt;&lt; &quot;unequal m_data&quot; &lt;&lt; std::endl;</span><br><span class="line">        return false;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return true;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  void caculateSize() &#123;</span><br><span class="line">    size_t stackVar;</span><br><span class="line">    stackVar = sizeof(m_width) + sizeof(m_height) + sizeof(m_depth) +</span><br><span class="line">               sizeof(m_extents) + sizeof(m_origin) + sizeof(m_data) +</span><br><span class="line">               sizeof(m_z_offset) + sizeof(m_range) + sizeof(m_nblocks);</span><br><span class="line">    std::cout &lt;&lt; &quot;major ariables&quot;;</span><br><span class="line">    std::cout &lt;&lt; &quot; m_width &quot; &lt;&lt; sizeof(m_width) &lt;&lt; &quot;,&quot;;</span><br><span class="line">    std::cout &lt;&lt; &quot; m_extents &quot; &lt;&lt; sizeof(m_extents) &lt;&lt; &quot;,&quot;;</span><br><span class="line">    std::cout &lt;&lt; &quot; m_origin &quot; &lt;&lt; sizeof(m_origin) &lt;&lt; &quot;,&quot;;</span><br><span class="line">    std::cout &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; &quot; stackVar &quot; &lt;&lt; stackVar &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    size_t heapVar = sizeof(int) * m_extents.size() +</span><br><span class="line">                     sizeof(double) * m_origin.size() +</span><br><span class="line">                     sizeof(int) * m_data.size();</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; &quot; heapVar &quot; &lt;&lt; heapVar &lt;&lt; std::endl;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // binary output based on cereal</span><br><span class="line">  // https://uscilab.github.io/cereal/serialization_archives.html</span><br><span class="line">  // the function should be public one!</span><br><span class="line">  template &lt;typename A&gt;</span><br><span class="line">  void serialize(A&amp; ar) &#123;</span><br><span class="line">    ar&amp; m_width;</span><br><span class="line">    ar&amp; m_height;</span><br><span class="line">    ar&amp; m_depth;</span><br><span class="line">    ar&amp; m_extents;</span><br><span class="line">    ar&amp; m_origin;</span><br><span class="line">    ar&amp; m_data;</span><br><span class="line">    ar&amp; m_z_offset;</span><br><span class="line">    ar&amp; m_range;</span><br><span class="line">    ar&amp; m_nblocks;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> private:</span><br><span class="line">  size_t m_width;</span><br><span class="line">  size_t m_height;</span><br><span class="line">  size_t m_depth;</span><br><span class="line">  std::vector&lt;int&gt; m_extents;</span><br><span class="line">  std::vector&lt;double&gt; m_origin;</span><br><span class="line">  std::vector&lt;int&gt; m_data;</span><br><span class="line">  unsigned m_z_offset;</span><br><span class="line">  float m_range;</span><br><span class="line">  unsigned m_nblocks;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">  static unsigned LEN = 10;</span><br><span class="line">  Object ob(LEN, LEN, LEN, 1, 1.2, 5);</span><br><span class="line"></span><br><span class="line">  std::stringstream ss;  // any stream can be used</span><br><span class="line"></span><br><span class="line">  cereal::BinaryOutputArchive oarchive(ss);  // Create an output archive</span><br><span class="line"></span><br><span class="line">  oarchive(ob);  // Write the data to the archive</span><br><span class="line"></span><br><span class="line">  // oarchive.saveBinaryValue(mb, sizeof(mb), &quot;mb&quot;);</span><br><span class="line"></span><br><span class="line">  std::string bufferedstr = ss.str();</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; &quot;serilized size &quot; &lt;&lt; bufferedstr.size() &lt;&lt; &quot; original size &quot;</span><br><span class="line">            &lt;&lt; sizeof(ob);</span><br><span class="line"></span><br><span class="line">  // deserialize</span><br><span class="line">  std::stringstream is(bufferedstr);</span><br><span class="line"></span><br><span class="line">  cereal::BinaryInputArchive archive_in(is);</span><br><span class="line">  Object mbnew;</span><br><span class="line">  archive_in(mbnew);</span><br><span class="line"></span><br><span class="line">  bool ifequal = ob.compare(mbnew);</span><br><span class="line">  std::cout &lt;&lt; &quot; ifequal &quot; &lt;&lt; ifequal &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">  mbnew.caculateSize();</span><br><span class="line"></span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Several-interesting-things"><a href="#Several-interesting-things" class="headerlink" title="Several interesting things"></a>Several interesting things</h3><p>you may need to use stringstream to transfer the marshaled data into a string</p>
+<p>you also need to add an public template function in the defination of the object in order to use the cereal</p>
+<p>When we check the size of the object</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">serilized size 4508 original size 112 ifequal 1</span><br><span class="line">major ariables m_width 8, m_extents 24, m_origin 24,</span><br><span class="line"> stackVar 108</span><br><span class="line"> heapVar 4448</span><br></pre></td></tr></table></figure>
+<p>You could see that the serilized size contains both the stack variable and the heap variable. The sizeof only caculate the stack varaible, that is why the size of the object is 112</p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><p><a href="https://uscilab.github.io/cereal/quickstart.html" target="_blank" rel="noopener">https://uscilab.github.io/cereal/quickstart.html</a></p>
+<p><a href="https://github.com/wangzhezhe/5MCST/tree/master/unclassified/ceralexample" target="_blank" rel="noopener">https://github.com/wangzhezhe/5MCST/tree/master/unclassified/ceralexample</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/02/07/one-libraray-about-cpp-object-serilization/" data-id="cl49ds6ou005iuamci5cf5jax" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2021/02/07/Macro-tips/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Macro tips
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/01/11/Nanhu-story/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">NanHu Story</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Several-interesting-things"><span class="toc-number">1.</span> <span class="toc-text">Several interesting things</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#References"><span class="toc-number">2.</span> <span class="toc-text">References</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+    
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>HPC vs CloudComputing | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="This article mainly compares several differences between the HPC(High performance computing) and CloudComputing. This is the script for online video.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HPC vs CloudComputing">
+<meta property="og:url" content="http://yoursite.com/2021/06/27/HPC-vs-CloudComputing/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="This article mainly compares several differences between the HPC(High performance computing) and CloudComputing. This is the script for online video.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-06-27T11:27:07.000Z">
+<meta property="article:modified_time" content="2021-07-13T14:45:11.000Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-HPC-vs-CloudComputing" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/06/27/HPC-vs-CloudComputing/" class="article-date">
+  <time datetime="2021-06-27T11:27:07.000Z" itemprop="datePublished">2021-06-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/distributed-system/">distributed system</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      HPC vs CloudComputing
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>This article mainly compares several differences between the HPC(High performance computing) and CloudComputing. This is the script for online <a href="https://www.youtube.com/watch?v=MH0ovAN2iDk" target="_blank" rel="noopener">video</a>.</p>
+<a id="more"></a>
+<p>You may heard the CloudComputing and HPC (High performance computing) here and there</p>
+<p>Do you curious about the differences between these two techniques?</p>
+<p>After several years elementary works in both of these two areas, the answer about this question is becoming clear.</p>
+<p>(In this vedio) We try to explain the difference between CloudComputing and HPC from several aspects. We mainly consider these differences from the aspects of <strong>Maintainer and Machines</strong>, <strong>Users and assocaited programs</strong>, <strong>How to access it</strong> and <strong>Typical Software Stacks</strong>.</p>
+<p>These two areas are still evolving quickly, we just try to share some critical ideas and necessary information.</p>
+<p>Generally speaking, the common thing between the CloudCompuing and HPC is that, you try to run your program on multiple machines, such as hundres and thousands of computers. Obviously, one person or small insitutions do not have enough funds and capaiblities to construct a cluster that contains a large amount of machines, so, these machines or clusters are usually maintained by specialized institution.</p>
+<p>Let’s first look at the difference for institutions that maintain the machine or computing nodes used for CloudComputing and HPC.</p>
+<h3 id="Machines-and-their-Maintainer"><a href="#Machines-and-their-Maintainer" class="headerlink" title="Machines and their Maintainer"></a>Machines and their Maintainer</h3><p>CloudComputing:</p>
+<p>The cloud computing service is mainly provided by commercial companies.</p>
+<p>The left side figure shows the main cloud computing service providers</p>
+<p>you may know names of these companies very well, such as Amazon, Microsoft and Google,  etc /ɪt ˈsetərə/</p>
+<p><a href="https://cloud.google.com/gartner-cloud-infrastructure-as-a-service" target="_blank" rel="noopener">https://cloud.google.com/gartner-cloud-infrastructure-as-a-service</a></p>
+<p>HPC</p>
+<p>In contrast, the right figure shows the main provider of the HPC system in USA. We mainly list the main national laboratories under the DOE (department of the energy). These institutions are well known for people with the backgound of the scientific computing. These government funded institutions are main force for building the HPC system and play important role in history. For example, the oak ridge and Los Alamos national lab are two sites involved in Manhattan Project.</p>
+<p>The difference of the maintainers influence the properties of the platform and its serving functions. Lets looks at the details of the machines and services they provided.</p>
+<p>Cloud Computing</p>
+<p>They ususlly do not show the details such as the performance metrics of their cluster, instead, they are more care about the types of services.</p>
+<p>The machine with different configurations are created to users as their requirments based on virtulaization techniques. Their physical machine pool is also heterogeneous which is different compared with the HPC which is configered by homogeneous machines in general.</p>
+<p>The left figure shows the featured products of the google clould service. In addition to the virtual machine, they also provide versatil /ˈvɜːrsətl/ data management and processing capabilities.</p>
+<p>HPC:</p>
+<p>There is a rank list called top500 list that compares the performance of differnet HPC system in different aspects according to various Testing program. This is just like the olympic game in the HPC world, this rank changes a lot every year.</p>
+<p>as shown in the right figure, it lists the current rank.</p>
+<p><a href="https://www.top500.org/lists/top500/2020/11/" target="_blank" rel="noopener">https://www.top500.org/lists/top500/2020/11/</a></p>
+<p>Currently, the rank one system in the list is Fukago supercomputer, which is maintained by RIKEN (RIKEN is Japan’s largest comprehensive research institution renowned for high-quality research in a diverse range of scientific disciplines)</p>
+<p>the second one is Summit system, which is maintained by the oak ridge national lab.</p>
+<p>Actually, most of these system is maintained by the national institutions.</p>
+<p>The Rmax and Rpeak are two important metric</p>
+<p>A system’s Rmax score describes its maximal achieved performance (execute how many float operation per second); the Rpeak score describes its theoretical peak performance (<a href="https://kb.iu.edu/d/bbzo)" target="_blank" rel="noopener">https://kb.iu.edu/d/bbzo)</a>. </p>
+<p>This figure shows national labs in USA</p>
+<p><a href="https://www.energy.gov/science/science-innovation/office-science-national-laboratories" target="_blank" rel="noopener">https://www.energy.gov/science/science-innovation/office-science-national-laboratories</a></p>
+<p>Another interesting topic is to discuss the users of the CloudComputing and HPC</p>
+<h3 id="Serve-to-whom-Users"><a href="#Serve-to-whom-Users" class="headerlink" title="Serve to whom (Users)"></a>Serve to whom (Users)</h3><p>CloudComputing:</p>
+<p>The CloudComputing mainly server for the IT companies. The startup company may not spend money to buy their own machines and they just need to rent the computing node from the cloud provider with low cost in a more flexible way. The cloud provider has a professinal team to maintain these service. Anyone can rent or buy the machine from the cloud compuer provider if you pay their money. </p>
+<p><a href="https://aws.amazon.com/what-is-aws/" target="_blank" rel="noopener">https://aws.amazon.com/what-is-aws/</a></p>
+<p>the left figure lists some key information about the customer they serve to. The company such as retailer, financial companies may need to rent lots of machine to maintaine their user information or provide necessary online service, such as login system, website, or the electronic transaction system that supports their businuss.</p>
+<p>HPC:</p>
+<p>The HPC mainly server for the domain scientist, they use HPC to solve numerical problems such as scientific simulations. They build model and run the model on HPC in large scale with parallel computing, it is common to use thousands of machine and cores to run a particular simulation. The scientists or research teams in colleage have the collabaration with the research institutions that owns the HPC system, if there research goal overlap with each other, the maintainer will set a specific core time to a project. Anyway, the goal of HPC is for research, they are basically the non-profit services. </p>
+<p>the scientic projects that uses summit</p>
+<p><a href="https://www.olcf.ornl.gov/leadership-science/" target="_blank" rel="noopener">https://www.olcf.ornl.gov/leadership-science/</a></p>
+<p>The right figure shows some key projects running on summit supercomputer,<br>you could see that the main areas are biology, physicals, fusion or nuclear science or earth science etc. The styles of project are quite different compared with the CloudComputing illustrated by the figure at the left side.</p>
+<p>In summary the core value of the CloudComputing is to serve the customer’s business, differnet softwares are built in order to server this goal. For exmaple, we need the data base to store and index the user information, the smart analytics to process the data as needed, and the backend with accositated security service to support the website.<br>The main value of the HPC is to server the domain science, the typical projects includes the scientific simulation, data visulization and analytics and associated I/O or high speed networking service to transfer the data between different stages of the workflow.</p>
+<h3 id="How-to-access-it-from-user’s-perspective"><a href="#How-to-access-it-from-user’s-perspective" class="headerlink" title="How to access it from user’s perspective"></a>How to access it from user’s perspective</h3><p>Cloud Computing:</p>
+<p>When we disucss the Cloud Computing Service, they are divided into different layers in particular.</p>
+<p>The first layer is called IaaS, namely the infrastructure as a service, the cloud provider will assign a virtulized computing node to the user in this case. when you rent some nodes in the IaaS level, these nodes belong to you totally, and the node might be virtulized node. you have the root permission to your computing nodes, and you can configure it (debug it) as needed. The cloud provider only provide you the computing/netowrking/storage resource as you needed. You need to pay more money if you want to get a more powerful node. </p>
+<p>The second layer called the PaaS, namely the platform as a service. In this layer, the user just need to provide the configuration file that describes how to run their executable files, and the platform is in charge of the resource scheduling and high avalability of the program.</p>
+<p>The next layer is called the SaaS, namely the software as a service, In this case, the user just need to call the API to interact with the service provided by the cloud computing provider such as the storage service or data monitor service.</p>
+<p>HPC:</p>
+<p>Common HPC contains login node and compute node, if you can get an account on a particular HPC, you can login to the login node. Every user have a same view when they access the HPC, theritically speaking, they can use all noeds on this machine (there are some constrains on the total number of the core time, and different partition may have different running time limitations). Anyway, it is just like a membership, when they give you a account to access this machine, you could share high quality service they provided. large disk space, high speed node etc. You need to submit jobs to the scheduler queue, the scheduler is responsible for assigning the node to every user. They do not use the virtulization techiques, since the computing power is abundant and luxury for most of the users. You do not have the root permission, if you need to install particular softwares that requries the root privilage, you may send a ticket to maintainer for help or consulting any issues regarding the usage. You will be charged (core time) only when your job is scheduled to run. </p>
+<p>For example, if you check the summit node, it is really luxury and powerful<br><a href="https://docs.olcf.ornl.gov/systems/summit_user_guide.html#summit-user-guide" target="_blank" rel="noopener">https://docs.olcf.ornl.gov/systems/summit_user_guide.html#summit-user-guide</a></p>
+<p>more parameters on this page<br><a href="https://www.olcf.ornl.gov/summit/" target="_blank" rel="noopener">https://www.olcf.ornl.gov/summit/</a></p>
+<p>The core time is related with your project. When the pi start a project, the core time is usually fixed. When one project finish, you can not access the HPC resource anymore. That’s why researchers always need to write proposal and apply for new project. Only by this way, they can get the avalible computing reosurce and funding from the governmnet.</p>
+<p>Different with the 7 time 24 high avalaibilty for the Cloud Computing service, most HPC have the periodical /ˌpɪriˈɑːdɪkl/ mainataince, you could not access the HPC system when it is offline, I think it is definately a good reason to take some rests some times.</p>
+<h3 id="Software-stacks"><a href="#Software-stacks" class="headerlink" title="Software stacks"></a>Software stacks</h3><p>Let’s go through some typical softwares used for these two areas quickly</p>
+<p>CloudComputing:</p>
+<p>IAAS OpenStack, KVM, virtulization<br>PAAS Kubernates, container, docker<br>SAAS More versatile customized cloud service. such as labmda service.</p>
+<p>There is more flexible charing and scheudling policy. Such as you may get more resources on-demand when you need it. This is hard to implment on the HPC. For the HPC, it is plan driven schduling, you plan everything well when you submit a job. You may need to follow the limitation of the queue scheduler, such as long waiting time, since the HPC resource is shared by many people at the same time.</p>
+<p>The Cloud Computing may need all kinds of data base softwares and big data service such as Spark, or backend services that provide the RPC call. Java, python, golang is also popular in this area.</p>
+<p>HPC</p>
+<p>Slurm,all user access longin node, and share same computation pool,<br>module, to configure the environment<br>spack to insall the packges</p>
+<p>The simulation may use MPI and RDMA a lot, C/C++ fortran are the mainstream language in this area.</p>
+<p>In summary, the Cloud Computing Service and HPC share the same genes but have different souls. They are buit based on GPU and CPU but server for differnet users and projects.</p>
+<h3 id="Other-Requrments"><a href="#Other-Requrments" class="headerlink" title="Other Requrments"></a>Other Requrments</h3><p>HPC:<br>powerful computing, user may access tounsands of cores in short period of time</p>
+<p>latest HPC computing node is configured with GPU for every node, which is luxury for comercial company</p>
+<p>They will update the system maybe one or two times a month, this is ok for scientific project which is mostly offline computation.</p>
+<p>CloudComputing:</p>
+<p>Basiclly, they need to provide 7 times 24 avaliable, High availability is an important issue for the cloud provider. Even several miniuts offline can cause the huge loss for the customer. There is a tradeoff. If you work with HPC, you may not need to be oncall or update your system at the midnight. But if you work with the cloud computing, you may need to on-call 7 times 24 to process any unexpected issues.</p>
+<h3 id="New-trend"><a href="#New-trend" class="headerlink" title="New trend"></a>New trend</h3><p>The boundy is becoming less clear.</p>
+<p>The scientist may also rent the comertial node for their long running services to satisfy the high quality requriments. The commercial company may also develop specilised HPC cluster for comertial using. The main cloud provider also set up the HPC cluster for users.</p>
+<p>In summary, they like the parallel or distributed computing in different world. </p>
+<maybe use="" a="" table="" to="" show="" these="" differences="">
+
+<h3 id="other-references"><a href="#other-references" class="headerlink" title="other references"></a>other references</h3><p>EC2 type<br><a href="https://aws.amazon.com/ec2/physicalcores/" target="_blank" rel="noopener">https://aws.amazon.com/ec2/physicalcores/</a></p>
+<p>Google solutions<br><a href="https://cloud.google.com/compute#section-9" target="_blank" rel="noopener">https://cloud.google.com/compute#section-9</a></p>
+<p>Google products<br><a href="https://cloud.google.com/products" target="_blank" rel="noopener">https://cloud.google.com/products</a></p>
+</maybe>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/06/27/HPC-vs-CloudComputing/" data-id="cl49ds6o8000kuamcd6j68aze" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2021/07/11/Wedding-Story/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Wedding Story
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/06/21/Editing-taolu/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Editing-taolu</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Machines-and-their-Maintainer"><span class="toc-number">1.</span> <span class="toc-text">Machines and their Maintainer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Serve-to-whom-Users"><span class="toc-number">2.</span> <span class="toc-text">Serve to whom (Users)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-to-access-it-from-user%E2%80%99s-perspective"><span class="toc-number">3.</span> <span class="toc-text">How to access it from user’s perspective</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Software-stacks"><span class="toc-number">4.</span> <span class="toc-text">Software stacks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Other-Requrments"><span class="toc-number">5.</span> <span class="toc-text">Other Requrments</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#New-trend"><span class="toc-number">6.</span> <span class="toc-text">New trend</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#other-references"><span class="toc-number">7.</span> <span class="toc-text">other references</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+    
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

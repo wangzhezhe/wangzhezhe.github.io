@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Caculating process layout | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="use the dp programming to caculate the process layout">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Caculating process layout">
+<meta property="og:url" content="http://yoursite.com/2020/08/09/caculate-process-layout/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="use the dp programming to caculate the process layout">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-08-09T12:51:24.000Z">
+<meta property="article:modified_time" content="2022-04-29T22:30:05.000Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-caculate-process-layout" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/09/caculate-process-layout/" class="article-date">
+  <time datetime="2020-08-09T12:51:24.000Z" itemprop="datePublished">2020-08-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Caculating process layout
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>use the dp programming to caculate the process layout</p>
+<a id="more"></a>
+<p>In MPI cartisian, there is one useful interface (<code>MPI_Dims_create</code>) to caculate the number of the process (process layout) at each dimention according to the total process number.</p>
+<p>this function is useful to caculte the size of the local domain according to the process number to make the program general. For example, the total mesh size is 128 times 128, and then the total process number is 4, the local mesh size is 64 times 64. the process layout is 2 times 2, which means each dimintion will be divided into 2 parts in order to make the total partition number equals to the 4 to let each rank associated with one particular domain.</p>
+<p>The basic operation here is to caculate the number of the process in each dimention pi and make the p1 time p2 time … pn  = total number of the process. This is a typical process for the searching based algorithm. Assume the total process number is p than we could divid it into the subproblem, the p = p1 time po, p1 is all the possibilities that is exact division by p. Then we use the similar strategy for the po, which is a subproblem, by this way, we can traverse all the possibilities.</p>
+<p>this is a sample code to solve this problem</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">void helper(int pn, int dn) &#123;</span><br><span class="line">  if (dn == 1) &#123;</span><br><span class="line">    std::cout &lt;&lt; &quot;dn &quot; &lt;&lt; dn &lt;&lt; &quot; v &quot; &lt;&lt; pn &lt;&lt; std::endl;</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line">  for (int i = 1; i &lt;= pn; i++) &#123;</span><br><span class="line">    int rem = pn % i;</span><br><span class="line">    if (rem == 0) &#123;</span><br><span class="line">      // split</span><br><span class="line">      std::cout &lt;&lt; &quot;dn &quot; &lt;&lt; dn &lt;&lt; &quot; v &quot; &lt;&lt; i &lt;&lt; std::endl;</span><br><span class="line">      // dfs</span><br><span class="line">      helper(pn / i, dn - 1);</span><br><span class="line">      // pop the solution for the current level</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">  // process number</span><br><span class="line">  int pn = 8;</span><br><span class="line">  // dimention number</span><br><span class="line">  int dn = 3;</span><br><span class="line"></span><br><span class="line">  helper(pn, dn);</span><br><span class="line"></span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Basically, it use the DFS and the leaf node is the case when the dn is 1, which means remaining dimention is 1. We could print the results out:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">dn 3 v 1</span><br><span class="line">dn 2 v 1</span><br><span class="line">dn 1 v 8</span><br><span class="line">dn 2 v 2</span><br><span class="line">dn 1 v 4</span><br><span class="line">dn 2 v 4</span><br><span class="line">dn 1 v 2</span><br><span class="line">dn 2 v 8</span><br><span class="line">dn 1 v 1</span><br><span class="line">dn 3 v 2</span><br><span class="line">dn 2 v 1</span><br><span class="line">dn 1 v 4</span><br><span class="line">dn 2 v 2</span><br><span class="line">dn 1 v 2</span><br><span class="line">dn 2 v 4</span><br><span class="line">dn 1 v 1</span><br><span class="line">dn 3 v 4</span><br><span class="line">dn 2 v 1</span><br><span class="line">dn 1 v 2</span><br><span class="line">dn 2 v 2</span><br><span class="line">dn 1 v 1</span><br><span class="line">dn 3 v 8</span><br><span class="line">dn 2 v 1</span><br><span class="line">dn 1 v 1</span><br></pre></td></tr></table></figure>
+<p>Based on this framework, we may consider more, such as store all solutions into a data structure <code>vector&lt; vector &lt;int&gt; &gt;</code>, and to used by other solutions. This is how we use a vector to record the solution, it is important to consider when to push and when to pop, by this way, we could reuse the current vector during the process of the search. The similar strategies may used in lots of similar dynamic programming problems.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line"></span><br><span class="line">std::vector&lt; std::vector&lt;int&gt; &gt; allsolutions;</span><br><span class="line"></span><br><span class="line">void helper(int pn, int dn, std::vector&lt;int&gt;&amp; cusolution) &#123;</span><br><span class="line">  if (dn == 1) &#123;</span><br><span class="line">    // std::cout &lt;&lt; &quot;dn &quot; &lt;&lt; dn &lt;&lt; &quot; v &quot; &lt;&lt; pn &lt;&lt; std::endl;</span><br><span class="line">    // print current solution</span><br><span class="line">    // add to the all slolutions</span><br><span class="line">    // jump back the last solution</span><br><span class="line">    cusolution.push_back(pn);</span><br><span class="line">    allsolutions.push_back(cusolution);</span><br><span class="line">    cusolution.pop_back();</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line">  for (int i = 1; i &lt;= pn; i++) &#123;</span><br><span class="line">    int rem = pn % i;</span><br><span class="line">    if (rem == 0) &#123;</span><br><span class="line">      // split</span><br><span class="line">      // std::cout &lt;&lt; &quot;dn &quot; &lt;&lt; dn &lt;&lt; &quot; v &quot; &lt;&lt; i &lt;&lt; std::endl;</span><br><span class="line">      cusolution.push_back(i);</span><br><span class="line">      // dfs</span><br><span class="line">      helper(pn / i, dn - 1, cusolution);</span><br><span class="line">      // pop the solution for the current level</span><br><span class="line">      cusolution.pop_back();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">  // process number</span><br><span class="line">  int pn = 8;</span><br><span class="line">  // dimention number</span><br><span class="line">  int dn = 3;</span><br><span class="line"></span><br><span class="line">  std::vector&lt;int&gt; cusolution;</span><br><span class="line"></span><br><span class="line">  helper(pn, dn, cusolution);</span><br><span class="line"></span><br><span class="line">  // check all the solution</span><br><span class="line">  for(int i=0;i&lt;allsolutions.size();i++)&#123;</span><br><span class="line">      for(int j=0;j&lt;allsolutions[i].size();j++)&#123;</span><br><span class="line">          std::cout &lt;&lt; allsolutions[i][j]  &lt;&lt; &quot; &quot;;</span><br><span class="line">      &#125;</span><br><span class="line">      std::cout &lt;&lt; std::endl;</span><br><span class="line">  &#125;</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The results may looks more clear in this case:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1 1 8 </span><br><span class="line">1 2 4 </span><br><span class="line">1 4 2 </span><br><span class="line">1 8 1 </span><br><span class="line">2 1 4 </span><br><span class="line">2 2 2 </span><br><span class="line">2 4 1 </span><br><span class="line">4 1 2 </span><br><span class="line">4 2 1 </span><br><span class="line">8 1 1</span><br></pre></td></tr></table></figure>
+<p>For the next step, we may consider how to add more constrains and use the dynamic programming to store some intermediate status to solve the problem. For exmaple, we may want the difference between different number of in each dimention as small as possible.</p>
+<p>The straightforward method is to get all solutions then check it based on the constrains. But we could also use some trim operations to cut the unnecessary iterations during the traverse, for example, if we set our goal as “find a solution that is most balanced one, which means the differences between value in each dimention is the minimal”, this is a typical process from the search based algorithm to the dynamica programming algoeithnm. For example, we could use a global variable to record the minimal differences and associated solution. If the differences of the current solution is larger than this value, we do not need to iterate further. otherwise, we will compute current solution recursively, if it’s difference is smaller than the minimal value, we replace it. There is tight relationship between the search based method and the dp based method (the setting is alwasy an optimization problem)</p>
+<p>Inspired by this question, we could figure out the common strategy to solve the dp problem, the first step is to consider the traverse problem behind it. The second step is to consider what data structure need to be stored to reuse for solving the problem in a more large scale.</p>
+<h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a href="https://blog.csdn.net/runner668/article/details/79877458" target="_blank" rel="noopener">https://blog.csdn.net/runner668/article/details/79877458</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/08/09/caculate-process-layout/" data-id="cl49ds6ol003auamcpxn32zky" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/29/cppsmartpointer/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          cpp smart pointer
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/09/myth-and-misi/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">myth and misi</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">1.</span> <span class="toc-text">references</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+    
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Sorting Story | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="大概是开学之前的一些体会。 竟然有了一点sorting things的意识，不管是对于收拾屋子里的东西还是整理开发机的环境。本质上都是建立index，然后降低complexity，每次只关注整个system上的一个局部的事情，还是条理清晰地去divide it into different modules。 比如开发机的上的环境，在熟悉了cmake之后意识到 source tree, build">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sorting Story">
+<meta property="og:url" content="http://yoursite.com/2019/09/01/sorting-story/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="大概是开学之前的一些体会。 竟然有了一点sorting things的意识，不管是对于收拾屋子里的东西还是整理开发机的环境。本质上都是建立index，然后降低complexity，每次只关注整个system上的一个局部的事情，还是条理清晰地去divide it into different modules。 比如开发机的上的环境，在熟悉了cmake之后意识到 source tree, build">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-09-01T21:39:43.000Z">
+<meta property="article:modified_time" content="2021-06-12T12:24:41.000Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-sorting-story" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/01/sorting-story/" class="article-date">
+  <time datetime="2019-09-01T21:39:43.000Z" itemprop="datePublished">2019-09-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/story/">story</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Sorting Story
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>大概是开学之前的一些体会。</p>
+<p>竟然有了一点sorting things的意识，不管是对于收拾屋子里的东西还是整理开发机的环境。本质上都是建立index，然后降低complexity，每次只关注整个system上的一个局部的事情，还是条理清晰地去divide it into different modules。</p>
+<p>比如开发机的上的环境，在熟悉了cmake之后意识到 source tree, build tree 以及 install tree的划分思路，比如在home dir中，有cworkspace, pyworkspace, goworkspace等等，在cworkspace中，划分目录是src, build, install 之后比如rapidjson的package，source放在src目录中，build的目录全都以<code>build_</code>开头，install的目录全都以<code>install_</code>开头，这样的好处是不会把文件弄混，找起来也比较方便。对于home dir 比较小的，就按照同样的规则在/tmp或者/scratch的目录下进行划分。</p>
+<p>那些老员工常常不进行install，其实build之后大部分的文件都已经具备了，install就仅仅是把需要的文件拷贝到指定的地方，使用cmake的话，已经有<code>.cmake</code>，即使是在build dir下也能找到合适的.so文件，有的时候多install一下反而会有一些额外的错误，比如有的.so文件找不到，毕竟多一个操作就多一个错误的可能性。</p>
+<p>才发现原来学校的ilab是很好的平台了，一般的集群没有配置parallel file system，HPC的机器通常都是用script提交任务，想获得交互的机器通常都会限制权限，不小心在login上执行了任务还会被freeze account(事实上后来发现 仅仅是多加个srun就行了 但是以前这个意识不是很好)，而这些在ilab上都不用考虑，登上去各种交互操作debug还是很方便的。以前觉得hard disk比较小，不方便，现在才发现原来是自己的使用方式不对。src文件就放在backup的home dir下，build dir就放在 /tmp 或者是类似的 存储大文件的file system 下。之前总觉得不方便的原因是自己把src dir和build dir mix 到了一起，这样很多build过程中的冗余文件也都被包括在内了，目录也是很凌乱。</p>
+<p>所谓在software的管理上变得有经验的过程就是，以前都是有apt-get管理的packge现在很多都是自己管理了。在使用HPC之前，总觉得系统没有sudo权限自己就没法使用了，之后用了HPC，慢慢了解到不论是auto tool 的 configure 都是可以配置 prefix 的。才知道不是所有的内容都要放在需要sudo权限的目录下。</p>
+<p>实习的时候虽然只有一个single node的pc，但也做了很多事，甚至是MPI的程序，其实真正使用HPC的时候就是program debuging ready 然后在HPC上仅仅变换一下 -n 后面的数字 然后run各种实验。真正大量的时间还是花在debuging的时间上，这个时候仅仅使用small level的数据集在single node server上 debug 就足够了，哪怕是MPI的程序。</p>
+<p>有时候又想自己是不是太把自己的工作当回事儿搞得很沉重，想想这些年来做的事情，尽管是很努力地想着怎么能把影响力扩大，增长时间，但是真正能算得上是有影响力的却没有几件，这就让我反思，自己着急忙慌的，到底是为了什么。着急忙慌地把事情做好，到底有什么意义。特别是code层面，每当自己尝试construct一个稍微大一点的事情的时候，最后总是搞的一团糟。</p>
+<p>比如testing啊，比如interface的定义啊，等等，为了省事求快弄出来的code和exp最后常常又被废弃掉了，总有时间白过了的感慨。也得想想在分配时间上，那些缓慢付出但是影响力可以逐渐积累的事情上也要分配点时间。</p>
+<p>when writting the scripts, be imaginative and try to forsee what will happen on the system, and use the suitable log info at the suitable places, a littel bit hard at first, but time will be saved a lot actually, the work dir will be more clean at least.</p>
+<p>临近开学，同学大多归校，昨天几位好友一起晚餐，之后大家畅谈吐槽phd生活，类似学术圈八卦种种，谈话间citation几百几千什么的，回来想想自己，才是从0开始起步。有的时候思路需要变通，作为一个成功的phd或者faculty，当然越多的citation或者论文数量是好的，但是作为一个成功的人来说，可能拿到phd的学位在职业生涯能发展顺利，也是很好的吧，想到这里大概就不用去羡慕别人怎么有这么多的论文以及背景如何如何，一个人能做什么事情，做的什么成就，际遇有时是重要的因素，安稳一点心态做自己的事情，一个事情在同样的指标上实在没有办法做的比别人好的时候，索性就退一步想想，怎么和别人做的不一样吧，然后培养一些自己的diversity的能力，也是蛮好的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/01/sorting-story/" data-id="cl49ds6oz006cuamc1s6e0363" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2019/09/01/Halfmoon-Story/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Halfmoon Story
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/08/22/paper-taolu/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">paper_taolu</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title recent-posts">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/06/streamline/">Streamline filter</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/26/cpptemplateCRPT/">Cpp template about CRPT</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/24/GraphicsBasics/">GraphicsBasics</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/21/Algorithm-8-Tree/">Algorithm(8) Tree</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/20/phd-story/">PhD story</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+    
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

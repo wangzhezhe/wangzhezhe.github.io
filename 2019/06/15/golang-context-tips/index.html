@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>golang context tips | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="golang context tips主要介绍golang context 包的基本使用以及需要注意的地方。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang context tips">
+<meta property="og:url" content="http://yoursite.com/2019/06/15/golang-context-tips/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="golang context tips主要介绍golang context 包的基本使用以及需要注意的地方。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-06-15T16:07:15.000Z">
+<meta property="article:modified_time" content="2019-06-15T16:12:56.000Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-golang-context-tips" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/15/golang-context-tips/" class="article-date">
+  <time datetime="2019-06-15T16:07:15.000Z" itemprop="datePublished">2019-06-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/golang/">golang</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      golang context tips
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>golang context tips<br>主要介绍golang context 包的基本使用以及需要注意的地方。</p>
+<a id="more"></a>
+<p>关于context的使用，官方blog是很好的参考文档，在1.6.2的时候还没有自己的context，在1.7的版本中就把golang.org/x/net/context包被加入到了官方的库中。context使用场景还是很广泛的，最典型的就是一个request过来，根据这个request要进行func1,func2,func3…一系列的处理，这些处理之间可能是相关联的，比如func2需要用到func1执行完成之后的信息，func3,func4又需要用到request传递进来的信息比如用户名或者密码，在这个时候这些信息就可以通过context库来进行包装，比如request时间到期的时候，func5,func6还没有是处理完这个时候可以统一让所有的二级操作停止下来不再执行。对于第二层的几个func来说，整个context就是一个共享的存储空间，这个存储空间的scope是这个request。个人感觉context的源码实现的简洁优雅，覆盖的场景也比较全面，遇到类似的场景直接使用context会减少一些编程的心智负担。</p>
+<h3 id="context包的源码分析"><a href="#context包的源码分析" class="headerlink" title="context包的源码分析"></a>context包的源码分析</h3><p>context的主要数据结构是一种嵌套的结构或者说是单向的继承关系的结构，比如最初的context是一个小盒子，里面装了一些数据，之后从这个context继承下来的children就像在原本的context中又套上了一个盒子，然后里面装着一些自己的数据。或者说context是一种分层的结构，根据使用场景的不同，每一层context都具备有一些不同的特性，这种层级式的组织也使得context易于扩展，职责清晰，下面仔细分析下1.8.1版本中的context包的实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">type Context interface &#123;</span><br><span class="line">   //返回这个context的失效时间，如果没有设置deadline 第二个ok参数应该返回false</span><br><span class="line">	Deadline() (deadline time.Time, ok bool)</span><br><span class="line">	//如果Done返回的channel被clsose，说明当前的这个context中的操作应该被结束。</span><br><span class="line">	Done() &lt;-chan struct&#123;&#125;</span><br><span class="line">	//Done函数中返回的channel被close之后 Err中会返回相关的信息</span><br><span class="line">	Err() error</span><br><span class="line">	//传入的值是key值 返回的值是value值</span><br><span class="line">	Value(key interface&#123;&#125;) interface&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上是context接口暴露出来的基本能力。对于top-level的context，通过以下方式生成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var (</span><br><span class="line">	background = new(emptyCtx)</span><br><span class="line">)</span><br><span class="line">func Background() Context &#123;</span><br><span class="line">	return background</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体的<code>emptyCtx</code>虽然实现了上述<code>Contextinterface</code>的几个方法，但是方法体都为空，可以认为这个emptyCtx仅仅是为了继承而使用，没有具体的能力，类似的还有TODO方法，比如不太确定这个context是否要向下传递的时候就先使用TODO方法声明一个emptyCtx占一个位置。</p>
+<p><strong>withCancel</strong></p>
+<p>首先从实际使用的角度看一下withConcel的作用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">	&quot;context&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line">func doSth(ctx context.Context, index int) &#123;</span><br><span class="line">A:</span><br><span class="line">	for &#123;</span><br><span class="line">		select &#123;</span><br><span class="line">		case value, ok := &lt;-ctx.Done():</span><br><span class="line">			if ok &#123;</span><br><span class="line">				fmt.Println(&quot;get value&quot;, value)</span><br><span class="line">			&#125; else &#123;</span><br><span class="line">				break A</span><br><span class="line">			&#125;</span><br><span class="line">		default:</span><br><span class="line">			fmt.Printf(&quot;goroutine %+v is doing sth\n&quot;, index)</span><br><span class="line">			time.Sleep(time.Second * 1)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(&quot;do sth with index %+v finished\n&quot;, index)</span><br><span class="line">&#125;</span><br><span class="line">func main() &#123;</span><br><span class="line">	ctx := context.Background()</span><br><span class="line">	ctxWithCancel, cancelFunc := context.WithCancel(ctx)</span><br><span class="line">	go doSth(ctxWithCancel, 1)</span><br><span class="line">	go doSth(ctxWithCancel, 2)</span><br><span class="line">	go doSth(ctxWithCancel, 3)</span><br><span class="line">	time.Sleep(time.Second * 5)</span><br><span class="line">	fmt.Println(&quot;finish all doSth func&quot;)</span><br><span class="line">	cancelFunc()</span><br><span class="line">	time.Sleep(time.Second * 1)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在main函数中通过context.WithCancel生成了一个withCancel的实例以及一个cancelFuc，这个函数就是用来关闭ctxWithCancel中的 Done channel 函数，在后面的操作中，启动了三个goroutine，他们的第一个参数都是之前生成的ctxWithCanel实例，在函数内部通过for+select的方式监听channel，如果channel没有关闭就执行default的操作，做函数自己的事情，子函数只需要在自己的函数体中通过select不断地watch这个ctx中的channel，如果发现channel已经关闭（甚至都不需要通过这个channel发送任何数据）。就终止操作跳出循环函数执行结束。通常通过defer关键字控制cancelFunc的执行，在主函数最后关闭的时候关闭所有由这个主函数所启动的goroutine。</p>
+<p>下面来粗略过一下WithCancelChannel部分的代码，初始化方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func newCancelCtx(parent Context) cancelCtx &#123;</span><br><span class="line">	return cancelCtx&#123;</span><br><span class="line">		Context: parent,</span><br><span class="line">		done:    make(chan struct&#123;&#125;),</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">func WithCancel(parent Context) (ctx Context, cancel CancelFunc) &#123;</span><br><span class="line">	c := newCancelCtx(parent)</span><br><span class="line">	propagateCancel(parent, &amp;c)</span><br><span class="line">	return &amp;c, func() &#123; c.cancel(true, Canceled) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>concelCtx实现了canceler接口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type canceler interface &#123;</span><br><span class="line">	cancel(removeFromParent bool, err error)</span><br><span class="line">	Done() &lt;-chan struct&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中的Done方法会返回其中的done channel 而另外的cancel方法会关闭Done channel并且逐层向下遍历，关闭children的channel，并且将当前canceler从parent中移除。（这里的逻辑有些复杂）</p>
+<p>WithCancel初始化一个concelCtx并且执行propagateCancel方法，最后返回一个concel function。看下propagateCancel方法：</p>
+<p>可以看下cancelCtx的结构体定义，所有的children都存在一个map中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// A cancelCtx can be canceled. When canceled, it also cancels any children</span><br><span class="line">// that implement canceler.</span><br><span class="line">type cancelCtx struct &#123;</span><br><span class="line">	Context</span><br><span class="line">	done chan struct&#123;&#125; // closed by the first cancel call.</span><br><span class="line">	mu       sync.Mutex</span><br><span class="line">	children map[canceler]struct&#123;&#125; // set to nil by the first cancel call</span><br><span class="line">	err      error                 // set to non-nil by the first cancel call</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>WithDeadLine</strong></p>
+<p>在withCancel的基础上进行的扩展，如果时间到了之后就进行cancel的操作，具体的操作流程基本上与withCancel一致，只不过控制cancel函数调用的时机是有一个timeout的channel所控制的。</p>
+<p><strong>WithTimeOut</strong></p>
+<p>返回withTimeout</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc) &#123;</span><br><span class="line">	return WithDeadline(parent, time.Now().Add(timeout))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>WithValue</strong></p>
+<p>通常会map的形式来存储key，value，之后再将map放在context的 key，val的interface{}中。多层嵌套的key，value会使得查找效率变低。或者自定义一个struct，之后在struct中定义多个map和自定义的信息，之后把这个struct存储在val的interface{}中。一下两个链接是比较好的参考，这个)是关于key类型的问题，虽然直接使用string类型作为key值也不会报错，但是按照注释，最好不要使用string类型作为key值，比较好的方式像这样</p>
+<p>此外注意iota的操作可以起到stirng到int类型的index的转换，可以参考userip包中使用的这样，额外构造一个自己的类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//To avoid key collisions, userip defines an unexported type key and uses a value of this type as the context key:</span><br><span class="line">// The key type is unexported to prevent collisions with context keys defined in other packages.</span><br><span class="line">type key int</span><br><span class="line">// userIPkey is the context key for the user IP address.  Its value of zero is arbitrary.  </span><br><span class="line">// If this package defined other context keys, they would have different integer values.</span><br><span class="line">const userIPKey key = 0</span><br></pre></td></tr></table></figure>
+<h3 id="context的一些具体使用案例"><a href="#context的一些具体使用案例" class="headerlink" title="context的一些具体使用案例"></a>context的一些具体使用案例</h3><p><strong>通过context设置cookie</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">func AddContextSupport(next http.Handler) http.Handler &#123;</span><br><span class="line">	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) &#123;</span><br><span class="line">		log.Println(r.Method, &quot;-&quot;, r.RequestURI)</span><br><span class="line">		cookie, _ := r.Cookie(&quot;username&quot;)</span><br><span class="line">		if cookie != nil &#123;</span><br><span class="line">			ctx := context.WithValue(r.Context(), &quot;username&quot;, cookie.Value)</span><br><span class="line">			// WithContext returns a shallow copy of r with its context changed</span><br><span class="line">			// to ctx. The provided ctx must be non-nil.</span><br><span class="line">			next.ServeHTTP(w, r.WithContext(ctx))</span><br><span class="line">		&#125; else &#123;</span><br><span class="line">			next.ServeHTTP(w, r)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line">func LoginHandler(w http.ResponseWriter, r *http.Request) &#123;</span><br><span class="line">	expitation := time.Now().Add(24 * time.Hour)</span><br><span class="line">	var username string</span><br><span class="line">	if username = r.URL.Query().Get(&quot;username&quot;); username == &quot;&quot; &#123;</span><br><span class="line">		username = &quot;guest&quot;</span><br><span class="line">	&#125;</span><br><span class="line">	cookie := http.Cookie&#123;Name: &quot;username&quot;, Value: username, Expires: expitation&#125;</span><br><span class="line">	http.SetCookie(w, &amp;cookie)</span><br><span class="line">&#125;</span><br><span class="line">func LogoutHandler(w http.ResponseWriter, r *http.Request) &#123;</span><br><span class="line">	expiration := time.Now().AddDate(0, 0, -1)</span><br><span class="line">	cookie := http.Cookie&#123;Name: &quot;username&quot;, Value: &quot;alice_cooper@gmail.com&quot;, Expires: expiration&#125;</span><br><span class="line">	http.SetCookie(w, &amp;cookie)</span><br><span class="line">&#125;</span><br><span class="line">func StatusHandler(w http.ResponseWriter, r *http.Request) &#123;</span><br><span class="line">	if username := r.Context().Value(&quot;username&quot;); username != nil &#123;</span><br><span class="line">		w.WriteHeader(http.StatusOK)</span><br><span class="line">		w.Write([]byte(&quot;Hi username:&quot; + username.(string) + &quot;\n&quot;))</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		w.WriteHeader(http.StatusNotFound)</span><br><span class="line">		w.Write([]byte(&quot;Not Logged in&quot;))</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">func main() &#123;</span><br><span class="line">	mux := http.NewServeMux()</span><br><span class="line">	mux.HandleFunc(&quot;/&quot;, StatusHandler)</span><br><span class="line">	mux.HandleFunc(&quot;/login&quot;, LoginHandler)</span><br><span class="line">	mux.HandleFunc(&quot;/logout&quot;, LogoutHandler)</span><br><span class="line">	contextedMux := AddContextSupport(mux)</span><br><span class="line">	log.Fatal(http.ListenAndServe(&quot;:9999&quot;, contextedMux))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面的例子展示了通过context控制结合cookie控制login以及logout的操作，需要提前了解一点servmux以及wrapper function的知识。</p>
+<p>具体来看，在main函数中通过HandleFun注册了三个router，最后对mux进行了包装，返回了新的实现了http.Handler的实例。</p>
+<p>在login的时候通过get方式传入的用户名设置cookie并将包含了用户信息的cookie写回到response中记录在client上。</p>
+<p>之后在开启server的时候，通过wrapper的方式进行判断，如果有cookie信息就将其写入到request中，之后再启动，如果没有就直接启动，这样每次过来的request就都携带了context信息，cookie中的信息通过context的形式具体被server记录下来。这里具体使用的是valueCtx，其中包含了interface{}形式的key-value，方便用户自定义存储结构。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type valueCtx struct &#123;</span><br><span class="line">	Context</span><br><span class="line">	key, val interface&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在logout的时候通过设置cookie的过期时间使得cookie失效。</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p>官方blog中的介绍<br><a href="https://blog.golang.org/context" target="_blank" rel="noopener">https://blog.golang.org/context</a></p>
+<p>context源码解读<br><a href="http://blog.csdn.net/xiaohu50/article/details/49100433" target="_blank" rel="noopener">http://blog.csdn.net/xiaohu50/article/details/49100433</a></p>
+<p>这一篇中有较多实例<br><a href="http://jsmean.com/blog/post/5859fd8cec9803b957866ce9" target="_blank" rel="noopener">http://jsmean.com/blog/post/5859fd8cec9803b957866ce9</a></p>
+<p>context的一些使用例子<br><a href="http://www.nljb.net/default/Golang%E4%B9%8BContext%E7%9A%84%E4%BD%BF%E7%94%A8/" target="_blank" rel="noopener">http://www.nljb.net/default/Golang%E4%B9%8BContext%E7%9A%84%E4%BD%BF%E7%94%A8/</a></p>
+<p>较多例子<br><a href="http://www.tuicool.com/articles/r6RZzeM" target="_blank" rel="noopener">http://www.tuicool.com/articles/r6RZzeM</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/15/golang-context-tips/" data-id="cl49ds6op004euamctlyv2z3s" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/15/golang-servmux/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          golang servmux
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/15/k8s-cache-tips/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">k8s cache tips</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#context%E5%8C%85%E7%9A%84%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">context包的源码分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#context%E7%9A%84%E4%B8%80%E4%BA%9B%E5%85%B7%E4%BD%93%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">context的一些具体使用案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">3.</span> <span class="toc-text">参考资料</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+    
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

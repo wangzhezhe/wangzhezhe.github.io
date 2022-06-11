@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Algorithm(7) hash table and two pointers (1) | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="整理一下leetcode里面关于 2sum 3sum 的几个问题，后面还补充了几个two pointer的其他问题，主要是longest sub str with at most K distinct characters的问题。关于 hanshtable 以及 two pointer的应用，由于在实现上不像树、图那些在结构上比较复杂，大多是灵光一闪，或者是绕一两个弯就能想到的，面试也是各种常考，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Algorithm(7) hash table and two pointers (1)">
+<meta property="og:url" content="http://yoursite.com/2019/06/15/Algorithm-7-hash-table-and-two-pointers-1/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="整理一下leetcode里面关于 2sum 3sum 的几个问题，后面还补充了几个two pointer的其他问题，主要是longest sub str with at most K distinct characters的问题。关于 hanshtable 以及 two pointer的应用，由于在实现上不像树、图那些在结构上比较复杂，大多是灵光一闪，或者是绕一两个弯就能想到的，面试也是各种常考，">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-06-15T15:17:15.000Z">
+<meta property="article:modified_time" content="2022-05-19T22:04:31.000Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Algorithm-7-hash-table-and-two-pointers-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/15/Algorithm-7-hash-table-and-two-pointers-1/" class="article-date">
+  <time datetime="2019-06-15T15:17:15.000Z" itemprop="datePublished">2019-06-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Algorithm(7) hash table and two pointers (1)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>整理一下leetcode里面关于 2sum 3sum 的几个问题，后面还补充了几个two pointer的其他问题，主要是longest sub str with at most K distinct characters的问题。关于 hanshtable 以及 two pointer的应用，由于在实现上不像树、图那些在结构上比较复杂，大多是灵光一闪，或者是绕一两个弯就能想到的，面试也是各种常考，应该是要掌握好的一类基本问题。</p>
+<a id="more"></a>
+<h3 id="two-sum-1"><a href="#two-sum-1" class="headerlink" title="two sum (1)"></a>two sum (1)</h3><p>Given an array of integers, find two numbers such that they add up to a specific target number.</p>
+<p>The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.</p>
+<p>You may assume that each input would have exactly one solution.</p>
+<p>Input: numbers={2, 7, 11, 15}, target=9<br>Output: index1=1, index2=2</p>
+<h4 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h4><p>由于要先定义好结构体，把index和value的值都存入进去，相比解法二直接使用map代码要稍微多一些，时间复杂度要稍微高一些。</p>
+<ul>
+<li>定义Node接口体 对生成vectorvnode对其进行初始化赋值</li>
+<li>对vnode 根据每个元素的value值 进行vector排序</li>
+<li>采用左右两个指针 向中间靠 发现符合 node1.v+node2.v=target 的两个元素</li>
+<li>和大于target则右指针左移 和小于target则左指针右移</li>
+<li>取出其index值，index1=min(node1.index,node2.index) index2=max(node1.index,node2.index)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">typedef struct Node&#123;</span><br><span class="line">	int index;</span><br><span class="line">	int value;</span><br><span class="line">	&#125;Node;</span><br><span class="line">	</span><br><span class="line">	bool cmp(Node a,  Node b)&#123;</span><br><span class="line">		return a.value&lt;b.value;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	class Solution &#123;</span><br><span class="line">		int min(int a,int b)&#123;</span><br><span class="line">			if (a&lt;=b)&#123;</span><br><span class="line">				return a;</span><br><span class="line">			&#125;else&#123;</span><br><span class="line">				return b;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		int max(int a,int b)&#123;</span><br><span class="line">			if (a&gt;=b)&#123;</span><br><span class="line">				return a;</span><br><span class="line">			&#125;else&#123;</span><br><span class="line">				return b;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	public:</span><br><span class="line">	vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) &#123;</span><br><span class="line">	 vector&lt;Node&gt;vnode;</span><br><span class="line">	 int i,len=nums.size();</span><br><span class="line">	 for (i=0;i&lt;len;i++)&#123;</span><br><span class="line">	 		Node n;</span><br><span class="line">	 		n.index=i+1;</span><br><span class="line">	 		n.value=nums[i];</span><br><span class="line">	 		vnode.push_back(n);</span><br><span class="line">	 	&#125;</span><br><span class="line">	 	sort(vnode.begin(), vnode.end(), cmp);</span><br><span class="line">	 	vector&lt;int&gt;v;</span><br><span class="line">	 	i=0;</span><br><span class="line">	 	int j=nums.size()-1;</span><br><span class="line">	 	 while(i&lt;j)&#123;</span><br><span class="line">		    if (vnode[i].value+vnode[j].value==target)&#123;</span><br><span class="line">			int index1=min(vnode[i].index,vnode[j].index);</span><br><span class="line">			int index2=max(vnode[i].index,vnode[j].index);</span><br><span class="line">			v.push_back(index1);</span><br><span class="line">			v.push_back(index2);</span><br><span class="line">			//printf(&quot;index1=%d, index2=%d&quot;,index1,index2);</span><br><span class="line">			break;</span><br><span class="line">			&#125;else if (vnode[i].value+vnode[j].value&gt;target)&#123;</span><br><span class="line">				j--;</span><br><span class="line">			&#125;else&#123;</span><br><span class="line">			    i++;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		return v;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br></pre></td></tr></table></figure>
+<p>解法二<br>利用map的特性，代码简单不少，实质上是很好地利用了map的空间和时间特性。</p>
+<ul>
+<li>create map &lt; int,int &gt; the lenth of vector is len 其中key值为array中的数字，value值为该数字在序列中的下标</li>
+<li>遍历 vector 每次 keyb= nums[i] keya = target - keyb</li>
+<li>如果keya不在map中，map[keya]=i</li>
+<li>否则，返回 index1=map[keya] index2=map[keyb]</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"> class Solution &#123;                                                            </span><br><span class="line">     public:</span><br><span class="line">             vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) &#123;</span><br><span class="line">             int len=nums.size();</span><br><span class="line">             int i;</span><br><span class="line">             map&lt;int,int&gt;m;</span><br><span class="line">             vector&lt;int&gt;v;</span><br><span class="line">             i=0;</span><br><span class="line">             map&lt;int,int&gt;::iterator it;</span><br><span class="line">             for(i=0;i&lt;len;i++)&#123;</span><br><span class="line">                 int keyb=nums[i];</span><br><span class="line">                 int keya=target-keyb;</span><br><span class="line"> </span><br><span class="line">                 if (m.find(keya)!=m.end())&#123;</span><br><span class="line">                                     v.push_back(m[keya]+1);</span><br><span class="line">                     v.push_back(i+1);</span><br><span class="line">                     printf(&quot;index1=%d, index2=%d&quot;,m[keya]+1,i+1);</span><br><span class="line">                     break;</span><br><span class="line">                 &#125;else&#123;</span><br><span class="line">                     m[keyb]=i;</span><br><span class="line">                 &#125;</span><br><span class="line">             &#125;</span><br><span class="line">             return v;</span><br><span class="line">         &#125;  </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>注意特殊用例，就是可能出现像 [ {0，4，1，0}，0 ] 这种情况，所以不能在开始的时候就把vector中的元素全部放到map中再对vector遍历，要一边遍历vector一边把其中的元素存到map中。</p>
+<h3 id="3Sum-15"><a href="#3Sum-15" class="headerlink" title="3Sum(15)"></a>3Sum(15)</h3><p>基本上是上一题目的基本升级版</p>
+<h4 id="解法一-1"><a href="#解法一-1" class="headerlink" title="解法一"></a>解法一</h4><p>采用两指针的思路，a+b+c=0实际上就是求，a+b=-c , 比上一个2sum的问题多需要考虑的一个地方就是，需要考虑多组不同的解，以及去掉重复的解。大致思路都是基于排序，之后再遍历，在每个元素后面的序列中找两个数字的和为-current的组合。如果不进行优化，肯定会超时的，优化的方面参考了这个</p>
+<ul>
+<li>一个是在遍历的时候 元素重复了就直接跳过</li>
+<li>还有一个是 发现一组解之后 指针left right就要向两边移动 把相同的元素都跳过 就是函数中的那两个while循环 但还是要保证 left &lt; right的<br>其他的细节问题，vector嵌套以及声明的时候在vc6.0中注意空格 ，比如 vector&lt;vector<int> &gt; , vector<int> temp 否则会编译错误，虽然老生常谈的了，还是被坑了。每次temp vector存数据的时候，先clear一下，貌似之前的记录还在。</int></int></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">        //attention!! the &quot; &quot; in the declaration of vector&lt;vector&lt;int&gt; &gt;</span><br><span class="line">        void findsolution(int left,int right,int sum,vector&lt;int&gt; &amp;v, vector&lt;vector&lt;int&gt; &gt; &amp;solution)&#123;</span><br><span class="line">             int i=left;</span><br><span class="line">             int j=right;</span><br><span class="line">             vector&lt;int&gt; temp;</span><br><span class="line">             while(i&lt;j)&#123;</span><br><span class="line">                  if (v[i]+v[j]==sum)&#123;</span><br><span class="line">                      //attention to clear before store the number</span><br><span class="line">                          temp.clear();</span><br><span class="line">                      temp.push_back(-sum);</span><br><span class="line">                      temp.push_back(v[i]);</span><br><span class="line">                      temp.push_back(v[j]);</span><br><span class="line">                      solution.push_back(temp);</span><br><span class="line">                      the negtive number exist maybe not uniq</span><br><span class="line">                          while(v[i+1]==v[i] &amp;&amp; i&lt;j)&#123;</span><br><span class="line">                               i++;</span><br><span class="line">                          &#125;</span><br><span class="line">                      while(v[j-1]==v[j] &amp;&amp; i&lt;j)&#123;</span><br><span class="line">                           j--; </span><br><span class="line">                      &#125;</span><br><span class="line">                      i++;</span><br><span class="line">                      j--;</span><br><span class="line">                  &#125;else if(v[i]+v[j]&lt;sum)&#123;</span><br><span class="line">                      i++;  </span><br><span class="line">                  &#125;else&#123;</span><br><span class="line">                      j--;</span><br><span class="line">                  &#125;</span><br><span class="line">             &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    public:</span><br><span class="line">    vector&lt;vector &lt;int&gt; &gt; threeSum(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">        vector&lt;int&gt; consider;</span><br><span class="line">        vector&lt;vector&lt;int&gt; &gt; solution;</span><br><span class="line">        int i=0;</span><br><span class="line">        int len=nums.size();</span><br><span class="line">        sort(nums.begin(),nums.end());</span><br><span class="line">                </span><br><span class="line">        for(i=0;i&lt;len;i++)&#123;</span><br><span class="line">            consider.push_back(0);</span><br><span class="line">        &#125;</span><br><span class="line">        //traverse</span><br><span class="line">            int current;</span><br><span class="line">        for(i=0;i&lt;len-2;i++)&#123;</span><br><span class="line">            current=nums[i];</span><br><span class="line">                        if(i!=0 &amp;&amp; current==nums[i-1])&#123;</span><br><span class="line">                              continue;</span><br><span class="line">                        &#125;</span><br><span class="line">                        int inputsum=-current;</span><br><span class="line">                        if (current==0)&#123;</span><br><span class="line">									inputsum=0;</span><br><span class="line">                        &#125;</span><br><span class="line">                        findsolution(i+1,len-1,inputsum,nums,solution);</span><br><span class="line">        &#125;</span><br><span class="line">        return solution;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h4><p>使用map也是可以的，只不过key value的值与上题不同，value不是存储元素所在的位置。这个算法写出来比较容易，理解上有点困难。</p>
+<p>比如 序列{-4，-1，-1，0，1，2} 遍历到-4的时候 ， 从后面的元素开始看，需要在后面的元素中找两个元素，使得 a[i]+a[j]=4 才符合，-1+5=4所以map[5]=4 同理 ，map中依次存入 map[4]=0 map[3]=1 map[2]=2 遍历所有的key值 若同时存在 map[a]=b 以及 map[b]=a 说明 a b 两元素同时都在这个序列中，并且a+b=4。</p>
+<p>对于去重的话，第一次遍历的时候，后面一个不等于前面一个，第二次存入map的时候，如果key值已经存在，并且 key==value 就是三个元素中，有两个是相等的。类似 （2，-1，-1）这种</p>
+<p>还有个问题没解决，如果不对原始序列排序的化，去重的问题要怎么考虑？这里还没解决，排序的话有超时了</p>
+<p>这个是超时的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">	</span><br><span class="line">    int min(int a,int b)&#123;</span><br><span class="line">		if (a&lt;b)&#123;</span><br><span class="line">			return a;</span><br><span class="line">		&#125;else&#123;</span><br><span class="line">			return b;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	int max(int a,int b)&#123;</span><br><span class="line">		if (a&gt;b)&#123;</span><br><span class="line">			return a;</span><br><span class="line">		&#125;else&#123;</span><br><span class="line">			return b;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	void findsolutionbymap(int left,int right,int localindex,int sum,vector&lt;int&gt; &amp;v, vector&lt;vector&lt;int&gt; &gt; &amp;solution)&#123;</span><br><span class="line">        int i=0;	</span><br><span class="line">		int key,value;</span><br><span class="line">		vector&lt;int&gt; temp;</span><br><span class="line">		map&lt;int,int&gt;m;</span><br><span class="line">		m.clear();</span><br><span class="line">		for(i=left;i&lt;=right;i++)&#123;</span><br><span class="line">			key=sum-v[i];</span><br><span class="line">			value=v[i];</span><br><span class="line">			if(m.find(key)!=m.end()&amp;&amp;key==value&amp;&amp;m[key]==key)</span><br><span class="line">			&#123;</span><br><span class="line">				temp.clear();</span><br><span class="line">				temp.push_back(-sum);</span><br><span class="line">				temp.push_back(min(key,value));</span><br><span class="line">				temp.push_back(max(key,value));</span><br><span class="line">				solution.push_back(temp);</span><br><span class="line">				continue;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			if(m.find(value)!=m.end()&amp;&amp;m[value]==key&amp;&amp;key!=value)&#123;</span><br><span class="line">				temp.clear();</span><br><span class="line">				temp.push_back(-sum);</span><br><span class="line">				temp.push_back(min(key,value));</span><br><span class="line">				temp.push_back(max(key,value));</span><br><span class="line">				solution.push_back(temp);</span><br><span class="line">				continue;</span><br><span class="line">				</span><br><span class="line">			&#125;		</span><br><span class="line">			m[key]=value;	</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">public:</span><br><span class="line">    vector&lt;vector &lt;int&gt; &gt; threeSum(vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">		vector&lt;vector&lt;int&gt; &gt; solution;</span><br><span class="line">        int i=0;</span><br><span class="line">		int len=nums.size();</span><br><span class="line">		sort(nums.begin(),nums.end());</span><br><span class="line">        </span><br><span class="line">		int current;</span><br><span class="line">		for(i=0;i&lt;len-2;i++)&#123;</span><br><span class="line">			current=nums[i];</span><br><span class="line">            if(i!=0 &amp;&amp; current==nums[i-1])&#123;</span><br><span class="line">				continue;</span><br><span class="line">			&#125;</span><br><span class="line">			int inputsum=-current;</span><br><span class="line">			if (current==0)&#123;</span><br><span class="line">				inputsum=0;</span><br><span class="line">			&#125;</span><br><span class="line">			findsolutionbymap(i+1,len-1,i,inputsum,nums,solution);</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		return solution;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="3Sum-closest"><a href="#3Sum-closest" class="headerlink" title="3Sum closest"></a>3Sum closest</h3><p>Given an array S of n integers, find three integers in S such that the sum is closest to a given number, target. Return the sum of the three integers. You may assume that each input would have exactly one solution.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">For example, given array S = &#123;-1 2 1 -4&#125;, and target = 1.</span><br><span class="line"></span><br><span class="line">The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).</span><br></pre></td></tr></table></figure>
+<p>就是三个数相加，和不断接近目标数，其实和上一个题目的思路有点类似，在求和的过程中，不断更新，由于题目中已经保证了有唯一的一组解，就保留最接近的那种就可以了。貌似很容易，代码页很简单，但是最后还是参考了别人写的。问题实质是转化为，如何在一个有序序列中找到a[i]+a[j]=sum 使得 abs(sum-target)的值最小，这个还是基于两个指针的策略，但是要好好整理一下。</p>
+<ul>
+<li>设置left right两个指针 temp=a[left]+a[right] closet=temp</li>
+<li>while （left&lt;right） 更新 temp</li>
+<li>if temp == target 返回 temp a[left] a[right] 是所需寻找的值</li>
+<li>if temp &lt; target left ++ 如果 abs(temp-target)&lt;abs(closet-target) closet=temp</li>
+<li>if temp &gt; target right– 如果 abs(temp-target)&lt;abs(closet-target) closet=temp<br>最后返回closet<br>注意closet的持续更新，每次都要用temp-target和closet-target来进行比较，之后更新closet,有需要的化，还需要及时记录当时的left和right的位置，因为不可能靠移动一边的指针找到距离target最近的sum，总之这里要好好体会体会并且记会，属于基本套路了。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">	int findsolution(int left,int right,int nowindex,int sum,vector&lt;int&gt; &amp;v)&#123;</span><br><span class="line">        int i=left;</span><br><span class="line">		int j=right;</span><br><span class="line">		int closet=v[nowindex]+v[i]+v[j];</span><br><span class="line">		int temp;</span><br><span class="line">        while(i&lt;j)&#123;</span><br><span class="line">			temp=v[nowindex]+v[i]+v[j];</span><br><span class="line">			</span><br><span class="line">			if (temp==sum)&#123;</span><br><span class="line">				return temp;</span><br><span class="line">			&#125;else if(temp&lt;sum)&#123;</span><br><span class="line">				</span><br><span class="line">				if (abs(temp-sum)&lt;abs(closet-sum))&#123;</span><br><span class="line">					closet=temp;</span><br><span class="line">				&#125;</span><br><span class="line">                while(i&lt;j&amp;&amp;v[i]==v[i+1]) i++;</span><br><span class="line">				i++;</span><br><span class="line">				</span><br><span class="line">			&#125;else&#123;</span><br><span class="line">				</span><br><span class="line">				if (abs(temp-sum)&lt;abs(closet-sum))&#123;</span><br><span class="line">					closet=temp;</span><br><span class="line">				&#125;</span><br><span class="line">                while(i&lt;j&amp;&amp;v[j]==v[j-1]) j--;</span><br><span class="line">				j--;</span><br><span class="line">					</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		return closet;</span><br><span class="line">		</span><br><span class="line">	&#125;	</span><br><span class="line">	</span><br><span class="line">public:</span><br><span class="line">	int threeSumClosest(vector&lt;int&gt;&amp; nums, int target) &#123;</span><br><span class="line">		</span><br><span class="line">        int i=0;</span><br><span class="line">		int len=nums.size();</span><br><span class="line">		sort(nums.begin(),nums.end());</span><br><span class="line">        </span><br><span class="line">		int current;</span><br><span class="line">		int lastmin=9999999;</span><br><span class="line">		for(i=0;i&lt;len-2;i++)&#123;</span><br><span class="line">			current=nums[i];</span><br><span class="line">            if(i!=0 &amp;&amp; current==nums[i-1])&#123;</span><br><span class="line">				continue;</span><br><span class="line">			&#125;</span><br><span class="line">			int min=findsolution(i+1,len-1,i,target,nums);</span><br><span class="line">            //printf(&quot; (%d %d)&quot;,min,min-target);</span><br><span class="line">			if (abs(min-target)&lt;abs(lastmin-target))&#123;</span><br><span class="line">                 lastmin=min;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		return lastmin;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="3Sum-smaller"><a href="#3Sum-smaller" class="headerlink" title="3Sum smaller"></a>3Sum smaller</h3><p>这个题目开始收费了，参考了这里(<a href="http://likesky3.iteye.com/blog/2236385)：" target="_blank" rel="noopener">http://likesky3.iteye.com/blog/2236385)：</a><br>Given an array of n integers nums and a target, find the number of index triplets i, j, k with 0 &lt;= i &lt; j &lt; k &lt; n that satisfy the condition nums[i] + nums[j] + nums[k] &lt; target.</p>
+<p>For example, given nums = [-2, 0, 1, 3], and target = 2.</p>
+<p>Return 2. Because there are two triplets which sums are less than 2:</p>
+<p>[-2, 0, 1]<br>[-2, 0, 3]</p>
+<p>大致分析一下，要求多组解，大致框架应该与上面的相同，先排序，再遍历（主要目的是固定一个数），再两指针选择。关键是两指针选择时候的技巧性：</p>
+<ul>
+<li>while (i&lt;j)</li>
+<li>sum3=nums[i]+nums[j]+num[now]</li>
+<li>if (sum3&lt;target) ，由于序列已经是有序的，这个时候 nums[now]+nums[i]+nuns[j-1] 、nums[now]+nums[i]+nuns[j-2]… nums[now]+nums[i]+nums[i+1]这些组合都是符合要求的，所以符合要求的组合数目要加上 j-i 。之后让i后移一位。</li>
+<li>if (sum3&gt;=target) 这个时候就是往小移动，即 j– 还要处理下重复的情况 如果 num[j]=nums[j-1]的时候 也前移一下 放在一个while循环中 始终保持 i&lt;j</li>
+</ul>
+<h3 id="4Sum"><a href="#4Sum" class="headerlink" title="4Sum"></a>4Sum</h3><p>Given an array S of n integers, are there elements a, b, c, and d in S such that a + b + c + d = target? Find all unique quadruplets in the array which gives the sum of target.</p>
+<p>Note:<br>Elements in a quadruplet (a,b,c,d) must be in non-descending order. (ie, a ≤ b ≤ c ≤ d)<br>The solution set must not contain duplicate quadruplets.<br>For example, given array S = {1 0 -1 0 -2 2}, and target = 0.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">A solution set is:</span><br><span class="line">(-1,  0, 0, 1)</span><br><span class="line">(-2, -1, 1, 2)</span><br><span class="line">(-2,  0, 0, 2)</span><br></pre></td></tr></table></figure>
+<p>背景与2Sum的形式一样，只不过由两个数变为4个数。最容易想到的一种就是转化为3Sum最后再转化为2Sum来解决。就是把外面的一重循环变成了两重循环。其实就是注意几个核心的操作，基本的框架是两指针，去重的操作怎么来，第一次循环的时候去重，用两指针寻找的时候也去重，一组解的时候怎么弄，多组解的时候怎么弄，还有vector的基本操作，比如排序这些，这些都弄好了，解决起来就比较容易了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">	void findsolution(int left,int right,int index1,int index2,vector&lt;int&gt; &amp;v, int target,vector&lt;vector&lt;int&gt; &gt; &amp;solution)&#123;</span><br><span class="line">        int i=left;</span><br><span class="line">		int j=right;		</span><br><span class="line">		vector&lt;int&gt; temp;</span><br><span class="line">		int sum;</span><br><span class="line">		while(i&lt;j)&#123;</span><br><span class="line">			sum=v[index1]+v[index2]+v[i]+v[j];</span><br><span class="line">			if (sum==target)&#123;</span><br><span class="line">				temp.clear();</span><br><span class="line">				temp.push_back(v[index1]);</span><br><span class="line">				temp.push_back(v[index2]);</span><br><span class="line">				temp.push_back(v[i]);</span><br><span class="line">				temp.push_back(v[j]);</span><br><span class="line">				solution.push_back(temp);</span><br><span class="line">				while(i&lt;j&amp;&amp;v[i]==v[i+1])&#123;</span><br><span class="line">					i++;</span><br><span class="line">				&#125;</span><br><span class="line">				while(i&lt;j&amp;&amp;v[j]==v[j-1])&#123;</span><br><span class="line">					j--;</span><br><span class="line">				&#125;</span><br><span class="line">				i++;</span><br><span class="line">				j--;</span><br><span class="line">			&#125;else if(sum&lt;target)&#123;</span><br><span class="line">				i++;</span><br><span class="line">				</span><br><span class="line">			&#125;else&#123;</span><br><span class="line">                j--;</span><br><span class="line">				</span><br><span class="line">			&#125;</span><br><span class="line">            </span><br><span class="line">		&#125;		</span><br><span class="line">	&#125;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;vector&lt;int&gt; &gt; fourSum(vector&lt;int&gt; &amp;nums, int target) &#123;</span><br><span class="line">		vector&lt;vector&lt;int&gt; &gt; solution;</span><br><span class="line">        int i=0,j=0;</span><br><span class="line">		int len=nums.size();</span><br><span class="line">		sort(nums.begin(),nums.end());</span><br><span class="line">        </span><br><span class="line">		//注意循环的时候两次去重</span><br><span class="line">		for(i=0;i&lt;len-3;i++)&#123;</span><br><span class="line">		    if (i!=0&amp;&amp;nums[i]==nums[i-1])&#123;</span><br><span class="line">				continue;</span><br><span class="line">			&#125;</span><br><span class="line">		    </span><br><span class="line">			for(j=i+1;j&lt;len-2;j++)&#123;</span><br><span class="line">				if(j!=i+1&amp;&amp;nums[j]==nums[j-1])&#123;</span><br><span class="line">					continue;</span><br><span class="line">				&#125;</span><br><span class="line">				</span><br><span class="line">				findsolution(j+1,len-1,i,j,nums,target,solution);</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		return solution;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="Longest-Substring-Without-Repeating-Characters"><a href="#Longest-Substring-Without-Repeating-Characters" class="headerlink" title="Longest Substring Without Repeating Characters"></a>Longest Substring Without Repeating Characters</h3><p>Given a string, find the length of the longest substring without repeating characters. For example, the longest substring without repeating letters for “abcabcbb” is “abc”, which the length is 3. For “bbbbb” the longest substring is “b”, with the length of 1.</p>
+<p><strong>思路</strong><br>之前整理了一次，又弄没了。。。坑啊。根本上讲还是两指针的问题，只不过两个指针在开始的时候是在同一个位置上的。需要额外的空间就是exist数组，用来存储该元素是否存在过。以及position，用来存储上一次出现的位置。注意还有可能是其他的字符，所以要0-128的存储空间，主要流程如下：</p>
+<ul>
+<li>一个while循环中 两个指针l,r初始位置都是0</li>
+<li>当前字符没有出现过 ，r指针右移，更新position。</li>
+<li>当前字符已经出现过 ，更新长度 ，记录position的位置，l指针移动到上次出现位置的下一个。注意限制条件，要上次的位置大于l的位置才能更新，比如 “ eccebaad ” 当遍历到第二个e的时候，position中记录的last位置为1，这个时候不要更新。</li>
+<li>最后r指针都向后移动一位。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int lengthOfLongestSubstring(string s) &#123;</span><br><span class="line">		int l=0,r=0;</span><br><span class="line">		int start=0,end=0;</span><br><span class="line">		int len=s.length();</span><br><span class="line">		int position[130];</span><br><span class="line">		int exist[130];</span><br><span class="line">		int max=0;</span><br><span class="line">		int templen,last;</span><br><span class="line">		memset(position,0,sizeof(position));</span><br><span class="line">		memset(exist,0,sizeof(exist));</span><br><span class="line">		char temp;</span><br><span class="line">		while(l&lt;=r&amp;&amp;r&lt;len)&#123;</span><br><span class="line">			temp=s[r];</span><br><span class="line">			last=position[temp]+1;</span><br><span class="line">			//注意这里 有可能旧的位置比当前的位置小 这时就不再更换位置</span><br><span class="line">            if (exist[temp]==1&amp;&amp;last&gt;=l)&#123;</span><br><span class="line">                  l=last;</span><br><span class="line">			&#125;else&#123;</span><br><span class="line">                templen=r-l+1;</span><br><span class="line">				if (templen&gt;max)&#123;</span><br><span class="line">					max=templen;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			position[temp]=r;</span><br><span class="line">			exist[temp]=1;</span><br><span class="line">			r++;</span><br><span class="line">		&#125;</span><br><span class="line">        return max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Longest-Substring-with-At-Most-Two-Distinct-Characters"><a href="#Longest-Substring-with-At-Most-Two-Distinct-Characters" class="headerlink" title="Longest Substring with At Most Two Distinct Characters"></a>Longest Substring with At Most Two Distinct Characters</h3><p>Total Accepted: 1167 Total Submissions: 3961<br>Given a string, find the length of the longest substring T that contains at most 2 distinct characters.<br>For example,Given s = “eceba”,<br>T is “ece” which its length is 3.</p>
+<p><strong>大致思路</strong><br>这个题目改收费的了，从网上看到了别人的解答，这个问题最一般的情况是 at most K Distinct Characters。整个框架还是一样的，说白了就是，两指针从头遍历，有点滑动窗口的意思，不断调整两个窗口的边界。此外还需要一个存储出现次数的count数组，关键是存储position的策略，比如”ececebad”这种，当k=2的时候，当第三次到e的时候，l指针应该到第一个e后面的一个位置。这里就不太好存储位置了，因为如果有第四个e的时候，此时l要到第二个e的后一个位置，所以可以参考<a href="http://www.cnblogs.com/x1957/p/4123301.html" target="_blank" rel="noopener">这个</a>，对于k个位置的时候，要注意对k进行适当的分类。比如比如k&lt;0，以及s.size()&lt;k 这些情况要怎么处理。具体可以参考这个(<a href="http://blog.csdn.net/martin_liang/article/details/45648985" target="_blank" rel="noopener">http://blog.csdn.net/martin_liang/article/details/45648985</a>)</p>
+<p>当count数目大于K的时候，l就向右移动，一直到对应的元素出现位置，之后count-1,之后l移动到这个元素的下一个位置就更新完成了，不用一个专门的position来存储位置信息。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/15/Algorithm-7-hash-table-and-two-pointers-1/" data-id="cl49ds6o40004uamcwo51wfmb" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/15/golang-struct-using-tips/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Golang struct using tips
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/15/algorithm-6-two-numbers-sum-and-multiply/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Algorithm(6) two numbers sum and multiply</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#two-sum-1"><span class="toc-number">1.</span> <span class="toc-text">two sum (1)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%E4%B8%80"><span class="toc-number">1.1.</span> <span class="toc-text">解法一</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3Sum-15"><span class="toc-number">2.</span> <span class="toc-text">3Sum(15)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%E4%B8%80-1"><span class="toc-number">2.1.</span> <span class="toc-text">解法一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%E4%BA%8C"><span class="toc-number">2.2.</span> <span class="toc-text">解法二</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3Sum-closest"><span class="toc-number">3.</span> <span class="toc-text">3Sum closest</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3Sum-smaller"><span class="toc-number">4.</span> <span class="toc-text">3Sum smaller</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4Sum"><span class="toc-number">5.</span> <span class="toc-text">4Sum</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Longest-Substring-Without-Repeating-Characters"><span class="toc-number">6.</span> <span class="toc-text">Longest Substring Without Repeating Characters</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Longest-Substring-with-At-Most-Two-Distinct-Characters"><span class="toc-number">7.</span> <span class="toc-text">Longest Substring with At Most Two Distinct Characters</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+    
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

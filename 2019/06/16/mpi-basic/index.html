@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>mpi basic | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="parallel programming with mpi notes, even though the book was issued 20 years ago, some materials are still inspiring for me and explain the knolwdge clearly. For every points, they gave out the limit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mpi basic">
+<meta property="og:url" content="http://yoursite.com/2019/06/16/mpi-basic/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="parallel programming with mpi notes, even though the book was issued 20 years ago, some materials are still inspiring for me and explain the knolwdge clearly. For every points, they gave out the limit">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-06-16T21:25:05.000Z">
+<meta property="article:modified_time" content="2019-10-06T21:10:39.000Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-mpi-basic" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/16/mpi-basic/" class="article-date">
+  <time datetime="2019-06-16T21:25:05.000Z" itemprop="datePublished">2019-06-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/parallel/">parallel</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mpi basic
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>parallel programming with mpi notes, even though the book was issued 20 years ago, some materials are still inspiring for me and explain the knolwdge clearly. For every points, they gave out the limitation which is really good way to explain the knoledge clearly.</p>
+<a id="more"></a>
+<h3 id="Background-Knowledge"><a href="#Background-Knowledge" class="headerlink" title="Background Knowledge"></a>Background Knowledge</h3><h4 id="hardware-issue"><a href="#hardware-issue" class="headerlink" title="hardware issue:"></a>hardware issue:</h4><p>basic classification for parallel computing<br>Flynn’s Taxonomy, SISD,SIMD,</p>
+<p>von Neumann model and bottleneck<br>the bottle neck is the latency between the memory and the cpu. One stategy is cache in different level, the other is pipeline.</p>
+<p><strong>Pipline archetecture</strong></p>
+<p>If the operation of excution of instruction is standarlized, the program could be proceed in pipline mode, common knoledge in computing archetecture. Another strategy is distribute the data in multiple memory bank properly to eliminate the time to waite the IO.</p>
+<p>Drawback, the pipeline don’t work well for program that use irregular structure or using many branches. They could not scale well to process the complex problem, because the logic unit is not standardized for large system.</p>
+<p><strong>SIMD</strong></p>
+<p>In evey SM(streaming multiprocessor), the work mode is SIMD, the most naive way is let the data to be stored in the global area and every thread in process will do the specific logic.</p>
+<p>The inportant thing for this mode is that for the diverge or conditional instruction, the thread will wait for each other, which means the instruction in different process unit will precced active or idle(synchronously) in conditional instruction.</p>
+<p>The drawback is also obvious, on a program with many conditional branch the program could idle for a long period of time.</p>
+<p><strong>MIMD</strong><br>multi cpu and multi memory unit and the instruction could be excuted asynchronously.<br>including two types :Shared-Mem MIMD, Distributed Mem MIMD, (a little bit complicated for this part, sth on hardware design)</p>
+<h4 id="software-issue"><a href="#software-issue" class="headerlink" title="software issue"></a>software issue</h4><p><strong>shared memory programming</strong></p>
+<p>sth which could be acceed by all the process.</p>
+<p>common words in OS: critical section, mutual exclusion, atomic operation…<br>attention to barrier: a barrier is usually implemented as a function, once a process has called it, it will not return until every other process have called it.</p>
+<p><strong>message passing</strong></p>
+<p>Focusing on the communication between the process, MPI could support severl network type like infiniband for HPC, and there are clean protocal for data transmission like assign the type of data to be transformed. Even though there are all kinds of fancy frame work for HPC now, the MPI always play on important role for underlying communicatino layer.</p>
+<p>message passing interface is the typical for this part, on common programming mode for those SPMD (more focusing on programming level)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if(my_process_rank==0)&#123;</span><br><span class="line">	MPI_Send()</span><br><span class="line">&#125;else if(my_process_rank==1)&#123;</span><br><span class="line">	MPI_Recv()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>buffering</strong></p>
+<p>It seems we always misuse the term between “buffer” and “cache”, the buffering is equal to the memory cache, when we use cache, it seems that we refer to cache in hardware level.</p>
+<p>one function of buffer is changing synchronous communication into asynchronous communication or buffered communication. Becasue the message is buffered into the memory of send process or recieve process, the send process could execute other logic after excuting.Without the buffer, send process(process 0) should send a “request to send” to server 1 and wait until process 0 recieve the “ready to revieve” from 1(sth like the three time hand shake) than it begin to transfer the data. If we use the buffer strategies, the contents could be copied from the buffer and then start transmission.</p>
+<p>The disadvantage is using the system resource to buffer the contents. Whole process will be longer because it involve the process of copy data from the buffer into program memory location.</p>
+<p>two group for formidable parallel system</p>
+<p>data parallel: dividing data among processor and each processor apply the same operations to its portion of data</p>
+<p>message passing interface: a message passing functino is simply a function that explicitly transmits data from one process to another.</p>
+<p><strong>blocking and nonblocking communication</strong></p>
+<p>For the blocking communication, the send process (process 0) will block here if the recieve process (process 1) did not prepare well to recieve the info.</p>
+<p>It is important to distinguish the blocking and synchronise here.</p>
+<p>The concept of synchronised communication is clear, the process 0 will send the message until it recieve the info like (ok to send, i’m ready from process 1).</p>
+<p>The context of process 1 blocking: if the process 1 call the MPI_RECV, but at this time, the process 0 didi not prepare the data well, the process 1 will stay there and keep idel and do nothing, this is the blocking for recieve end.</p>
+<p>If the process 0 put the message into the buffer and process 1 also ready to recieve but the communication line might be busy , so the process 0 will block here and waiting for the communication line become avaliable.</p>
+<p>nonblocking could return some value immediately and do some operation which not depend on the sending message from process 0 , and check back later to make sure if all the data arrived.</p>
+<p>Data Parallel</p>
+<p>RPC active message</p>
+<p>Data Mapping</p>
+<p>The core issue for data mapping problem is to assign data elements to processor so that communication could be minimized, namely how to map the data into multiple nodes to minimize the data communication time. There are lots of trade off behind this. Memory should correspond with the processor, the naive way is using one process per node (like redis). The drawback of this one thread model is the waste of computation resource. Because it always depends on specific situation and use case, there are lots of issue sin this area, if there is a balance between the computational resource and the storage resource or maximize specific advantage and minimize another one.</p>
+<h3 id="MPI-basic"><a href="#MPI-basic" class="headerlink" title="MPI basic"></a>MPI basic</h3><p>if you come out from the os class and to the parallel computing class, one question is that “what is the difference between the pthread , fork based parallel computing with the MPI programming model”, there is an answer here.</p>
+<p>if you want to run mpi on multiple server, refer to this, mainly depdends on the NFS and passwordless ssh and adding coresponding parameters for mpirun command(it is better to use same impementation of MPI, the common one is openmpi and mpich2). For the strategy of the schedule of MPI, please refer to this.</p>
+<p>This is the most simple case for message sending and recieving:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line">#include &lt;mpi.h&gt;</span><br><span class="line">main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line">    int p_rank;</span><br><span class="line">    int p_num;</span><br><span class="line">    int source;</span><br><span class="line">    int dest;</span><br><span class="line">    int tag = 0;</span><br><span class="line">    char message[100];</span><br><span class="line">    char process_name[100];</span><br><span class="line">    int name_len;</span><br><span class="line">    MPI_Status status;</span><br><span class="line">    //MPI_Init(&amp;argc, &amp;argv);</span><br><span class="line">    MPI_Init(NULL, NULL);</span><br><span class="line">    MPI_Comm_rank(MPI_COMM_WORLD, &amp;p_rank);</span><br><span class="line">    MPI_Comm_size(MPI_COMM_WORLD, &amp;p_num);</span><br><span class="line">    if (p_rank != 0)</span><br><span class="line">    &#123;</span><br><span class="line">        //create message</span><br><span class="line">        sprintf(message, &quot;Greetings from the process %d&quot;, p_rank);</span><br><span class="line">        dest = 0;</span><br><span class="line">        MPI_Send(message, strlen(message) + 1, MPI_CHAR, dest, tag, MPI_COMM_WORLD);</span><br><span class="line">        MPI_Get_processor_name(process_name, &amp;name_len);</span><br><span class="line">        printf(&quot;%s send message\n&quot;, process_name);</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123; //if the process with rank 0</span><br><span class="line">        for (source = 1; source &lt; p_num; source++)</span><br><span class="line">        &#123;</span><br><span class="line">            MPI_Get_processor_name(process_name, &amp;name_len);</span><br><span class="line">            tag=source-1;</span><br><span class="line">            MPI_Recv(message, 100, MPI_CHAR, source, tag , MPI_COMM_WORLD, &amp;status);</span><br><span class="line">            printf(&quot;process id %d in processor %s get message : %s\n&quot;, p_rank, process_name, message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //shut down</span><br><span class="line">    MPI_Finalize();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>This code is typical SPMD model, the tricky thing is that your should clear that your program will be excuted on different processor and support different data.</p>
+<p>The typicl mode of MPI programming start from the MPI_Init(NULL, NULL); and end with the MPI_Finalize(); the two parameters could be the pointer to the parameter for main function like this MPI_Init(&amp;argc, &amp;argv).</p>
+<p>MPI_INIT means no function could be excuted before the INIT function and the MPI_Finalize means no MPI function could be called after this.</p>
+<p>MPI_COMM_WORLD, Comm_rank</p>
+<p>MPI_COMM_WORLD could also be called the communicator, which represent the collection of the process that could send message between each other, the Comm_rank represent the index of the process in this communicator. function MPI_Comm_rank and MPI_Comm_size could be used to get the rank(index) of current process in specific communicator and the last one is used to get the number of process in specific communitator. The default global communicator is the MPI_COMM_WORLD. Basically, the comm_rank represent a unique identity between sending and recieving. For the recieving function and sending function, the src and dst endpoint is also represent by this rank parameter.</p>
+<p>tag</p>
+<p>tag is more fine grained partition between specific client and server end. Because the communication could be divided into several types and we hope each type could be seperated by another one, like only the recieve call with tag = 0 could recieve the message sent by the client with the message sending for tag = 0. Basically, the communicator, rank, and the tag are the abstraction of the message sending and recieving entity in different levels.</p>
+<p>if the tag for send and recieve is not equal, the recieve will hang there, this use case is similar to the blocking communication, the recieve end is ready to recieve the message with tag = 1 but the send client send the message with the tag = 0 , so they could not recieve the info. For the following cases, only the MPI recieve with the tag=0 could recieve the message:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">    if (p_rank != 0)</span><br><span class="line">    &#123;</span><br><span class="line">        //create message</span><br><span class="line">        sprintf(message, &quot;Greetings from the process %d&quot;, p_rank);</span><br><span class="line">        dest = 0;</span><br><span class="line">        MPI_Send(message, strlen(message) + 1, MPI_CHAR, dest, tag, MPI_COMM_WORLD);</span><br><span class="line">        MPI_Get_processor_name(process_name, &amp;name_len);</span><br><span class="line">        printf(&quot;%s send message\n&quot;, process_name);</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123; //if the process with rank 0</span><br><span class="line">        for (source = 1; source &lt; p_num; source++)</span><br><span class="line">        &#123;</span><br><span class="line">            MPI_Get_processor_name(process_name, &amp;name_len);</span><br><span class="line">            tag=source-1;</span><br><span class="line">            MPI_Recv(message, 100, MPI_CHAR, source, tag , MPI_COMM_WORLD, &amp;status);</span><br><span class="line">            printf(&quot;process id %d in processor %s get message : %s\n&quot;, p_rank, process_name, message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">//output</span><br><span class="line">...</span><br><span class="line">e1c087 send message</span><br><span class="line">e1c086 send message</span><br><span class="line">e1c087 send message</span><br><span class="line">e1c086 send message</span><br><span class="line">e1c086 send message</span><br><span class="line">process id 0 in processor e1c085 get message : Greetings from the process 1</span><br><span class="line">//hang there forever</span><br></pre></td></tr></table></figure>
+<p><strong>sending parameters</strong></p>
+<p>The element type (the length of the element in memory) and the length of the element should be assigned when sending and recieving.</p>
+<p>There are two wildcard at recieve end for source and tag, for the following program, we use wildcard to get all the message with all the tag no matter sent from which client.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">    if (p_rank != 0)</span><br><span class="line">    &#123;</span><br><span class="line">        //create message</span><br><span class="line">        sprintf(message, &quot;Greetings from the process %d&quot;, p_rank);</span><br><span class="line">        dest = 0;</span><br><span class="line">        tag = p_rank;</span><br><span class="line">        MPI_Send(message, strlen(message) + 1, MPI_CHAR, dest, tag, MPI_COMM_WORLD);</span><br><span class="line">        MPI_Get_processor_name(process_name, &amp;name_len);</span><br><span class="line">        printf(&quot;%s send message\n&quot;, process_name);</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123; //if the process with rank 0</span><br><span class="line">        for (source = 1; source &lt; p_num; source++)</span><br><span class="line">        &#123;</span><br><span class="line">            MPI_Get_processor_name(process_name, &amp;name_len);</span><br><span class="line">            //tag=source-1;</span><br><span class="line">            //MPI_Recv(message, 100, MPI_CHAR, source, tag , MPI_COMM_WORLD, &amp;status);</span><br><span class="line">            MPI_Recv(message, 100, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &amp;status);</span><br><span class="line">            printf(&quot;process id %d in processor %s get message : %s, comm src rank %d comm tag %d\n&quot;,</span><br><span class="line">                   p_rank, process_name, message, status.MPI_SOURCE, status.MPI_SOURCE);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">/*</span><br><span class="line">output:</span><br><span class="line">elf-login2 send message</span><br><span class="line">elf-login2 send message</span><br><span class="line">elf-login2 send message</span><br><span class="line">process id 0 in processor elf-login2 get message : Greetings from the process 1, comm src rank 1 comm tag 1</span><br><span class="line">process id 0 in processor elf-login2 get message : Greetings from the process 3, comm src rank 3 comm tag 3</span><br><span class="line">process id 0 in processor elf-login2 get message : Greetings from the process 4, comm src rank 4 comm tag 4</span><br><span class="line">process id 0 in processor elf-login2 get message : Greetings from the process 2, comm src rank 2 comm tag 2</span><br><span class="line">elf-login2 send message</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+<h3 id="collective-communication"><a href="#collective-communication" class="headerlink" title="collective communication"></a>collective communication</h3><p>In my opinion, one of the drawback of the MPI programming model is the lack of the storage, for the same matrix multiplication , if you using GPU, the step is straightforward just copy the data between GPU thread and the global memory refer to this(<a href="https://www.shodor.org/media/content/petascale/materials/UPModules/matrixMultiplication/moduleDocument.pdf)" target="_blank" rel="noopener">https://www.shodor.org/media/content/petascale/materials/UPModules/matrixMultiplication/moduleDocument.pdf)</a>, for MPI, it is not so easy to understand the “Fox” algorithm at first time, becasue data transmission between the thread increse the complexity of programming.</p>
+<p>for Group data tramission:</p>
+<ul>
+<li>if the data have the same type and stored in the continuous memory location, use type and count parameter to express how long you want to transmit the data in memory. or use MPI_Type_vector and MPI_Type_contiguous to build a derived type.</li>
+<li>if the data have the same type but in different location, use MPI_Type_indexed to build the new mpi structure</li>
+<li>if the struct mix all kinds of types of data together, use MPI_Type_struct to build new structure.</li>
+</ul>
+<p>About the group and communicator, this(<a href="https://mpitutorial.com/tutorials/introduction-to-groups-and-communicators/" target="_blank" rel="noopener">https://mpitutorial.com/tutorials/introduction-to-groups-and-communicators/</a>) is the prefered tutorial. The parameters of MPI_Comm_split need to be stressed here, the first parameter is the original communicator, the second parameter is the index of the new communicator, for example, you want to split the original communicator into four new one, this parameter could be the number between 0,1,2,3. If the value is 0, this means that current process belong to the new communicator with index 0. The next parameter is an integer which means the process rank in original communicator (the process rank before splitting). The last parameter is the index to the new communicator splitted from the original one.</p>
+<p>Another way to create a new communicator is to construct it direactly. There are two major parts for a specific communicator, one is context or group id, which is used to distinguish the different communicator, another part is a set of process which could be also called group. Therefore, the first step is to creat a process group and the second step is to create a communicator based on those group.</p>
+<p>The creating of the communicator is similar to the concepts of ovelay network, new network is added into the old one , and every endpoints in old net could communicated between each other though the new net (if they are belong to the new net) or the original net.</p>
+<h3 id="MPI-together"><a href="#MPI-together" class="headerlink" title="MPI_together"></a>MPI_together</h3><p>when execute the mpi together, pay attention to the meaning of the parameters. For example, the position of the recieve count represent the number of the element recieved from every thread instead of the whole size of the element recieved from the thread. refer to <a href="https://stackoverflow.com/questions/37993214/segmentation-fault-on-mpi-gather-with-2d-arrays" target="_blank" rel="noopener">this</a> for more information.</p>
+<h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p>mpi transfer struct<br><a href="https://stackoverflow.com/questions/9864510/struct-serialization-in-c-and-transfer-over-mpi" target="_blank" rel="noopener">https://stackoverflow.com/questions/9864510/struct-serialization-in-c-and-transfer-over-mpi</a><br>MPI_Type_create_struct</p>
+<p>book web<br><a href="http://www.cs.usfca.edu/~peter/ppmpi/" target="_blank" rel="noopener">http://www.cs.usfca.edu/~peter/ppmpi/</a></p>
+<p>run mpi within multiple machine<br><a href="http://mpitutorial.com/tutorials/running-an-mpi-cluster-within-a-lan/" target="_blank" rel="noopener">http://mpitutorial.com/tutorials/running-an-mpi-cluster-within-a-lan/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/16/mpi-basic/" data-id="cl49ds6ot0057uamcxa8mbnaa" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/16/python-in-action/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          python in action
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/16/vim-tips/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">vim tips</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Background-Knowledge"><span class="toc-number">1.</span> <span class="toc-text">Background Knowledge</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#hardware-issue"><span class="toc-number">1.1.</span> <span class="toc-text">hardware issue:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#software-issue"><span class="toc-number">1.2.</span> <span class="toc-text">software issue</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MPI-basic"><span class="toc-number">2.</span> <span class="toc-text">MPI basic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#collective-communication"><span class="toc-number">3.</span> <span class="toc-text">collective communication</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MPI-together"><span class="toc-number">4.</span> <span class="toc-text">MPI_together</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#reference"><span class="toc-number">5.</span> <span class="toc-text">reference</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+    
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

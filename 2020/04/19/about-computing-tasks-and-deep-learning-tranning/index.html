@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>about computing tasks and deep learning tranning | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="关于计算任务以及deep learning tranning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="about computing tasks and deep learning tranning">
+<meta property="og:url" content="http://yoursite.com/2020/04/19/about-computing-tasks-and-deep-learning-tranning/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="关于计算任务以及deep learning tranning">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-04-19T11:37:18.000Z">
+<meta property="article:modified_time" content="2020-04-24T08:48:32.000Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-about-computing-tasks-and-deep-learning-tranning" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/19/about-computing-tasks-and-deep-learning-tranning/" class="article-date">
+  <time datetime="2020-04-19T11:37:18.000Z" itemprop="datePublished">2020-04-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/parallel/">parallel</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      about computing tasks and deep learning tranning
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>关于计算任务以及deep learning tranning</p>
+<a id="more"></a>
+<p>最近总算有了一点觉悟和进展，能从计算任务的角度去考虑一些问题而不是仅仅关注与存储和管理。 同学说deep learning是HPC最火的应用，也真是如此。同样的工具，不同的场景，热度真是不尽相同。比如deep learning的training的过程是很typical的计算任务，主要是计算卷积以及gradient(<a href="https://arxiv.org/pdf/1609.04747.pdf)" target="_blank" rel="noopener">https://arxiv.org/pdf/1609.04747.pdf)</a>, 而对于科学计算的simulation的任务，很典型的就是解方程组(<a href="https://people.eecs.berkeley.edu/~demmel/cs267-1995/lecture24/lecture24.html)。但是市场关注度上就不可同日而语。" target="_blank" rel="noopener">https://people.eecs.berkeley.edu/~demmel/cs267-1995/lecture24/lecture24.html)。但是市场关注度上就不可同日而语。</a></p>
+<p>有时候在思考核心的东西在哪里。比如tensorflow这个dataflow(<a href="https://blog.csdn.net/weixin_42008209/article/details/82714844" target="_blank" rel="noopener">https://blog.csdn.net/weixin_42008209/article/details/82714844</a>) 可能单独的计算算子都是很典型的，但是怎么能很好的表达出来是一个难点。或者说这样表达出来就形成了一个有价值的model，这是比较有意义的。</p>
+<p>从parallel的模型上看，主要是针对TPU以及GPU，对于MPI和CPU的场景不是太支持，当然也有GRPC+MPI 的使用场景，但并非主流。这样显然就更接地气吧，相比使用几百几千code的MPI代码，可能workstation+GPU的场景更接地气。所以更多关注的是计算过程如何在GPU上实现，比如在tensorflow的core中可以找到很多Eigen算子的GPU实现。</p>
+<p>工程上的完备性，可能这里好一点，那里好一点，结合在一起就是很powerful的东西。看一些资料上说，最初也是基于google 内部的numerical computing的libraray，网络上比如结合了GRPC以及code generation的方式，易用性上通过python接口和graph的方式，从单一的computation library升级到一个deep learning的engine，各种细节结合起来就使得整个libraray变得有用且完善。当然这些是从工程的角度上理解。</p>
+<p>但是从research的角度上讲，或者从工具和目的的角度上讲，一方面从learning本身的知识上了解这个dataflow为何是这样，某个算子的选择为何是这样。从与cs的角度结合起来就是distribtued case下的各种情况是如何实现的。特别是一些计算的primitives是如何实现的。比如allreduce，在GPU层面，在不同worker层面。比如现在的primitives都是使用compiler生成优化之后的code，从而适配与不同的硬件(<a href="https://github.com/tensorflow/tensorflow/blob/8d22a4426ef476b455379835bfb1047e4b7a2075/tensorflow/compiler/xla/g3doc/index.md)，而不是hard" target="_blank" rel="noopener">https://github.com/tensorflow/tensorflow/blob/8d22a4426ef476b455379835bfb1047e4b7a2075/tensorflow/compiler/xla/g3doc/index.md)，而不是hard</a> coded的方式。</p>
+<p>还有一个层面就是，由于DP的data flow 比较复杂，就出现了data parallelism以及model paralllesim两种方式，scientifc的那些application最多是data parallelesim。具体在这里(<a href="https://www.tensorflow.org/guide/distributed_training)列出了各种traning的strategy" target="_blank" rel="noopener">https://www.tensorflow.org/guide/distributed_training)列出了各种traning的strategy</a></p>
+<p>而且DP的Model还有一个特性就是参数比较多,中间的参数需要不断更新，而这些场景显然是typical的HPC应用中不常能见到的，比如参考这个(<a href="https://www.youtube.com/watch?v=bRMGoPqsn20)。" target="_blank" rel="noopener">https://www.youtube.com/watch?v=bRMGoPqsn20)。</a></p>
+<p>不管是grpc还是IR，背后都有一个自动化生成代码然后适配与各种backend的思想。</p>
+<p>相比与传统的HPC应用，deep learning的应用简直是日新月异。</p>
+<h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p>源码分析的一个blog<br><a href="http://jcf94.com/2017/02/04/2017-02-04-tensorflow/" target="_blank" rel="noopener">http://jcf94.com/2017/02/04/2017-02-04-tensorflow/</a></p>
+<p>deep learning的中间层 IR<br><a href="https://zhuanlan.zhihu.com/p/29254171" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/29254171</a></p>
+<p>distributed tensorflow traning<br><a href="https://www.youtube.com/watch?v=bRMGoPqsn20" target="_blank" rel="noopener">https://www.youtube.com/watch?v=bRMGoPqsn20</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/04/19/about-computing-tasks-and-deep-learning-tranning/" data-id="cl49ds6of0020uamcbn7ez3jt" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2020/04/23/block-nonblock-sync-nonasync/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          block/nonblock,sync/nonasync,event-driven/data-driven
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/04/16/algorithm_about_area_cover/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Algorithm about area cover</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#reference"><span class="toc-number">1.</span> <span class="toc-text">reference</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+    
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ssh tips | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="主要介绍ssh的命令的相关实践以及典型的使用情况。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ssh tips">
+<meta property="og:url" content="http://yoursite.com/2018/06/25/ssh-tips/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="主要介绍ssh的命令的相关实践以及典型的使用情况。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-06-25T13:13:05.000Z">
+<meta property="article:modified_time" content="2018-06-25T01:17:58.000Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-ssh-tips" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/25/ssh-tips/" class="article-date">
+  <time datetime="2018-06-25T13:13:05.000Z" itemprop="datePublished">2018-06-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ssh tips
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>主要介绍ssh的命令的相关实践以及典型的使用情况。</p>
+<a id="more"></a>
+<h3 id="证书与ssh"><a href="#证书与ssh" class="headerlink" title="证书与ssh"></a>证书与ssh</h3><p>关于证书，公钥，私钥的相关基本概念，可以参考之前的这篇(https原理以及服务端客户端通信的golang的本实现)。</p>
+<p>在本机上记录ssh配置信息的地方具体是在~/.ssh/config文件中，里面主要记录的是，对于登录不同的host时，应该使用具体哪个私钥文件，比如在文件中进行如下配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Host 01</span><br><span class="line">HostName 10.10.10.01</span><br><span class="line">User admin</span><br></pre></td></tr></table></figure>
+<p>之后在需要使用 ssh 01 或者 scp 或者使用其他需要用到 username@hostip 相关的命令的时候，就只需要使用01 来进行替代，这样就相当于是创建了快捷方式，确实方便了不少。</p>
+<p>比如这个配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host coding.net git.coding.net</span><br><span class="line">  IdentityFile ~/.ssh/codingrsa</span><br><span class="line">Host github.com</span><br><span class="line">  IdentityFile ~/.ssh/git_rsa</span><br></pre></td></tr></table></figure>
+<p>就是说在与不同的主机服务进行ssh通信的时候，才用不同的私钥文件。在直接使用ssh命令的时候，可以通过-i参数来指定私钥文件的位置。</p>
+<p>对于常常需要登录的机器，当然没有必要每次输入用户名和密码，只需要采用rsa的加密认证方式，把自己的公钥发给对方服务器的指定的文件夹中，当然操作也很简单，先通过<code>ssh-keygen -t rsa</code> 来在本机上产生公钥和私钥，默认情况下是生成在<code>~/.ssh</code>目录之下，之后只需要 <code>ssh-copy-id -i</code> 公钥文件路经 host别名这样就可以将本机的公钥发送到远程的服务器上，之后再使用ssh操作就可以直接登录了，大大提升效率。</p>
+<p>再补充一个技巧就是hostname命令的使用，通常在多态机器上操作的时候，开了许多terminal用户名都是localhost很容器弄重复，可以登上去之后 <code>hostname</code>这样操作，之后退出terminal再登上去之后，就现实的是alias name了，比较直接。</p>
+<h3 id="关于ssh隧道"><a href="#关于ssh隧道" class="headerlink" title="关于ssh隧道"></a>关于ssh隧道</h3><p>这里主要记录下-L参数的使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-L port:host:hostport</span><br></pre></td></tr></table></figure>
+<p>以上命令可以将本地机(客户机)的某个端口转发到远端指定机器的指定端口。工作原理是这样的, 本地机器上分配了一个 socket 侦听 port 端口, 一旦这个端口上有了连接, 该连接就经过安全通道转发出去, 同时远程主机和 host 的 hostport 端口建立连接， 可以在配置文件中指定端口的转发， 只有 root 才能转发特权端口，IPv6 地址用另一种格式说明: port/host/hostport</p>
+<p>一些使用的场景：比如想要对服务端的数据进行修改操作，但是服务器只能通过ssh秘钥认证的方式连接上去，这个时候可以使用-l参数，比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -p 58513 -L 4306:serverip:3306 wangzhe_10_10_220_56@123.59.140.26</span><br></pre></td></tr></table></figure>
+<p>这个时候直接连接本地的4306端口，就可以连接到服务端的数据库了,然后可以在本地的数据库服务中进行调试。</p>
+<p>-i 参数的使用:通过-i 参数，可以指定在发送ssh请求时候所使用的私钥文件的地址。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/06/25/ssh-tips/" data-id="cl49ds6p0006iuamc40fum9li" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2018/06/25/shell-tips/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          shell tips
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/06/25/linux-env/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">linux env</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%81%E4%B9%A6%E4%B8%8Essh"><span class="toc-number">1.</span> <span class="toc-text">证书与ssh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Essh%E9%9A%A7%E9%81%93"><span class="toc-number">2.</span> <span class="toc-text">关于ssh隧道</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+    
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

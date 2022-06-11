@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>single core with multiprocess | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="主要记录下multithreading提升performance的一些点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="single core with multiprocess">
+<meta property="og:url" content="http://yoursite.com/2020/04/24/single-core-with-multithreading/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="主要记录下multithreading提升performance的一些点。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-04-24T13:41:53.000Z">
+<meta property="article:modified_time" content="2020-04-25T04:41:02.000Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-single-core-with-multithreading" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/24/single-core-with-multithreading/" class="article-date">
+  <time datetime="2020-04-24T13:41:53.000Z" itemprop="datePublished">2020-04-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/parallel/">parallel</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      single core with multiprocess
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>主要记录下multithreading提升performance的一些点。</p>
+<a id="more"></a>
+<h3 id="overlap-communication-with-computing"><a href="#overlap-communication-with-computing" class="headerlink" title="overlap communication with computing"></a>overlap communication with computing</h3><p>首先要明确的一点是，一个core在单位时间内只能运行一个thread。如果已经指定好说一个program只能使用一个core，那么multithread仅仅是timeslicing而已，这样到底有没有效率？</p>
+<p>具体可以参考<a href="https://www.quora.com/If-a-computer-has-only-one-CPU-do-multi-threaded-programs-provide-any-performance-improvements-over-single-threaded-programs" target="_blank" rel="noopener">这个</a>。</p>
+<p>整理一下，唯一的好处就是来源于IO与computing的overlapping。如果对于计算密集型的application，那其实没有什么帮助，反而增加了额外的不同thread之间context switching的overhead，对于IO成分比较多的应用，一个thread在IO的时候可以将另外一个thread调度到core上来执行，这样总是保持cpu busy，在总体上可以节省时间。</p>
+<p>当然在实际操作中，如果是multithread的program，通常让一个program占用多个cores。在实际的操作中，资源管理的软件cloud的环境中使用k8s+docker比较多，HPC的环境下使用slurm比较多，不管使用哪种软件，对于资源管理的core的划分的本质是类似的。就拿slurm的参数举例子吧，如果用srun启动一个process，然后指定<code>--cpus-per-task</code>为 k，就相当于这个process使用k个cores。</p>
+<p>那么还有另外一个问题，同样是k个core，假设在同一个node上，到底是使用k个process 效率比较高还是一个process但通过multithreaing来使用k个cores效率比较高？</p>
+<p>利用和前面同样的思路，如果全都是独立的计算类型的任务的话，也就是说彼此之间不存在IO的操作，应该没有什么大的区别，因为所有的core一直再被充分利用。比如相加两个array，总共资源是K个core(假设在一个node上)，一种是使用k个MPI process每个process执行对应元素的相加操作，另外一种是启动一个openMP然后吧for loop 并行化了，不考虑cache的细节的话，本质上两个效率应该差不多。但如果有communication的话就不一样了。比如在不同thread之间的communication肯定比在不同process之间的communication要快速。而且task based 的 multithread 模型提供了task run asynchronously 的可能性，可以在一些thread执行computing的时候，另一些thread 执行communication。单纯的MPI的SPMD，并且一个process占用一个core，因为使用的是同样的代码，overlapping IO 和 comuting 的操作就比较困难，常常是要IO就一起IO要计算就一起计算。</p>
+<p>有许多work展示了一个MPI+openMP的实际例子</p>
+<p>Preissl R, Koniges A, Ethier S, et al. Overlapping communication with computation using OpenMP tasks on the GTS magnetic fusion code[J]. Scientific Programming, 2010, 18(3-4): 139-151.</p>
+<p>很明显在multicores的node上，使用MPI+openMP(或者其他thread pool)的方式可以有可能性通过overlapping communication 与 computing 来提升性能，但是需要很好的对于原问题的优化和软件层面的巧妙设计。不同的MPI process 在交换信息的时候，如果使用multiproess，就会有IO和computing过程的overlapping。如果一个core一个MPI process，那不同MPI process在交换数据的时候，因为当前的core上只有一个thread，所以就会block在那里。因为只有这个数据传输完成之后才能进行下一步的迭代操作。</p>
+<h3 id="parallelism的类别"><a href="#parallelism的类别" class="headerlink" title="parallelism的类别"></a>parallelism的类别</h3><p>这里还要说下parallelism的类别的问题，比如从计算单元的角度来看，MPI使用的process level 的parallel，像openMP以及其他的类似cilk, TBB 这样的library使用的是thread级别的parallel。</p>
+<p>从计算形式上来看，可以有structured parallel以及unstructured parallel。openMP 2.x 版本是structured parallel的典型代表，比如把一个for loop去用multithread的形式处理。在3.0版本之后，openMP也支持了task parallelsim也叫做unstructured parallelism在使用形式上就类似与thread pool的形式。从中取一个thread或者是新创建一个thread然后不管内部运行的是什么，具体调度由特定的thread scheduler来完成。这篇论文里介绍了很多相关的细节：</p>
+<p>Ayguadé E, Copty N, Duran A, et al. The design of OpenMP tasks[J]. IEEE Transactions on Parallel and Distributed Systems, 2008, 20(3): 404-418.</p>
+<p>从数据和task的关系来看，可以是single task multiple data 或者是 single data multiple task。single task(instruction) multiple data 就是说同样的程序代码，然后把它所用与不同的数据分片上。反过来，就是同样的数据，去执行不同的任务。比如同样的数据，一个thread去基于这个数据做新的迭代，一个thread去将这个数据传输给其他的task，进行communication等等，这种形式的parallel更适合用task based 的方式，也就是unstructured parallel的方式。或者可以这么说，data parallelism的好处自不必说，把大的任务分解成小的任务，加快问题解决，这里说到底还是N:N的关系，N个人process对应N个data partition。那么task parallelism 的好处到底在哪里？特别是彼此有依赖关系的task。可能一个点就是在iteration的环境中，比如典型的像simulation，通过overlapping IO以及computing(体系结构课本里的那种pipeline的方式), 能让CPU被更高效的利用，因为毕竟说到底CPU是不同task共同share的资源，N:1的源头是在这里。</p>
+<p>从具体使用的硬件来看，就是CPU, GPU , TPU, FPGA 等等，比如MPI+openMP 这是利用multicore的CPU, MPI+CUDA就是利用CPU以及GPU等等，从软件层面上看，还是怎么把问题映射到对应的硬件上，从硬件层面上看就有各种优化比如<a href="http://www.icl.utk.edu/~luszczek/teaching/courses/fall2016/cosc462/pdf/W44L1%20-%20MPI%20+%20CUDA.pdf" target="_blank" rel="noopener">这里</a>介绍如果通过统一的address space, rdma, gpudirect来实现GPU device上的数据不经过CPU直接传送到其他GPU上。</p>
+<p>还有一个有疑惑的地方就是，multithread的scheduler如何知道当前的thread开始执行IO操作了从而把它调离CPU然后再将一个新的thread调度上来，这部分之后再具体整理。</p>
+<h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a href="https://www.epcc.ed.ac.uk/sites/default/files/PDF/mixedMode3.pdf" target="_blank" rel="noopener">https://www.epcc.ed.ac.uk/sites/default/files/PDF/mixedMode3.pdf</a></p>
+<p><a href="http://downloads.hindawi.com/journals/sp/2010/951739.pdf" target="_blank" rel="noopener">http://downloads.hindawi.com/journals/sp/2010/951739.pdf</a></p>
+<p><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.108.1318&amp;rep=rep1&amp;type=pdf" target="_blank" rel="noopener">http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.108.1318&amp;rep=rep1&amp;type=pdf</a></p>
+<p>unstructured parallelism in openMP<br>good explanation<br><a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4553700" target="_blank" rel="noopener">https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4553700</a></p>
+<p><a href="https://www.quora.com/If-a-computer-has-only-one-CPU-do-multi-threaded-programs-provide-any-performance-improvements-over-single-threaded-programs" target="_blank" rel="noopener">https://www.quora.com/If-a-computer-has-only-one-CPU-do-multi-threaded-programs-provide-any-performance-improvements-over-single-threaded-programs</a></p>
+<p><a href="https://stackoverflow.com/questions/31988595/how-do-multiple-threads-run-on-single-core-cpu" target="_blank" rel="noopener">https://stackoverflow.com/questions/31988595/how-do-multiple-threads-run-on-single-core-cpu</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/04/24/single-core-with-multithreading/" data-id="cl49ds6oz006euamchtovxosf" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/28/rule-of-three-five/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          rule of three/five
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/04/23/block-nonblock-sync-nonasync/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">block/nonblock,sync/nonasync,event-driven/data-driven</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#overlap-communication-with-computing"><span class="toc-number">1.</span> <span class="toc-text">overlap communication with computing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#parallelism%E7%9A%84%E7%B1%BB%E5%88%AB"><span class="toc-number">2.</span> <span class="toc-text">parallelism的类别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">3.</span> <span class="toc-text">references</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+    
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

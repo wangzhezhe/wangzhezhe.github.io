@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>tips for numa and hyperthreading | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="there are some confusion about the NUMA and hyperthreading when execute the multi processes&#x2F;threads testing or evaluation on clusters, take some notes here.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tips for numa and hyperthreading">
+<meta property="og:url" content="http://yoursite.com/2020/09/01/tips-for-numa-and-hyperthreading/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="there are some confusion about the NUMA and hyperthreading when execute the multi processes&#x2F;threads testing or evaluation on clusters, take some notes here.">
+<meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/images/topo.png">
+<meta property="article:published_time" content="2020-09-01T08:06:44.000Z">
+<meta property="article:modified_time" content="2020-10-14T08:20:43.000Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/topo.png">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tips-for-numa-and-hyperthreading" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/01/tips-for-numa-and-hyperthreading/" class="article-date">
+  <time datetime="2020-09-01T08:06:44.000Z" itemprop="datePublished">2020-09-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      tips for numa and hyperthreading
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>there are some confusion about the NUMA and hyperthreading when execute the multi processes/threads testing or evaluation on clusters, take some notes here.</p>
+<a id="more"></a>
+<h3 id="Hyperthreading"><a href="#Hyperthreading" class="headerlink" title="Hyperthreading"></a>Hyperthreading</h3><p><strong>how the slurm consider about the hyperthreading</strong></p>
+<p>For the slurm, one core refer to one logical cpu core. For example in this <a href="https://docs.nersc.gov/jobs/affinity/" target="_blank" rel="noopener">documentation</a>:</p>
+<p>srun option “-c”: Set the value as “number of logical cores (CPUs) per MPI task” for MPI and hybrid MPI/OpenMP jobs. The “-c” flag is optional for fully packed pure MPI jobs.</p>
+<p>If there is one physical cpu but there are two hyperthreading, there are two cores for slurm schduler. The interesting metaphors about the hyperthreading is cashier desk in canteen， if there is one line and one faculty set here to process the check for every one, this is one physical cpu and one logical cpu. If there are two lines and one faculaty sit in the middle, it looks that two people can be processes concurently, this is called one physical cpu with two hyperthreading (two logical cpu)</p>
+<p>about the term using, this <a href="https://frankdenneman.nl/2010/10/07/numa-hyperthreading-and-numa-preferht/" target="_blank" rel="noopener">article</a> provides a references. It can also be called Symmetric MultiThreading (SMT).</p>
+<p><strong>CPU and processor</strong></p>
+<p>Sometims, it is easy to misuse the term CPU, this <a href="https://unix.stackexchange.com/questions/113544/interpret-the-output-of-lstopo" target="_blank" rel="noopener">answer</a> provides some good explanation. Basically, there is 1:1 relationship between the concept of socket and the processor. One processor could contains one or more physical CPU, one physical CPU can contains 2 hyperthreading, or locaical CPUs. From the software’s perspective, one thread is running on one logical CPU at the same time slice. One process contains at lease one thread (system level thread).</p>
+<p><strong>vCPU and pCPU</strong></p>
+<p>If there is virtulization techniques, such as we create the virtual machine, the vCPU is the virtulized cpu for the VM, the pCPU is the actual hyperthreading cpu. There are lots of articles about the vCPU/pCPU ratio which is out of the scope of this article. generally speaking, we could map on vCPU into one pCPU. such as the explanation in this <a href="https://frankdenneman.nl/2010/10/07/numa-hyperthreading-and-numa-preferht/" target="_blank" rel="noopener">article</a>.</p>
+<h3 id="NUMA"><a href="#NUMA" class="headerlink" title="NUMA"></a>NUMA</h3><p>There concepts of NUMA comes from the UMA, this is more discuss how cpu access the memory. This <a href="https://software.intel.com/content/www/us/en/develop/articles/optimizing-applications-for-numa.html" target="_blank" rel="noopener">article</a> provides a good history about the NUMA and UMA. In my opinion, one reason to move from the UMA to NUMA is the scalability, if all the cpu access the memory by same bus, it might slow down the averagy memory access time in large scale. The proper number of the subdomain (numa domain) can decrease the average memory access time in large scale. If there are only one numa domain, there is no pbvious difference compared wih the uniform memory access. For exmple, there is only one numa domain for my laptop:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ lstopo </span><br><span class="line">Machine (16GB total)</span><br><span class="line">  Package L#0</span><br><span class="line">    NUMANode L#0 (P#0 16GB)</span><br><span class="line">    L3 L#0 (6144KB)</span><br><span class="line">      L2 L#0 (256KB) + L1d L#0 (32KB) + L1i L#0 (32KB) + Core L#0</span><br><span class="line">        PU L#0 (P#0)</span><br><span class="line">        PU L#1 (P#1)</span><br><span class="line">      L2 L#1 (256KB) + L1d L#1 (32KB) + L1i L#1 (32KB) + Core L#1</span><br><span class="line">        PU L#2 (P#2)</span><br><span class="line">        PU L#3 (P#3)</span><br><span class="line">      L2 L#2 (256KB) + L1d L#2 (32KB) + L1i L#2 (32KB) + Core L#2</span><br><span class="line">        PU L#4 (P#4)</span><br><span class="line">        PU L#5 (P#5)</span><br><span class="line">      L2 L#3 (256KB) + L1d L#3 (32KB) + L1i L#3 (32KB) + Core L#3</span><br><span class="line">        PU L#6 (P#6)</span><br><span class="line">        PU L#7 (P#7)</span><br><span class="line">  CoProc(OpenCL) &quot;opencl0d1&quot;</span><br></pre></td></tr></table></figure>
+<p>There are 4 physical cores. The PU here represents the hyperthreading. For every physical core, they have separate L2 and L1 cache, but these cache are shared by the hyperthreading such as the PU listed under the core. For different cores, they share the L3 cache and the NUMA memory.</p>
+<h3 id="scheduler’s-perspective"><a href="#scheduler’s-perspective" class="headerlink" title="scheduler’s perspective"></a>scheduler’s perspective</h3><p>one typical tool is the <code>lstopo</code> that shows the topology for the current node. For the parallel computing code, if the user hope to use the cache size wisely, it is important to use this tools to check the cache size and make the data block to match with the cache size.</p>
+<p>The command <code>numactl -H</code> can be used to show the numa domain</p>
+<p>For the large scale testing on specific cluster or supercomputer, the configuration is important, this is a good article on <a href="https://docs.nersc.gov/jobs/affinity/" target="_blank" rel="noopener">cori cluster</a> about the affinity. There are sevearal levels, the first is the node level, which means that you may run tests several time and each time, the tasks are running on machines with same type of configurations. Mayber the partition parameter is important here.</p>
+<p>Here is an exmaple of the node topology for a cluster node that we used in this parts.</p>
+<p><img src="/images/topo.png" width="600"></p>
+<p><strong>bind to cores</strong></p>
+<p>For example, one specific cluster. there are following commands can be used to check the core affinity:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ srun -C haswell -n 8 -c 8 check-mpi.intel.cori</span><br><span class="line">srun: job 33939938 queued and waiting for resources</span><br><span class="line">srun: job 33939938 has been allocated resources</span><br><span class="line">Hello from rank 0, on nid01161. (core affinity = 0-3,32-35)</span><br><span class="line">Hello from rank 1, on nid01161. (core affinity = 16-19,48-51)</span><br><span class="line">Hello from rank 2, on nid01161. (core affinity = 4-7,36-39)</span><br><span class="line">Hello from rank 3, on nid01161. (core affinity = 20-23,52-55)</span><br><span class="line">Hello from rank 4, on nid01161. (core affinity = 8-11,40-43)</span><br><span class="line">Hello from rank 5, on nid01161. (core affinity = 24-27,56-59)</span><br><span class="line">Hello from rank 6, on nid01161. (core affinity = 12-15,44-47)</span><br><span class="line">Hello from rank 7, on nid01161. (core affinity = 28-31,60-63)</span><br></pre></td></tr></table></figure>
+<p>If we use all cpus, the task are evenly distributed among two different numa domains.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ srun -C haswell -n 1 -c 34 --cpu-bind=cores check-mpi.intel.cori</span><br><span class="line">srun: job 33943658 queued and waiting for resources</span><br><span class="line">srun: job 33943658 has been allocated resources</span><br><span class="line">Hello from rank 0, on nid12801. (core affinity = 0-16,32-48)</span><br></pre></td></tr></table></figure>
+<p>If the cores per task (-c) is not a good number, the task will occupy two numa domains. If we do not use the cpu bind parameters, there are:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$srun -C haswell -n 1 -c 32 check-mpi.intel.cori</span><br><span class="line">srun: job 33945016 queued and waiting for resources</span><br><span class="line">srun: job 33945016 has been allocated resources</span><br><span class="line">Hello from rank 0, on nid00978. (core affinity = 0-15,32-47)</span><br><span class="line"></span><br><span class="line">$srun -C haswell -n 1 -c 33 check-mpi.intel.cori</span><br><span class="line">srun: job 33943647 queued and waiting for resources</span><br><span class="line">srun: job 33943647 has been allocated resources</span><br><span class="line">Hello from rank 0, on nid12803. (core affinity = 0-63)</span><br></pre></td></tr></table></figure>
+<p>we could see that all cores are occupied even if there are only part of the cores are actually used for the second case (the process number is not a divisor of 64).</p>
+<p><strong>bind to numa domains</strong></p>
+<p>From the user’s perspective, bind the program to the numa domain equals to binding the process with the cores associated with this numa domain. If we start 4 process, each process allocates 8 cores, and use 32 cores in total. For the current node, we could set the 4 processes to the numa node 1.</p>
+<p>If we use the following commands:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">srun -C haswell -n 4 -c 8 check-mpi.intel.cori</span><br><span class="line">srun: job 33945151 queued and waiting for resources</span><br><span class="line">srun: job 33945151 has been allocated resources</span><br><span class="line">Hello from rank 0, on nid00910. (core affinity = 0-3,32-35)</span><br><span class="line">Hello from rank 1, on nid00910. (core affinity = 16-19,48-51)</span><br><span class="line">Hello from rank 2, on nid00910. (core affinity = 4-7,36-39)</span><br><span class="line">Hello from rank 3, on nid00910. (core affinity = 20-23,52-55)</span><br></pre></td></tr></table></figure>
+<p>We could see that the slurm scheduler use the two different numa domains, obviously, it wants to provide some load balance between different numa domains. But this is not the case we wanted, and we hope to start these processes in one numa domain.</p>
+<p>Although there are several options in <code>--cpu-bind</code>, it seems there is no one that can satisfy our requirments (i’m not sure how to do it yet), the only approximate one is this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ srun -C haswell -n 4 -c 8 --cpu-bind=map_ldom:0,0,0,0 check-mpi.intel.cori</span><br><span class="line">srun: job 33945792 queued and waiting for resources</span><br><span class="line">srun: job 33945792 has been allocated resources</span><br><span class="line">Hello from rank 0, on nid12697. (core affinity = 0-15,32-47)</span><br><span class="line">Hello from rank 1, on nid12697. (core affinity = 0-15,32-47)</span><br><span class="line">Hello from rank 2, on nid12697. (core affinity = 0-15,32-47)</span><br><span class="line">Hello from rank 3, on nid12697. (core affinity = 0-15,32-47)</span><br></pre></td></tr></table></figure>
+<p>in this case, the processes are allocated into the same numa domain cpus but the granularity is the domain level instead of the cpu level.</p>
+<p>For the ideal case:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rank 0 is scheduled to 0-3, 32-35</span><br><span class="line">rank 1 is scheduled to 4-7,36-39</span><br><span class="line">rank 2 is scheduled to 8-11, 40-43</span><br><span class="line">rank 4 is scheduled to 12-15,44-47</span><br></pre></td></tr></table></figure>
+<h3 id="pgas"><a href="#pgas" class="headerlink" title="pgas"></a>pgas</h3><p>The support to the numa architecture from the perspective of the programming view, this is a good online resources</p>
+<p><a href="https://www.youtube.com/watch?v=Y02Al0Dc6XU" target="_blank" rel="noopener">https://www.youtube.com/watch?v=Y02Al0Dc6XU</a></p>
+<p>There is another layer of the programming language that specify if it is the local memory or the remote memory compare with the flat shared memory.</p>
+<h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p>numa and hyperthreading<br><a href="https://frankdenneman.nl/2010/10/07/numa-hyperthreading-and-numa-preferht/" target="_blank" rel="noopener">https://frankdenneman.nl/2010/10/07/numa-hyperthreading-and-numa-preferht/</a></p>
+<p>cori docs<br><a href="https://docs.nersc.gov/jobs/affinity/" target="_blank" rel="noopener">https://docs.nersc.gov/jobs/affinity/</a></p>
+<p>UMA and NUMA<br><a href="https://software.intel.com/content/www/us/en/develop/articles/optimizing-applications-for-numa.html" target="_blank" rel="noopener">https://software.intel.com/content/www/us/en/develop/articles/optimizing-applications-for-numa.html</a></p>
+<p>cpu and processor<br><a href="https://unix.stackexchange.com/questions/113544/interpret-the-output-of-lstopo" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/113544/interpret-the-output-of-lstopo</a></p>
+<p>slurm docs, multithread<br><a href="https://slurm.schedmd.com/mc_support.html" target="_blank" rel="noopener">https://slurm.schedmd.com/mc_support.html</a></p>
+<p>cori docs about the affinity<br><a href="https://docs.nersc.gov/jobs/affinity/" target="_blank" rel="noopener">https://docs.nersc.gov/jobs/affinity/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/09/01/tips-for-numa-and-hyperthreading/" data-id="cl49ds6p1006quamcryeptnq4" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2020/09/05/dynamic-membership/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          dynamic membership
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/29/cppsmartpointer/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">cpp smart pointer</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hyperthreading"><span class="toc-number">1.</span> <span class="toc-text">Hyperthreading</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NUMA"><span class="toc-number">2.</span> <span class="toc-text">NUMA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scheduler%E2%80%99s-perspective"><span class="toc-number">3.</span> <span class="toc-text">scheduler’s perspective</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pgas"><span class="toc-number">4.</span> <span class="toc-text">pgas</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">5.</span> <span class="toc-text">references</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+    
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

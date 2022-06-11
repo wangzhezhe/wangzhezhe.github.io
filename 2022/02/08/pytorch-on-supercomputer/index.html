@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>pytorch on supercomputer | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Some notes about running pytorch on supercomputer.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pytorch on supercomputer">
+<meta property="og:url" content="http://yoursite.com/2022/02/08/pytorch-on-supercomputer/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Some notes about running pytorch on supercomputer.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-02-08T05:21:49.000Z">
+<meta property="article:modified_time" content="2022-02-10T17:00:10.000Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-pytorch-on-supercomputer" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/02/08/pytorch-on-supercomputer/" class="article-date">
+  <time datetime="2022-02-08T05:21:49.000Z" itemprop="datePublished">2022-02-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/pytorch/">pytorch</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      pytorch on supercomputer
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Some notes about running pytorch on supercomputer.</p>
+<a id="more"></a>
+<h3 id="Issue-and-solution"><a href="#Issue-and-solution" class="headerlink" title="Issue and solution"></a>Issue and solution</h3><p>It is hard to access the supercomputer with several GPU on each node, once you got these kind of opportunities, you try to utilize the power of parallel as much as possible.</p>
+<p>This is the <a href="https://stackoverflow.com/questions/70442325/distributed-training-initialisation-of-pytorch-based-on-srun/70443493#70443493" target="_blank" rel="noopener">link</a> that explains related question, we also explain it here in details.</p>
+<p>We use the pytorch as a example to show how it works with the supercomputer. The good thing is that it provides a good abstraction to do the multinode processing. For example, this is the code we want to test and run it in multi gpu case:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"># the source code come from here</span><br><span class="line"># https://github.com/pytorch/examples/edit/master/distributed/ddp/example.py</span><br><span class="line">import argparse</span><br><span class="line">import os</span><br><span class="line">import sys</span><br><span class="line">import tempfile</span><br><span class="line">from urllib.parse import urlparse</span><br><span class="line"></span><br><span class="line">import torch</span><br><span class="line">import torch.distributed as dist</span><br><span class="line">import torch.nn as nn</span><br><span class="line">import torch.optim as optim</span><br><span class="line"></span><br><span class="line">from torch.nn.parallel import DistributedDataParallel as DDP</span><br><span class="line"></span><br><span class="line">class ToyModel(nn.Module):</span><br><span class="line">    def __init__(self):</span><br><span class="line">        super(ToyModel, self).__init__()</span><br><span class="line">        self.net1 = nn.Linear(10, 10)</span><br><span class="line">        self.relu = nn.ReLU()</span><br><span class="line">        self.net2 = nn.Linear(10, 5)</span><br><span class="line"></span><br><span class="line">    def forward(self, x):</span><br><span class="line">        return self.net2(self.relu(self.net1(x)))</span><br><span class="line"></span><br><span class="line"># this code is ok for one process 1 gpu</span><br><span class="line">def demo_basic(local_world_size, local_rank):</span><br><span class="line"></span><br><span class="line">    # setup devices for this process. For local_world_size = 2, num_gpus = 8,</span><br><span class="line">    # rank 0 uses GPUs [0, 1, 2, 3] and</span><br><span class="line">    # rank 1 uses GPUs [4, 5, 6, 7].</span><br><span class="line">    n = torch.cuda.device_count() // local_world_size</span><br><span class="line">    # this devide id is in the scope of local domain</span><br><span class="line">    device_ids = list(range(local_rank * n, (local_rank + 1) * n))</span><br><span class="line"></span><br><span class="line">    print(</span><br><span class="line">        f&quot;[&#123;os.getpid()&#125;] rank = &#123;dist.get_rank()&#125;, &quot;</span><br><span class="line">        + f&quot;world_size = &#123;dist.get_world_size()&#125;, attachedDevice = &#123;n&#125;, device_ids = &#123;device_ids&#125; \n&quot;, end=&apos;&apos;</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    print(&quot;use device&quot;, device_ids[0])</span><br><span class="line">    </span><br><span class="line">    # should we move model to every device manually here</span><br><span class="line">    # if we use multiple gpu on one node?</span><br><span class="line">    model = ToyModel().cuda(device_ids[0])</span><br><span class="line">    ddp_model = DDP(model, device_ids)</span><br><span class="line"></span><br><span class="line">    loss_fn = nn.MSELoss()</span><br><span class="line">    optimizer = optim.SGD(ddp_model.parameters(), lr=0.001)</span><br><span class="line"></span><br><span class="line">    optimizer.zero_grad()</span><br><span class="line">    outputs = ddp_model(torch.randn(20, 10))</span><br><span class="line">    labels = torch.randn(20, 5).to(device_ids[0])</span><br><span class="line">    loss_fn(outputs, labels).backward()</span><br><span class="line">    optimizer.step()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def spmd_main(local_world_size, local_rank):</span><br><span class="line">    # These are the parameters used to initialize the process group</span><br><span class="line">    # is this the global rank?</span><br><span class="line">    env_dict = &#123;</span><br><span class="line">        key: os.environ[key]</span><br><span class="line">        for key in (&quot;MASTER_ADDR&quot;, &quot;MASTER_PORT&quot;, &quot;RANK&quot;, &quot;WORLD_SIZE&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if sys.platform == &quot;win32&quot;:</span><br><span class="line">        # Distributed package only covers collective communications with Gloo</span><br><span class="line">        # backend and FileStore on Windows platform. Set init_method parameter</span><br><span class="line">        # in init_process_group to a local file.</span><br><span class="line">        if &quot;INIT_METHOD&quot; in os.environ.keys():</span><br><span class="line">            print(f&quot;init_method is &#123;os.environ[&apos;INIT_METHOD&apos;]&#125;&quot;)</span><br><span class="line">            url_obj = urlparse(os.environ[&quot;INIT_METHOD&quot;])</span><br><span class="line">            if url_obj.scheme.lower() != &quot;file&quot;:</span><br><span class="line">                raise ValueError(&quot;Windows only supports FileStore&quot;)</span><br><span class="line">            else:</span><br><span class="line">                init_method = os.environ[&quot;INIT_METHOD&quot;]</span><br><span class="line">        else:</span><br><span class="line">            # It is a example application, For convience, we create a file in temp dir.</span><br><span class="line">            temp_dir = tempfile.gettempdir()</span><br><span class="line">            init_method = f&quot;file:///&#123;os.path.join(temp_dir, &apos;ddp_example&apos;)&#125;&quot;</span><br><span class="line">        dist.init_process_group(backend=&quot;gloo&quot;, init_method=init_method, rank=int(env_dict[&quot;RANK&quot;]), world_size=int(env_dict[&quot;WORLD_SIZE&quot;]))</span><br><span class="line">    else:</span><br><span class="line">        print(f&quot;[&#123;os.getpid()&#125;] Initializing process group with: &#123;env_dict&#125;&quot;)  </span><br><span class="line">        # it looks that gloo is good but nccl fail, not sure the reason</span><br><span class="line">        dist.init_process_group(backend=&quot;gloo&quot;)</span><br><span class="line"></span><br><span class="line">    print(</span><br><span class="line">        f&quot;[&#123;os.getpid()&#125;]: world_size = &#123;dist.get_world_size()&#125;, &quot;</span><br><span class="line">        + f&quot;rank = &#123;dist.get_rank()&#125;, backend=&#123;dist.get_backend()&#125; \n&quot;, end=&apos;&apos;</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    demo_basic(local_world_size, local_rank)</span><br><span class="line"></span><br><span class="line">    # Tear down the process group</span><br><span class="line">    dist.destroy_process_group()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    parser = argparse.ArgumentParser()</span><br><span class="line">    # This is passed in via launch.py</span><br><span class="line">    parser.add_argument(&quot;--local_rank&quot;, type=int, default=0)</span><br><span class="line">    # This needs to be explicitly passed in</span><br><span class="line">    parser.add_argument(&quot;--local_world_size&quot;, type=int, default=1)</span><br><span class="line">    args = parser.parse_args()</span><br><span class="line">    # The main entry point is called directly without using subprocess</span><br><span class="line">    spmd_main(args.local_world_size, args.local_rank)</span><br></pre></td></tr></table></figure>
+<p>When we try to start it, we just need to use this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">#$1 is the node rank id</span><br><span class="line">#$2 is the master addr</span><br><span class="line"></span><br><span class="line">python -m torch.distributed.launch \</span><br><span class="line">    --nnode=2 --nproc_per_node=4 --node_rank=$1\</span><br><span class="line">    --master_addr=&quot;$2&quot; ./distributed4.py --local_world_size=4</span><br></pre></td></tr></table></figure>
+<p>The issue is that we need to provide a node rank id and a master addr. But for the supercomputer platform, it use the job manager tool such as the slurm, we do not know the node id before we actually allocate the resource (if we do not specify the master addr, it is 127.0.0.1 in default and the worker node can not communicate with the master node apparently in this case).</p>
+<p>The idea is to write a adaptor program based on MPI, this MPI process is in chage of providing the node level information such as the node id and master addr, and then for every MPI process, it starts a <code>torch.distributed.launch</code>, this program is only responsible the things in one node, for example, the <code>--nproc_per_node=4</code> represents that there are 4 processes will be started by <code>torch.distributed.launch</code> on this node. Here is the MPI program we write for start this bash scripts, it might be easier to use the python and mpi for python here:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;mpi.h&gt;</span><br><span class="line">#include &lt;cstdlib&gt;</span><br><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;memory&gt;</span><br><span class="line">#include &lt;stdexcept&gt;</span><br><span class="line">#include &lt;string&gt;</span><br><span class="line">#include &lt;array&gt;</span><br><span class="line">#include &lt;cstring&gt;</span><br><span class="line">#include &lt;string&gt;</span><br><span class="line">#include &lt;map&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">std::string exec(const char* cmd) &#123;</span><br><span class="line">    std::array&lt;char, 128&gt; buffer;</span><br><span class="line">    std::string result;</span><br><span class="line">    std::unique_ptr&lt;FILE, decltype(&amp;pclose)&gt; pipe(popen(cmd, &quot;r&quot;), pclose);</span><br><span class="line">    if (!pipe) &#123;</span><br><span class="line">        throw std::runtime_error(&quot;popen() failed!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) &#123;</span><br><span class="line">        result += buffer.data();</span><br><span class="line">    &#125;</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[])&#123;</span><br><span class="line">	MPI_Init(&amp;argc, &amp;argv);</span><br><span class="line">	int rank, procs, noderank;</span><br><span class="line"></span><br><span class="line">    MPI_Comm_rank(MPI_COMM_WORLD, &amp;rank);</span><br><span class="line">    MPI_Comm_size(MPI_COMM_WORLD, &amp;procs);</span><br><span class="line">    </span><br><span class="line">    if(argc!=2)&#123;</span><br><span class="line">        std::cout &lt;&lt; &quot;initrank cori|plmt&quot;;</span><br><span class="line">        exit(0);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    std::string machine(argv[1]);</span><br><span class="line">    std::cout &lt;&lt; &quot;machine is &quot; &lt;&lt; machine &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    std::string ipcommand;</span><br><span class="line">    if(machine==&quot;cori&quot;)&#123;</span><br><span class="line">        ipcommand=&quot;ifconfig eth3 | egrep -o &apos;inet [0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;&apos;  | cut -d&apos; &apos; -f2&quot;;</span><br><span class="line">    &#125;else if (machine==&quot;plmt&quot;)&#123;</span><br><span class="line">        ipcommand=&quot;ip address show nmn0 | egrep -o &apos;inet [0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;\.[0-9]&#123;1,3&#125;&apos;  | cut -d&apos; &apos; -f2&quot;;</span><br><span class="line">  </span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        throw std::runtime_error(&quot;machine is cori or plmt&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    std::string ipaddr = exec(ipcommand.c_str());</span><br><span class="line">    </span><br><span class="line">    //compute node rank</span><br><span class="line">    //comparing ip</span><br><span class="line">    std::vector&lt;char&gt; packed_addresses(procs * 256);</span><br><span class="line">    char ipstr[256];</span><br><span class="line"></span><br><span class="line">    strcpy(ipstr, ipaddr.c_str());</span><br><span class="line">    </span><br><span class="line">    MPI_Allgather(</span><br><span class="line">    ipstr,</span><br><span class="line">    256,</span><br><span class="line">    MPI_CHAR,</span><br><span class="line">    packed_addresses.data(),</span><br><span class="line">    256,</span><br><span class="line">    MPI_CHAR,</span><br><span class="line">    MPI_COMM_WORLD);</span><br><span class="line"></span><br><span class="line">    std::map&lt;std::string, int&gt; ipaddrMap;</span><br><span class="line">    int tempid=0;</span><br><span class="line">    for(int i=0;i&lt;procs;i++)&#123;</span><br><span class="line">        char* addr = packed_addresses.data() + i * 256;</span><br><span class="line">        std::string tempstr=std::string(addr);</span><br><span class="line">        if(ipaddrMap.find(tempstr)==ipaddrMap.end())&#123;</span><br><span class="line">            ipaddrMap[tempstr]=tempid;</span><br><span class="line">            tempid++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (auto it = ipaddrMap.begin(); it != ipaddrMap.end(); it++)</span><br><span class="line">    &#123;</span><br><span class="line">        // get the node id</span><br><span class="line">        if(ipaddr==it-&gt;first)&#123;</span><br><span class="line">            noderank = it-&gt;second;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; &quot; ip addr is &quot; &lt;&lt; ipaddr &lt;&lt; &quot;process rank is &quot; &lt;&lt; rank &lt;&lt; &quot; node rank is &quot; &lt;&lt; noderank &lt;&lt; std::endl;</span><br><span class="line">    </span><br><span class="line">    //get master ip</span><br><span class="line">    char masterAddr[128];</span><br><span class="line">    if(rank==0)&#123;</span><br><span class="line">    	strcpy(masterAddr,ipaddr.c_str());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    MPI_Bcast(masterAddr,128,MPI_CHAR,0,MPI_COMM_WORLD);</span><br><span class="line"></span><br><span class="line">    //std::cout &lt;&lt; &quot;rank is &quot; &lt;&lt; rank &lt;&lt; &quot; ip addr is &quot; &lt;&lt; ipaddr &lt;&lt; &quot; master ip is &quot; &lt;&lt; std::string(masterAddr)&lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    std::string pytorchcommand = &quot;/bin/bash ./rundistributed.sh &quot; + std::to_string(noderank) + &quot; &quot; + std::string(masterAddr);</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; &quot;pytorchcommand: &quot; &lt;&lt; pytorchcommand &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    system(pytorchcommand.c_str());</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>We just parse the ip addr for specific network card and capture that ip addr. We then use MPI to allgather all addr and compute the node id based on a map (the allgather can guarantee the addr list in every rank is in same sequence).</p>
+<h3 id="Details-of-pytorch-distributed-run"><a href="#Details-of-pytorch-distributed-run" class="headerlink" title="Details of pytorch distributed run"></a>Details of pytorch distributed run</h3><p>It is still good to go over how pytorch mange the gpu resources. The common practice is let one GPU attach to one process, but there are different manners.</p>
+<p>This <a href="https://github.com/pytorch/examples/tree/master/distributed/ddp" target="_blank" rel="noopener">readme</a> provide a good explanation and how pytorch run things in an distributed way.</p>
+<p>The local domain is for each node, and the global domain is for the whole space. In this example, the global id can be computed based on the node id and the local rank.</p>
+<h3 id="Other-thoughts"><a href="#Other-thoughts" class="headerlink" title="Other thoughts"></a>Other thoughts</h3><p>Although we can use the multiple GPU on supercomputer, but for researcher that focuse on AI, they still prefer to do things on one node that contains multiple GPU, at least, they do not wait for a long queue to get avalible resources. Sometimes it needs more then one day to get avalible resources. For AI researchers, they more focuse on the accuracy of their algorithm instead of the train time. They would reather use few GPU card to run their code and debug it conveniently instead of waiting for a long queue to get one experiment result.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2022/02/08/pytorch-on-supercomputer/" data-id="cl49ds6oz0065uamccpyrcb81" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2022/03/20/phd-story/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          PhD story
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/02/05/Reading-Story-Wujun/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Reading Story (Wujun)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Issue-and-solution"><span class="toc-number">1.</span> <span class="toc-text">Issue and solution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Details-of-pytorch-distributed-run"><span class="toc-number">2.</span> <span class="toc-text">Details of pytorch distributed run</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Other-thoughts"><span class="toc-number">3.</span> <span class="toc-text">Other thoughts</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+    
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

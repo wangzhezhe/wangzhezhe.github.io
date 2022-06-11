@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>A case study for thread pool | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Try to disucss an example of the task based thread pool, and the case discussed here is the argobot (Argobots: A Lightweight Low-Level Threading and Tasking Framework)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A case study for thread pool">
+<meta property="og:url" content="http://yoursite.com/2020/10/26/case-study-for-thread-pool/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Try to disucss an example of the task based thread pool, and the case discussed here is the argobot (Argobots: A Lightweight Low-Level Threading and Tasking Framework)">
+<meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/images/argobot_1.png">
+<meta property="article:published_time" content="2020-10-26T07:26:30.000Z">
+<meta property="article:modified_time" content="2020-10-28T04:34:55.000Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/argobot_1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-case-study-for-thread-pool" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/26/case-study-for-thread-pool/" class="article-date">
+  <time datetime="2020-10-26T07:26:30.000Z" itemprop="datePublished">2020-10-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      A case study for thread pool
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Try to disucss an example of the task based thread pool, and the case discussed here is the argobot (Argobots: A Lightweight Low-Level Threading and Tasking Framework)</p>
+<a id="more"></a>
+<p>the general strategy is the pthread, there are all kinds of tools that help to build the thread pool based on the pthread.</p>
+<h3 id="some-prerequest-concepts"><a href="#some-prerequest-concepts" class="headerlink" title="some prerequest concepts"></a>some prerequest concepts</h3><h4 id="system-level-thread-vs-the-user-level-thread"><a href="#system-level-thread-vs-the-user-level-thread" class="headerlink" title="system level thread vs the user level thread"></a>system level thread vs the user level thread</h4><p>This doc provides detiled explanation that compares the user level and system level threads, pay attention to the benifits disadvnatages.</p>
+<p><a href="http://www.cs.iit.edu/~cs561/cs450/ChilkuriDineshThreads/dinesh&#39;s%20files/User%20and%20Kernel%20Level%20Threads.html" target="_blank" rel="noopener">http://www.cs.iit.edu/~cs561/cs450/ChilkuriDineshThreads/dinesh&#39;s%20files/User%20and%20Kernel%20Level%20Threads.html</a></p>
+<p>The main benifits of userlevel thread is the speed, since it avoids the system call compared with the pthread. The disadvantages is the potential conflicts with the os thread scheduler, since for the os, there is only a one thread single process. It needs to be adjusted wisely to make the runtime scheduler fit with the process’s scheduler.</p>
+<h4 id="the-typical-states-of-the-process"><a href="#the-typical-states-of-the-process" class="headerlink" title="the typical states of the process"></a>the typical states of the process</h4><p>here are some detailed explanation</p>
+<p><a href="https://access.redhat.com/sites/default/files/attachments/processstates_20120831.pdf" target="_blank" rel="noopener">https://access.redhat.com/sites/default/files/attachments/processstates_20120831.pdf</a></p>
+<p>and </p>
+<p><a href="https://medium.com/@cloudchef/linux-process-states-and-signals-a967d18fab64" target="_blank" rel="noopener">https://medium.com/@cloudchef/linux-process-states-and-signals-a967d18fab64</a></p>
+<p>we may neglect the sleep mode sometimes. When we execute the system sleep call and the I/O status, the process will be in these sleep states.</p>
+<h4 id="if-the-cpu-is-used-when-there-is-sleep-or-I-O"><a href="#if-the-cpu-is-used-when-there-is-sleep-or-I-O" class="headerlink" title="if the cpu is used when there is sleep or I/O"></a>if the cpu is used when there is sleep or I/O</h4><p>although there is time elapse, but the cpu is not used (or trivial cpu is used for scheduling or state change). This is related with the previous concept. When the sleep is called, the process change to a sleep mode. In particular, since the process can be waked up after the sleep finish, so when there is sleep call, it is in the interruptible sleep mode. But for the I/O, it change into the uninterruptible sleep mode while waiting for the result, they will wake up with when the operation is ready.</p>
+<p>there are some online discussions realted with this:</p>
+<p><a href="https://unix.stackexchange.com/questions/22886/do-sleeping-processes-get-the-same-cpu-time" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/22886/do-sleeping-processes-get-the-same-cpu-time</a></p>
+<p>Attention! in some evaluation works, we may tend to use the sleep as the synthetic analysis, and we should consider it carefully in this context, although time is elapsed in this cases, but the cpu resoureces is not used, therefore, the results might not be that much convinced enough, it might be better to use other workflods, or consider the synthetic cased based on particular context.</p>
+<h4 id="how-the-sleep-is-implemented"><a href="#how-the-sleep-is-implemented" class="headerlink" title="how the sleep is implemented"></a>how the sleep is implemented</h4><p>this is an straightfoward explanation</p>
+<p><a href="https://stackoverflow.com/questions/1719071/how-is-sleep-implemented-at-the-os-level" target="_blank" rel="noopener">https://stackoverflow.com/questions/1719071/how-is-sleep-implemented-at-the-os-level</a></p>
+<p>The core concepts is to maintain a queue by higher level menager (for the os-level thread/process, the higher level manager is OS, for the user-level thread/process, the higher level manager is the runtime), then the higher level menager just check the element in the queue, when the sleep time is finished, then allocate resource to the thread. </p>
+<p>Another strategy is to do an active checking, such as polling, in this way, thread is still in active state, but it is not efficient enough. One deteailed explanation is</p>
+<p><a href="http://www.gerald-fahrnholz.eu/sw/online_doc_multithreading/html/group___grp_condition_variable.html" target="_blank" rel="noopener">http://www.gerald-fahrnholz.eu/sw/online_doc_multithreading/html/group___grp_condition_variable.html</a></p>
+<p>the condition variable shares the same idea with the sleep, it can be used to implement the sleep in the runtime. The underlying implemetation of the sleep is the event driven paradigm based on the siganal. When the condition is satisfied (such as time finish), the associated thread is triggered and the state is changed based on the signal notification.</p>
+<h4 id="oversubscribing-and-performance"><a href="#oversubscribing-and-performance" class="headerlink" title="oversubscribing and performance"></a>oversubscribing and performance</h4><p>Based on this early stage work (<a href="https://crd.lbl.gov/assets/pubs_presos/ovsub.pdf)" target="_blank" rel="noopener">https://crd.lbl.gov/assets/pubs_presos/ovsub.pdf)</a>, Oversubscription on Multicore Processors, for the evaluation of this work, it is based on the MPI+Pthread. It looks that the benifits acquired from the oversubscription depends on types of jobs. If we consider it intuitively, when there is IO or sleep in the task (the task is not fully computation intensive), there is always some benifits from the oversubscription, since the CPU can be fully utilized. </p>
+<p>However, when we use thread pool, we may use the pthread as the manager thread, in that case, we just need to make the size of the pthread of manager thread equals to the number of the os-level thread. And then put more tasks in the task waiting list associated with each manager thread, and we do not the subscription of the os-level thread in that case.</p>
+<p>This is a kind of the latest research in this area (<a href="https://www.bolt-omp.org/)" target="_blank" rel="noopener">https://www.bolt-omp.org/)</a>, when the OpenMP is integrated with particular thread pool, based on some optimization strategies, the performance can be further improved. It is interesting that the algorithm such as bipartition used to acclarate the bcast is also used here to improve the scalability.</p>
+<h3 id="argobot-example"><a href="#argobot-example" class="headerlink" title="argobot example"></a>argobot example</h3><p>The argobot is a lightweight thread pool that provides user level threads. Details can be found in related paper (<a href="https://www.argobots.org/)" target="_blank" rel="noopener">https://www.argobots.org/)</a>. This is the API for the argobot framework (<a href="https://www.argobots.org/doxygen/latest_dev/modules.html" target="_blank" rel="noopener">https://www.argobots.org/doxygen/latest_dev/modules.html</a>)</p>
+<p>The associated c++ binding can be found here (<a href="https://xgitlab.cels.anl.gov/sds/thallium/-/tree/master/)" target="_blank" rel="noopener">https://xgitlab.cels.anl.gov/sds/thallium/-/tree/master/)</a>, and we just look at several examples from the perspetive of the programming.</p>
+<h4 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h4><h4 id="multiple-os-level-threads-os-level-sleep"><a href="#multiple-os-level-threads-os-level-sleep" class="headerlink" title="multiple os level threads os-level sleep"></a>multiple os level threads os-level sleep</h4><p>This is a kind of weird operation actually, since the subscribing of the os-level thread will increase the overhead. Although we can do things like this, it is not a recomended way.</p>
+<p>For the first experiment, we try to call system level sleep, we use 4 cores and start one process, the number of the total task is fixed as 128, every task will execute <code>sleep(2.0)</code> system call. The effect may similar with using the thread pool based on Pthread.</p>
+<p><img src="/images/argobot_1.png" width="500"></p>
+<p>When there is 4 os-level threads, the sleep will called in system level, the whole os-level thread is transfered to the sleep states, since we only have 4 thread, the total execution time is <code>2*(128/4)=64</code>, this thing is still true till the 32 threads. If there is no overhead of thread switching between cores, there are more benifits when we use more threads, however in this case, when the thread number is larger then 32, the execution time increase, this is because that the overhead of switching the os-level threads outperform the benifit of time saving from the multiple os level threads. Since we only have 4 cores here, after a specific point, such as 32 here, the overhead will increase. We may tend to ask a question, why it is 32, not 4 ? since we only use 4 cores. This might becase the task we used here is just sleep, which use trival cpu time, therefore, we can make more tasks to run in parallel without obvious overhead. If the task is fully cpu intensive, the oversubscribing of os level threads could not bring extra benifits.</p>
+<h4 id="core-equally-os-level-threads-with-user-level-sleep"><a href="#core-equally-os-level-threads-with-user-level-sleep" class="headerlink" title="core equally os level threads with user level sleep"></a>core equally os level threads with user level sleep</h4><p>It is obvious that use the system level sleep is not efficient, for the user level thread we discussed above, when we use the one os-level core to support multiple user level sleep, we do not use the system sleep call. In this experiment, we use 4 cores and 4 os-level threads (ES for the abstraction of the argobot), then we put task into the task pool (a list), different tasks will be scheduled onto the coresonding os-level threads. In this way, the runtime will be the “god” or the manager for the tasks, the sleep operation can be implemented here (which is similar with the way implemented by the OS, but in the different abstraction layer). We may still check the task list, when their sleep time is finished, the manager schedule it and bind it with the os level thread. In this way, we may not need to do the OS level system call.</p>
+<table>
+<thead>
+<tr>
+<th>task number</th>
+<th>128</th>
+<th>256</th>
+<th>1024</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>execution time</td>
+<td>2.0016</td>
+<td>2.0021</td>
+<td>2.0080</td>
+</tr>
+</tbody>
+</table>
+<p>We tasted 128, 256, 1024 task, the time caused by the sleep is trivial, compared with the previous case, there are huge benifits here, and more cpu usage efficiency. Since based on runtime implementation, there are few chance to let OS level thread to become idle, the process will always at the running or runnable states.</p>
+<p>We may consider this like a company, there is a director and particular manager for each section. Without the runtime, we may ask direactor for everything, the whole system may not run fast. With the runtime, it just seems that we add several particular manager, if a thing can be processed by a manager (such as task sleep), we do not need to bother the director, the whole system will run faster in this way.</p>
+<h4 id="for-the-compute-intensive-tasks"><a href="#for-the-compute-intensive-tasks" class="headerlink" title="for the compute intensive tasks"></a>for the compute intensive tasks</h4><p>For the compute intensive tasks (we just use a while loop and let is run particular iterations), when we use os-level thread oversubscribing</p>
+<table>
+<thead>
+<tr>
+<th>os level thread</th>
+<th>4</th>
+<th>8</th>
+<th>32</th>
+<th>64</th>
+<th>128</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>execution time</td>
+<td>0.0029</td>
+<td>0.0042</td>
+<td>0.0106</td>
+<td>0.032</td>
+<td>1.786</td>
+</tr>
+</tbody>
+</table>
+<p>We can see that there are not benifits to increase the os-level thread number, since we use the compute intensive tasks, and the core is always busy, if we increase the thread number, it just increase the burdern of the cpu.</p>
+<p>Similarly, if we fix the os-level thread as 4 and increase the task processed by user-level threads</p>
+<table>
+<thead>
+<tr>
+<th>task number</th>
+<th>128</th>
+<th>256</th>
+<th>512</th>
+<th>1024</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>execution time</td>
+<td>0.0029</td>
+<td>0.0034</td>
+<td>0.0040</td>
+<td>0.0065</td>
+</tr>
+</tbody>
+</table>
+<p>It is obvious that there is better performance for using the user-level thread. </p>
+<p>Generally speaking, the key of the user-level thread is to always keep CPU in busy states. For the process states, it always trys to make process in a running or runnable state. Pthread can switch between multiple different user level thread or tasks.</p>
+<h3 id="golang-example"><a href="#golang-example" class="headerlink" title="golang example"></a>golang example</h3><p>Those concepts such as thread pool or user-level light weighted threads and user defiend thread might not that much fancy for the golong programmer. It may be viewd as a standard thing in the golong world. Just review those concepts in golang and try to see some differences here.</p>
+<p>This might be a good article to follow (<a href="https://www.ardanlabs.com/blog/2018/08/scheduling-in-go-part2.html" target="_blank" rel="noopener">https://www.ardanlabs.com/blog/2018/08/scheduling-in-go-part2.html</a>)</p>
+<p>From the flexibility, I may say that the golong is successful to be commercialized and it is become the corestone of the cloud computing world. For the thread pool we discussed previously, it is only important in the area of the HPC or scientific applications.</p>
+<p>From the technique’s perspective, for the task queue, there are not much difference, both argobot and go scheduler can use the local or global level task queue. For the abstraction, obviously, go version is easy to understand, P represents the abstraction that mapped onto the os-level thread (M), the particular task is wrapped by the goroutine (G). Multiple discussion flcuse about the work stealing algorithm. For the argobot, there are more ditails and API about the abstractions.</p>
+<p>This might be an differnet point thought between the research projects and the comertial projects, one need to provide more details and API (instrument point), another is to implement a good wrapping and friendly use semantics.</p>
+<h3 id="related-code-for-evaluation"><a href="#related-code-for-evaluation" class="headerlink" title="related code for evaluation"></a>related code for evaluation</h3><p>os-level thread oversubscribing</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;sched.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;thallium.hpp&gt;</span><br><span class="line">#include &lt;time.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#define BILLION 1000000000L</span><br><span class="line"></span><br><span class="line">namespace tl = thallium;</span><br><span class="line"></span><br><span class="line">tl::engine* enginePtr;</span><br><span class="line"></span><br><span class="line">void workloadSleep()</span><br><span class="line">&#123;</span><br><span class="line">  tl::xstream es = tl::xstream::self();</span><br><span class="line">  int esrank = es.get_rank();</span><br><span class="line">  int ultid = tl::thread::self_id();</span><br><span class="line">  int cpuid = sched_getcpu();</span><br><span class="line"></span><br><span class="line">  char str[256];</span><br><span class="line">  sprintf(str, &quot;Hello World from ES %d ULT %d on cpu %d\n&quot;, esrank, ultid, cpuid);</span><br><span class="line">  std::cout &lt;&lt; str &lt;&lt; std::endl;</span><br><span class="line">  // system call sleep, whole os process will sleep</span><br><span class="line">  sleep(2.0);</span><br><span class="line"></span><br><span class="line">  // user level call sleep</span><br><span class="line">  // tl::thread::sleep(*enginePtr, 2000);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void workloadCompute()</span><br><span class="line">&#123;</span><br><span class="line">  tl::xstream es = tl::xstream::self();</span><br><span class="line">  int esrank = es.get_rank();</span><br><span class="line">  int ultid = tl::thread::self_id();</span><br><span class="line"></span><br><span class="line">  //char str[256];</span><br><span class="line">  //sprintf(str, &quot;compute task from ES %d ULT %d\n&quot;, esrank, ultid);</span><br><span class="line">  //std::cout &lt;&lt; str &lt;&lt; std::endl;</span><br><span class="line">  int n = INT_MAX;</span><br><span class="line">  int x = 1;</span><br><span class="line">  for (int i = 0; i &lt; n; i++)</span><br><span class="line">  &#123;</span><br><span class="line">    for (int j = 0; j &lt; n; j++)</span><br><span class="line">    &#123;</span><br><span class="line">      for (int k = 0; k &lt; n; k++)</span><br><span class="line">      &#123;</span><br><span class="line">        for (int z = 0; z &lt; n; z++)</span><br><span class="line">        &#123;</span><br><span class="line">          x = (x + i + j + k) % 512;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(int argc, char** argv)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  tl::abt scope;</span><br><span class="line"></span><br><span class="line">  struct timespec start, end;</span><br><span class="line">  double diff;</span><br><span class="line">  clock_gettime(CLOCK_REALTIME, &amp;start); /* mark start time */</span><br><span class="line"></span><br><span class="line">  if (argc != 3)</span><br><span class="line">  &#123;</span><br><span class="line">    std::cerr &lt;&lt; &quot;Usage: &quot; &lt;&lt; argv[0] &lt;&lt; &quot; &lt;number of ES&gt; &lt;number of tasks&gt;&quot; &lt;&lt; std::endl;</span><br><span class="line">    exit(0);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  int esNumber = std::stoi(argv[1]);</span><br><span class="line">  int taskNumber = std::stoi(argv[2]);</span><br><span class="line">  std::cout &lt;&lt; &quot;debug esNumber &quot; &lt;&lt; esNumber &lt;&lt; &quot; taskNumber &quot; &lt;&lt; taskNumber &lt;&lt; std::endl;</span><br><span class="line">  // create the es that equals to the number of the cores</span><br><span class="line">  std::vector&lt;tl::managed&lt;tl::xstream&gt; &gt; ess;</span><br><span class="line">  tl::managed&lt;tl::pool&gt; myPool = tl::pool::create(tl::pool::access::mpmc);</span><br><span class="line"></span><br><span class="line">  for (int i = 0; i &lt; esNumber; i++)</span><br><span class="line">  &#123;</span><br><span class="line">    // the es shared the same pool</span><br><span class="line">    // multiple producer and multiple consumer</span><br><span class="line">    tl::managed&lt;tl::xstream&gt; es = tl::xstream::create(tl::scheduler::predef::deflt, *myPool);</span><br><span class="line">    ess.push_back(std::move(es));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  std::vector&lt;tl::managed&lt;tl::thread&gt; &gt; ths;</span><br><span class="line">  for (int i = 0; i &lt; taskNumber; i++)</span><br><span class="line">  &#123;</span><br><span class="line">    tl::managed&lt;tl::thread&gt; th = myPool-&gt;make_thread(workloadCompute);</span><br><span class="line">    ths.push_back(std::move(th));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  for (auto&amp; mth : ths)</span><br><span class="line">  &#123;</span><br><span class="line">    mth-&gt;join();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  for (int i = 0; i &lt; esNumber; i++)</span><br><span class="line">  &#123;</span><br><span class="line">    ess[i]-&gt;join();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  clock_gettime(CLOCK_REALTIME, &amp;end); /* mark end time */</span><br><span class="line">  diff = (end.tv_sec - start.tv_sec) * 1.0 + (end.tv_nsec - start.tv_nsec) * 1.0 / BILLION;</span><br><span class="line">  printf(&quot;time is %lf seconds \n&quot;, diff);</span><br><span class="line"></span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>user-level thread server (we need to use server-client pattern in order to use the user level task sleep)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;sched.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;thallium.hpp&gt;</span><br><span class="line">#include &lt;time.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#define BILLION 1000000000L</span><br><span class="line"></span><br><span class="line">namespace tl = thallium;</span><br><span class="line"></span><br><span class="line">tl::engine* enginePtr;</span><br><span class="line"></span><br><span class="line">int taskNumber;</span><br><span class="line"></span><br><span class="line">void workloadCompute()</span><br><span class="line">&#123;</span><br><span class="line">  tl::xstream es = tl::xstream::self();</span><br><span class="line">  int esrank = es.get_rank();</span><br><span class="line">  int ultid = tl::thread::self_id();</span><br><span class="line"></span><br><span class="line">  // char str[256];</span><br><span class="line">  // sprintf(str, &quot;compute task from ES %d ULT %d\n&quot;, esrank, ultid);</span><br><span class="line">  // std::cout &lt;&lt; str &lt;&lt; std::endl;</span><br><span class="line">  int n = INT_MAX;</span><br><span class="line">  int x = 1;</span><br><span class="line">  for (int i = 0; i &lt; n; i++)</span><br><span class="line">  &#123;</span><br><span class="line">    for (int j = 0; j &lt; n; j++)</span><br><span class="line">    &#123;</span><br><span class="line">      for (int k = 0; k &lt; n; k++)</span><br><span class="line">      &#123;</span><br><span class="line">        for (int z = 0; z &lt; n; z++)</span><br><span class="line">        &#123;</span><br><span class="line">          x = (x + i + j + k) % 512;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">void workloadSleep()</span><br><span class="line">&#123;</span><br><span class="line">  tl::xstream es = tl::xstream::self();</span><br><span class="line">  int esrank = es.get_rank();</span><br><span class="line">  int ultid = tl::thread::self_id();</span><br><span class="line">  int cpuid = sched_getcpu();</span><br><span class="line"></span><br><span class="line">  char str[256];</span><br><span class="line">  sprintf(str, &quot;Hello World from ES %d ULT %d on cpu %d\n&quot;, esrank, ultid, cpuid);</span><br><span class="line">  std::cout &lt;&lt; str &lt;&lt; std::endl;</span><br><span class="line">  // user level call sleep</span><br><span class="line">  tl::thread::sleep(*enginePtr, 2000);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void testsleep(const tl::request&amp; req)</span><br><span class="line">&#123;</span><br><span class="line">  std::cout &lt;&lt; &quot;testsleep is called ...&quot; &lt;&lt; std::endl;</span><br><span class="line">  struct timespec start, end;</span><br><span class="line">  double diff;</span><br><span class="line">  clock_gettime(CLOCK_REALTIME, &amp;start); /* mark start time */</span><br><span class="line"></span><br><span class="line">  // put threads into associated pool</span><br><span class="line">  std::vector&lt;tl::managed&lt;tl::thread&gt; &gt; ths;</span><br><span class="line">  for (int i = 0; i &lt; taskNumber; i++)</span><br><span class="line">  &#123;</span><br><span class="line">    tl::managed&lt;tl::thread&gt; th = tl::xstream::self().get_main_pools()[0].make_thread(workloadSleep);</span><br><span class="line">    ths.push_back(std::move(th));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  for (auto&amp; mth : ths)</span><br><span class="line">  &#123;</span><br><span class="line">    mth-&gt;join();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; &quot;testsleep is finished ...&quot; &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">  clock_gettime(CLOCK_REALTIME, &amp;end); /* mark end time */</span><br><span class="line">  diff = (end.tv_sec - start.tv_sec) * 1.0 + (end.tv_nsec - start.tv_nsec) * 1.0 / BILLION;</span><br><span class="line">  // use printf is not useful here, except the explicit flush</span><br><span class="line">  std::cout &lt;&lt; &quot;compute time is &quot; &lt;&lt; diff &lt;&lt; std::endl;</span><br><span class="line">  req.respond(0);</span><br><span class="line">  // finalize the engine</span><br><span class="line">  enginePtr-&gt;finalize();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(int argc, char** argv)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">  tl::abt scope;</span><br><span class="line"></span><br><span class="line">  if (argc != 3)</span><br><span class="line">  &#123;</span><br><span class="line">    std::cerr &lt;&lt; &quot;Usage: &quot; &lt;&lt; argv[0] &lt;&lt; &quot; &lt;number of ES&gt; &lt;number of tasks&gt;&quot; &lt;&lt; std::endl;</span><br><span class="line">    exit(0);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  int esNumber = std::stoi(argv[1]);</span><br><span class="line">  taskNumber = std::stoi(argv[2]);</span><br><span class="line">  // create the es that equals to the number of the cores</span><br><span class="line">  std::vector&lt;tl::managed&lt;tl::xstream&gt; &gt; ess;</span><br><span class="line"></span><br><span class="line">  tl::managed&lt;tl::pool&gt; myPool = tl::pool::create(tl::pool::access::mpmc);</span><br><span class="line"></span><br><span class="line">  for (int i = 0; i &lt; esNumber; i++)</span><br><span class="line">  &#123;</span><br><span class="line">    // the es shared the same pool</span><br><span class="line">    // multiple producer and multiple consumer</span><br><span class="line">    tl::managed&lt;tl::xstream&gt; es = tl::xstream::create(tl::scheduler::predef::deflt, *myPool);</span><br><span class="line">    ess.push_back(std::move(es));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // tl::engine myEngine(&quot;tcp&quot;, THALLIUM_SERVER_MODE);</span><br><span class="line">  tl::engine myEngine(&quot;tcp&quot;, THALLIUM_SERVER_MODE);</span><br><span class="line">  enginePtr = &amp;myEngine;</span><br><span class="line">  // the way to call the client should be updated accordingly if the pool is used here</span><br><span class="line">  myEngine.define(&quot;testsleep&quot;, testsleep, 1, *myPool);</span><br><span class="line">  // myEngine.define(&quot;testsleep&quot;, testsleep);</span><br><span class="line">  std::cout &lt;&lt; &quot;Server running at address &quot; &lt;&lt; myEngine.self() &lt;&lt; std::endl;</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>client</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;thallium.hpp&gt;</span><br><span class="line">#include &lt;time.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#define BILLION 1000000000L</span><br><span class="line"></span><br><span class="line">namespace tl = thallium;</span><br><span class="line"></span><br><span class="line">int main(int argc, char** argv)</span><br><span class="line">&#123;</span><br><span class="line">  if (argc != 2)</span><br><span class="line">  &#123;</span><br><span class="line">    std::cerr &lt;&lt; &quot;Usage: &quot; &lt;&lt; argv[0] &lt;&lt; &quot; &lt;address&gt;&quot; &lt;&lt; std::endl;</span><br><span class="line">    exit(0);</span><br><span class="line">  &#125;</span><br><span class="line">  tl::engine myEngine(&quot;tcp&quot;, THALLIUM_CLIENT_MODE);</span><br><span class="line">  tl::remote_procedure testsleep = myEngine.define(&quot;testsleep&quot;);</span><br><span class="line">  tl::endpoint server = myEngine.lookup(argv[1]);</span><br><span class="line">  tl::provider_handle ph(server, 1);</span><br><span class="line">  int ret = testsleep.on(ph)();</span><br><span class="line">  // int ret = testsleep.on(server)();</span><br><span class="line">  std::cout &lt;&lt; &quot;Server answered &quot; &lt;&lt; ret &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="other-references"><a href="#other-references" class="headerlink" title="other references"></a>other references</h3><p>how to optimize the thread pool and integrate it with openmpi<br>a good and very solid work<br><a href="https://www.openmp.org/wp-content/uploads/SC19-Iwasaki-Threads.pdf" target="_blank" rel="noopener">https://www.openmp.org/wp-content/uploads/SC19-Iwasaki-Threads.pdf</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/10/26/case-study-for-thread-pool/" data-id="cl49ds6ol003cuamclfcih5im" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2020/12/02/programming-story/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Programming Story
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/09/22/algorithm-bigo-notation-md/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Algorithm_bigO_notation.md</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#some-prerequest-concepts"><span class="toc-number">1.</span> <span class="toc-text">some prerequest concepts</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#system-level-thread-vs-the-user-level-thread"><span class="toc-number">1.1.</span> <span class="toc-text">system level thread vs the user level thread</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#the-typical-states-of-the-process"><span class="toc-number">1.2.</span> <span class="toc-text">the typical states of the process</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#if-the-cpu-is-used-when-there-is-sleep-or-I-O"><span class="toc-number">1.3.</span> <span class="toc-text">if the cpu is used when there is sleep or I&#x2F;O</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#how-the-sleep-is-implemented"><span class="toc-number">1.4.</span> <span class="toc-text">how the sleep is implemented</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#oversubscribing-and-performance"><span class="toc-number">1.5.</span> <span class="toc-text">oversubscribing and performance</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#argobot-example"><span class="toc-number">2.</span> <span class="toc-text">argobot example</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Evaluation"><span class="toc-number">2.1.</span> <span class="toc-text">Evaluation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#multiple-os-level-threads-os-level-sleep"><span class="toc-number">2.2.</span> <span class="toc-text">multiple os level threads os-level sleep</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#core-equally-os-level-threads-with-user-level-sleep"><span class="toc-number">2.3.</span> <span class="toc-text">core equally os level threads with user level sleep</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#for-the-compute-intensive-tasks"><span class="toc-number">2.4.</span> <span class="toc-text">for the compute intensive tasks</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#golang-example"><span class="toc-number">3.</span> <span class="toc-text">golang example</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#related-code-for-evaluation"><span class="toc-number">4.</span> <span class="toc-text">related code for evaluation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#other-references"><span class="toc-number">5.</span> <span class="toc-text">other references</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+    
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

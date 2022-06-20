@@ -124,7 +124,7 @@ ga('send', 'pageview');
 <p>不同层次的资源类型也可以通过label来识别，比如docker engine层面的label，容器层面的label。对于k8s来说，pod，service，rc几个层次的资源之间都是通过label来进行group和资源控制的。</p>
 <h4 id="认证和授权"><a href="#认证和授权" class="headerlink" title="认证和授权"></a>认证和授权</h4><p>这部分自己也没有太多的经验，可以参考之前kube-apiserver的实现，理想情况是尽量安全，但是尽量安全的话，也意味着授权部分的代码实现复杂程度很高，常用的是username+password的方式，还有一种情况是在header中添加bare token进行认证。</p>
 <h3 id="关于幂等性"><a href="#关于幂等性" class="headerlink" title="关于幂等性"></a>关于幂等性</h3><p>幂等性的根本问题在于对并发问题的处理上，好多时候，对外暴露的api都需要满足幂等性（似乎只是一个本身被默认的性质了）。当然这是一个数学概念，从数学的角度上，不做过多的深入理解，从程序本身的角度上来看，就是一次调用一个http请求，和多次调用一个http请求，所产生的行为应该是一致的。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">每次对外暴露一个新的api之后，一定要考虑一下这个api自身的幂等性，做一下假设，梳理一下整条逻辑，并发处理的时候，或者多次处理的时候，是否还符合幂等性</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">每次对外暴露一个新的api之后，一定要考虑一下这个api自身的幂等性，做一下假设，梳理一下整条逻辑，并发处理的时候，或者多次处理的时候，是否还符合幂等性</span><br></pre></td></tr></table></figure>
 <p>最近就遇到了一个幂等性没有被处理好的http请求的例子。 一般一个http请求，如果整个过程中涉及到的环节比较多的话，或者时间比较长的话，在实际进行操作的时候，就容易违反幂等性的设计原则（总是先验地任务请求是一个一个过来的，即一个请求被处理完之后再过来一个请求，实际上并非是这样的）。</p>
 <p>一般遇到幂等性的问题，可以从api的耦合度上进行考虑，看是否需要对api进行更细粒度的拆分，还是有就是程序上的原因，是否在一个api的proccess还在处理的过程中，另一个api请求已经过来，在这个过程中，是否会发生异常。也就是在并发处理上，是否有把各种情况都考虑的周到。比如一个完整的流程中会有1，2，3，4多个小的步骤，第一个请求在执行到某个步骤的时候，第二个请求又进来，这样会不会有冲突，是第一个请求又重新被执行呢，还是说由于上一次操作没有被执行完，就直接抛弃这个请求，就是说原子性的粒度要被控制在哪个范围。</p>
 <p>从这个角度上来看，对外暴露api，特别是暴露那些会引起系统内部状态发生改变的api，是一件十分严谨又十分有技术含量的事情，因为你需要把用户的各种行为都要考虑到，分类处理要全面，考虑到不同行为对系统造成的影响是否符合业务本身的逻辑定义，而实际上用户的行为往往是很难被全面预料到的。</p>
@@ -135,7 +135,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/API-story/" data-id="cl4a104i4000189mc0rb70iey" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/API-story/" data-id="cl4bf1qfa0003jpmcdiflht6w" class="article-share-link">分享</a>
       
       
       

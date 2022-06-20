@@ -164,10 +164,10 @@ ga('send', 'pageview');
 <p>This table contains typical system level env, we disucssed the <code>PATH</code>, <code>LD_PATH</code> and <code>LD_LIBRARY_PATH</code>. The <code>CPATH</code> is easy to understand, we need to find the header files. In particular, it specifies a list of directories to be searched as if specified with -I, but after any paths given with -I options on the command line. This environment variable is used regardless of which language is being preprocessed.</p>
 <p><code>PKG_CONFIG_PATH</code> is a environment variable that specifies additional paths in which pkg-config will search for its .pc files. The pkg-config’s searching path can be specified by this env. The .pc file that describes the information of the package will be put into the search dir of the pkg-config search path.</p>
 <h3 id="linking的时候设置-so文件的查询路径"><a href="#linking的时候设置-so文件的查询路径" class="headerlink" title="linking的时候设置.so文件的查询路径"></a>linking的时候设置.so文件的查询路径</h3><p>若果在编译链接时加入-L参数，在实际运行的时候可能会出现类似如下的情况：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-bash-4.2$ ldd metaserver</span><br><span class="line">	linux-vdso.so.1 =&gt;  (0x00007ffef8fb1000)</span><br><span class="line">	libprotobuf.so.19 =&gt; not found</span><br><span class="line">	libgrpc++.so.1 =&gt; not found</span><br><span class="line">	libgrpc.so.7 =&gt; not found</span><br><span class="line">	libgrpc++_reflection.so.1 =&gt; not found</span><br><span class="line">	libpthread.so.0 =&gt; /lib64/libpthread.so.0 (0x00007f0dae8aa000)</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-bash-4.2$ ldd metaserver</span><br><span class="line">	linux-vdso.so.1 =&gt;  (0x00007ffef8fb1000)</span><br><span class="line">	libprotobuf.so.19 =&gt; not found</span><br><span class="line">	libgrpc++.so.1 =&gt; not found</span><br><span class="line">	libgrpc.so.7 =&gt; not found</span><br><span class="line">	libgrpc++_reflection.so.1 =&gt; not found</span><br><span class="line">	libpthread.so.0 =&gt; /lib64/libpthread.so.0 (0x00007f0dae8aa000)</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
 <p>这是一种情况就是将.so所在的文件添加到<code>LD_LIBRARY_PATH</code>中，将如下命令<code>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:&lt;path_to_dir_of_libs&gt;</code>放在.&#x2F;profile中，每次自动执行，另一种是set the linking path explicitly, such as <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/6562403/i-dont-understand-wl-rpath-wl">this</a>. add following info when linking:</p>
 <p>for example:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-L$(PATH_GRPC)/lib -L$(PATH_PROTO)/lib -Wl,-rpath $(PATH_GRPC)/lib -Wl,-rpath $(PATH_PROTO)/lib</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-L$(PATH_GRPC)/lib -L$(PATH_PROTO)/lib -Wl,-rpath $(PATH_GRPC)/lib -Wl,-rpath $(PATH_PROTO)/lib</span><br></pre></td></tr></table></figure>
 
 <p>这样编译出来的binary在通过<code>ldd</code>查看时，就会直接找到.so文件的位置了。</p>
 <h3 id="gcc-L-l-与-I（big-i）"><a href="#gcc-L-l-与-I（big-i）" class="headerlink" title="gcc -L -l 与 -I（big i）"></a>gcc -L -l 与 -I（big i）</h3><p>具体的可以参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/29468211/gcc-difference-between-l-and-l-option-and-how-to-provide-complete-path-to-a-l">这个</a>或者gcc的<a target="_blank" rel="noopener" href="https://gcc.gnu.org/onlinedocs/gcc-2.95.2/gcc_2.html#SEC13">参数说明</a>文档</p>
@@ -185,7 +185,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/27/crucial-env-in-c-c/" data-id="cl4a104im003v89mc0ujicfjh" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/06/27/crucial-env-in-c-c/" data-id="cl4bf1qfy0044jpmc2phl7103" class="article-share-link">分享</a>
       
       
       

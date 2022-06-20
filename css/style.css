@@ -1212,7 +1212,7 @@ a.article-title:hover {
 }
 .article-entry pre,
 .article-entry .highlight {
-  background: #f5f2f0;
+  background: #2d2d2d;
   margin: 0 -20px;
   padding: 15px 20px;
   border-style: solid;
@@ -1220,7 +1220,7 @@ a.article-title:hover {
   border-width: 2px;
   border-radius: 10px;
   overflow: auto;
-  color: #4d4d4c;
+  color: #ccc;
   line-height: 25.6px;
 }
 .article-entry .highlight .gutter pre,
@@ -1260,7 +1260,7 @@ a.article-title:hover {
 }
 .article-entry .highlight figcaption {
   font-size: 0.85em;
-  color: #8e908c;
+  color: #999;
   line-height: 1em;
   margin-bottom: 1em;
 }
@@ -1283,14 +1283,14 @@ a.article-title:hover {
   height: 25.6px;
 }
 .article-entry .highlight .line.marked {
-  background: #d6d6d6;
+  background: #515151;
 }
 .article-entry .gist {
   margin: 0 -20px;
   border-style: solid;
   border-color: #ddd;
   border-width: 1px 0;
-  background: #f5f2f0;
+  background: #2d2d2d;
   padding: 15px 20px 15px 0;
 }
 .article-entry .gist .gist-file {
@@ -1316,8 +1316,8 @@ a.article-title:hover {
   border: none;
 }
 .article-entry .gist .gist-file .gist-meta {
-  background: #f5f2f0;
-  color: #8e908c;
+  background: #2d2d2d;
+  color: #999;
   font: 0.85em "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-shadow: 0 0;
   padding: 0;
@@ -1333,7 +1333,7 @@ a.article-title:hover {
 }
 pre .comment,
 pre .title {
-  color: #8e908c;
+  color: #999;
 }
 pre .variable,
 pre .attribute,
@@ -1347,7 +1347,7 @@ pre .html .doctype,
 pre .css .id,
 pre .css .class,
 pre .css .pseudo {
-  color: #c82829;
+  color: #f2777a;
 }
 pre .number,
 pre .preprocessor,
@@ -1355,12 +1355,12 @@ pre .built_in,
 pre .literal,
 pre .params,
 pre .constant {
-  color: #f5871f;
+  color: #f99157;
 }
 pre .class,
 pre .ruby .class .title,
 pre .css .rules .attribute {
-  color: #718c00;
+  color: #9c9;
 }
 pre .string,
 pre .value,
@@ -1368,10 +1368,10 @@ pre .inheritance,
 pre .header,
 pre .ruby .symbol,
 pre .xml .cdata {
-  color: #718c00;
+  color: #9c9;
 }
 pre .css .hexcolor {
-  color: #3e999f;
+  color: #6cc;
 }
 pre .function,
 pre .python .decorator,
@@ -1381,11 +1381,11 @@ pre .ruby .title .keyword,
 pre .perl .sub,
 pre .javascript .title,
 pre .coffeescript .title {
-  color: #4271ae;
+  color: #69c;
 }
 pre .keyword,
 pre .javascript .function {
-  color: #8959a8;
+  color: #c9c;
 }
 @media screen and (max-width: 479px) {
   #mobile-nav {

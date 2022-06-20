@@ -123,7 +123,7 @@ ga('send', 'pageview');
 <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/5040525/static-variable-in-a-header-file">https://stackoverflow.com/questions/5040525/static-variable-in-a-header-file</a></p>
 <h3 id="forward-declaration"><a href="#forward-declaration" class="headerlink" title="forward declaration"></a>forward declaration</h3><p>forward declaration是可以用来解决class&#x2F;struct之间互相引用的问题。这种互相引用的问题有的时候是由于bad design引起的，有的时候是不得已而为之。如果是bad design 这个时候考虑是不是要对已有的功能进行拆分，比如之前是A需要引用B，然后B也需要引用A，拆分之后得到更底层的C，然后A和B都去引用C。或者想想看调整一下每个类所能执行的函数看看效果会不会更好。</p>
 <p>实在需要互相引用的话，常遇到的错误是 <code>invalid use of incomplete type</code> 这个问题往往与循环引用相关，比如</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//car.h</span><br><span class="line">struct Car&#123;</span><br><span class="line">   Wheel * w</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//wheel.h</span><br><span class="line">struct Weel&#123;</span><br><span class="line">   Car *c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//car.h</span><br><span class="line">struct Car&#123;</span><br><span class="line">   Wheel * w</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//wheel.h</span><br><span class="line">struct Weel&#123;</span><br><span class="line">   Car *c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>这个时候car.h需要知道wheel的定义，会加上<code>#include &lt;wheel.h&gt;</code> 但是wheel.h中也需要引用Car啊？如果这个时候在weel.h中也加上<code>#include &lt;Car.h&gt;</code> 那就会出现循环引用。如果使用forward declaration的话，就是在.h文件中不要引用上一层(这里Car对于Wheel是上一层)的类，在weel.cpp中去引用上一层的类然后进行如下声明<code>struct Car;</code>这个就是所谓的forward declaration。总结一下就是要保证.h文件中互相引用的拓扑排序，在.cpp文件中declare需要引用的struct或者class。想一下背后的原因也很容易理解，compilation unit是.cpp文件，因此在.cpp文件直接引用上层的.h文件不会造成循环。</p>
 <p>自己遇到的一个tricky的问题是 A-&gt;B， B-&gt;A， B-&gt;C， C-&gt;A 这里的A-&gt;B表示A中有一个指针指向B。先不讨论design的问题，要是想让这个work了，需要在A.h 中 引用 B.h，在B.h中引用C.h，在B.cpp中引用A.h，在C.cpp中引用A.h，如果有一个地方弄错了都会造成编译问题。 比较重要的是不能在C.h中引用A.h和B.h，否则会出现循环引用的问题。</p>
@@ -136,7 +136,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/24/c-metaprogramming/" data-id="cl4a104ik003589mch4ft68zm" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/24/c-metaprogramming/" data-id="cl4bf1qfv003kjpmc4rv0dc3q" class="article-share-link">分享</a>
       
       
       

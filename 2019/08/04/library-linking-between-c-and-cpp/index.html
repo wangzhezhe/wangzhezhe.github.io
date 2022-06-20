@@ -115,14 +115,14 @@ ga('send', 'pageview');
 <span id="more"></span>
 
 <h3 id="undefined-reference"><a href="#undefined-reference" class="headerlink" title="undefined reference"></a>undefined reference</h3><p>有几次在link libraries的时候会出现 undefined reference 的问题，明明已经把.so文件放到了命令后面，但还是有问题。除了网上找的到的常见原因，还有一个比较容易忽略的就是name mangling的问题。比如使用<code>nm</code>命令进行查看，注意调用方和被调用方都需要查看一下。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-bash-4.2$ nm CMakeFiles/main.dir/main.cpp.o</span><br><span class="line">0000000000000000 T main</span><br><span class="line">                 U _Z3foov</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-bash-4.2$ nm CMakeFiles/main.dir/main.cpp.o</span><br><span class="line">0000000000000000 T main</span><br><span class="line">                 U _Z3foov</span><br></pre></td></tr></table></figure>
 <p>这个是<code>main</code>生成的.o文件中的symbol</p>
 <p>这个是目标library的symbol</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-bash-4.2$ nm libfoo.so </span><br><span class="line">...</span><br><span class="line">00000000000006a4 T _fini</span><br><span class="line">0000000000000685 T foo</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-bash-4.2$ nm libfoo.so </span><br><span class="line">...</span><br><span class="line">00000000000006a4 T _fini</span><br><span class="line">0000000000000685 T foo</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>可以看到里面的symbol是不一样的，究其原因就是编译main文件的时候采用的是cpp的compiler(main.cpp文件)，而编译libfoo的时候采用的是c的compiler(foo.c)。具体fix的手段一种是采用相同的compiler，比如都使用cpp的，或者是都使用c的。或者是按照<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/18877437/undefined-reference-to-errors-when-linking-static-c-library-with-c-code">stackoverflow</a>这里的解释，采用<code>extern C</code>的关键字来强制地按照c的方式进行编译。</p>
 <p>具体使用CMake的时候，由于它会根据后缀自动选择，因此最好显示地指定compiler或者使用的语言。在一些完全用c写的library中，通常会加上如下的预编译命令来规避这个问题。</p>
 <p>比如在.h 文件中进行如下定义</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#ifdef __cplusplus</span><br><span class="line">extern &quot;C&quot; &#123;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">//the content of the .h file</span><br><span class="line"></span><br><span class="line">#ifdef __cplusplus</span><br><span class="line">&#125;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#ifdef __cplusplus</span><br><span class="line">extern &quot;C&quot; &#123;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">//the content of the .h file</span><br><span class="line"></span><br><span class="line">#ifdef __cplusplus</span><br><span class="line">&#125;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
 
 <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/3789340/combining-c-and-c-how-does-ifdef-cplusplus-work">这个例子</a>说的内容比较详细，由于主要影响的是link阶段而不是compile阶段，因此在.h文件中加上相关的操作即可。</p>
 <h3 id="引用多个-h文件"><a href="#引用多个-h文件" class="headerlink" title="引用多个.h文件"></a>引用多个.h文件</h3><p>本质上来说，这里的.h 相当于一个adaptor，cpp 文件本身会include这个.h 文件，调用方的.c文件在link相对应的cpp部分的时候(实际上具体执行link的是编译之后的.so文件)，就会通过这个adaptor来找到对应的cpp部分。如果.h 文件中又include了多个其他的.h文件，这个时候其他的.h文件内也要使用extern c的操作。注意不要将include的声明放在extern的block中。</p>
@@ -135,7 +135,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/04/library-linking-between-c-and-cpp/" data-id="cl4a104iq005889mcasns36i4" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/08/04/library-linking-between-c-and-cpp/" data-id="cl4bf1qg4005jjpmcc0xs7jnd" class="article-share-link">分享</a>
       
       
       

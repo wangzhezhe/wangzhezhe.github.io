@@ -115,7 +115,7 @@ ga('send', 'pageview');
 <span id="more"></span>
 
 <h3 id="让git分支有章可循"><a href="#让git分支有章可循" class="headerlink" title="让git分支有章可循"></a>让git分支有章可循</h3><p>具体的代码组织方式是因人而异的，但是总是有一些“最佳实践”或者是“过来人的经验”。实际上大家总是因为偷懒，不按照这些经验来操作，都喜欢“简单粗暴”的方式，然而这些所谓的“最佳实践”，才是真正的通往所谓的专业人员的道路。自己应该多想想这些最佳实践的由来，它们为什么是这样规定，下面是一种比较常见的组织方式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">|--- master</span><br><span class="line">   |--- hotfix</span><br><span class="line">|--- develop</span><br><span class="line">|--- feature</span><br><span class="line">   |--- feature/a</span><br><span class="line">   |--- feature/b</span><br><span class="line">   |--- feature/c</span><br><span class="line">   ...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">|--- master</span><br><span class="line">   |--- hotfix</span><br><span class="line">|--- develop</span><br><span class="line">|--- feature</span><br><span class="line">   |--- feature/a</span><br><span class="line">   |--- feature/b</span><br><span class="line">   |--- feature/c</span><br><span class="line">   ...</span><br></pre></td></tr></table></figure>
 
 <p>实际的组织应该是和公司的生产开发流程有关的，以上这个算个解基本例子，主要的分支包括master，developer，以及feature分支。master是线上的环境，develop对应的是stage的环境，feature是具体的功能开发时候相关的分支。每次开发的时候，开发人员从feature分支上fork出新的分支，之后开发新功能点，merge到feature分支，各种测试调整之后，merge到develop分支，之后develop分支定期merge上线到master分支。有紧急的bug可以从master分支直接fork出hotfix修复。feature分支不可以越过develop来merge到develop。</p>
 <p>这样做最明显的一个好处就是冲突发生的问题，因为master的来源仅仅是develop，所以也不会出现很多的冲突问题，所以不会频繁的对master分支进行更新，仅仅是develop测试好，已经确定版本升级的时候才更新。</p>
@@ -134,13 +134,13 @@ ga('send', 'pageview');
 <p><code>git push &lt;远程项目的地址&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;</code>具体在push的时候可以使用对应的一些参数，这里的主机名可以使用最原始的，也可以使用别名。比如这个操作<code>git push -f http://10.10.102.101:8000/gitlab/jiaweizhou/k8apitransform.git wangzhe:wangzhe</code> 强制用本地的wangzhe分支覆盖掉了远程主机上某个具体项目中的wangzhe分支。</p>
 <p>之后都是按照这个过程操作，一个功能开发完成之后，在本地就可以把对应的分支删除掉了。</p>
 <h3 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h3><p>这一部分是不断更新的，有遇到新的情况就记录一下</p>
-<h4 id="fork了主库的代码之后如何更新"><a href="#fork了主库的代码之后如何更新" class="headerlink" title="fork了主库的代码之后如何更新"></a>fork了主库的代码之后如何更新</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
+<h4 id="fork了主库的代码之后如何更新"><a href="#fork了主库的代码之后如何更新" class="headerlink" title="fork了主库的代码之后如何更新"></a>fork了主库的代码之后如何更新</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
 <p>以上命令查看当前环境中的远程仓库的key:value信息，通常fork下来的库其中的信息类似于这样：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">origin	https://github.com/&lt;local repo&gt; (fetch)</span><br><span class="line">origin	https://github.com/&lt;local repo&gt; (push)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">origin	https://github.com/&lt;local repo&gt; (fetch)</span><br><span class="line">origin	https://github.com/&lt;local repo&gt; (push)</span><br></pre></td></tr></table></figure>
 <p>此时如果想同时更新远程仓库的代码的话，需要将远程仓库的repo也添加到本地，通常用upstream关键字来标记：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add upstream &lt;addr of main repo&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote add upstream &lt;addr of main repo&gt;</span><br></pre></td></tr></table></figure>
 <p>添加完成之后再执行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -r</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git branch -r</span><br></pre></td></tr></table></figure>
 
 <p>就可以列出自己的仓库中以及远程的仓库中所有的分支信息，之后就可以根据需要将本地的分支check到对应的分支之后进行git pull操作拉取对应仓库的代码了。</p>
 <h4 id="冲突的处理"><a href="#冲突的处理" class="headerlink" title="冲突的处理"></a>冲突的处理</h4><p><strong>使用git merge处理冲突</strong></p>
@@ -152,9 +152,9 @@ ga('send', 'pageview');
 <p>关于<code>git rebase</code>与<code>git merge</code>的区别可以参考网上的其他资料，自己具体使用rebase较少，主要是分支历史记录上的区别。</p>
 <p><strong>使用git rebase处理冲突</strong></p>
 <p>最近遇到的处理冲突的是情况是这样的，我在很久之前提交了一个pr，这个pr一直在进行各种修改和验证，没有合入，直到最近要合并，结果出现了冲突，我用上面的git merge操作进行合并，处理完使用git log查看，记录类似下面这样：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fix conflicts</span><br><span class="line">a&#x27;s commit</span><br><span class="line">b&#x27;s commit</span><br><span class="line">c&#x27;s commit</span><br><span class="line">my first commit</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">fix conflicts</span><br><span class="line">a&#x27;s commit</span><br><span class="line">b&#x27;s commit</span><br><span class="line">c&#x27;s commit</span><br><span class="line">my first commit</span><br></pre></td></tr></table></figure>
 <p>这样在我的pr的页面上就会显示出fix conflicts以及my first commit这两个的git log的信息。负责人在审核我的代码的时候，希望我能将这两个commit合并。这个时候就要用到git rebase了,通过rebase处理完冲突之后git log会像下面这样显示：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">my first commit</span><br><span class="line">a&#x27;s commit</span><br><span class="line">b&#x27;s commit</span><br><span class="line">c&#x27;s commit</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">my first commit</span><br><span class="line">a&#x27;s commit</span><br><span class="line">b&#x27;s commit</span><br><span class="line">c&#x27;s commit</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>这正是我们想要的结果。具体的原理于细节网上的参考比较多，不再这里细致介绍了,具体操作如下：</p>
 <p><code>git checkout</code> 切换到提交my first commit的分支上（通过fork主库再向自己的库提交代码之后merge到主库的这种场景）</p>
 <p><code>git fetch upstream mainbranch</code> 这里的mainbranch是主库上的发生冲突的分支</p>
@@ -162,33 +162,33 @@ ga('send', 'pageview');
 <p>之后手动将冲突部分修改成最新的内容，之后git add</p>
 <p>然后继续执行 <code>git rebase –continue</code> 就可以将整个的rebase操作完成</p>
 <p>最后实现的结果就是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">my first commit</span><br><span class="line">a&#x27;s commit</span><br><span class="line">b&#x27;s commit</span><br><span class="line">c&#x27;s commit</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">my first commit</span><br><span class="line">a&#x27;s commit</span><br><span class="line">b&#x27;s commit</span><br><span class="line">c&#x27;s commit</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>最后通过push操作将对应的分支更行，就满足了需求。</p>
 <h4 id="间断commit合并"><a href="#间断commit合并" class="headerlink" title="间断commit合并"></a>间断commit合并</h4><p>将间断的commit合并成一个的方式</p>
 <p>就是先把当前要提交的branch 比如 <code>cbranch</code> 重命名成<code>cbranch_old</code> 之后切换到最新的分支上 比如 <code>upstream/master</code> 之后从最新的分支上重新checkout出来<code>cbranch</code> 最后把<code>cbranch_old</code> merge 到这个新的分支上，整体的思路是把旧的branch给merge到新的branch上来 具体可以参考这个(<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/6248231/git-rebase-after-previous-git-merge">https://stackoverflow.com/questions/6248231/git-rebase-after-previous-git-merge</a>)</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git checkout my-branch</span><br><span class="line">git branch -m my-branch-old</span><br><span class="line">git checkout master</span><br><span class="line">git checkout -b my-branch</span><br><span class="line">git merge --squash my-branch-old</span><br><span class="line">git commit</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git checkout my-branch</span><br><span class="line">git branch -m my-branch-old</span><br><span class="line">git checkout master</span><br><span class="line">git checkout -b my-branch</span><br><span class="line">git merge --squash my-branch-old</span><br><span class="line">git commit</span><br></pre></td></tr></table></figure>
 
 <p><strong>注意</strong></p>
 <p>如果feature分支上，某个修改需要多个commit才完成，这个时候在使用上面的方法之前，应该先将这个新的分支上的commit都 rebase 成为一个单独的commit，之后再使用上面的方法进行merge。脑子中要有一个映像就是git merge时候的比较是基于分支进行的，比如当前的feature分支与master最新的分支差了n个commit，然后feature分支又有m个commits，这个时候进行merger比较的次数是m*n，很容易产生冲突且导致混乱，如果feature分支先进行rebase之后再merge到master上，这个时候就是m个比较，相对容易些。为了让这个m在数值上尽可能小，最好是在开发的过程中，多rebase到最新的master上（如果开发的周期比较长的话）如果是很小的feature的话，切记在开发之前先从最新的master上checkout分支出来。</p>
 <h4 id="合并多个commit"><a href="#合并多个commit" class="headerlink" title="合并多个commit"></a>合并多个commit</h4><p>比如在某次修改中提交了多个commit，之后再提pr的时候，希望将这些commit合并成一个，此时需要用到git rebase的操作，关于rebase的操作，<a target="_blank" rel="noopener" href="https://github.com/Jisuanke/tech-exp/issues/13">这一篇</a>介绍的很细致，这里就不再赘述了，注意每次编辑的时候只需要把最上面的一个commit设置pick操作，剩余的都设置squash操作即可。</p>
 <h4 id="追踪文件的历史变化"><a href="#追踪文件的历史变化" class="headerlink" title="追踪文件的历史变化"></a>追踪文件的历史变化</h4><p>按照顺序思维考虑，可以知道具体某个commit于其他的commit相比哪些部分的代码都进行了改动，但是换一个角度如果想要知道当前的某个文件中的某一部分代码是通过哪个commit所引入的？这时需要如何操作？</p>
 <p>比如在每次进行了更改之后，在git add 之前希望再确认以下更改是不是正确，可以通过</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff FILE_NAME</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git diff FILE_NAME</span><br></pre></td></tr></table></figure>
 <p>查看文件的更改记录。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git blame FILE_NAME</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git blame FILE_NAME</span><br></pre></td></tr></table></figure>
 <p>上面这个命令可以显示出具体文件的某一行的最后一次的改动。具体的显示格式为</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">commit ID | 代码提交作者 | 提交时间 | 代码位于文件中的行数 | 实际代码</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">commit ID | 代码提交作者 | 提交时间 | 代码位于文件中的行数 | 实际代码</span><br></pre></td></tr></table></figure>
 <p>获取到对应的commit id之后就可以通过</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git show commit_id</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git show commit_id</span><br></pre></td></tr></table></figure>
 <p>查看具体的某次commit行为都修改了哪些文件。对于类似的比较操作最好还是能有一个图形界面来显示，这样操作起来会更容易，特别是对于比较两次版本提交的代码的时候。</p>
 <p>还有一种使用方式是查看某个文件自诞生以来的所有的变化情况：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log --follow &lt;文件名&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git log --follow &lt;文件名&gt;</span><br></pre></td></tr></table></figure>
 <p>这样会显示出所有的对于这个文件进行更改的log信息，可以看到这个文件都发生过哪些变化,通过commit的信息深入地了解代码发生变化的原因。</p>
 <h4 id="gitignore文件"><a href="#gitignore文件" class="headerlink" title=".gitignore文件"></a>.gitignore文件</h4><p>.gitignore文件的作用就是告诉hgit当前目录中那些文件夹是不需要被追踪的，这些文件夹中可能放着一些二进制文件，或者用于本地测试的临时文件，具体语法的细节可以参考最后列出的网站。</p>
 <h3 id="多个git-repo-使用不同ssh-key"><a href="#多个git-repo-使用不同ssh-key" class="headerlink" title="多个git repo 使用不同ssh key"></a>多个git repo 使用不同ssh key</h3><p>具体参考这个：</p>
 <p><a target="_blank" rel="noopener" href="https://gist.github.com/gubatron/d96594d982c5043be6d4">https://gist.github.com/gubatron/d96594d982c5043be6d4</a></p>
 <p>在设置ssh的配置文件时，可以使用<code>repo1.github.com</code>作为HostName，类似地在设置git config的配置文件时，可以使用如下信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[remote &quot;origin&quot;]</span><br><span class="line">        url = &quot;ssh://git@repo1.github.com/alice/repo1.git&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[remote &quot;origin&quot;]</span><br><span class="line">        url = &quot;ssh://git@repo1.github.com/alice/repo1.git&quot;</span><br></pre></td></tr></table></figure>
 <p>进行配置，设置remote的时候，在<code>github.com</code>的前面是允许添加repo的名称的。</p>
 <h4 id="submodule使用"><a href="#submodule使用" class="headerlink" title="submodule使用"></a>submodule使用</h4><h4 id="开源项目中的fork操作"><a href="#开源项目中的fork操作" class="headerlink" title="开源项目中的fork操作"></a>开源项目中的fork操作</h4><p><a target="_blank" rel="noopener" href="http://it.taocms.org/10/5831.htm">参考</a></p>
 <h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>熟悉了命令行的操作之后，使用界面的操作可以提高效率，主要是涉及到代码修改地方的比较。<br>mac上 source tree，linux上可以使用 smart git。</p>
@@ -200,7 +200,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/25/git-using-tips/" data-id="cl4a104io004d89mc53j90vnf" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/06/25/git-using-tips/" data-id="cl4bf1qg1004mjpmc3uu6d21c" class="article-share-link">分享</a>
       
       
       

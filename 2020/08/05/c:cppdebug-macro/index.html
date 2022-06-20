@@ -115,14 +115,14 @@ ga('send', 'pageview');
 <span id="more"></span>
 
 <p>The debug macro is conveninet to in c&#x2F;cpp program, sometimes, you want to hide these informations in delease version, sometimes you need to use them again when there is bug info. this is an example</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#ifdef DEBUG_BUILD</span><br><span class="line">#  define DEBUG(x) std::cerr &lt;&lt; x &lt;&lt; std::endl;</span><br><span class="line">#else</span><br><span class="line">#  define DEBUG(x) do &#123;&#125; while (0)</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    char str[256];</span><br><span class="line">    sprintf(str, &quot;self define %d&quot;, 123);</span><br><span class="line">    DEBUG(str);</span><br><span class="line">    DEBUG(&quot;debug point&quot;);</span><br><span class="line">    DEBUG(&quot;debug point function name: &quot; &lt;&lt; __PRETTY_FUNCTION__);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#ifdef DEBUG_BUILD</span><br><span class="line">#  define DEBUG(x) std::cerr &lt;&lt; x &lt;&lt; std::endl;</span><br><span class="line">#else</span><br><span class="line">#  define DEBUG(x) do &#123;&#125; while (0)</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">int main()&#123;</span><br><span class="line">    char str[256];</span><br><span class="line">    sprintf(str, &quot;self define %d&quot;, 123);</span><br><span class="line">    DEBUG(str);</span><br><span class="line">    DEBUG(&quot;debug point&quot;);</span><br><span class="line">    DEBUG(&quot;debug point function name: &quot; &lt;&lt; __PRETTY_FUNCTION__);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>The only necessary thing is to add the parameter <code>-DDEBUG_BUILD</code> when building the program. If the program is compiled by the cmake, just follow this <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/11783932/how-do-i-add-a-linker-or-compile-flag-in-a-cmake-file">answer</a>, there are multiple ways to set it, such as:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET(CMAKE_CXX_FLAGS  &quot;$&#123;CMAKE_CXX_FLAGS&#125; $&#123;GCC_COVERAGE_COMPILE_FLAGS&#125;&quot;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SET(CMAKE_CXX_FLAGS  &quot;$&#123;CMAKE_CXX_FLAGS&#125; $&#123;GCC_COVERAGE_COMPILE_FLAGS&#125;&quot;)</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/08/05/c:cppdebug-macro/" data-id="cl4a104ik003d89mc90qa28iq" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/08/05/c:cppdebug-macro/" data-id="cl4bf1qfu003ejpmc4urq1vml" class="article-share-link">分享</a>
       
       
       
@@ -228,23 +228,23 @@ ga('send', 'pageview');
       <ul>
         
           <li>
+            <a href="/2022/06/13/Cuda-programming-1/">Cuda programming (1)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/11/Algorithm-9-Search/">Algorithm(9) Search</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/11/Mac-Story/">Mac Story</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/11/Reading-Story-ZhukeZhen/">Reading Story (ZhukeZhen)</a>
+          </li>
+        
+          <li>
             <a href="/2022/05/06/streamline/">Streamline filter</a>
-          </li>
-        
-          <li>
-            <a href="/2022/04/26/cpptemplateCRPT/">Cpp template about CRPT</a>
-          </li>
-        
-          <li>
-            <a href="/2022/04/24/GraphicsBasics/">GraphicsBasics</a>
-          </li>
-        
-          <li>
-            <a href="/2022/04/21/Algorithm-8-Tree/">Algorithm(8) Tree</a>
-          </li>
-        
-          <li>
-            <a href="/2022/03/20/phd-story/">PhD story</a>
           </li>
         
       </ul>

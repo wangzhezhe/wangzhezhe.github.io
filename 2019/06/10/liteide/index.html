@@ -119,16 +119,16 @@ ga('send', 'pageview');
 <h3 id="获取环境变量"><a href="#获取环境变量" class="headerlink" title="获取环境变量"></a>获取环境变量</h3><p>还有一个环境变量的坑，注意golang中os.Getenv获取的是当前的环境 os.getenv在liteide中就get不到系统中的环境变量，因为系统中的环境对于liteide而言并不是当前环境，除非直接在终端中go run sourcecode.go 或者先讲对应的环境变量通过os.Setenv设置进来。<br>关于环境变量的相关内容可以参考另一个文章。 </p>
 <h3 id="使用debug"><a href="#使用debug" class="headerlink" title="使用debug"></a>使用debug</h3><p>在分析源码的时候，有debug还是能很好提高效率的，毕竟能跟着把流程走一遍，终于把这个折腾好了，在liteide中使用debug的时候用的是gdb来进行调试，具体可以参考这个和这个。</p>
 <p>在命令行中使用gdb的资料有很多，需要注意的地方：mac中要想使用gdb进行debug的时候需要通过证书认证的方式，具体操作上面的资料中都有介绍。还有就是代码放在liteide中的时候，每个文件夹中要只有一个main文件，这样debug的时候才能正常工作，因为在liteide中，Build-&gt;Build Configuration中的Build Path是文件夹的路径，相当于是项目的路径，不是具体文件的路径，有的时候习惯在一个文件夹下放好多包含main函数的文件，用于各种测试，这样在命令行中调试是可以的，因为命令行中使用debug命令可以直接定位到单个的文件，在liteide中会报类似的错误：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error,msg=&quot;No executable file specified.\nUse the \&quot;file\&quot; or \&quot;exec-      file\&quot; command.&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">error,msg=&quot;No executable file specified.\nUse the \&quot;file\&quot; or \&quot;exec-      file\&quot; command.&quot;</span><br></pre></td></tr></table></figure>
 
 <p>实际操作了一下，依旧有一些问题，貌似没法跳转到某些语句上面：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10000074^error,msg=&quot;-var-create: unable to create variable object&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">10000074^error,msg=&quot;-var-create: unable to create variable object&quot;</span><br></pre></td></tr></table></figure>
 <p>很可能是build时候的问题，在Preference中LiteDebug上中，选择每次debuging之前rebuild之后再单步调试的时候就正常了。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/10/liteide/" data-id="cl4a104iq005689mc0t9l3hjv" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/10/liteide/" data-id="cl4bf1qg4005fjpmcgvs25dab" class="article-share-link">分享</a>
       
       
       

@@ -116,7 +116,7 @@ ga('send', 'pageview');
 
 <h3 id="环境变量的分类"><a href="#环境变量的分类" class="headerlink" title="环境变量的分类"></a>环境变量的分类</h3><p>在shell中的环境变量主要有几种:内部变量，环境变量，用户变量</p>
 <p>注意内部变量的特殊使用方式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">表示方法     描述</span><br><span class="line">$n     $1 表示第一个参数，$2 表示第二个参数 ...</span><br><span class="line">$#     命令行参数的个数</span><br><span class="line">$0     当前程序的名称</span><br><span class="line">$?     前一个命令或函数的返回码</span><br><span class="line">$*     以&quot;参数1 参数2 ... &quot; 形式保存所有参数</span><br><span class="line">$@     以&quot;参数1&quot; &quot;参数2&quot; ... 形式保存所有参数</span><br><span class="line">$$     本程序的(进程ID号)PID</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">表示方法     描述</span><br><span class="line">$n     $1 表示第一个参数，$2 表示第二个参数 ...</span><br><span class="line">$#     命令行参数的个数</span><br><span class="line">$0     当前程序的名称</span><br><span class="line">$?     前一个命令或函数的返回码</span><br><span class="line">$*     以&quot;参数1 参数2 ... &quot; 形式保存所有参数</span><br><span class="line">$@     以&quot;参数1&quot; &quot;参数2&quot; ... 形式保存所有参数</span><br><span class="line">$$     本程序的(进程ID号)PID</span><br></pre></td></tr></table></figure>
 
 <p>每个应用都有自己的环境变量，比如在一个terminal中 export name&#x3D;golang ，之后在新开一个终端，再echo $name就是没有信息的，新开的终端相当于是一个新的进程了。</p>
 <h3 id="set、env、export"><a href="#set、env、export" class="headerlink" title="set、env、export"></a>set、env、export</h3><p>env命令显示当前用户的变量;</p>
@@ -134,7 +134,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/25/linux-env/" data-id="cl4a104iq005289mcgtys45os" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/06/25/linux-env/" data-id="cl4bf1qg4005djpmc1tikhndj" class="article-share-link">分享</a>
       
       
       

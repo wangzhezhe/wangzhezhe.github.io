@@ -120,12 +120,12 @@ ga('send', 'pageview');
 <p>默认的情况下，go build是会按照 static linked 方式来运行，也就是说:this means it embed all the code that they need to run, including all dependencies. This contrasts withdynamically linked programs, which don’t contain some basic libraries (like the “libc”) and use a system-wide copy which is resolved at run time.</p>
 <p>This means that we can drop our Go compiled program in a container, without anything else, and it should work.</p>
 <p>但是在一些特殊的包被import进来时，可能会产生一个dynamic link，这个时候把二进制文件直接放在镜像中就是无法运行的，此时的解决方式如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">By default, if using the net package a build will likely produce a binary with some dynamic linking, e.g. to libc. You can inspect dynamically vs. statically link by viewing the result of ldd output.bin</span><br><span class="line">There are two solutions I&#x27;ve come across:</span><br><span class="line">Disable CGO, via CGO_ENABLED=0</span><br><span class="line">Force the use of the Go implementation of net dependencies, netgo via go build -tags netgo -a -v, this is implemented for a certain platforms</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">By default, if using the net package a build will likely produce a binary with some dynamic linking, e.g. to libc. You can inspect dynamically vs. statically link by viewing the result of ldd output.bin</span><br><span class="line">There are two solutions I&#x27;ve come across:</span><br><span class="line">Disable CGO, via CGO_ENABLED=0</span><br><span class="line">Force the use of the Go implementation of net dependencies, netgo via go build -tags netgo -a -v, this is implemented for a certain platforms</span><br></pre></td></tr></table></figure>
 <p>具体可以参考这个(<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/36279253/go-compiled-binary-wont-run-in-an-alpine-docker-container-on-ubuntu-host">https://stackoverflow.com/questions/36279253/go-compiled-binary-wont-run-in-an-alpine-docker-container-on-ubuntu-host</a>)</p>
 <p>此外还有一些参数可以加上，比如参考这个(<a target="_blank" rel="noopener" href="http://matthewkwilliams.com/index.php/2014/09/28/go-executables-are-statically-linked-except-when-they-are-not/)%EF%BC%9A">http://matthewkwilliams.com/index.php/2014/09/28/go-executables-are-statically-linked-except-when-they-are-not/)：</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export GO_EXTLINK_ENABLED=0</span><br><span class="line">export CGO_ENABLED=0</span><br><span class="line">go run -x --ldflags &#x27;-extldflags &quot;-static&quot;&#x27; third_party.go install -x --ldflags &#x27;-extldflags &quot;-static&quot;&#x27; github.com/coreos/discovery.etcd.io</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export GO_EXTLINK_ENABLED=0</span><br><span class="line">export CGO_ENABLED=0</span><br><span class="line">go run -x --ldflags &#x27;-extldflags &quot;-static&quot;&#x27; third_party.go install -x --ldflags &#x27;-extldflags &quot;-static&quot;&#x27; github.com/coreos/discovery.etcd.io</span><br></pre></td></tr></table></figure>
 <p>再回顾Golang的项目组织结构<br>如果总是对开源项目做一些工作，在自己的本地最好也是按照层级目录的方式来组织项目：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Go&#x27;s standard directory layout looks like:</span><br><span class="line">$GOPATH/src/project1</span><br><span class="line">$GOPATH/src/project2</span><br><span class="line">$GOPATH/src/github.com/me/myproject</span><br><span class="line">...</span><br><span class="line">etc</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Go&#x27;s standard directory layout looks like:</span><br><span class="line">$GOPATH/src/project1</span><br><span class="line">$GOPATH/src/project2</span><br><span class="line">$GOPATH/src/github.com/me/myproject</span><br><span class="line">...</span><br><span class="line">etc</span><br></pre></td></tr></table></figure>
 <p>在这种情况下，GOPATH基本上不需要根据项目的切换而进行调整，不方便的地方就是每次go install的时候会将编译出来的文件安装在 根 src 目录下的 bin 文件夹中。一般都是通过一个run脚本来控制go build时候的一些相关操作。在每一个最底层的project中会存在有govendor的目录，理想情况下是优先从这个govendor的目录下来进行依赖获取。这种布局的好处就是本地的文件路径与git上面下载下来的package的路径保持一一对应的关系，不容易出现依赖的混乱。</p>
 <p>具体对于不同依赖的位置，govendor中的相关命令已经标记的非常清楚，并且可以通过status的方式批量地对某一类包进行操作，使用之前需要安装hg工具，这里就不再赘述。</p>
 <h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p>这一篇(<a target="_blank" rel="noopener" href="https://nanxiao.gitbooks.io/golang-101-hacks/content/posts/go-build-vs-go-install.html)%E8%AF%A6%E7%BB%86%E6%AF%94%E8%BE%83%E4%BA%86go">https://nanxiao.gitbooks.io/golang-101-hacks/content/posts/go-build-vs-go-install.html)详细比较了go</a> build 与 go install的行为差别</p>
@@ -133,7 +133,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/golang-build-install/" data-id="cl4a104io004f89mcgc89bkkj" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/golang-build-install/" data-id="cl4bf1qg0004jjpmcdqy2h87d" class="article-share-link">分享</a>
       
       
       
@@ -199,7 +199,7 @@ ga('send', 'pageview');
   
     <a href="/2019/06/15/blog-updating/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">blog updating</div>
+      <div class="article-nav-title">Blog updating</div>
     </a>
   
 </nav>

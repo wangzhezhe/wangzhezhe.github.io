@@ -124,10 +124,10 @@ ga('send', 'pageview');
 <h3 id="MPI"><a href="#MPI" class="headerlink" title="MPI"></a>MPI</h3><p>使用MPI最开始还是用于计算的任务，multiple node下的计算任务。虽然有很多的node，但是在大规模thread的环境下，这些node对于程序来看并没有什么本质的区别。code本身还是SIMD的样子，通过不同的rankid来对每个process进行标记。MPI使用的实际是multi-process，具体的通信也是multi-process之间进行通信。</p>
 <p>run one rank on one node:</p>
 <p><strong>using mpi to control this</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mpirun --map-by node -np 4</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mpirun --map-by node -np 4</span><br></pre></td></tr></table></figure>
 
 <p><strong>using srun to control this</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">srun -n 4 -N 4</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">srun -n 4 -N 4</span><br></pre></td></tr></table></figure>
 
 
 <h3 id="MPI-thread-pool"><a href="#MPI-thread-pool" class="headerlink" title="MPI + thread pool"></a>MPI + thread pool</h3><p>参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/41411019/what-is-the-advantage-if-any-of-mpi-threads-parallelization-vs-mpi-only">这个</a></p>
@@ -164,7 +164,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/04/Manage-your-threads/" data-id="cl4a104ic000y89mc4o4i4rij" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/07/04/Manage-your-threads/" data-id="cl4bf1qfl001ljpmcb67xf09u" class="article-share-link">分享</a>
       
       
       

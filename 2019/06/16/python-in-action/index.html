@@ -136,7 +136,7 @@ ga('send', 'pageview');
 <p>参考：<br><a target="_blank" rel="noopener" href="http://blog.csdn.net/sasoritattoo/article/details/17448397">http://blog.csdn.net/sasoritattoo/article/details/17448397</a></p>
 <h3 id="启动一个进程作为新的daemon运行"><a href="#启动一个进程作为新的daemon运行" class="headerlink" title="启动一个进程作为新的daemon运行"></a>启动一个进程作为新的daemon运行</h3><p>注意进程的问题 重新fork一下出来 原进程结束的时候 子进程就结束？？？这块关系还是弄得不清楚。。。或者是按照daemon的方式运行</p>
 <p>注意传入新的变量</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def run_daemon_thread_with_app_context(target, *args, **kwargs):</span><br><span class="line">    from dce.api.service import app</span><br><span class="line">    def invoke_with_app_context():</span><br><span class="line">        with app.app_context():</span><br><span class="line">            target(*args, **kwargs)</span><br><span class="line">    job_thread = threading.Thread(target=invoke_with_app_context)</span><br><span class="line">    job_thread.setDaemon(True)</span><br><span class="line">    job_thread.start()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">def run_daemon_thread_with_app_context(target, *args, **kwargs):</span><br><span class="line">    from dce.api.service import app</span><br><span class="line">    def invoke_with_app_context():</span><br><span class="line">        with app.app_context():</span><br><span class="line">            target(*args, **kwargs)</span><br><span class="line">    job_thread = threading.Thread(target=invoke_with_app_context)</span><br><span class="line">    job_thread.setDaemon(True)</span><br><span class="line">    job_thread.start()</span><br></pre></td></tr></table></figure>
 <h3 id="关于科学计算"><a href="#关于科学计算" class="headerlink" title="关于科学计算"></a>关于科学计算</h3><p>参考这个</p>
 <p><a target="_blank" rel="noopener" href="http://old.sebug.net/paper/books/scipydoc/numpy_intro.html">http://old.sebug.net/paper/books/scipydoc/numpy_intro.html</a></p>
 <p>画图</p>
@@ -152,7 +152,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/python-in-action/" data-id="cl4a104iv006489mc71h424sg" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/python-in-action/" data-id="cl4bf1qg70069jpmcd0cx34ms" class="article-share-link">分享</a>
       
       
       

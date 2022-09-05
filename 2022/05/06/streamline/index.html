@@ -13,7 +13,7 @@
 <meta property="og:description" content="This article discusses the vtk stream line filter and how it is implemented.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-05-07T02:38:24.000Z">
-<meta property="article:modified_time" content="2022-05-09T14:56:32.000Z">
+<meta property="article:modified_time" content="2022-09-01T19:57:37.248Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -127,7 +127,7 @@ ga('send', 'pageview');
 <p>After that, just click the streamline trace filter and we can know the streamline. At the information section of the paraview, we can see the type of the streamline is the polygonal mesh. The color of the streamline in paraview can also change with when we use different variables. </p>
 <p>By clicking the gear button at the properties section, we can show all the settings of the associated filter. We can adjust the control the seed, the number of steps and the granularity of step (length of step) etc.</p>
 <p>This is another good tutorial (<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=1jml3j3BmUg">https://www.youtube.com/watch?v=1jml3j3BmUg</a>) about how to use the streamline for paraview, we can use the tube filter and glyph graph to show the direaction of the streamline.  </p>
-<h3 id="Using-the-stream-line-in-VTK-code"><a href="#Using-the-stream-line-in-VTK-code" class="headerlink" title="Using the stream line in VTK code"></a>Using the stream line in VTK code</h3><p>This is one example code (<a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/vtk_example/streamline/streamline_example1.cpp">https://github.com/wangzhezhe/5MCST/blob/master/vtk_example/streamline/streamline_example1.cpp</a>) about the streamline based on VTK in cpp code</p>
+<h3 id="Using-the-stream-line-in-VTK-code"><a href="#Using-the-stream-line-in-VTK-code" class="headerlink" title="Using the stream line in VTK code"></a>Using the stream line in VTK code</h3><p>This is one <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/vtk_example/streamline/streamline_example1.cpp">example code</a> about the streamline based on VTK in cpp code</p>
 <p>It use the plane as a source, then setting necessary variables such as propagation steps and the integration step. After that, it writes the resutls into the disk</p>
 <p>This is the another example that use the kitchen.vtk data (<a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/vtk_example/streamline/streamline_exampleKitchen.cpp">https://github.com/wangzhezhe/5MCST/blob/master/vtk_example/streamline/streamline_exampleKitchen.cpp</a>) The seed source is a line in this case.</p>
 <p>We can load these generated data into the paraview and do the further analysis. Then we dive into more details to see how the stream trace filter is implemented in VTK.</p>

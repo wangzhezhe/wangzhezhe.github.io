@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Multiple aspects of Cpp static | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Some notes about the static keyword. Its basic semantiocs, and concepts regarding declaration, defiantion and initilization. And also how the header only library use the static keyword.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Multiple aspects of Cpp static">
+<meta property="og:url" content="http://yoursite.com/2022/09/04/cpp-static-keyword/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Some notes about the static keyword. Its basic semantiocs, and concepts regarding declaration, defiantion and initilization. And also how the header only library use the static keyword.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-09-04T20:26:37.000Z">
+<meta property="article:modified_time" content="2022-09-05T14:55:59.657Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-cpp-static-keyword" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/09/04/cpp-static-keyword/" class="article-date">
+  <time datetime="2022-09-04T20:26:37.000Z" itemprop="datePublished">2022-09-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/c-c/">c/c++</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Multiple aspects of Cpp static
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Some notes about the static keyword. Its basic semantiocs, and concepts regarding declaration, defiantion and initilization. And also how the header only library use the static keyword.</p>
+<span id="more"></span>
+
+<h3 id="Within-one-translation-unit"><a href="#Within-one-translation-unit" class="headerlink" title="Within one translation unit"></a>Within one translation unit</h3><p>In the “Complete C++ tips &amp; secrets for professionals” The keyword static belongs to the type of storage class specifiers, it describes three semantics for using the static, before diving to details, let’s go through some basic concepts:</p>
+<p>Translation unit: refer to <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1106149/what-is-a-translation-unit-in-c">this</a>. Generally speaking, it is the file that can be compiled into the object file (such as .c or .cpp file). Which is the basic compiling unit of the cpp.</p>
+<p>The fundamental idea to explain the static is that: the static in cpp means that the variabled is initilized once before the program starts (not the runtime), and is not destroyed every time its scope is exited.</p>
+<p>Be careful about the term “initilized once”.</p>
+<p>Here are some <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/23345554/what-distinguishes-the-declaration-the-definition-and-the-initialization-of-a-v">explanations</a> about the declaration, defination and initilization. The defination can be written in the same line with the initilization. Consider following two exmaples:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//Case 1</span><br><span class="line">    for (int i = 0; i &lt; 10; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        static std::string filename = &quot;test&quot; + std::to_string(i);</span><br><span class="line">        std::cout &lt;&lt; &quot;index &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; filename &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>and </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//Case 2</span><br><span class="line">    static std::string filename;</span><br><span class="line">    for (int i = 0; i &lt; 10; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        filename = &quot;test&quot; + std::to_string(i);</span><br><span class="line">        std::cout &lt;&lt; &quot;index &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; filename &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>The case 1 does not work as expected and all results are test0, since at the second time, the initlization operation will not be executed. At the case 2, the value of the static variable still can not be changed. The resutls works as expected. Attention, the static varaible does not say that its value can not be changed or reassigned, it just say that the associated value is <strong>initilzied once</strong>.</p>
+<h3 id="Across-multiple-translation-units"><a href="#Across-multiple-translation-units" class="headerlink" title="Across multiple translation units"></a>Across multiple translation units</h3><p>The false impression about that the “static variable can not change its value” may come from the following use case, which use the static varibale across the translation uint <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/16079235/static-variable-cpp-do-not-want-to-change">like this</a>:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//main.cpp</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &quot;test.hpp&quot;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; a &lt;&lt; std::endl;</span><br><span class="line">    change(10);</span><br><span class="line">    std::cout &lt;&lt; a &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//test.hpp</span><br><span class="line">static int a; </span><br><span class="line">void change(int);</span><br><span class="line"></span><br><span class="line">//test.cpp</span><br><span class="line">#include &quot;./test.hpp&quot;</span><br><span class="line"></span><br><span class="line">void change(int v)&#123;</span><br><span class="line">    a=v;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The important thing is that there are two tranlation unit (main.cpp and file.cpp), these two unit have the different version of the static variable. Although one of them (the one in the file.cpp) is changed by the function, the one in the main.cpp is still not modified.</p>
+<p>It’s interesting that it is actually a bad practice to define the variable in the .h file, if we remove the static keyword, we get the compiling error such as:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">duplicate symbol &#x27;_a&#x27; in:</span><br><span class="line">    /var/folders/qy/xfjhf6951m5cq40nnrlyt30h0000gn/T/main-adcb06.o</span><br><span class="line">    /var/folders/qy/xfjhf6951m5cq40nnrlyt30h0000gn/T/test-6cb44b.o</span><br></pre></td></tr></table></figure>
+
+<p>The static keyword just hidden this issue! (The static is also unnecessary here) </p>
+<p>The good practice is using the declaration in the .h file, such as <code>extern int a</code> and put the actuall defination and initilization at the .cpp file, which can avoid the multiple symbol compiling issue.</p>
+<h3 id="Header-only-libraries"><a href="#Header-only-libraries" class="headerlink" title="Header only libraries"></a>Header only libraries</h3><p>This is a <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/51612866/global-variables-in-header-only-library">good question</a>. In some situations, we want to build the header only library without including the .cpp file as the separate translation units. By this way, we do not need extra compiling process for building the library that we need. This is common for the utility function such as the timer and the logging.</p>
+<p>The main issue here is how to avoid breaking the ODR (one defination rule). For example, our utility.h file might be included by multiple files. In this case, we might include multiple headers (with function defination and variable defination in different translation units). That is why we use the extra .cpp file as the separate translation unit.</p>
+<p>For the multiple definations of the function, we can use inline keyword to <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/64388682/inline-functions-across-multiple-c-translation-units">solve it</a>, by declaring it as inline keyword, the compiler allows the multiple defination in different translation unit. In fact, the function implemented in the class file is declared as the inline function implicitly.</p>
+<p>For the multiple definations of the global variabe, just use the static variable as the global function, instead of getting is direactly, we can use a specific getter function to access associated global variable (return the reference of the global variable). <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/51612866/global-variables-in-header-only-library">This answer</a> shows both the cpp version and c version.</p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><p><a target="_blank" rel="noopener" href="https://pabloariasal.github.io/2020/01/02/static-variable-initialization/">https://pabloariasal.github.io/2020/01/02/static-variable-initialization/</a></p>
+<p>This is insightful one<br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/16079235/static-variable-cpp-do-not-want-to-change">https://stackoverflow.com/questions/16079235/static-variable-cpp-do-not-want-to-change</a></p>
+<p>defination, declaration initilization<br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/23345554/what-distinguishes-the-declaration-the-definition-and-the-initialization-of-a-v">https://stackoverflow.com/questions/23345554/what-distinguishes-the-declaration-the-definition-and-the-initialization-of-a-v</a></p>
+<p>How to process global variable in header only library<br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/51612866/global-variables-in-header-only-library">https://stackoverflow.com/questions/51612866/global-variables-in-header-only-library</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/64388682/inline-functions-across-multiple-c-translation-units">https://stackoverflow.com/questions/64388682/inline-functions-across-multiple-c-translation-units</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2022/09/04/cpp-static-keyword/" data-id="cl7o4uvq30000w8jrb4ay2jyo" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/08/27/CMake-depedency/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">CMake depedency</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Within-one-translation-unit"><span class="toc-number">1.</span> <span class="toc-text">Within one translation unit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Across-multiple-translation-units"><span class="toc-number">2.</span> <span class="toc-text">Across multiple translation units</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Header-only-libraries"><span class="toc-number">3.</span> <span class="toc-text">Header only libraries</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#References"><span class="toc-number">4.</span> <span class="toc-text">References</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

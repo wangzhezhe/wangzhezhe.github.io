@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Software design experiences | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Some high level nots about software design and optimization.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Software design experiences">
+<meta property="og:url" content="http://yoursite.com/2022/07/28/Software-design-experiences/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Some high level nots about software design and optimization.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-07-29T00:34:21.000Z">
+<meta property="article:modified_time" content="2022-08-28T16:52:59.470Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Software-design-experiences" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/07/28/Software-design-experiences/" class="article-date">
+  <time datetime="2022-07-29T00:34:21.000Z" itemprop="datePublished">2022-07-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/methodology/">methodology</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Software design experiences
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Some high level nots about software design and optimization.</p>
+<span id="more"></span>
+
+<h3 id="Elastic-leader-worker"><a href="#Elastic-leader-worker" class="headerlink" title="Elastic leader-worker"></a>Elastic leader-worker</h3><p>One project requires a elastic resource management capabilites, and I basically implement all these details from the scratch. There are no fancy ideas behind this but it takes me lot of time to do everything correctly. Some principles of doing related works might be good for future works, either in the cloud env or the HPC env.</p>
+<p>Background and depedencies. </p>
+<ul>
+<li><p>We need at least an RPC framework which can define the API conveniently. </p>
+</li>
+<li><p>We need some collectives based on the API, such as the barrier, bcast etc.</p>
+</li>
+<li><p>We need the controller acting as a component to add more process. For example, there is a script that can monitor the siganl file on pvfs and start new processes when the siganal file is detected.</p>
+</li>
+</ul>
+<p>The worker-leader identity. The leader process start firstly and runs for a long time. When there is a new process or node added into the service, it belongs to the worker identity, it sends its address to the leader process. When one worker process leaves the group, it send deregister API to the leader process and remove its address from the leader. </p>
+<p>How to design the sync operation in the leader, comparision between the expected and actually stored into the address manager. Maybe use a pending process to show how many processes are in pending status.</p>
+<p>Declarative management for the metadata, the metadata in the leader process is updated by two components. It is important to clear this point before designing the associated data structure. The first is the worker process, they add address or remove their address from the leader process. The second is the policy, they need to set the expected number of process to the metadata, if the expected data does not match with the actually registered data, it means the rescaling operation does not finish and we still at the sync operation.</p>
+<p>The sequence of process id, when there is new added or removed process, how to control their id</p>
+<p>Issues, there is a single node issue for the leader process. If the leader process faile, all the information regarding the view of the group may lost.</p>
+<h3 id="K8s-controller"><a href="#K8s-controller" class="headerlink" title="K8s controller"></a>K8s controller</h3><h3 id="K8s-declarative-management"><a href="#K8s-declarative-management" class="headerlink" title="K8s declarative management"></a>K8s declarative management</h3><h3 id="Two-principles-for-elegant-code"><a href="#Two-principles-for-elegant-code" class="headerlink" title="Two principles for elegant code"></a>Two principles for elegant code</h3><p>There are lots of principles for writting the elegant code, we discuss two important cases in this part. </p>
+<blockquote>
+<p>The first one is “try to let compiler do more things”.</p>
+</blockquote>
+<blockquote>
+<p>The second one is “try to decrease the redoundant code”. </p>
+</blockquote>
+<p>These two principles are two guidance for code review process.</p>
+<p>One example I recent met is about the worklet abstraction class, originally we create each abstraction functor for each actual function call. But it turns out that we can use the function template to do things in an more elegant way. Or in more traditional way, we use a function pointer to in the worklets. However, the template parameter is more simple then using the function pointer.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;cmath&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">template &lt;float fun (float)&gt;</span><br><span class="line">struct LogFunWorklet</span><br><span class="line">&#123;</span><br><span class="line">    float operator()(float f) &#123;</span><br><span class="line">      return fun(f);</span><br><span class="line">    &#125;</span><br><span class="line">    //some value for computing the f</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    auto logWorklet = LogFunWorklet&lt;std::log&gt;&#123;&#125;;</span><br><span class="line">    std::cout &lt;&lt; logWorklet(10.0f) &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    auto log10Worklet = LogFunWorklet&lt;std::log10&gt;&#123;&#125;;</span><br><span class="line">    std::cout &lt;&lt; log10Worklet(10.0f) &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    auto log2Worklet = LogFunWorklet&lt;std::log2&gt;&#123;&#125;;</span><br><span class="line">    std::cout &lt;&lt; log2Worklet(10.0f) &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>One typical use case for second principle it to make the <code>if</code> or <code>switch</code> branch as dry as possible and let them in the minimal scope. It is a case by case situation. Ask yourself according to these two principles is helpful to improve the quality of the code.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2022/07/28/Software-design-experiences/" data-id="cl7dkj3mb0003hpjre45c8s5s" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2022/08/06/Model-approach/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Model-approach
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/07/08/vtk-octtree/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">vtk-octtree</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Elastic-leader-worker"><span class="toc-number">1.</span> <span class="toc-text">Elastic leader-worker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#K8s-controller"><span class="toc-number">2.</span> <span class="toc-text">K8s controller</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#K8s-declarative-management"><span class="toc-number">3.</span> <span class="toc-text">K8s declarative management</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Two-principles-for-elegant-code"><span class="toc-number">4.</span> <span class="toc-text">Two principles for elegant code</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

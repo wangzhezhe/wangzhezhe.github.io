@@ -13,7 +13,7 @@
 <meta property="og:description" content="Some notes about running pytorch on supercomputer.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-02-08T05:21:49.000Z">
-<meta property="article:modified_time" content="2022-02-10T17:00:10.000Z">
+<meta property="article:modified_time" content="2022-07-03T01:55:29.845Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -130,6 +130,8 @@ ga('send', 'pageview');
 <h3 id="Details-of-pytorch-distributed-run"><a href="#Details-of-pytorch-distributed-run" class="headerlink" title="Details of pytorch distributed run"></a>Details of pytorch distributed run</h3><p>It is still good to go over how pytorch mange the gpu resources. The common practice is let one GPU attach to one process, but there are different manners.</p>
 <p>This <a target="_blank" rel="noopener" href="https://github.com/pytorch/examples/tree/master/distributed/ddp">readme</a> provide a good explanation and how pytorch run things in an distributed way.</p>
 <p>The local domain is for each node, and the global domain is for the whole space. In this example, the global id can be computed based on the node id and the local rank.</p>
+<h3 id="Other-solutions"><a href="#Other-solutions" class="headerlink" title="Other solutions"></a>Other solutions</h3><p>It seems that <code>scontrol show hostname</code> command can show all host names of a running job. If we put this command into a running job and print out hostnames into a file then we can not which host is allocated to the job during its execution. The etc file of the compute node of HPC plafrorm is ususlly well equipted about the mapping between the host name and the ip. Then we can give these hostnames to pytorch and they will know which one is the master which one is the worker accordingly. By this way, we do not need a separate MPI bootstrap program to identify the ip and send them to the pytorch.</p>
+<p>The deepspeed framework is a good candidate to make the pytorch run in a distributed way more easily.</p>
 <h3 id="Other-thoughts"><a href="#Other-thoughts" class="headerlink" title="Other thoughts"></a>Other thoughts</h3><p>Although we can use the multiple GPU on supercomputer, but for researcher that focuse on AI, they still prefer to do things on one node that contains multiple GPU, at least, they do not wait for a long queue to get avalible resources. Sometimes it needs more then one day to get avalible resources. For AI researchers, they more focuse on the accuracy of their algorithm instead of the train time. They would reather use few GPU card to run their code and debug it conveniently instead of waiting for a long queue to get one experiment result.</p>
 
       
@@ -234,7 +236,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Issue-and-solution"><span class="toc-number">1.</span> <span class="toc-text">Issue and solution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Details-of-pytorch-distributed-run"><span class="toc-number">2.</span> <span class="toc-text">Details of pytorch distributed run</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Other-thoughts"><span class="toc-number">3.</span> <span class="toc-text">Other thoughts</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Issue-and-solution"><span class="toc-number">1.</span> <span class="toc-text">Issue and solution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Details-of-pytorch-distributed-run"><span class="toc-number">2.</span> <span class="toc-text">Details of pytorch distributed run</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Other-solutions"><span class="toc-number">3.</span> <span class="toc-text">Other solutions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Other-thoughts"><span class="toc-number">4.</span> <span class="toc-text">Other thoughts</span></a></li></ol>
           </div>
       </div>
     </div>

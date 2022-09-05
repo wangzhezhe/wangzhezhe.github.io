@@ -13,7 +13,7 @@
 <meta property="og:description" content="主要介绍Linux使用中的几种关键的环境变量，包括PATH,LD_LIBRARY_PATH，gcc的-I参数以及-L参数">
 <meta property="og:locale">
 <meta property="article:published_time" content="2018-06-27T13:19:22.000Z">
-<meta property="article:modified_time" content="2021-10-07T21:27:56.000Z">
+<meta property="article:modified_time" content="2022-08-29T01:31:05.583Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -169,6 +169,8 @@ ga('send', 'pageview');
 <p>for example:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-L$(PATH_GRPC)/lib -L$(PATH_PROTO)/lib -Wl,-rpath $(PATH_GRPC)/lib -Wl,-rpath $(PATH_PROTO)/lib</span><br></pre></td></tr></table></figure>
 
+<p>这里的rpath就是指定运行的时候查找lib的path，<a target="_blank" rel="noopener" href="https://gcc.gnu.org/legacy-ml/gcc-help/2005-12/msg00017.html">这里</a>也说了很多相关的细节。
+  </p>
 <p>这样编译出来的binary在通过<code>ldd</code>查看时，就会直接找到.so文件的位置了。</p>
 <h3 id="gcc-L-l-与-I（big-i）"><a href="#gcc-L-l-与-I（big-i）" class="headerlink" title="gcc -L -l 与 -I（big i）"></a>gcc -L -l 与 -I（big i）</h3><p>具体的可以参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/29468211/gcc-difference-between-l-and-l-option-and-how-to-provide-complete-path-to-a-l">这个</a>或者gcc的<a target="_blank" rel="noopener" href="https://gcc.gnu.org/onlinedocs/gcc-2.95.2/gcc_2.html#SEC13">参数说明</a>文档</p>
 <p><code>-larchive</code> Add archive file archive to the list of files to link. ld will search its path-list for occurrences of libarchive.a for every archive specified. 也就是说在编译的时候如果使用了某个<strong>动态链接库</strong>可以通过-l参数设置进来</p>

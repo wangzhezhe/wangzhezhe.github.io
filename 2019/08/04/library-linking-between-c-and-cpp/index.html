@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>library linking between c and cpp | AverageMind</title>
+  <title>Library linking between c and cpp | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="关于c c++ libraries互相linking的问题。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="library linking between c and cpp">
+<meta property="og:title" content="Library linking between c and cpp">
 <meta property="og:url" content="http://yoursite.com/2019/08/04/library-linking-between-c-and-cpp/index.html">
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="关于c c++ libraries互相linking的问题。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-08-04T23:22:36.000Z">
-<meta property="article:modified_time" content="2021-08-09T08:42:38.000Z">
+<meta property="article:modified_time" content="2022-09-11T16:48:14.323Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -101,7 +101,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      library linking between c and cpp
+      Library linking between c and cpp
     </h1>
   
 
@@ -114,7 +114,7 @@ ga('send', 'pageview');
         <p>关于c c++ libraries互相linking的问题。</p>
 <span id="more"></span>
 
-<h3 id="undefined-reference"><a href="#undefined-reference" class="headerlink" title="undefined reference"></a>undefined reference</h3><p>有几次在link libraries的时候会出现 undefined reference 的问题，明明已经把.so文件放到了命令后面，但还是有问题。除了网上找的到的常见原因，还有一个比较容易忽略的就是name mangling的问题。比如使用<code>nm</code>命令进行查看，注意调用方和被调用方都需要查看一下。</p>
+<h3 id="undefined-reference"><a href="#undefined-reference" class="headerlink" title="undefined reference"></a>undefined reference</h3><p>有几次在link libraries的时候会出现 undefined reference 的问题，明明已经把.so文件放到了命令后面，但还是有问题。除了网上找的到的常见原因，还有一个比较容易忽略的就是name mangling的问题。比如使用<code>nm</code>命令进行查看，注意调用方和被调用方都需要查看一下。对于 <code>nm</code> command，还可以使用<code>-C</code> 参数来查看没有name mangling时候的signature. Using the <code>-D</code> parameter can only show the dynamic symbol. More informaion can be shown by <code>man nm</code> operation.  </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-bash-4.2$ nm CMakeFiles/main.dir/main.cpp.o</span><br><span class="line">0000000000000000 T main</span><br><span class="line">                 U _Z3foov</span><br></pre></td></tr></table></figure>
 <p>这个是<code>main</code>生成的.o文件中的symbol</p>
 <p>这个是目标library的symbol</p>
@@ -135,7 +135,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/04/library-linking-between-c-and-cpp/" data-id="cl4bf1qg4005jjpmcc0xs7jnd" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/08/04/library-linking-between-c-and-cpp/" data-id="cl87pii6e005rz8jr9xvpapi6" class="article-share-link">分享</a>
       
       
       

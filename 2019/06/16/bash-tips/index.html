@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>bash tips | AverageMind</title>
+  <title>Bash tips | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="shell的内容平时多多少少会使用到，说道底是经验积累问题，虽然每次总能找到最后的答案，但是总不能每次一用到就一句一句去搜索吧，还是按照场景整理在一起比较方便，先整理在这，然后持续更新。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="bash tips">
+<meta property="og:title" content="Bash tips">
 <meta property="og:url" content="http://yoursite.com/2019/06/16/bash-tips/index.html">
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="shell的内容平时多多少少会使用到，说道底是经验积累问题，虽然每次总能找到最后的答案，但是总不能每次一用到就一句一句去搜索吧，还是按照场景整理在一起比较方便，先整理在这，然后持续更新。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-06-16T19:38:44.000Z">
-<meta property="article:modified_time" content="2019-09-08T17:50:12.000Z">
+<meta property="article:modified_time" content="2022-09-11T02:08:27.002Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -101,7 +101,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      bash tips
+      Bash tips
     </h1>
   
 
@@ -119,7 +119,7 @@ ga('send', 'pageview');
 <p>export</p>
 <p>export可以将临时定义的变量定义成环境变量，比如在一个shell中临时定义的一个变量就没法在新打开的那个shell中继续再使用。使用export之后，这个变量就变成了环境变量，就可以在子进程中（新开的shell貌似不是子进程）再进行使用。具体的Linux中环境变量的分类可以参考之前linux env一篇</p>
 <p>echo</p>
-<p>用于显示环境变量 echo $变量名 可以显示出具体的变 量来</p>
+<p>用于显示环境变量 <code>echo $变量名 可以显示出具体的变</code> 量来。</p>
 <p>unset 变量名</p>
 <p>这个用于取消刚才已经设置好的变量 unset之后 刚才已经定义好的变量就不在了</p>
 <p><strong>文件处理相关</strong></p>
@@ -141,11 +141,14 @@ ga('send', 'pageview');
 <p>删除文件或目录<br>-f 强制删除 –r递归删除 –i产生交互的信息<br>注意删除文件的时候一定要谨慎使用-rf的参数</p>
 <p>ssh</p>
 <p>这个是使用security，shell远程登录其他的终端，关于ssh具体要了解的内容比较多，比如证书的原理以及地址，比如如何将本地端口映射到远程端口。具体可以参考之前一篇ssh tips。</p>
+<p>sed </p>
+<p>替换文件中的关键内容，常用的格式就是 <code>sed -i &#39;s/&lt;old pattern&gt;/&lt;new pattern&gt;/&#39; &lt;file name&gt;</code> This is really good when writting the scripts that test the program with different configuration files. 如果pattern中的内容是某些变量，这个时候可以用双引号来表示sed中 <code>-i</code> 之后的内容。</p>
+<p>一般是用来替换一个配置文件中的某些内容<br><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/9366816/sed-unknown-option-to-s">http://stackoverflow.com/questions/9366816/sed-unknown-option-to-s</a><br>注意：替换掉的字符串可能在其中含有”&#x2F;“，这样在最后的串中就有多个“&#x2F;”</p>
 <p><strong>查看磁盘的使用情况 处理空间不足的问题</strong></p>
 <p>df</p>
 <p>查询目录的挂在情况 以及使用到的文件系统 以及基本的可用空间</p>
 <p>du</p>
-<p>查询到了哪个挂载的目录比较大的话，进入对应的那个挂载的目录，之后使用 du -ah –max-depth&#x3D;1 . 可以查询当前目录下每一个子目录的大小。</p>
+<p>查询到了哪个挂载的目录比较大的话，进入对应的那个挂载的目录，之后使用 <code>du -ah -–max-depth=1 .</code> 可以查询当前目录下每一个子目录的大小。</p>
 <p><strong>进程相关</strong></p>
 <p>ps</p>
 <p>查看当前进程 具体参数较多 常用的有<br>ps –af查看全部的进程并且以全格式的方式显示出来</p>
@@ -174,7 +177,10 @@ ga('send', 'pageview');
 <p>ctrl+A 跳转到整行的前面</p>
 <p>ctrl+E 跳转到整个命令行的末尾</p>
 <p>ctrl+W 删除下一个分隔符之前的字符串</p>
-<h3 id="几种常用到的shell脚本"><a href="#几种常用到的shell脚本" class="headerlink" title="几种常用到的shell脚本"></a>几种常用到的shell脚本</h3><h4 id="脚本写在一行"><a href="#脚本写在一行" class="headerlink" title="脚本写在一行"></a>脚本写在一行</h4><p>在使用docker或者使用k8s启动对应pod的时候，相应的启动参数通常都是一个string类型的数组。前两个参数通常是[“sh”,”-c”],第三个参数应该是所要执行的shell脚本，这个时候需要把平时看起来很长的脚本写到一行中。其实也很简单，只需要在换行的地方采用;隔开即可。具体的一些例子可以参考这个。</p>
+<p><strong>Soft link</strong></p>
+<p>软连接可以将当前目录下的内容连接到一个其他目录下的可执行文件或者目录，这个极大地简化了脚本的书写。比如install software，各种package 在不同的dir之下，这时候在当前的目录下要用到多个 executable file 使用软连接就比较方便，具体命令也很简单 <code>ln -s &lt;src file/dir&gt; &lt;target link&gt;</code>.</p>
+<h3 id="几种常用到的shell脚本"><a href="#几种常用到的shell脚本" class="headerlink" title="几种常用到的shell脚本"></a>几种常用到的shell脚本</h3><h4 id="command-substitution"><a href="#command-substitution" class="headerlink" title="command substitution"></a>command substitution</h4><p>具体可以参考<a target="_blank" rel="noopener" href="http://mywiki.wooledge.org/BashFAQ/082">这个</a>. 总之就是介绍<code>$()</code>的使用，在具体执行的之后里面可以嵌套成实际的命令。 </p>
+<h4 id="脚本写在一行"><a href="#脚本写在一行" class="headerlink" title="脚本写在一行"></a>脚本写在一行</h4><p>在使用docker或者使用k8s启动对应pod的时候，相应的启动参数通常都是一个string类型的数组。前两个参数通常是[“sh”,”-c”],第三个参数应该是所要执行的shell脚本，这个时候需要把平时看起来很长的脚本写到一行中。其实也很简单，只需要在换行的地方采用;隔开即可。具体的一些例子可以参考这个。</p>
 <p>在k8s中注意args与command的使用与docker有区别，具体可以参考这个，仅仅通过docker方式启动的话，只需要使用args的参数而非command的参数。</p>
 <h4 id="判断某个文件-x2F-变量是否存在"><a href="#判断某个文件-x2F-变量是否存在" class="headerlink" title="判断某个文件&#x2F;变量是否存在"></a>判断某个文件&#x2F;变量是否存在</h4><p>-z可以判断这个变量的取值的长度是不是为0，如果存在，说明值的长度是不为0的。if [ ! -z “$JRE_HOME” ] 表示的是变量存在（内容长度不为0）。 类似的根据参数的不同可以判断文件夹（-d），文件（-f）是否存在。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">if [ ! -z &quot;$JRE_HOME&quot; ];then</span><br><span class="line">   JAVAFILE=&quot;$JRE_HOME&quot;/bin/java</span><br><span class="line">   echo $JAVAFILE</span><br><span class="line">   echo &quot;set JAVAFILE to JRE_HOME&quot;</span><br><span class="line">   else</span><br><span class="line">   echo &quot;not set JRE_HOME&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
@@ -223,8 +229,6 @@ ga('send', 'pageview');
 <p><strong>字符串的拼接</strong></p>
 <p>关于字符串的拼接，直接 $command&#x3D;string1’xxxx’ 之后再echo $command就是可以的。<br>或者$command&#x3D;${var1}${var2}这样也是可以拼接起来的。</p>
 <p><strong>命令替换与变量替换</strong><br>区别命令替换与变量替换 $()这种方式与${}这种方式的区别。具体可以参考shell十三问之8。</p>
-<p><strong>关于sed的使用</strong></p>
-<p>一般是用来替换一个配置文件中的某些内容<br><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/9366816/sed-unknown-option-to-s">http://stackoverflow.com/questions/9366816/sed-unknown-option-to-s</a><br>注意：替换掉的字符串可能在其中含有”&#x2F;“，这样在最后的串中就有多个“&#x2F;”</p>
 <p><strong>变量分配时候的默认值</strong><br>直接看别人整理的<br><a target="_blank" rel="noopener" href="http://unix.stackexchange.com/questions/122845/using-a-b-for-variable-assignment-in-scripts">http://unix.stackexchange.com/questions/122845/using-a-b-for-variable-assignment-in-scripts</a></p>
 <h3 id="其他参考资源"><a href="#其他参考资源" class="headerlink" title="其他参考资源"></a>其他参考资源</h3><p>shell 十三问<br><a target="_blank" rel="noopener" href="http://bbs.chinaunix.net/forum.php?mod=viewthread&amp;tid=218853">http://bbs.chinaunix.net/forum.php?mod=viewthread&amp;tid=218853</a></p>
 <p>这里找到了一个简体版<br><a target="_blank" rel="noopener" href="http://www.eefocus.com/haijiaoyouzi/blog/11-05/210795_9d1d9.html">http://www.eefocus.com/haijiaoyouzi/blog/11-05/210795_9d1d9.html</a></p>
@@ -236,7 +240,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/bash-tips/" data-id="cl4bf1qfs002wjpmcfme85g0f" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/bash-tips/" data-id="cl87pii660038z8jr0ku27k5z" class="article-share-link">分享</a>
       
       
       
@@ -335,7 +339,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E4%BA%8E%E2%80%9C%E7%94%9F%E5%AD%98%E2%80%9D%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">用于“生存”的基本命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E7%A7%8D%E5%B8%B8%E7%94%A8%E5%88%B0%E7%9A%84shell%E8%84%9A%E6%9C%AC"><span class="toc-number">2.</span> <span class="toc-text">几种常用到的shell脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E5%86%99%E5%9C%A8%E4%B8%80%E8%A1%8C"><span class="toc-number">2.1.</span> <span class="toc-text">脚本写在一行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6-x2F-%E5%8F%98%E9%87%8F%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8"><span class="toc-number">2.2.</span> <span class="toc-text">判断某个文件&#x2F;变量是否存在</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Ewhile%E5%BE%AA%E7%8E%AF"><span class="toc-number">2.3.</span> <span class="toc-text">关于while循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%A9%E8%AE%B8%E5%A4%9A%E5%8F%B0%E6%9C%BA%E5%99%A8%E4%BD%BF%E7%94%A8ssh%E7%9A%84%E6%96%B9%E5%BC%8F%E8%BF%9B%E8%A1%8C%E9%80%9A%E4%BF%A1"><span class="toc-number">2.4.</span> <span class="toc-text">让许多台机器使用ssh的方式进行通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E5%90%8E%E5%8F%B0%E9%9D%99%E9%BB%98%E8%BF%90%E8%A1%8C%E6%9F%90%E4%B8%AA%E7%A8%8B%E5%BA%8F"><span class="toc-number">2.5.</span> <span class="toc-text">在后台静默运行某个程序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8EIO-buffer"><span class="toc-number">2.6.</span> <span class="toc-text">关于IO buffer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E8%BF%87grep%E5%91%BD%E4%BB%A4%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%88%AA%E5%8F%96%E5%87%BA%E7%9B%B8%E5%85%B3%E7%9A%84%E5%86%85%E5%AE%B9"><span class="toc-number">2.7.</span> <span class="toc-text">通过grep命令判断是否截取出相关的内容</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%B6%E7%A2%8E%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">零碎的知识点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="toc-number">4.</span> <span class="toc-text">其他参考资源</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E4%BA%8E%E2%80%9C%E7%94%9F%E5%AD%98%E2%80%9D%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">用于“生存”的基本命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E7%A7%8D%E5%B8%B8%E7%94%A8%E5%88%B0%E7%9A%84shell%E8%84%9A%E6%9C%AC"><span class="toc-number">2.</span> <span class="toc-text">几种常用到的shell脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#command-substitution"><span class="toc-number">2.1.</span> <span class="toc-text">command substitution</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E5%86%99%E5%9C%A8%E4%B8%80%E8%A1%8C"><span class="toc-number">2.2.</span> <span class="toc-text">脚本写在一行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6-x2F-%E5%8F%98%E9%87%8F%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8"><span class="toc-number">2.3.</span> <span class="toc-text">判断某个文件&#x2F;变量是否存在</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Ewhile%E5%BE%AA%E7%8E%AF"><span class="toc-number">2.4.</span> <span class="toc-text">关于while循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%A9%E8%AE%B8%E5%A4%9A%E5%8F%B0%E6%9C%BA%E5%99%A8%E4%BD%BF%E7%94%A8ssh%E7%9A%84%E6%96%B9%E5%BC%8F%E8%BF%9B%E8%A1%8C%E9%80%9A%E4%BF%A1"><span class="toc-number">2.5.</span> <span class="toc-text">让许多台机器使用ssh的方式进行通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E5%90%8E%E5%8F%B0%E9%9D%99%E9%BB%98%E8%BF%90%E8%A1%8C%E6%9F%90%E4%B8%AA%E7%A8%8B%E5%BA%8F"><span class="toc-number">2.6.</span> <span class="toc-text">在后台静默运行某个程序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8EIO-buffer"><span class="toc-number">2.7.</span> <span class="toc-text">关于IO buffer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E8%BF%87grep%E5%91%BD%E4%BB%A4%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%88%AA%E5%8F%96%E5%87%BA%E7%9B%B8%E5%85%B3%E7%9A%84%E5%86%85%E5%AE%B9"><span class="toc-number">2.8.</span> <span class="toc-text">通过grep命令判断是否截取出相关的内容</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%B6%E7%A2%8E%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">零碎的知识点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="toc-number">4.</span> <span class="toc-text">其他参考资源</span></a></li></ol>
           </div>
       </div>
     </div>

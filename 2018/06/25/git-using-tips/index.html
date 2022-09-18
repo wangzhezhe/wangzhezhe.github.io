@@ -13,7 +13,7 @@
 <meta property="og:description" content="主要介绍了常见的git分支的组织方式，git使用时候常用到的命令行的操作方式，自己平时使用git的时候遇到的一些常见的情况和处理方式，以及自己使用中的感想。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2018-06-25T12:49:43.000Z">
-<meta property="article:modified_time" content="2019-12-06T16:44:47.000Z">
+<meta property="article:modified_time" content="2022-09-17T19:22:50.524Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -120,6 +120,7 @@ ga('send', 'pageview');
 <p>实际的组织应该是和公司的生产开发流程有关的，以上这个算个解基本例子，主要的分支包括master，developer，以及feature分支。master是线上的环境，develop对应的是stage的环境，feature是具体的功能开发时候相关的分支。每次开发的时候，开发人员从feature分支上fork出新的分支，之后开发新功能点，merge到feature分支，各种测试调整之后，merge到develop分支，之后develop分支定期merge上线到master分支。有紧急的bug可以从master分支直接fork出hotfix修复。feature分支不可以越过develop来merge到develop。</p>
 <p>这样做最明显的一个好处就是冲突发生的问题，因为master的来源仅仅是develop，所以也不会出现很多的冲突问题，所以不会频繁的对master分支进行更新，仅仅是develop测试好，已经确定版本升级的时候才更新。</p>
 <p>自己的项目可以省略develop分支，但是feature分支必须有，这样才能有章可循，每个独立的小功能必须有独立的commit以及详细的描述。虽然说起来都没有什么难的，但是实际总不容易做到。</p>
+<p>总之不论是一个人的项目还是多个人的项目，最核心的一个原则就是不要在master上直接就commit，而是要fork出来之后再进行修改(切记切记 千万不要直接pull main。就算是一个人的项目，也千万不要直接git pull，而是fetch main之后，再checkout到上面，然后将自己的branch merge到main上面)，最后将自己的修改merger到本地的master上然后push master，这样比较不容易出现conflicts的问题。或者自己的代码要早在不同的platform上运行，这个时候每个platform上的代码就是单独的分支，每次update之前先从master&#x2F;main上进行check然后开发，开发好之后再merge到master上。</p>
 <h3 id="用于“生存”的相关命令"><a href="#用于“生存”的相关命令" class="headerlink" title="用于“生存”的相关命令"></a>用于“生存”的相关命令</h3><p>操作每一个命令的时候，要清楚自己操作的是本地仓库中的分支，还是远程仓库中的分支。本地分支可以有多个，远程分支也有多个，其中部分是相互对应的。</p>
 <h4 id="信息查看"><a href="#信息查看" class="headerlink" title="信息查看"></a>信息查看</h4><p><code>git config -l</code> 可以展示本地git仓库的配置信息</p>
 <p><code>git remote -v</code> 可以查看当前配置文件中已经配置的远程分支有哪些，有一些远程分支设置了别名，比如最常见的origin。</p>
@@ -200,7 +201,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/25/git-using-tips/" data-id="cl4bf1qg1004mjpmc3uu6d21c" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/06/25/git-using-tips/" data-id="cl87pii6c0051z8jrg7f1f0j1" class="article-share-link">分享</a>
       
       
       

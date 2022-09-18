@@ -620,15 +620,21 @@ a.article-title:hover {
 .article-entry table {
   width: 100%;
   border-collapse: collapse;
-  border-spacing: 0;
+  border-spacing: 3px;
+  border-width: 1px;
 }
 .article-entry th {
   font-weight: 500;
   border-bottom: 3px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-top: 3px solid #ddd;
   padding-bottom: 0.5em;
 }
 .article-entry td {
   border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
   padding: 10px 0;
 }
 .article-entry blockquote {

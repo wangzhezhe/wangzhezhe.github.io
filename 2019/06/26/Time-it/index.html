@@ -13,7 +13,7 @@
 <meta property="og:description" content="在使用profiling之类的工具之前，更灵活简单的方式就是设置timer">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-06-27T01:00:28.000Z">
-<meta property="article:modified_time" content="2022-09-04T15:38:48.580Z">
+<meta property="article:modified_time" content="2022-09-06T03:21:40.203Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -114,7 +114,7 @@ ga('send', 'pageview');
         <p>在使用profiling之类的工具之前，更灵活简单的方式就是设置timer</p>
 <span id="more"></span>
 
-<h3 id="concepts-about-time-and-performance"><a href="#concepts-about-time-and-performance" class="headerlink" title="concepts about time and performance"></a>concepts about time and performance</h3><p><strong>CPU bound vs IO bound</strong></p>
+<h3 id="Concepts-about-time-and-performance"><a href="#Concepts-about-time-and-performance" class="headerlink" title="Concepts about time and performance"></a>Concepts about time and performance</h3><p><strong>CPU bound vs IO bound</strong></p>
 <p>参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/868568/what-do-the-terms-cpu-bound-and-i-o-bound-mean">这里</a>的解释，比较直接，或者说整个系统的bottleneck在哪里。</p>
 <p>A program is CPU bound if it would go faster if the CPU were faster, i.e. it spends the majority of its time simply using the CPU (doing calculations). A program that computes new digits of π will typically be CPU-bound, it’s just crunching numbers.</p>
 <p>解决cpu bound的问题一方面是优化算法本身，另一方面是采用并行算法。</p>
@@ -146,12 +146,15 @@ ga('send', 'pageview');
 <p>总之用profile之前，针对性地设置timer然后运行bentchmark也是一种测量performance的方式。如果这个方法找不到bottleneck再使用profiling的工具。</p>
 <h3 id="timer-in-parallel-processing"><a href="#timer-in-parallel-processing" class="headerlink" title="timer in parallel processing"></a>timer in parallel processing</h3><p>这里有两点需要注意，第一个是在time之前要使用barrier的primitives，这样才能确保不同thread&#x2F;process的timer是准确的。第二个是求平均值的问题，经常使用的是reduce的primitives。比如<code>MPI_Reduce</code>把不同process的timer汇集到一个process中之后再求平均值。</p>
 <h3 id="关于timer的误区"><a href="#关于timer的误区" class="headerlink" title="关于timer的误区"></a>关于timer的误区</h3><p>量级的timer才有意义(算法优化上的意义)，根据时间复杂度O(n)的定义，也是n在很大数量的时候O(n)才有意义。有几次是对于很小的几分几秒进行测量，就没什么意义，最起码在算法上没什么意义，这个时候的strategy就是把这个差异放大，比如这个operation执行了100或者1000次，这个时候的时间，或者是输入的data变得很大的时候，这个时候的时间比较有意义。</p>
+<h3 id="Performance-model"><a href="#Performance-model" class="headerlink" title="Performance model"></a>Performance model</h3><p>Timing 的一个重要的意义就是构建 performance model 或者了解当前这个service的质量是如何的。有时候在想一个research是不是interests可能是要看看这research当中使用了多少python。换句话说就是使用了多少数学工具或者相关的算法。</p>
+<p>以前总有那种all thing in real time的感觉，现在更多的是offline和online结合的方式。就是offline的model先training好之后然后再进行online的prediction或者classification。就是不要试图去回避这种offline的learning或者是training的过程，本身重要的是model的quality而不是inline 或者 offline。offline 训练好的模型总是可以搬到inline的方式上面来。offline的数据进行model的traning之后就是learning knowledge的过程，这些knowledge就可以用到具体的 online processing的过程中。</p>
+<h3 id="Take-care-of-the-error-and-uncertainty"><a href="#Take-care-of-the-error-and-uncertainty" class="headerlink" title="Take care of the error and uncertainty"></a>Take care of the error and uncertainty</h3><p>Always trying to ask what are associated errors when time sth or using this timer for specific performance model. (Type of the error, bouond of the error, source of the error etc.). Figuring out these things can give you a better understanding regarding the model. The error bar is always needed to describe the figure. Testing one group of results or doing one experiments are not enough, you need to get enough results to show the uncertainty. The error is always a good aspects to discuss the quality of the model, or how to move forward based on the current model approach.</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/27618032/i-o-bound-performance-speedup/27618217">https://stackoverflow.com/questions/27618032/i-o-bound-performance-speedup/27618217</a> </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/26/Time-it/" data-id="cl4bf1qfo0024jpmcaem8c1k4" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/26/Time-it/" data-id="cl87pii62002cz8jra7kt12bb" class="article-share-link">分享</a>
       
       
       
@@ -250,7 +253,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#concepts-about-time-and-performance"><span class="toc-number">1.</span> <span class="toc-text">concepts about time and performance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c%E4%B8%AD%E7%9A%84timer%E6%96%B9%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">c中的timer方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c-%E4%B8%AD%E7%9A%84timer%E6%96%B9%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">c++中的timer方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-timer-in-parallel-sitution"><span class="toc-number">4.</span> <span class="toc-text">The timer in parallel sitution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Timer-for-distributed-components"><span class="toc-number">5.</span> <span class="toc-text">Timer for distributed components</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#timer-in-parallel-processing"><span class="toc-number">6.</span> <span class="toc-text">timer in parallel processing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Etimer%E7%9A%84%E8%AF%AF%E5%8C%BA"><span class="toc-number">7.</span> <span class="toc-text">关于timer的误区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">8.</span> <span class="toc-text">Reference</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Concepts-about-time-and-performance"><span class="toc-number">1.</span> <span class="toc-text">Concepts about time and performance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c%E4%B8%AD%E7%9A%84timer%E6%96%B9%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">c中的timer方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c-%E4%B8%AD%E7%9A%84timer%E6%96%B9%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">c++中的timer方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-timer-in-parallel-sitution"><span class="toc-number">4.</span> <span class="toc-text">The timer in parallel sitution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Timer-for-distributed-components"><span class="toc-number">5.</span> <span class="toc-text">Timer for distributed components</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#timer-in-parallel-processing"><span class="toc-number">6.</span> <span class="toc-text">timer in parallel processing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Etimer%E7%9A%84%E8%AF%AF%E5%8C%BA"><span class="toc-number">7.</span> <span class="toc-text">关于timer的误区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Performance-model"><span class="toc-number">8.</span> <span class="toc-text">Performance model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Take-care-of-the-error-and-uncertainty"><span class="toc-number">9.</span> <span class="toc-text">Take care of the error and uncertainty</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">10.</span> <span class="toc-text">Reference</span></a></li></ol>
           </div>
       </div>
     </div>

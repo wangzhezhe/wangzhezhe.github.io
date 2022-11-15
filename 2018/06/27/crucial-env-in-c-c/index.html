@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>crucial env and paramters for c/c++ compiling | AverageMind</title>
+  <title>Crucial env and paramters for c/c++ compiling | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="主要介绍Linux使用中的几种关键的环境变量，包括PATH,LD_LIBRARY_PATH，gcc的-I参数以及-L参数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="crucial env and paramters for c&#x2F;c++ compiling">
+<meta property="og:title" content="Crucial env and paramters for c&#x2F;c++ compiling">
 <meta property="og:url" content="http://yoursite.com/2018/06/27/crucial-env-in-c-c/index.html">
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="主要介绍Linux使用中的几种关键的环境变量，包括PATH,LD_LIBRARY_PATH，gcc的-I参数以及-L参数">
 <meta property="og:locale">
 <meta property="article:published_time" content="2018-06-27T13:19:22.000Z">
-<meta property="article:modified_time" content="2022-08-29T01:31:05.583Z">
+<meta property="article:modified_time" content="2022-10-22T14:22:46.404Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -101,7 +101,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      crucial env and paramters for c/c++ compiling
+      Crucial env and paramters for c/c++ compiling
     </h1>
   
 
@@ -165,13 +165,15 @@ ga('send', 'pageview');
 <p><code>PKG_CONFIG_PATH</code> is a environment variable that specifies additional paths in which pkg-config will search for its .pc files. The pkg-config’s searching path can be specified by this env. The .pc file that describes the information of the package will be put into the search dir of the pkg-config search path.</p>
 <h3 id="linking的时候设置-so文件的查询路径"><a href="#linking的时候设置-so文件的查询路径" class="headerlink" title="linking的时候设置.so文件的查询路径"></a>linking的时候设置.so文件的查询路径</h3><p>若果在编译链接时加入-L参数，在实际运行的时候可能会出现类似如下的情况：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-bash-4.2$ ldd metaserver</span><br><span class="line">	linux-vdso.so.1 =&gt;  (0x00007ffef8fb1000)</span><br><span class="line">	libprotobuf.so.19 =&gt; not found</span><br><span class="line">	libgrpc++.so.1 =&gt; not found</span><br><span class="line">	libgrpc.so.7 =&gt; not found</span><br><span class="line">	libgrpc++_reflection.so.1 =&gt; not found</span><br><span class="line">	libpthread.so.0 =&gt; /lib64/libpthread.so.0 (0x00007f0dae8aa000)</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
-<p>这是一种情况就是将.so所在的文件添加到<code>LD_LIBRARY_PATH</code>中，将如下命令<code>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:&lt;path_to_dir_of_libs&gt;</code>放在.&#x2F;profile中，每次自动执行，另一种是set the linking path explicitly, such as <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/6562403/i-dont-understand-wl-rpath-wl">this</a>. add following info when linking:</p>
+<p>这是一种情况就是将.so所在的文件添加到<code>LD_LIBRARY_PATH</code>中，将如下命令<code>export LD_LIBRARY_PATH=&lt;path_to_dir_of_libs&gt;:$LD_LIBRARY_PATH</code>放在.&#x2F;profile中，每次自动执行，另一种是set the linking path explicitly, such as <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/6562403/i-dont-understand-wl-rpath-wl">this</a>. </p>
+<p>这里有一点要特别注意，就是在修改ld library path的时候，最好把所需要的library放在最前面，这样就能保证找到正确的library。如果library path中已经有一些关于某个library的path，但是这个是旧的或者不是我满所希望link过去的，这样把最新的lib放在前面就能确保运行的时候link过去的是正确的path。</p>
+<p>Adding following info when linking:</p>
 <p>for example:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-L$(PATH_GRPC)/lib -L$(PATH_PROTO)/lib -Wl,-rpath $(PATH_GRPC)/lib -Wl,-rpath $(PATH_PROTO)/lib</span><br></pre></td></tr></table></figure>
 
 <p>这里的rpath就是指定运行的时候查找lib的path，<a target="_blank" rel="noopener" href="https://gcc.gnu.org/legacy-ml/gcc-help/2005-12/msg00017.html">这里</a>也说了很多相关的细节。
   </p>
-<p>这样编译出来的binary在通过<code>ldd</code>查看时，就会直接找到.so文件的位置了。</p>
+<p>这样编译出来的binary在通过<code>ldd</code>查看时，就会直接找到.so文件的位置了。(实际debug的时候不要想当然以为正确的.so文件一定会被link过去，最好是有意识地通过.so确认一下才比较好，明确是这个executable所link到的shared library是expected的正确版本)</p>
 <h3 id="gcc-L-l-与-I（big-i）"><a href="#gcc-L-l-与-I（big-i）" class="headerlink" title="gcc -L -l 与 -I（big i）"></a>gcc -L -l 与 -I（big i）</h3><p>具体的可以参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/29468211/gcc-difference-between-l-and-l-option-and-how-to-provide-complete-path-to-a-l">这个</a>或者gcc的<a target="_blank" rel="noopener" href="https://gcc.gnu.org/onlinedocs/gcc-2.95.2/gcc_2.html#SEC13">参数说明</a>文档</p>
 <p><code>-larchive</code> Add archive file archive to the list of files to link. ld will search its path-list for occurrences of libarchive.a for every archive specified. 也就是说在编译的时候如果使用了某个<strong>动态链接库</strong>可以通过-l参数设置进来</p>
 <p><code>-Lsearchdir</code> Add path searchdir to the list of paths that ld will search for archive libraries and ld control scripts. 如果使用-L参数，则会在指定的目录下搜索，之后在link的时候从对应的目录下找到需要的文件</p>
@@ -187,7 +189,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/27/crucial-env-in-c-c/" data-id="cl87pii6a004iz8jr0mka3dr8" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/06/27/crucial-env-in-c-c/" data-id="clahnddpo0053v7jr1aic7ur9" class="article-share-link">分享</a>
       
       
       

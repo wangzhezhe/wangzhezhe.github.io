@@ -13,7 +13,7 @@
 <meta property="og:description" content="There are some basic useage about the cmake on the youtube videos here. Here are some other tips regarding the cmake. Which are important but not obvious in all kinds of tutorials.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-09-05T22:44:19.000Z">
-<meta property="article:modified_time" content="2022-09-11T02:30:25.184Z">
+<meta property="article:modified_time" content="2022-10-09T20:05:25.379Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -131,11 +131,17 @@ ga('send', 'pageview');
 
 <p>The associated variables are recorded into the CMakeCache file.</p>
 <h3 id="Set-verbose"><a href="#Set-verbose" class="headerlink" title="Set verbose"></a>Set verbose</h3><p>Actually, the cmake is just the mapping from the cmake expression into the makefile. One typical expression is that the <code>cmake VERBOS=1</code> which will print out all kinds of make commands. It is really helpful for solving the compiling issue to see what are the root reason that causes the compiling error. This is definately one frequent command that I adopted for solving the compiling issue.</p>
-<h3 id="Cuda-compiling"><a href="#Cuda-compiling" class="headerlink" title="Cuda compiling"></a>Cuda compiling</h3>
+<h3 id="Prefix-path"><a href="#Prefix-path" class="headerlink" title="Prefix path"></a>Prefix path</h3><p>We always use the <code>-D&lt;Library&gt;_Path</code> to specify the installed library. Another way is to set the <code>CMAKE_PREFIX_PATH</code>, this command set the path to find the installed libaray. If we assume the library need to be detected by pkgconfig, we need to use this one. For example</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-DCMAKE_PREFIX_PATH=&quot;$&#123;librarya_install_dir&#125;;$&#123;libraryb_install_dir&#125;&quot;</span><br></pre></td></tr></table></figure>
+<p>By this way, even if we do not set the <code>-D&lt;Library&gt;_Path</code>, the cmake find command can also find the approporite libraries accordingly. (Maybe for some cases, the find package in CMakeLists is not set properly, we can then use this variable)</p>
+<h3 id="Cuda-compiling"><a href="#Cuda-compiling" class="headerlink" title="Cuda compiling"></a>Cuda compiling</h3><p>One importnat thing it to remember that compilling with cuda can use the nvcc, then linking with the compiled c file need to use the gcc.</p>
+<p>Although the cmake related command is easy to do, such as <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/cmake_example/testFindCuda/CMakeLists.txt">this one</a>, it is good to have some ideas about how make levels thing to this work.</p>
+<p>This is an <a target="_blank" rel="noopener" href="https://github.com/NERSC/Perlmutter_Training_Jan2022/blob/main/CUDA/Ex-4/Makefile">example</a> to compile and link cuda object on hpc.</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/09/05/cmake-tips/" data-id="cl87pii68003wz8jrazdgcn7z" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/09/05/cmake-tips/" data-id="clahnddpm004fv7jr6rage6kk" class="article-share-link">分享</a>
       
       
       
@@ -234,7 +240,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#CMake-cache-preloading"><span class="toc-number">1.</span> <span class="toc-text">CMake cache preloading</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Set-verbose"><span class="toc-number">2.</span> <span class="toc-text">Set verbose</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cuda-compiling"><span class="toc-number">3.</span> <span class="toc-text">Cuda compiling</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#CMake-cache-preloading"><span class="toc-number">1.</span> <span class="toc-text">CMake cache preloading</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Set-verbose"><span class="toc-number">2.</span> <span class="toc-text">Set verbose</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Prefix-path"><span class="toc-number">3.</span> <span class="toc-text">Prefix path</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cuda-compiling"><span class="toc-number">4.</span> <span class="toc-text">Cuda compiling</span></a></li></ol>
           </div>
       </div>
     </div>

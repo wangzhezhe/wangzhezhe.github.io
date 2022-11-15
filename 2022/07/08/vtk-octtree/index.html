@@ -13,7 +13,7 @@
 <meta property="og:description" content="Some notes about oct tree. This is the online video">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-07-09T00:56:32.000Z">
-<meta property="article:modified_time" content="2022-09-18T01:52:22.177Z">
+<meta property="article:modified_time" content="2022-11-08T02:44:07.004Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -144,12 +144,12 @@ ga('send', 'pageview');
 <p>condition to determin when to complete the refine operation is based on the level information or the number of points in the node or the MaximumPointsPerRegion (the default one is 100) DivideTest contains the condition to decide if to do the further refinement operation.</p>
 <p>Be careful about the index part, use three digit to represent it. The index start from 000 to the 111 For each dimention, it can either be 0 or 1, the number of digits equals to the numbers of the dimention. If is larger than middle position value, the index is 1 for that position, otherwise, the index is 0.</p>
 <p>In DivideRegion function, order array is a little bit tricky to understand.</p>
-<p>Originally, we set it by natural order, then during the index computation, we select out the points belonging to each sub space, these index are stored into a points list, then we reuse that order array, for each sub division, we try to assign it to corsponding segment of the ordering array. Then setting the start position of the order at different position based on the counter. </p>
+<p>Originally, we set it by natural order, then during the index computation, we select out the points belonging to each sub space, these index are stored into a points list, then we reuse that order array, for each sub division, we try to assign it to corsponding segment of the ordering array. Then setting the start position of the order at different position based on the counter. Without this array, we can not know how many points belongs to the next level after the subdivision. We do not know the virtual nody contains how many points.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/07/08/vtk-octtree/" data-id="cl87pii6k007vz8jr0z019a0k" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/07/08/vtk-octtree/" data-id="clahnddpy008dv7jrh68bblo9" class="article-share-link">分享</a>
       
       
       

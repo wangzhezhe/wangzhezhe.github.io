@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Scientific visualization with Paraview | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="This blog write some quick notes about using the paraview to do the visualization. There are some videos here, this article records some quick notes, which can be useful for daily use.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scientific visualization with Paraview">
+<meta property="og:url" content="http://yoursite.com/2022/10/02/Scientific-visualization-with-paraview/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="This blog write some quick notes about using the paraview to do the visualization. There are some videos here, this article records some quick notes, which can be useful for daily use.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-10-03T01:29:11.000Z">
+<meta property="article:modified_time" content="2022-10-23T19:47:41.425Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Scientific-visualization-with-paraview" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/10/02/Scientific-visualization-with-paraview/" class="article-date">
+  <time datetime="2022-10-03T01:29:11.000Z" itemprop="datePublished">2022-10-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Visualization/">Visualization</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Scientific visualization with Paraview
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>This blog write some quick notes about using the paraview to do the visualization. There are some <a target="_blank" rel="noopener" href="https://www.youtube.com/playlist?list=PLCiOACzVKBLkGXqk19i-FADF7ukYnz351">videos here</a>, this article records some quick notes, which can be useful for daily use.</p>
+<span id="more"></span>
+
+
+<h3 id="Find-the-data-id-list"><a href="#Find-the-data-id-list" class="headerlink" title="Find the data id list"></a>Find the data id list</h3><p>Once, I need to check if the adjacent id of the mesh also locates at the adjacent physical positions, there is really useful function: using view-&gt;find data to label out the particle ids in a specific range.</p>
+<h3 id="Connect-to-remote-server"><a href="#Connect-to-remote-server" class="headerlink" title="Connect to remote server"></a>Connect to remote server</h3><p>For a long time, I run the paraview in local machine, I basically transfer the node to my local env. It is not the most efficient way to do use the paraview. For lots of cases, the large scale data is located on the Cluster, we need to run the paraview by a job on the cluster and then use local paraview as a client to login to the remote server. Just click that connet botton, and fetch all configurable servers. If you run the code on the typical HPC, then there is a terminal will be poped out, after login the password and token, the pv server is then started according to the configurations, such as process number.</p>
+<p>Be careful, we need to install the XQuartz for mac to trigger that terminal. After install the XQuartz, we need to restart the os. This is the related <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/37826094/xt-error-cant-open-display-if-using-default-display">discussion</a>, after reinstalling, the display parameter is sth like this:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ echo $DISPLAY</span><br><span class="line">/private/tmp/com.apple.launchd.DAdu1PW5GV/org.xquartz:0</span><br></pre></td></tr></table></figure>
+
+<p>The good thing is that we can run multple paraview server to accelarate the rendering speed. When everything is work, we can then use the extractor to generated png and send back to local machine to make animation. The png file is comparatively small and easy to transfer back and forth between client and server.</p>
+<h3 id="The-spread-view-and-the-particle-x2F-cell-finder"><a href="#The-spread-view-and-the-particle-x2F-cell-finder" class="headerlink" title="The spread view and the particle&#x2F;cell finder"></a>The spread view and the particle&#x2F;cell finder</h3><p>When click the split tab, we can get a new tab which shows different view, the default view is called the render view which shows the graphics data, another commonly used view is called the spreadsheet view, the good thing for this view is that we can clearly check the point data, cell data, field data etc, which can provide a good understading for the position of the specific points or cells.</p>
+<p>Furthermore, we can use the <code>View</code>-&gt;<code>FindData</code> to select different data points or cells according to the properties of the id, which is really useful for debuging some of the algorithm related to the vtk. The selected points or cells will be labeled out in the figure. These can provide a direact understanding for the position of points&#x2F;cells in the rendered geometry. We can even click the extract to extract the associated geometry with different colors. </p>
+<h3 id="Some-small-but-important-operations"><a href="#Some-small-but-important-operations" class="headerlink" title="Some small but important operations"></a>Some small but important operations</h3><p>Clear the reset session (The circle button) to clean the current loaded data</p>
+<p>Click the View -&gt; Memory inspector to get the monitor about the system memory utilization.</p>
+<p>When we try to load a new data, we just put the dir name into the File Name column, (then click the navigate button) the window can jump to the specific dir where the data located, sometimes, it is inconvenient to open that dir.</p>
+<p>When we have to window for rendering the data, we can click right position of mouse and link the view, to let two windows have the same view.</p>
+<p>One online tutorial at olcf about paraview</p>
+<p>The video is <a target="_blank" rel="noopener" href="https://vimeo.com/olcf">here</a>, the online page is <a target="_blank" rel="noopener" href="https://kmorel.gitlab.io/pv-tutorial-olcf-2022/getting-started/">here</a> </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2022/10/02/Scientific-visualization-with-paraview/" data-id="clahnddph002xv7jrfmp1binu" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2022/10/22/Tips-of-using-gmsh/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Tips of using gmsh
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/09/24/HPC-scratch/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">HPC scratch</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Find-the-data-id-list"><span class="toc-number">1.</span> <span class="toc-text">Find the data id list</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Connect-to-remote-server"><span class="toc-number">2.</span> <span class="toc-text">Connect to remote server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-spread-view-and-the-particle-x2F-cell-finder"><span class="toc-number">3.</span> <span class="toc-text">The spread view and the particle&#x2F;cell finder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-small-but-important-operations"><span class="toc-number">4.</span> <span class="toc-text">Some small but important operations</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

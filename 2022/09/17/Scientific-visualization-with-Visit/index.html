@@ -14,7 +14,7 @@
 <meta property="og:locale">
 <meta property="og:image" content="http://yoursite.com/images/FigVisitExpression.png">
 <meta property="article:published_time" content="2022-09-18T01:57:42.000Z">
-<meta property="article:modified_time" content="2022-09-18T19:01:36.117Z">
+<meta property="article:modified_time" content="2022-11-12T21:50:40.897Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/images/FigVisitExpression.png">
@@ -120,17 +120,26 @@ ga('send', 'pageview');
 <p>This is the complete online <a target="_blank" rel="noopener" href="https://visit-sphinx-github-user-manual.readthedocs.io/en/develop/getting_started/index.html">document of the Visit</a>.</p>
 <h3 id="Scalar-Visualization"><a href="#Scalar-Visualization" class="headerlink" title="Scalar Visualization"></a>Scalar Visualization</h3><p>In most cases, after loading the data, when click the <code>Add</code> button, then goes to the <code>Contour</code>, then goes to the mesh, to select the suitable parameters you want to visualize. The really important thing is that you need to hit <code>Draw</code> button automatically to get some visualized results. This is a little bit different compared with Paraview (In Paraview, the data is generated automatically after you click the filter.)</p>
 <p>Another way to show the 1d data is to go to the <code>Add</code> and then <code>Pseudocolor</code> direactly. At the mesh section, just click the suitable variable you want to visualize, but this way only map the color into one specific surface. we could not get more details about how things look like inner that surface. Which is not good compared with using the contour to present things.</p>
-<h3 id="Vector-Visualization"><a href="#Vector-Visualization" class="headerlink" title="Vector Visualization"></a>Vector Visualization</h3><p>The typical way to show the vector filed is to click the <code>Add</code> and then go to the Vector section, if there is a specific vector field in the data, then after drawing the figure, we could show out the vector direactly. Then by double clicking the assocaited added vector column, we can update the value assocated with the sampling field to check different result views.</p>
+<h3 id="Vector-Visualization"><a href="#Vector-Visualization" class="headerlink" title="Vector Visualization"></a>Vector Visualization</h3><p>The typical way to show the vector filed is to click the <code>Add</code> and then go to the Vector section, if there is a specific vector field in the data, then after drawing the figure, we could show out the vector direactly. Then by double clicking the assocaited added vector column, we can update the value assocated with the sampling field to check different result views. This is a <a target="_blank" rel="noopener" href="https://visit-sphinx-github-user-manual.readthedocs.io/en/v3.2.0/gui_manual/Plots/PlotTypes/VectorPlot.html">online tutorial</a> that shows these details.</p>
 <p>One convenient thing in Visit is to create the new expression based on the existing variables. For example, if we store the <code>velocity_x, velocity_y, and velocity_z</code> separately, we can create a new expression to create a vector based on these parameters. The following screenshot shows how to create the vector expression from the scalar:</p>
 <img src="/images/FigVisitExpression.png" width="800"/>
 
-<p>Be carefull about the gramma of the expression.</p>
-<p>A little bit tricky part is executing the streamline, it is not that much straightforward. We need to click the pseudocolor firstly, and then adding <code>operator</code> and then the <code>IntergralCurve</code>, then hit the draw to get the streamline results. After double clicking the  </p>
+<p>Be careful about the gramma of the expression.</p>
+<p>A little bit tricky part is executing the streamline, it is not that much straightforward. We need to click the pseudocolor firstly, and then adding <code>operator</code> and then the <code>IntergralCurve</code>, then hit the draw to get the streamline results. After double clicking the IntergralCurve, we can set assocaited parameters such as the data seeds, integration steps etc. </p>
+<h3 id="Generating-the-movie"><a href="#Generating-the-movie" class="headerlink" title="Generating the movie"></a>Generating the movie</h3><p>Sometimes, the animation generator does not work well, it shows the specific <code>ffmpeg</code> commands to generate the movie. There are all kinds of parameters for using the ffmpeg, check this page to get more information. This is a sample one that I used ok to create the video file, be careful that we need to use the expression such as <code>%d</code> to match the source files.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ffmpeg -i ./mesh_128_stepsize_0.1_stepnum_1000_seedsnum_512-0/mesh_128_stepsize_0.1_stepnum_1000_seedsnum_512%4d.ppm -vcodec libx264 -pix_fmt yuv420p output.mp4</span><br></pre></td></tr></table></figure>
+
+<p>This is <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/7015489/building-video-from-images-with-ffmpeg-w-pause-between-frames">example</a> to show how to adjust the video frame rate.</p>
+<h3 id="Other-small-tips"><a href="#Other-small-tips" class="headerlink" title="Other small tips"></a>Other small tips</h3><p>I once try to visualize the data of different domains into different colors. In visit, we can use <code>subset</code>-&gt;<code>domains</code> to get associated results. It is a kind of scalar visualization techiniques essentially. Then we can decrease its opacity. If we add more filters based on this such as adding the streamline, we can also see the stream line results.</p>
+<p>In the paraview, it will automatically group the file with the same suffix. (Or we can create the multi block vtk file) In the visit, we could group the file by specified catalogue file. This is convenient to do, we just need to create a file with the <code>.visit</code> suffix. The contents of the file may looks like:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">!NBLOCKS 4</span><br><span class="line">Block0.vtk</span><br><span class="line">Block1.vtk</span><br><span class="line">Block2.vtk</span><br><span class="line">Block3.vtk</span><br></pre></td></tr></table></figure>
+<p>The contents in this visit file can also be the file with the dir path in it, this is an exmaple to use the cpp to load the associated files</p>
+<p><a target="_blank" rel="noopener" href="https://gitlab.kitware.com/vtk/vtk-m/-/blob/master/examples/streamline_mpi/StreamlineMPI.cxx">https://gitlab.kitware.com/vtk/vtk-m/-/blob/master/examples/streamline_mpi/StreamlineMPI.cxx</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/09/17/Scientific-visualization-with-Visit/" data-id="cl87pii62002az8jr3oaqfidz" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/09/17/Scientific-visualization-with-Visit/" data-id="clahnddph002pv7jrau9vatbn" class="article-share-link">分享</a>
       
       
       
@@ -184,6 +193,15 @@ ga('send', 'pageview');
     
 <nav id="article-nav">
   
+    <a href="/2022/09/24/workflow-scratch/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          workflow scratch
+        
+      </div>
+    </a>
+  
   
     <a href="/2022/09/17/Working-taolu/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
@@ -220,7 +238,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Scalar-Visualization"><span class="toc-number">1.</span> <span class="toc-text">Scalar Visualization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vector-Visualization"><span class="toc-number">2.</span> <span class="toc-text">Vector Visualization</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Scalar-Visualization"><span class="toc-number">1.</span> <span class="toc-text">Scalar Visualization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vector-Visualization"><span class="toc-number">2.</span> <span class="toc-text">Vector Visualization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generating-the-movie"><span class="toc-number">3.</span> <span class="toc-text">Generating the movie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Other-small-tips"><span class="toc-number">4.</span> <span class="toc-text">Other small tips</span></a></li></ol>
           </div>
       </div>
     </div>

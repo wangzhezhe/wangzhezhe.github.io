@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>what are you working on | AverageMind</title>
+  <title>What are you working on | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Some thoughts about the classification of CS related topic. Why it is not enough to divide the CS topics into the system track, algorithm track and the middleware track.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="what are you working on">
+<meta property="og:title" content="What are you working on">
 <meta property="og:url" content="http://yoursite.com/2020/12/13/what-are-you-working-on/index.html">
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="Some thoughts about the classification of CS related topic. Why it is not enough to divide the CS topics into the system track, algorithm track and the middleware track.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2020-12-14T02:50:45.000Z">
-<meta property="article:modified_time" content="2020-12-14T03:38:22.000Z">
+<meta property="article:modified_time" content="2022-11-06T21:08:53.322Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -101,7 +101,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      what are you working on
+      What are you working on
     </h1>
   
 
@@ -114,21 +114,33 @@ ga('send', 'pageview');
         <p>Some thoughts about the classification of CS related topic. Why it is not enough to divide the CS topics into the system track, algorithm track and the middleware track. </p>
 <span id="more"></span>
 
-<p>It is still hard for me to explain what I am working to others, especially to the people that are not working on this major. Previously, I try to explain whole picture from the perspective of the algorithm, system and the application, but it is still too obscure for other peoples. And I found a new framework here. </p>
-<p>Maybe I could explain it in this way. Two focus aspects (or the world view) are the data and resource in the domain of the CS</p>
+<h3 id="Classification-of-CS-domains"><a href="#Classification-of-CS-domains" class="headerlink" title="Classification of CS domains"></a>Classification of CS domains</h3><p>It is still hard for me to explain what I am working to others, especially to the people that are not working on this major. Previously, I try to explain whole picture from the perspective of the algorithm, system and the application, but it is still too obscure for other peoples. And I found a new framework here. </p>
+<p>Maybe I could explain it in this way. Two focus aspects (or the world view) are the <strong>data and resource</strong> in the domain of the CS, which is always the core problem to answer for a problem in CS domain.</p>
 <p>For the aspects of the data, it includes the data generation, data transfer, data processing and data storage or indexing</p>
 <p>For the aspects of the resources, it inluces the computation, networking and storage resources.</p>
-<p>Then basically, it is easy to use this view to analyse particular things. People usually work in differnt context or semantics, for exmaple, the IOT, cloud computing, Edge computing, HPC, robotics, etc. Let’s try to see how to use the presentes angle to analyse these domains.</p>
+<p>Then basically, it is easy to use this view to analyse particular things. People usually work in differnt context or semantics, for exmaple, the IOT, cloud computing, Edge computing, HPC, robotics, etc. Let’s try to see how to use the presented angle to analyse these domains.</p>
 <p>Let’s see IOT and the edge computing, the data come from the edge device, then it might be transfered to central device maybe at the data center, after some processing, the decision will be made, the output is the processed information useful for people to make decision, or the algorithm can make the decision (data processing). When the decision is made, the decision is transfered to the device (data transfering) and control the resources (resource management), the simple case is lifting the barrier in the park lot, the complictaed case might be adjusting the engine of the space ship. </p>
-<p>You could see that real workable project includes both aspects of data and resource. People may focuse on differnt part and optimize it, that is why it is hard to explain what they do to others, since it is not easy to consider the whole picture if we dive into particular part too much.</p>
-<p>For other context such as the HPC&#x2F;Cloud related work, the model from different scientific domain will generate the simulation data (data generation), or the log message from the user information, when they try to generate the data, they need the computing resource, and use it. If we want to manage it such as allocating or releasing the resources, we need all kinds of resource management tool (such as slurm or k8s), When we want to use resource properly, we need compiling tool and the programming language. Then we may need to transfer data between different devices for further processing, we need to utilize the data transfer medium such as disk or networking, and the data index methods. that is the position of the data I&#x2F;O and storage. Then for the data processing, we use differemt methmetical model or visulization tools to get some insights. When we get some results, then we can adjust the simulation based on the insights.</p>
-<p>It is easy to find a position for what you are working on by this framework, namely the data angle and the resource angle. Previously, we use the system, algorithm and middleware track to classify the CS topics, basically we only consider things in static way without the thoughts of the high level workflow. And it is hard for people to understand it as a whole. Besides, it is not good for the project’s view, since you may neglect the upstram and downstream if you just scope your work as the system or the algorithm part. You may lose the motivation that how your piece will contribute to the whole project.</p>
-<p>One typical case is that the middleware related project such as the storage part, if you neglact the idea of upstream and downstrem, it is easy to generate sth that is not useful. Since the goal of the project is to support the loop of data generation, transfer, processing and decision apply to the resource&#x2F;device or users.</p>
+<p>You could see that real workable project includes both aspects of data and resource. People may focuse on differnt part and optimize it, that is why it is hard to explain what they do to others, since it is not easy to consider the whole picture if we have dived into a particular aspect too much.</p>
+<p>For other context such as the HPC&#x2F;Cloud related work, the model from different scientific domain will generate the simulation data (data generation), or the log message from the user information, when they try to generate the data, they need the computing resource, and use it. If we want to manage it such as allocating or releasing the resources, we need all kinds of resource management tool (such as slurm or k8s), When we want to use resource properly, we need compiling tool and the programming language. Then we may need to transfer data between different devices for further processing, we need to utilize the data transfer medium such as disk or networking, and the data index methods. that is the position of the data I&#x2F;O and storage. Then for the data processing, we use differemt mathmetical model or visulization tools to get some insights. When we get some results, then we can adjust the simulation based on the insights.</p>
+<p>It is easy to find a position for what you are working on by this framework, namely consider things from the <strong>data angle</strong> and the <strong>resource angle</strong>. Previously, we use the system, algorithm and middleware track to classify the CS topics, basically we only consider things in static way without the thoughts of the high level workflow. And it is hard for people to understand it as a whole. Besides, it is not good for the project’s view, since you may neglect the upstram and downstream if you just scope your work as the system or the algorithm part. You may lose the motivation that how your piece will contribute to the whole project.</p>
+<p>One typical case is that the middleware related project such as the storage part, if you neglact the idea of upstream and downstrem, it is easy to generate sth that is <strong>not useful</strong>. Since the goal of the project is to support the loop of data generation, transfer, processing and decision apply to the resource&#x2F;device or users. Without this goal, the work may lack the motivation, you may become confused about what you are doing, get rerejection of the paper or lost the opportunity for potential founding. How to make your work fit with the whole loop and serve for the goal from the application’s perspective (some user’s requirements or some sceitnific problem, or the motivation of the work, this is really really important) is important.</p>
+<h3 id="Focus-on-the-right-problem"><a href="#Focus-on-the-right-problem" class="headerlink" title="Focus on the right problem"></a>Focus on the right problem</h3><p>Sometimes, there is a feeling of overwhelming, since there are so many things that you could learn, I’m confused about what is the right things to learn or to put the time here.</p>
+<p>The thing you we need to remember is that to use the CS to server for specific domain, the CS and related math or statistical tools is what we need to have a good understanding, the new emerging CS related techniques is also necessary to know such as all kinds of accelarators and Deeplearning things.</p>
+<p>The domain is the physics, biology etc, since we use the visuliztion and associated data processing to process the data generated by this simulation. The tricky part is, how much we need to know about these other fields? Maybe the more is better, but one person can not know everything, if lucky, we can get some collabaration.</p>
+<p>The current idea is that, we do not need to learn everything related to other domain, we just need to understand the part which have close connection with the CS part, it’s enough. Since we are contributing to the CS method&#x2F;domain (make it fast, efficient, accurate or get some results that can not be done previously) essentially.</p>
+<p>There are several standards:</p>
+<p><strong>Know it, Use it, Implement&#x2F;Modify&#x2F;Optimize it</strong></p>
+<p>For the level of “know it”, you may know the functions or their defination and what they can do, that’s enough. Such as some knowledge from other domain but related to your work. For use it, you need to have more undersanding about its details. Such as the python statistical libraries or the related APIs, but you do not work on these things direactly, you do not need to modify and update it (you just need to know their apis or understand their code in general). For the works with the level of “Implement it”, you work direactly on these algorithms or program, you know how they works in details.</p>
+<p>Assuming there is a reversed triangle, the top of it takes lots of portian, it is sth you need to know, then the less portion are the contents that you need to use, the inner part is the portion that contains the thing you need to implement. Things are getting slow and error prone when start to implememt sth.</p>
+<p>One issue that makes people feel overwhelmed is that you think everything by the level of “Implement it”. However, this is never the thuth. Most of the time, they belongs to the level of “Use it”, for example, there are all kinds of simulations that can generate the data as you want, or you just need to modify the current configurations of the softwhare you have to achieve the effects you want. So the right question here is that how to learn to update the configurations for the software you have and get the data you want instead of write sth new from the scratch. By thinking the problem in this way, life will be much easier, and you know the right question to look at or direaction to move forward.</p>
+<p>Some questions we may ask ourselves</p>
+<p>1 What is the whole picture or pipeline (we need to figure out whole story even if we only work on specific part)</p>
+<p>2 Without this thing, what can not be achieved</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/12/13/what-are-you-working-on/" data-id="cl87pii6k007xz8jr92oia9pi" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/12/13/what-are-you-working-on/" data-id="clahnddpy008fv7jrh1bwdbew" class="article-share-link">分享</a>
       
       
       
@@ -221,42 +233,24 @@ ga('send', 'pageview');
     <aside id="sidebar">
   
     
-  
+    <div class="widget-wrap">
     
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title recent-posts">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2022/09/17/Scientific-visualization-with-Visit/">Scientific visualization with Visit</a>
-          </li>
-        
-          <li>
-            <a href="/2022/09/17/Working-taolu/">Working-taolu</a>
-          </li>
-        
-          <li>
-            <a href="/2022/09/10/All-kinds-of-compiling-issues/">All kinds of compiling issues</a>
-          </li>
-        
-          <li>
-            <a href="/2022/09/05/cmake-tips/">Several cmake tips</a>
-          </li>
-        
-          <li>
-            <a href="/2022/09/04/cpp-static-keyword/">Multiple aspects of Cpp static</a>
-          </li>
-        
-      </ul>
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Classification-of-CS-domains"><span class="toc-number">1.</span> <span class="toc-text">Classification of CS domains</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Focus-on-the-right-problem"><span class="toc-number">2.</span> <span class="toc-text">Focus on the right problem</span></a></li></ol>
+          </div>
+      </div>
     </div>
-  </div>
 
+  
+    
+
+  
+    
+  
+    
   
     
 

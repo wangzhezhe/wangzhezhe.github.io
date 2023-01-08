@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Many faces of vtkm | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="I use vtkm a lot for all kinds of projects, this article includes some tips and thoughts about using the vtkm from the perspective of software design.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Many faces of vtkm">
+<meta property="og:url" content="http://yoursite.com/2023/01/08/Many-faces-of-vtkm/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="I use vtkm a lot for all kinds of projects, this article includes some tips and thoughts about using the vtkm from the perspective of software design.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-01-08T20:41:08.000Z">
+<meta property="article:modified_time" content="2023-01-08T20:58:07.415Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Many-faces-of-vtkm" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/01/08/Many-faces-of-vtkm/" class="article-date">
+  <time datetime="2023-01-08T20:41:08.000Z" itemprop="datePublished">2023-01-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Visualization/">Visualization</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Many faces of vtkm
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>I use vtkm a lot for all kinds of projects, this article includes some tips and thoughts about using the vtkm from the perspective of software design.</p>
+<span id="more"></span>
+
+<p>The original paper of vtkm is this one</p>
+<p><a target="_blank" rel="noopener" href="https://www.kennethmoreland.com/documents/VTKmCGA2016.pdf">https://www.kennethmoreland.com/documents/VTKmCGA2016.pdf</a></p>
+<p>Pattens that the algorithm follows for parallel running is this one:</p>
+<p><a target="_blank" rel="noopener" href="https://sdm.lbl.gov/sdav/images/publications/Mor2013b/MassivelyThreadedVis.pdf">https://sdm.lbl.gov/sdav/images/publications/Mor2013b/MassivelyThreadedVis.pdf</a></p>
+<h3 id="Decouple-between-the-execution-env-and-control-env"><a href="#Decouple-between-the-execution-env-and-control-env" class="headerlink" title="Decouple between the execution env and control env"></a>Decouple between the execution env and control env</h3><p>One important thing is to figure out how to set the <code>ControlSignature</code>, <code>ExecutionSignature</code> and parameters of operator function in the worklet type. It seems that all worklet in vtkm style follows this style.</p>
+<p>There are some detailed explanatio in the vtkm userguide 17.1-17.4, the parameters specified by exeutionSignature shows which parameters are chosen to execute in the exec env. Parameters specified in the operator function should match with the type of parameters specified in exec env (including the type of the template parameter). It seems that the template parameters can be reused? Not sure how it works here, but it works. If two parameters use the same type, we only need one input template parameter. </p>
+<h3 id="filter-plus-worklet-style"><a href="#filter-plus-worklet-style" class="headerlink" title="filter plus worklet style"></a>filter plus worklet style</h3><p>If we just use the worklet based on specific data sets or array, the things described about can satisfy our requirments, and we need to create the dispatcher separately. Then call the invoker function of based on worklet.</p>
+<p>Another level of abstraction is the filter. we need to send the data in and return the data and hidden the details. There are multiple filters in vtkm, the base class is sth like <code>vtkm::filter::FilterField</code>, we can call the invoke function direactly if the filter is inherited from that base class, this is an <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/vtk/vtk-m/-/blob/master/tutorial/point_to_cell.cxx">example</a>. We inherite from that base class and call <code>this-&gt;Invoke</code> direactly.</p>
+<p>The filter base class provids more simple things to do the dispatcher, invoke and detect the type of input and output type.</p>
+<p>The case of multiple input and the multiple output.</p>
+<h3 id="Type-detect-and-conversion"><a href="#Type-detect-and-conversion" class="headerlink" title="Type detect and conversion"></a>Type detect and conversion</h3><p>The core idea is the type tranform here is to let the code can work on different types. The strategies used in vtkm is the runtime transform. The idea is that the deduce the type of a particular field, and then they use that field as the template parameter.</p>
+<p>How to deduce the type of a specific array in runtime? The idea is specify a type list and then compare your type with that list to see which is accurate one. In this <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/vtk/vtk-m/-/blob/master/vtkm/cont/UnknownArrayHandle.h">array handle</a> there are all kinds of functions start with <code>CastAndCallFor...</code> this can be used at different scenarios. The deduced array type is usually set as an input variable of a lambda expression.</p>
+<p>If there are multiple variable, the solution of the vtkm is to use the type of specific variable to infer the type of other type. They have an function called <code>ArrayCopyShallowIfPossible</code>, the typical scenario is sth like this:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//use decay_t to remove the const qulifier</span></span><br><span class="line"><span class="keyword">using</span> T = <span class="keyword">typename</span> std::<span class="type">decay_t</span>&lt;<span class="keyword">decltype</span>(inputArray)&gt;::ValueType;</span><br><span class="line">vtkm::cont::ArrayHandle&lt;T&gt; inFieldMin;</span><br><span class="line">vtkm::cont::<span class="built_in">ArrayCopyShallowIfPossible</span>(inData.<span class="built_in">GetField</span>(<span class="string">&quot;ensemble_min&quot;</span>).<span class="built_in">GetData</span>(), inFieldMin);</span><br></pre></td></tr></table></figure>
+
+<p>If they have the same type, the do the shallow copy, the <code>T</code> is the deduced type.</p>
+<p>Another commonly used function to convert the array type is the <code>AsArrayHandle</code>, if we search this keyword on the gitlab page of the vtkm, there are all kinds of examples and test case </p>
+<p>In this file that defines the <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/vtk/vtk-m/-/blob/master/vtkm/cont/UnknownArrayHandle.h">ArrayHandle</a>, it defines specific behaviours for the <code>AsArrayHandle</code>, the idea is to use the <code>decltype</code> to get the target type and to check if it is ok to do the conversion, if it is ok, we then use the <code>reinterpret_cast</code> to do the conversion. For the cellset, there are also some function such as <code>AsCellSet</code> to cast the unknown cellset into the specific one.</p>
+<p>This <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/573294/when-to-use-reinterpret-cast">question</a> discusses some details regarding why use this kind of general type. The interface want to be desgined as general as possible, for example such as get cell set in vtkm, it can be desgined to have a get cell set function for each pecific type of cell set, it needs to have some kind of generality. We may imagine the unknown cell set or array type is a kind of interface for the concrete member.</p>
+<h3 id="Create-data-set-for-sample-testing"><a href="#Create-data-set-for-sample-testing" class="headerlink" title="Create data set for sample testing"></a>Create data set for sample testing</h3><p>Although there are flexible libraries in vtkm to imput and output data based on the vtk format, sometimes it is conveneint to build data direactly for simple testing, such as building a structured data. The assocaited code is at the vtkm&#x2F;cont&#x2F;DataSetBuilderxx, there are all kinds of exmaples such as build uniform and rectilinear example. We can refer to these examples to see how to add coordinates and cellset when we need to create a new vtkm dataset for specific goals.</p>
+<h3 id="Visulization-with-data-parallel-primitives"><a href="#Visulization-with-data-parallel-primitives" class="headerlink" title="Visulization with data parallel primitives"></a>Visulization with data parallel primitives</h3><p>Or so called parallel skeletons:</p>
+<p>The general types of the gpu primitives:</p>
+<p>Map (scan operation or add operation, stencil is also a kind of operator)<br>Reduce (output is a single value, sum)<br>Scan (stor intermidiate results)<br>Sort (reordering operation)<br>Search (find index)</p>
+<p>One paper regarding the VTKM design, the idea of using the parallel primitives (<a target="_blank" rel="noopener" href="https://cdux.cs.uoregon.edu/pubs/MorelandPARCO.pdf">https://cdux.cs.uoregon.edu/pubs/MorelandPARCO.pdf</a>)</p>
+<h3 id="Flexible-and-zero-copy-array-handle"><a href="#Flexible-and-zero-copy-array-handle" class="headerlink" title="Flexible and zero-copy array handle"></a>Flexible and zero-copy array handle</h3><p>TODO</p>
+<h3 id="Device-primitives-this-is-still-one-key-research-direaction"><a href="#Device-primitives-this-is-still-one-key-research-direaction" class="headerlink" title="Device primitives (this is still one key research direaction)"></a>Device primitives (this is still one key research direaction)</h3><p>Still not sure how it works, what are connection between these parallel primitives and the upper level operations</p>
+<h3 id="Filter-type"><a href="#Filter-type" class="headerlink" title="Filter type"></a>Filter type</h3><p>Classifiation different filter types from different categories:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1-T7rLSRfyjXLdG_EBJIVLy_cZDmH6kb95l8Umq0bkOY/edit?usp=sharing">https://docs.google.com/spreadsheets/d/1-T7rLSRfyjXLdG_EBJIVLy_cZDmH6kb95l8Umq0bkOY/edit?usp=sharing</a></p>
+<p><code>field_transform</code> transform fields from&#x2F;to the same entity<br><code>field_conversion</code> does sth cell to pointer or pointer to cell converion</p>
+<h3 id="Iterate-the-specific-array"><a href="#Iterate-the-specific-array" class="headerlink" title="Iterate the specific array"></a>Iterate the specific array</h3><p>There is no direact way to do this things, we need to getdata firstly, then use the AsArrayHanle to transfer to dedicated handle then get the ReadPortal, then based on this ReadPortal or write Portal, we can read or write data. This may looks like a little bit redoundant, but it is how a framework works, you need to do things following its convention.</p>
+<h3 id="Call-the-worklet"><a href="#Call-the-worklet" class="headerlink" title="Call the worklet"></a>Call the worklet</h3><p>The idea is the combination between the lambda expression and the type deduction.</p>
+<p>This is a <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/vtk/vtk-m/-/blob/master/vtkm/filter/field_transform/PointElevation.cxx">typical exmaple</a></p>
+<p>using the <code>CastAndCallVecField</code> can get the correct type.</p>
+<p>Another case is that we do not know the type. It will change the concrete type in the lambda expression. such as <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/vtk/vtk-m/-/blob/master/vtkm/filter/contour/ClipWithField.cxx#L55">this example</a>, the <code>CastAndCallForTypesWithFloatFallback</code> will do the actual cast tranform and it will try to compare with the list defined in the first parameter and to see wich inner type can match. Since when we call the GetData, it returns the unknown type. The common use case scenarios is to use the input data type to deduct the output type.</p>
+<p>In the lambda expression, it usually declares a dispather and then use the Invoke function of the dispatcher to call the worklet, the code in this part follows a similar structure.</p>
+<h3 id="Some-tips-for-code-standard"><a href="#Some-tips-for-code-standard" class="headerlink" title="Some tips for code standard"></a>Some tips for code standard</h3><p>Using DataSet::GetField with field name and association instead of GetPoint or GetField when getting a specific array.</p>
+<h3 id="Using-different-device-adaptor"><a href="#Using-different-device-adaptor" class="headerlink" title="Using different device adaptor"></a>Using different device adaptor</h3><p>There currently is no direct way to query on which device something ran on. One way you can do this is to turn on the logging level to Perf, but that will print out a lot of info that will be difficult to discern. </p>
+<p>What I usually do is force a particular device. That way VTK-m will run on that device or else it will raise an error. The easiest way to force a device is to add a <code>--vtkm-device=openmp</code> command line argument (that gets passed to vtkm::cont::Initialize). Alternately, you can use ScopedRuntimeDeviceTracker to force a particular device (<a target="_blank" rel="noopener" href="https://docs-m.vtk.org/latest/structvtkm_1_1cont_1_1ScopedRuntimeDeviceTracker.html">https://docs-m.vtk.org/latest/structvtkm_1_1cont_1_1ScopedRuntimeDeviceTracker.html</a>).</p>
+<p>Essentially, the vtkm is just a library for other dedicated service. Its location is a service which can be integrated into other service such as paraview.</p>
+<p>Another way is just try to use the ForceDevice to set the backend as the expected one, such as this (<a target="_blank" rel="noopener" href="https://github.com/Kitware/VTK-m/blob/master/examples/multi_backend/MultiDeviceGradient.cxx#L60">https://github.com/Kitware/VTK-m/blob/master/examples/multi_backend/MultiDeviceGradient.cxx#L60</a>)</p>
+<p>This is a example to use the initialization in vtkm<br><a target="_blank" rel="noopener" href="https://github.com/Kitware/VTK-m/blob/master/examples/cosmotools/CosmoHaloFinder.cxx#L109">https://github.com/Kitware/VTK-m/blob/master/examples/cosmotools/CosmoHaloFinder.cxx#L109</a></p>
+<p>Pay attention, if we set the backend as the openmp, and use the mpirun to run the program, the default case is that there will be one core in the program even for local env, this is a good we to bind multiple physical cores to one process&#x2F;task</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mpirun -np ncores --bind-to none -x OMP_NUM_THREADS=nthreads ./program</span><br></pre></td></tr></table></figure>
+
+<h3 id="The-poor-performance-of-the-debug-mode"><a href="#The-poor-performance-of-the-debug-mode" class="headerlink" title="The poor performance of the debug mode"></a>The poor performance of the debug mode</h3><p>When we set the vtk as debug mode, it might decrease the performance since it will add extra assertion operations for arrayhandle, check this place (<a target="_blank" rel="noopener" href="https://github.com/Kitware/VTK-m/blob/master/CMakeLists.txt#L137">https://github.com/Kitware/VTK-m/blob/master/CMakeLists.txt#L137</a>) to get more details.</p>
+<p>Here we can see that the performance can increase a lot if we do not use extra VTKM assert</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Kitware/VTK-m/blob/master/vtkm/Assert.h#L42">https://github.com/Kitware/VTK-m/blob/master/vtkm/Assert.h#L42</a></p>
+<h3 id="Set-the-log-level-and-the-backend"><a href="#Set-the-log-level-and-the-backend" class="headerlink" title="Set the log level and the backend"></a>Set the log level and the backend</h3><p>These configurations are recomended to be set in the initilization function of the vtkm call. There are other operations to set the backend and the log levels, such as the ForceDevice function.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2023/01/08/Many-faces-of-vtkm/" data-id="clcnv8qbm001zavjr357kaigk" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/01/02/Python-based-non-linear-regression/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Python based non linear regression</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Decouple-between-the-execution-env-and-control-env"><span class="toc-number">1.</span> <span class="toc-text">Decouple between the execution env and control env</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#filter-plus-worklet-style"><span class="toc-number">2.</span> <span class="toc-text">filter plus worklet style</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Type-detect-and-conversion"><span class="toc-number">3.</span> <span class="toc-text">Type detect and conversion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-data-set-for-sample-testing"><span class="toc-number">4.</span> <span class="toc-text">Create data set for sample testing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Visulization-with-data-parallel-primitives"><span class="toc-number">5.</span> <span class="toc-text">Visulization with data parallel primitives</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flexible-and-zero-copy-array-handle"><span class="toc-number">6.</span> <span class="toc-text">Flexible and zero-copy array handle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Device-primitives-this-is-still-one-key-research-direaction"><span class="toc-number">7.</span> <span class="toc-text">Device primitives (this is still one key research direaction)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Filter-type"><span class="toc-number">8.</span> <span class="toc-text">Filter type</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Iterate-the-specific-array"><span class="toc-number">9.</span> <span class="toc-text">Iterate the specific array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Call-the-worklet"><span class="toc-number">10.</span> <span class="toc-text">Call the worklet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-tips-for-code-standard"><span class="toc-number">11.</span> <span class="toc-text">Some tips for code standard</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using-different-device-adaptor"><span class="toc-number">12.</span> <span class="toc-text">Using different device adaptor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-poor-performance-of-the-debug-mode"><span class="toc-number">13.</span> <span class="toc-text">The poor performance of the debug mode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Set-the-log-level-and-the-backend"><span class="toc-number">14.</span> <span class="toc-text">Set the log level and the backend</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2023 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

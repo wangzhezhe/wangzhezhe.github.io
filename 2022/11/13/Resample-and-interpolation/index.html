@@ -13,7 +13,7 @@
 <meta property="og:description" content="manipulate the data">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-11-14T00:20:26.000Z">
-<meta property="article:modified_time" content="2022-11-14T02:46:01.511Z">
+<meta property="article:modified_time" content="2022-12-28T03:01:08.974Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -117,13 +117,35 @@ ga('send', 'pageview');
 <h3 id="Resample-the-data"><a href="#Resample-the-data" class="headerlink" title="Resample the data"></a>Resample the data</h3><p>sampling</p>
 <h3 id="Decompose-data-into-blocks"><a href="#Decompose-data-into-blocks" class="headerlink" title="Decompose data into blocks"></a>Decompose data into blocks</h3><p>hexiles</p>
 <p><a target="_blank" rel="noopener" href="https://vtk.org/doc/nightly/html/classvtkProbeFilter.html#details">https://vtk.org/doc/nightly/html/classvtkProbeFilter.html#details</a></p>
-<h3 id="VTK-operation"><a href="#VTK-operation" class="headerlink" title="VTK operation"></a>VTK operation</h3><p>vtkReampleFilter<br>vtkProbFilter (maybe this can avoid the case that the original data is not the uniformgrid?)</p>
+<h3 id="VTK-operation"><a href="#VTK-operation" class="headerlink" title="VTK operation"></a>VTK operation</h3><p>probe</p>
+<p>vtkProbFilter (maybe this can avoid the case that the original data is not the uniformgrid?) the source code is located at <code>Filters/Core/vtkProbeFilter.h</code></p>
 <p>This is a example<br><a target="_blank" rel="noopener" href="https://kitware.github.io/vtk-examples/site/Cxx/PolyData/InterpolateTerrain/">https://kitware.github.io/vtk-examples/site/Cxx/PolyData/InterpolateTerrain/</a></p>
-
+<p>Find the cell and then use the cell’s interpolation function, there are multiple types of the cell</p>
+<p>We need to have a good understanding about the vtk cell type</p>
+<p>This examples shows all the types of the vtkCell Type</p>
+<p><a target="_blank" rel="noopener" href="https://kitware.github.io/vtk-examples/site/Cxx/GeometricObjects/LinearCellDemo/">https://kitware.github.io/vtk-examples/site/Cxx/GeometricObjects/LinearCellDemo/</a></p>
+<p>Even the <code>vtkLine</code> (VTK&#x2F;Common&#x2F;DataModel&#x2F;vtkLine.cxx) is an concrete example of the <code>vtkCell</code> (VTK&#x2F;Common&#x2F;DataModel), for each cell, there are <code>EvaluateLocation</code> and <code>EvaluatePosition</code> function and <code>InterpolationFunctions</code>, these are used to do some naive interpolation. </p>
+<p>The dedicated point interpolation function use the different approch compared with the default one implemented by the cell operations here.</p>
+<p>iso-parametric interpolation functions</p>
+<p>Other types of interpolation do not have the operation of finding the cell, it just sample the points from cloud points, such as the example that use the PointInterpolator (the inputs is the list of points)</p>
+<p>There are still some confusions about these operations, what are parametric coordinates? how to compute the weight etc</p>
+<p>In the vtk text book <a target="_blank" rel="noopener" href="https://kitware.github.io/vtk-examples/site/VTKBook/08Chapter8/">here</a></p>
+<p>There are some explanations about the VTK parametric coordinates</p>
+<p>It is important to understand the meaning of the parametric coordinates in the VTK context. This coordinates are used to represents the position within the cell, its range is between 0 and 1.</p>
+<p>Global coordinates </p>
+<p>Local coordinates<br>To specify a location within the primary cell, we use geometric coordinates. These geometric coordinates, or parametric coordinates, are coordinates “natural” or canonical to the particular topology and dimension of a cell.</p>
+<p>Every cell type will have its own parametric coordinate system</p>
+<p>8-10 shows a 3d case, which is tr-linear iterpolation</p>
+<p>using the vtkLine as an example, which is a concrete implementation of the vtkCell</p>
+<p>DistanceToLine(get the parametric coordinates)<br>The input is the endpoint of the line and a point. The output is the distance from that point to the line and the cloestpoint to that dedicated point. The parametric coordinates is also returned here.</p>
+<p>EvaluatePosition<br>This function calls the DistanceToLine to get necessary information.<br>It returns the if the associated point is in the line or out of the line. This function also compute the weight to interpolate the dedicated point based on givin points (the weight for p1 and p2 in this example)</p>
+<p>EvaluateLocation</p>
+<p>Then in actual probe operation, the pointData can use these weight values to construct the interpolated values.</p>
+<h3 id="Create-datasize-as-needed-based-on-the-interpolation"><a href="#Create-datasize-as-needed-based-on-the-interpolation" class="headerlink" title="Create datasize as needed based on the interpolation"></a>Create datasize as needed based on the interpolation</h3>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/11/13/Resample-and-interpolation/" data-id="clahnddpg002jv7jrgx72etaq" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/11/13/Resample-and-interpolation/" data-id="clcnv8qbp002yavjrhzcj6sg8" class="article-share-link">分享</a>
       
       
       
@@ -177,6 +199,15 @@ ga('send', 'pageview');
     
 <nav id="article-nav">
   
+    <a href="/2022/11/20/All-aspectes-of-vtk-io/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          All aspectes of vtk io
+        
+      </div>
+    </a>
+  
   
     <a href="/2022/11/06/Typical-core-allocation-plan/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
@@ -213,7 +244,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Resample-the-data"><span class="toc-number">1.</span> <span class="toc-text">Resample the data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Decompose-data-into-blocks"><span class="toc-number">2.</span> <span class="toc-text">Decompose data into blocks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-operation"><span class="toc-number">3.</span> <span class="toc-text">VTK operation</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Resample-the-data"><span class="toc-number">1.</span> <span class="toc-text">Resample the data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Decompose-data-into-blocks"><span class="toc-number">2.</span> <span class="toc-text">Decompose data into blocks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-operation"><span class="toc-number">3.</span> <span class="toc-text">VTK operation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-datasize-as-needed-based-on-the-interpolation"><span class="toc-number">4.</span> <span class="toc-text">Create datasize as needed based on the interpolation</span></a></li></ol>
           </div>
       </div>
     </div>
@@ -236,7 +267,7 @@ ga('send', 'pageview');
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      &copy; 2014 - 2023 zhe&nbsp;|&nbsp;
       主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">

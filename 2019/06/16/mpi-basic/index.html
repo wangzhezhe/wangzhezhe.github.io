@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>mpi basic | AverageMind</title>
+  <title>Mpi basic | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="parallel programming with mpi notes, even though the book was issued 20 years ago, some materials are still inspiring for me and explain the knolwdge clearly. For every points, they gave out the limit">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mpi basic">
+<meta property="og:title" content="Mpi basic">
 <meta property="og:url" content="http://yoursite.com/2019/06/16/mpi-basic/index.html">
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="parallel programming with mpi notes, even though the book was issued 20 years ago, some materials are still inspiring for me and explain the knolwdge clearly. For every points, they gave out the limit">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-06-16T21:25:05.000Z">
-<meta property="article:modified_time" content="2019-10-06T21:10:39.000Z">
+<meta property="article:modified_time" content="2022-12-25T23:09:00.730Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -101,7 +101,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      mpi basic
+      Mpi basic
     </h1>
   
 
@@ -157,8 +157,8 @@ ga('send', 'pageview');
 <p>This code is typical SPMD model, the tricky thing is that your should clear that your program will be excuted on different processor and support different data.</p>
 <p>The typicl mode of MPI programming start from the MPI_Init(NULL, NULL); and end with the MPI_Finalize(); the two parameters could be the pointer to the parameter for main function like this MPI_Init(&amp;argc, &amp;argv).</p>
 <p>MPI_INIT means no function could be excuted before the INIT function and the MPI_Finalize means no MPI function could be called after this.</p>
-<p>MPI_COMM_WORLD, Comm_rank</p>
-<p>MPI_COMM_WORLD could also be called the communicator, which represent the collection of the process that could send message between each other, the Comm_rank represent the index of the process in this communicator. function MPI_Comm_rank and MPI_Comm_size could be used to get the rank(index) of current process in specific communicator and the last one is used to get the number of process in specific communitator. The default global communicator is the MPI_COMM_WORLD. Basically, the comm_rank represent a unique identity between sending and recieving. For the recieving function and sending function, the src and dst endpoint is also represent by this rank parameter.</p>
+<p><code>MPI_COMM_WORLD</code>, <code>Comm_rank</code></p>
+<p><code>MPI_COMM_WORLD</code> could also be called the communicator, which represent the collection of the process that could send message between each other, the Comm_rank represent the index of the process in this communicator. function MPI_Comm_rank and MPI_Comm_size could be used to get the rank(index) of current process in specific communicator and the last one is used to get the number of process in specific communitator. The default global communicator is the MPI_COMM_WORLD. Basically, the comm_rank represent a unique identity between sending and recieving. For the recieving function and sending function, the src and dst endpoint is also represent by this rank parameter.</p>
 <p>tag</p>
 <p>tag is more fine grained partition between specific client and server end. Because the communication could be divided into several types and we hope each type could be seperated by another one, like only the recieve call with tag &#x3D; 0 could recieve the message sent by the client with the message sending for tag &#x3D; 0. Basically, the communicator, rank, and the tag are the abstraction of the message sending and recieving entity in different levels.</p>
 <p>if the tag for send and recieve is not equal, the recieve will hang there, this use case is similar to the blocking communication, the recieve end is ready to recieve the message with tag &#x3D; 1 but the send client send the message with the tag &#x3D; 0 , so they could not recieve the info. For the following cases, only the MPI recieve with the tag&#x3D;0 could recieve the message:</p>
@@ -186,7 +186,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/mpi-basic/" data-id="clahnddpt006mv7jr3y8xh0e6" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/mpi-basic/" data-id="clcnv8qc1006wavjr9ts4bim4" class="article-share-link">分享</a>
       
       
       
@@ -308,7 +308,7 @@ ga('send', 'pageview');
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      &copy; 2014 - 2023 zhe&nbsp;|&nbsp;
       主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">

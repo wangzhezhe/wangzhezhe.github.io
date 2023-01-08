@@ -13,7 +13,7 @@
 <meta property="og:description" content="Some general thoughts regarding the HPC research.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-09-25T00:46:15.000Z">
-<meta property="article:modified_time" content="2022-09-26T02:54:33.166Z">
+<meta property="article:modified_time" content="2022-12-17T16:05:54.615Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -114,22 +114,41 @@ ga('send', 'pageview');
         <p>Some general thoughts regarding the HPC research.</p>
 <span id="more"></span>
 
-<p>主要是记录一些general的关于HPC的thoughts，HPC wire是常常关注的一个site，上面会经常发布一些相关的最新素材。最近看到网上经常会发布一些Jack Dongarra作presentation，也很有启发</p>
+<p>主要是记录一些general的关于HPC的thoughts，HPC wire是常常关注的一个site，上面会经常发布一些相关的最新素材。最近看到网上经常会发布一些Jack Dongarra作presentation，也非常地有启发</p>
+<h3 id="Basic-views"><a href="#Basic-views" class="headerlink" title="Basic views"></a>Basic views</h3><p>I got this view from other people, it is quite straightforward and convenient to use.</p>
+<p>In this view, it divides the work related with the HPC as three aspects:</p>
+<p>建设超算，维护超算，使用超算。</p>
+<p>If we use these three aspect as a principle we know what we are currently. About the 建设超算，we usually discuss the cpu architecture, network topology, file io these kind of things.  About the topic of 维护超算，we usually discuss the job scheduler things, resource allocation, or hardware fault these kind of things. About the 使用超算，we usually discuss the domain specific application running on these super computer.</p>
+<h3 id="Key-features-of-the-architecture"><a href="#Key-features-of-the-architecture" class="headerlink" title="Key features of the architecture"></a>Key features of the architecture</h3><p>The take away at 53:18 of the SC22 talk here (<a target="_blank" rel="noopener" href="https://www.hpcwire.com/2022/11/16/jack-dongarra-a-not-so-simple-matter-of-software/">https://www.hpcwire.com/2022/11/16/jack-dongarra-a-not-so-simple-matter-of-software/</a>), the architecture change and the software try to catch up with the software. </p>
 <h3 id="ECP-project"><a href="#ECP-project" class="headerlink" title="ECP project"></a>ECP project</h3><p>这个<a target="_blank" rel="noopener" href="https://pearc.acm.org/pearc22/wp-content/uploads/2022/07/PEARC22-Plenary-Dongarra.pdf">slides</a> 的26，27 page 对ECP project 做了比较详尽的概括，大牛就是大牛，两页slides言简意赅信息量极大，甚至比ECP官网上提供的信息还大。了解这个project就是让自己有个比较好的定位，知道自己做的东西和涉及到的project在整个大的scope中是处于哪个位置。比如自己熟悉的大部分的project都在Data and Vis 的这个division。从这个角度来看，其实美国的HPC实力确实强劲，尤其是最近几年，HPC更新的速度真是飞快。不管是硬件还是软件，整个ECP也有很好的scope。</p>
 <p>slides的最后几页还强调了z scale machine的一些数据，感觉这一块的硬件发展还是挺快的。</p>
 <h3 id="Post-ECP"><a href="#Post-ECP" class="headerlink" title="Post-ECP"></a>Post-ECP</h3><p>现在的这个阶段算是整个project的中后期了，各个组似乎又开始为founding的事情发愁了，这就涉及到一个哲学问题，project肯定有始有终，但是自己做的事情怎样保持延续性，怎么样才能让自己做的这些东西在保持延续性的同时，还能搭上新的project的车，而不是这个是需要不断思考的。对于这个问题，其实就算是各个大佬们也没有很好的解答。</p>
-<p>比如最近一个是这个<br><a target="_blank" rel="noopener" href="https://www.51cto.com/article/717823.html">https://www.51cto.com/article/717823.html</a></p>
+<p>比如最近一个是这个</p>
+<p><a target="_blank" rel="noopener" href="https://www.51cto.com/article/717823.html">https://www.51cto.com/article/717823.html</a></p>
 <p>上面说的Simulation+AI的workflow是一个比较新颖的地方，具体也有一些类似的paper在做相关的事情，这么看起来，ensible simulation可能是比较靠谱的一个。比如最近的一个关于coupling AI和HPC ensembles的<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9820679">例子</a></p>
 <p>这个presentation中提到的cloud 和 HPC 融合的问题，根据大佬的回答，似乎在American，HPC的成本还是比Cloud低很多。但是似乎在中国，这个趋势是相反的，甚至连HPC都有这种云化的趋势比如所谓的elastic HPC，按照大佬的说法，这些elastic HPC岂不是在瞎搞？还是说能走出自己的路？真是让人很费解。或者目前还根本还没有那么大的scale的应用？所以本质上都是small scale的应用，这样也并不是很需要许多node了，HPC和cloud用哪个就没区别了，反而用小规模的cloud node维护起来还方便很多。</p>
 <p>还有一个是这个<a target="_blank" rel="noopener" href="https://pearc.acm.org/pearc22/wp-content/uploads/2022/07/PEARC22-Plenary-Dongarra.pdf">slides</a>，说明了如何用iterative 的方式取得到一些结果来避免过多地communication带来的一些overhead。主要还是关注在reduction的层面上，如何用mixed precision来减少data transfer的overhead。</p>
 <p>可以看到这些research相关的问题其实大佬们也没有一个明确的结论，目前也是在探索阶段，所以有一点点idea的时候就尽量去实现，可能这个是常态吧。</p>
 <h3 id="Metrics"><a href="#Metrics" class="headerlink" title="Metrics"></a>Metrics</h3><p>大佬做persentaion的时候通常会关注那些core metrics of the HPC platform,对这些metrics有个很好的了解有的时候才能知道他们想说什么。</p>
-<h3 id="Regarding-the-application"><a href="#Regarding-the-application" class="headerlink" title="Regarding the application"></a>Regarding the application</h3><p>在master的时候做cloud相关的内容就发现没有什么合适的application，就一个jar包弄来弄去。后来HPC的时候也还是没有什么合适的application，几个mini simulation 弄来弄去。当然客观环境是一方面，确实没有那样的avalible 的application env，另一方面就是自己要去补充那样的短板。还是从MD simulation 入手吧，之前看到的sim 和 AI 结合的例子，使用的也是MD的simulation。毕竟就算是以后的quantum info , 比较reasonable 的一个场景还是quantum chemistry。从application的角度，要拿出一部分时间专门去学习相关的内容，从cs的角度，data 或者 vis ，长久地关注在某一方面，这样以后的路才能走的比较宽。可以从一些简单的任务开始，比如首先是弄清楚miniMD的一些应用机理，研究的问题，然后再看到sim + AI 那篇论文中涉及的task，比如使用openMM的一些技术。(This can be the really good work to reproduce, since it combines both application and AI things, which are attractive, this is the associated ML approach they adopted)</p>
+<p>metrircs in TOP500</p>
+<p>Original linpack benchmark<br>The traditional metrics<br><a target="_blank" rel="noopener" href="https://www.top500.org/project/top500_description/">https://www.top500.org/project/top500_description/</a><br>HPL Rmax (HPL represents the high performance linpack Rmax - Maximal LINPACK performance achieved)<br>Some good anology regarding the flop point computation</p>
+<p>HPCG (new benchmark)<br><a target="_blank" rel="noopener" href="https://hpcg-benchmark.org/">https://hpcg-benchmark.org/</a> (an important complementary for HPL)</p>
+<p>Other famous performance list: IO500</p>
+<h3 id="Regarding-the-application"><a href="#Regarding-the-application" class="headerlink" title="Regarding the application"></a>Regarding the application</h3><p>Some personal ideas and thoughts:</p>
+<p>在master的时候做cloud相关的内容就发现没有什么合适的application，就一个jar包弄来弄去。后来HPC的时候也还是没有什么合适的application，几个mini simulation 弄来弄去。当然客观环境是一方面，确实没有那样的avalible的application env，另一方面就是自己要去补充那样的短板。还是从MD simulation 入手吧，之前看到的sim 和 AI 结合的例子，使用的也是MD的simulation。毕竟就算是以后的quantum info , 比较reasonable 的一个场景还是quantum chemistry。从application的角度，要拿出一部分时间专门去学习相关的内容，从cs的角度，data 或者 vis ，长久地关注在某一方面，这样以后的路才能走的比较宽。可以从一些简单的任务开始，比如首先是弄清楚miniMD的一些应用机理，研究的问题，然后再看到sim + AI 那篇论文中涉及的task，比如使用openMM的一些技术。(This can be the really good work to reproduce, since it combines both application and AI things, which are attractive, this is the associated ML approach they adopted)</p>
+<h3 id="New-trend"><a href="#New-trend" class="headerlink" title="New trend"></a>New trend</h3><p>Combination with the AI workflow</p>
+<p>Codesign methodology</p>
+<p>The mixed precision and data reduction </p>
+<p>Tera scale (the specific application for the T scale, at the sc talk)</p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><p>SMP 2022<br><a target="_blank" rel="noopener" href="https://www.51cto.com/article/717823.html">https://www.51cto.com/article/717823.html</a></p>
+<p>Talk in PEARC22<br><a target="_blank" rel="noopener" href="https://pearc.acm.org/pearc22/wp-content/uploads/2022/07/PEARC22-Plenary-Dongarra.pdf">https://pearc.acm.org/pearc22/wp-content/uploads/2022/07/PEARC22-Plenary-Dongarra.pdf</a></p>
+<p>SC22 Talk<br>a not so simple mater of software</p>
+<p><a target="_blank" rel="noopener" href="https://www.hpcwire.com/2022/11/16/jack-dongarra-a-not-so-simple-matter-of-software/">https://www.hpcwire.com/2022/11/16/jack-dongarra-a-not-so-simple-matter-of-software/</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/09/24/HPC-scratch/" data-id="clahnddpa000tv7jrhd420zv5" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/09/24/HPC-scratch/" data-id="clcnv8qbj0014avjrafig4s0b" class="article-share-link">分享</a>
       
       
       
@@ -228,7 +247,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#ECP-project"><span class="toc-number">1.</span> <span class="toc-text">ECP project</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Post-ECP"><span class="toc-number">2.</span> <span class="toc-text">Post-ECP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Metrics"><span class="toc-number">3.</span> <span class="toc-text">Metrics</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Regarding-the-application"><span class="toc-number">4.</span> <span class="toc-text">Regarding the application</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Basic-views"><span class="toc-number">1.</span> <span class="toc-text">Basic views</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Key-features-of-the-architecture"><span class="toc-number">2.</span> <span class="toc-text">Key features of the architecture</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ECP-project"><span class="toc-number">3.</span> <span class="toc-text">ECP project</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Post-ECP"><span class="toc-number">4.</span> <span class="toc-text">Post-ECP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Metrics"><span class="toc-number">5.</span> <span class="toc-text">Metrics</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Regarding-the-application"><span class="toc-number">6.</span> <span class="toc-text">Regarding the application</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#New-trend"><span class="toc-number">7.</span> <span class="toc-text">New trend</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#References"><span class="toc-number">8.</span> <span class="toc-text">References</span></a></li></ol>
           </div>
       </div>
     </div>
@@ -251,7 +270,7 @@ ga('send', 'pageview');
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      &copy; 2014 - 2023 zhe&nbsp;|&nbsp;
       主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">

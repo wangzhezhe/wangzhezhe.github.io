@@ -13,7 +13,7 @@
 <meta property="og:description" content="Necessary concepts to undersand for the flow visualization (the techinques used for the CFD analysis).">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-10-30T20:28:42.000Z">
-<meta property="article:modified_time" content="2022-10-31T02:07:14.212Z">
+<meta property="article:modified_time" content="2022-12-24T23:36:42.808Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -116,8 +116,9 @@ ga('send', 'pageview');
 
 <h3 id="About-the-CFD"><a href="#About-the-CFD" class="headerlink" title="About the CFD"></a>About the CFD</h3><p>Its hard to avoid discussing about the vector visualization without talking about the CFD simulation. Common flow includes the smoke and the water flow.</p>
 <h3 id="Basic-concepts"><a href="#Basic-concepts" class="headerlink" title="Basic concepts"></a>Basic concepts</h3><p><strong>Pathline</strong> is easist thing to understand, we look at a particluare particle, and draw its path during the progress of the fluid system. The trajectory or path for the given fluid element</p>
-<p><strong>Sreakline</strong> are a set of fluid elements that pass through a fixed point in space. Attention, these are a set of partiles. We can image it by this way, assuming all the fluid particles are white color, any fluid particles go though the position (x,y,z) will become red color at any time during the progress of the system, then these all red particles compose the streakline. It seems that all these particles in streakline comes from or goes through the same place. </p>
-<p><strong>Streamline</strong> are lines that are tangent to the velocity field for each fluid particles in the flow. This is essentially an mathmetical idea which differs from previous two, we can not observe them direactly by putting particles in the flow space.</p>
+<p><strong>Sreakline</strong> are a set of fluid elements that pass through a fixed point in space. Attention, these are a set of partiles. We can image it by this way, assuming all the fluid particles are white color, any fluid particles go though the position (x,y,z) will become red color at any time during the progress of the system, then these all red particles compose the streakline. It seems that all these particles in streakline comes from or goes through the same place. The easiest thing to understand it is that you pull a cup of colored ink through a fixed point of a water channel, then that shaped curve is called the streakline. The streakline main include many different fluid elements.</p>
+<p><strong>Streamline</strong> are lines that are tangent to the velocity field for each fluid particles in the flow. This is essentially an mathmetical idea which differs from previous two, we can not observe them direactly by putting particles in the flow space. Assuming we take a snapshot of the fluid space, all vectors are fixed at this time, then we do the intergration along the tanget of the vector field. Namely, the tnstantaneous tangent of vector field for the fixed time</p>
+<p><strong>Timeline</strong> Intuitively, imagine that we place several small balls into a water flow, and allow the balls to follow the flow. At a certain time step, the path that connects all the balls is a timeline.</p>
 <p>For steady flows, streamline streaklines and pathlines are identical.</p>
 <p>For unsteady flow, they differ a lot, the best video to show related results is this <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=nuQyKGuXJOs&list=PL0EC6527BE871ABA3&index=5&t=851s">one</a>, start from 9:00. They use the instantaneous streakline to describe it, which show current positions of all particles that path through the entry in different time. particle i enter in time step i, at the time step k, we connect all the particles enter from the entry to makeup the streakline. </p>
 <p>The above concepts are from the fluid dynamics, these are foundemental concepts for the fluid visualization.</p>
@@ -128,7 +129,9 @@ ga('send', 'pageview');
 <h4 id="LCS"><a href="#LCS" class="headerlink" title="LCS"></a>LCS</h4><p>The lograngian coherent structure is an important structure of fluid dynamics, we use the FTLE approach to detect these LCS structures.</p>
 <p>There are some math here, and <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=lveOu7jLNh0">this</a> is a good introduction video.</p>
 <p>Basically, we try to understand the fluid by looking at the LCS.</p>
-<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><p>streamline, pathline strokeline</p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><p>Good referneces for necessary flow visualization concepts:</p>
+<p><a target="_blank" rel="noopener" href="https://www3.nd.edu/~cwang11/2dflowvis.html">https://www3.nd.edu/~cwang11/2dflowvis.html</a><br>(There are some visulization effects about it, which is easy to understand) </p>
+<p>streamline, pathline strokeline</p>
 <p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=8MUPQbazkLQ">https://www.youtube.com/watch?v=8MUPQbazkLQ</a></p>
 <p>Classical materials from NSF in 1963</p>
 <p><a target="_blank" rel="noopener" href="https://www.youtube.com/playlist?list=PL0EC6527BE871ABA3">https://www.youtube.com/playlist?list=PL0EC6527BE871ABA3</a></p>
@@ -138,7 +141,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/10/30/Many-faces-of-flow-visualization/" data-id="clahnddpd001jv7jr116c3emx" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/10/30/Many-faces-of-flow-visualization/" data-id="clcnv8qbl001tavjr58rj1xaq" class="article-share-link">分享</a>
       
       
       
@@ -260,7 +263,7 @@ ga('send', 'pageview');
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      &copy; 2014 - 2023 zhe&nbsp;|&nbsp;
       主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">

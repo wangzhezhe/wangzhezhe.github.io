@@ -13,7 +13,7 @@
 <meta property="og:description" content="shell的内容平时多多少少会使用到，说道底是经验积累问题，虽然每次总能找到最后的答案，但是总不能每次一用到就一句一句去搜索吧，还是按照场景整理在一起比较方便，先整理在这，然后持续更新。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-06-16T19:38:44.000Z">
-<meta property="article:modified_time" content="2022-09-20T00:47:59.566Z">
+<meta property="article:modified_time" content="2022-12-17T21:20:17.855Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -182,8 +182,13 @@ ga('send', 'pageview');
 <h3 id="几种常用到的shell脚本"><a href="#几种常用到的shell脚本" class="headerlink" title="几种常用到的shell脚本"></a>几种常用到的shell脚本</h3><h4 id="command-substitution"><a href="#command-substitution" class="headerlink" title="command substitution"></a>command substitution</h4><p>具体可以参考<a target="_blank" rel="noopener" href="http://mywiki.wooledge.org/BashFAQ/082">这个</a>. 总之就是介绍<code>$()</code>的使用，在具体执行的之后里面可以嵌套成实际的命令。 </p>
 <h4 id="脚本写在一行"><a href="#脚本写在一行" class="headerlink" title="脚本写在一行"></a>脚本写在一行</h4><p>在使用docker或者使用k8s启动对应pod的时候，相应的启动参数通常都是一个string类型的数组。前两个参数通常是[“sh”,”-c”],第三个参数应该是所要执行的shell脚本，这个时候需要把平时看起来很长的脚本写到一行中。其实也很简单，只需要在换行的地方采用;隔开即可。具体的一些例子可以参考这个。</p>
 <p>在k8s中注意args与command的使用与docker有区别，具体可以参考这个，仅仅通过docker方式启动的话，只需要使用args的参数而非command的参数。</p>
-<h4 id="判断某个文件-x2F-变量是否存在"><a href="#判断某个文件-x2F-变量是否存在" class="headerlink" title="判断某个文件&#x2F;变量是否存在"></a>判断某个文件&#x2F;变量是否存在</h4><p>-z可以判断这个变量的取值的长度是不是为0，如果存在，说明值的长度是不为0的。if [ ! -z “$JRE_HOME” ] 表示的是变量存在（内容长度不为0）。 类似的根据参数的不同可以判断文件夹（-d），文件（-f）是否存在。</p>
+<h4 id="判断某个文件-x2F-变量是否存在"><a href="#判断某个文件-x2F-变量是否存在" class="headerlink" title="判断某个文件&#x2F;变量是否存在"></a>判断某个文件&#x2F;变量是否存在</h4><p>-z可以判断这个变量的取值的长度是不是为0，如果存在，说明值的长度是不为0的。<code>if [ ! -z “$JRE_HOME” ]</code> 表示的是变量存在（内容长度不为0）。 类似的根据参数的不同可以判断文件夹（-d），文件（-f）是否存在。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">if [ ! -z &quot;$JRE_HOME&quot; ];then</span><br><span class="line">   JAVAFILE=&quot;$JRE_HOME&quot;/bin/java</span><br><span class="line">   echo $JAVAFILE</span><br><span class="line">   echo &quot;set JAVAFILE to JRE_HOME&quot;</span><br><span class="line">   else</span><br><span class="line">   echo &quot;not set JRE_HOME&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<h4 id="For-loop-循环"><a href="#For-loop-循环" class="headerlink" title="For loop 循环"></a>For loop 循环</h4><p>这个在bench mark 的测试中使用的比较多，通常是先declare一个list然后再遍历这个list，比如下面这个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">STEP_LIST=&quot;10 20 30&quot;</span><br><span class="line">for STEP in $&#123;STEP_LIST&#125;</span><br><span class="line">do</span><br><span class="line"># do sth based on STEP</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>还有的就是遍历一个dir下面的所有文件，比如这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">DIR=path_to_dir</span><br><span class="line">for PLANFILE in &quot;$DIR&quot;/*</span><br><span class="line">do</span><br><span class="line"># do sth</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
 <h4 id="关于while循环"><a href="#关于while循环" class="headerlink" title="关于while循环"></a>关于while循环</h4><p>直接参考这个(<a target="_blank" rel="noopener" href="https://codingstandards.iteye.com/blog/780524">https://codingstandards.iteye.com/blog/780524</a>)</p>
 <p>常见的using case 是启动了一个程序之后 可能这个程序会创建一些shared file或者是shared dir 其他程序会读取这个shared file&#x2F;dir的内容然后获取一些必要的信息，这个时候要确定这些文件已经存在了之后才能启动其他的程序。常用的方法是在shell脚本中设置一个while loop 不断地查看file或者dir，确定存在之后，再推出loop, 这里要注意的是，在while的command中，会使用空格的token来区分字符，但是在shell的赋值操作中，等于号要直接和变量连在一起</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#check dir, if it is not exist, then create</span><br><span class="line">if [ ! -d ./vtkdata ]; then</span><br><span class="line">  mkdir ./vtkdata;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
@@ -207,28 +212,29 @@ ga('send', 'pageview');
 <h4 id="关于IO-buffer"><a href="#关于IO-buffer" class="headerlink" title="关于IO buffer"></a>关于IO buffer</h4><p>直接运行程序的时候，printf的结果可以输出到terminal中，但有时候使用了重定向之后，结果就无法输出，除非等程序运行结束。具体比如参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/56909660/fails-to-redirect-the-output-into-file?noredirect=1#comment100364173_56909660">这个</a>或者参考<a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/25372/turn-off-buffering-in-pipe">这个</a> 主要是因为IO buffer的原因导致结果不会直接输出</p>
 <p>一种方式是使用 expect 工具的 <code>unbuffer</code> command 作为临时调试使用，这个时候不管是重定向还是使用pipeline都可以work。或者是在输出的时候使用<code>std::endl</code>强制进行flush。</p>
 <p>另外一种是使用比较完备的log工具，会直接将log信息记录写在打开的文件中而并非是通过标准输出。事实上参考<a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/io/manip/endl">这里</a>可以看到 line-buffer 的概念，什么时候flush是个问题，频繁的flush会造成performance issue，但是一个flush信息也没有又回造成难以交互，总之是个tradeoff，有趣的是使用<code>std::endl</code>代替<code>\n</code>结尾可以强制地进行flush。</p>
-<h4 id="通过grep命令判断是否截取出相关的内容"><a href="#通过grep命令判断是否截取出相关的内容" class="headerlink" title="通过grep命令判断是否截取出相关的内容"></a>通过grep命令判断是否截取出相关的内容</h4><p>首先是grep的那一套操作，如果不需要grep的内容输出，可以将输出结果重定向到null中。<br>之后通过if_exist&#x3D;$?返回上一条命令，也就是grep那个命令的状态码，之后再用一个if操作来判断状态码是0还是1，如果是1的话，说明grep操作的确截取到了相关的内容，如果为0的话，说明grep命令并没有截取到相关的内容。注意有的时候ps命令与grep结合，希望搜索出特定的进程信息，这个时候容易吧grep本身的进程也显示出来，此时可以使用-v参数，在这个搜索命令的最后部分加上|grep -v grep 把含义grep关键字的内容从搜索结果中去掉。如果是filter out 其他的关键字 可以用类似的方式 比如 <code>| grep -v &quot;total&quot;</code> 会filter out 含有 total 的那一行</p>
+<h4 id="通过grep命令判断是否截取出相关的内容"><a href="#通过grep命令判断是否截取出相关的内容" class="headerlink" title="通过grep命令判断是否截取出相关的内容"></a>通过grep命令判断是否截取出相关的内容</h4><p>首先是grep的那一套操作，如果不需要grep的内容输出，可以将输出结果重定向到null中。<br>之后通过<code>if_exist=$?</code>返回上一条命令，也就是grep那个命令的状态码，之后再用一个if操作来判断状态码是0还是1，如果是1的话，说明grep操作的确截取到了相关的内容，如果为0的话，说明grep命令并没有截取到相关的内容。注意有的时候ps命令与grep结合，希望搜索出特定的进程信息，这个时候容易吧grep本身的进程也显示出来，此时可以使用-v参数，在这个搜索命令的最后部分加上|grep -v grep 把含义grep关键字的内容从搜索结果中去掉。如果是filter out 其他的关键字 可以用类似的方式 比如 <code>| grep -v &quot;total&quot;</code> 会filter out 含有 total 的那一行</p>
 <h3 id="零碎的知识点"><a href="#零碎的知识点" class="headerlink" title="零碎的知识点"></a>零碎的知识点</h3><p><strong>脚本中开头部分</strong></p>
 <p>一般比较常用的是写成 #!&#x2F;bin&#x2F;bash ，其中“#!”表示要位这个shell脚本指定一个解释器，当然后面还可以添加其他的内容，具体可以参考这个(<a target="_blank" rel="noopener" href="https://blog.csdn.net/cjsycyl/article/details/7927727">https://blog.csdn.net/cjsycyl/article/details/7927727</a>)</p>
 <p><strong>set使用</strong></p>
 <p>set -x 这个通常是于 set +x放在一起来使用的，开启调试模式。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">set -x            # activate debugging from here</span><br><span class="line"> w</span><br><span class="line">set +x            # stop debugging from here</span><br></pre></td></tr></table></figure>
-<p>在”set -e”之后出现的代码，如果返回值是非0的，整个脚本就会立即退出，这个有时候会比较奇怪，有的时候可能脚本退出会引发一些奇怪的事情。一般命令正常就会返回0，命令异常就会返回其他的值。可以通过 echo $? 命令来查看上一条命令执行的状态码。</p>
+<p>在”set -e”之后出现的代码，如果返回值是非0的，整个脚本就会立即退出，这个有时候会比较奇怪，有的时候可能脚本退出会引发一些奇怪的事情。一般命令正常就会返回0，命令异常就会返回其他的值。可以通过 <code>echo $?</code> 命令来查看上一条命令执行的状态码。</p>
 <p><strong>脚本中的空格问题</strong></p>
 <p>在给某个变量赋值的时候，等于号要和变量名紧挨在一起，不可以多一个空格出来，要不然系统会以为用户是在执行某个命令，这个实在是太容易错了，特别是对于像自己这样的新手而言。</p>
 <p><strong>单引号双引号反引号</strong></p>
-<p>网上相关的介绍内容较多。使用双引号，可引用除了字符$、&#96;、\外的任意字符或字符串。用单引号括起来的特殊字符串将没有意义，最常见的是，使用了 ‘$varname’ 之后，$varname就会以字面值的形式出现。可以在双引号字符串中嵌套单引号。shell会将反引号中的内容作为一个系统命令来输出。</p>
+<p>网上相关的介绍内容较多。使用双引号，可引用除了字符<code>$</code>,<code>、</code>, \ 外的任意字符或字符串。用单引号括起来的特殊字符串将没有意义，最常见的是，使用了 <code>‘$varname’</code> 之后，<code>$varname</code>就会以字面值的形式出现。可以在双引号字符串中嵌套单引号。shell会将反引号中的内容作为一个系统命令来输出。</p>
 <p><strong>寻找固定后缀的文件</strong></p>
 <p>找固定后缀的文件<br>find [path] -name .pyc<br>递归查找<br>find [path] -name ‘.pyc’</p>
 <p><strong>希望将json以格式化的方式输出</strong></p>
 <p>输出格式比较好的json信息，需要用到python的-m参数，加载一个库之后将内容输出<br>echo ‘{“foo”: “lorem”, “bar”: “ipsum”}’ | python -m json.tool</p>
 <p><strong>脚本中传入参数</strong></p>
-<p>关于脚本中参数的传递问题<br>脚本名称叫test.sh 入参三个: 1 2 3<br>运行test.sh 1 2 3后<br>$*为”1 2 3”（一起被引号包住）<br>$@为”1” “2” “3”（分别被包住）<br>$#为3（参数数量）</p>
+<p>关于脚本中参数的传递问题<br>脚本名称叫test.sh 入参三个: 1 2 3<br>运行test.sh 1 2 3后</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$*为”1 2 3”（一起被引号包住）</span><br><span class="line">$@为”1” “2” “3”（分别被包住）</span><br><span class="line">$#为3（参数数量）</span><br></pre></td></tr></table></figure>
 <p>更多传入参数的处理方式可以参考这里。</p>
 <p><strong>Here Document</strong><br>Here document(<a target="_blank" rel="noopener" href="https://blog.csdn.net/wangjunjun2008/article/details/24351045)%E7%9B%B8%E5%85%B3%E7%9A%84%E5%86%85%E5%AE%B9%EF%BC%8C%E5%B8%8C%E6%9C%9B%E5%B0%86%E4%B8%80%E4%BA%9B%E5%86%85%E5%AE%B9%E5%86%99%E5%85%A5%E5%88%B0%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6%E4%B8%AD%EF%BC%8C%E6%89%A7%E8%A1%8C%E7%B1%BB%E4%BC%BC%E7%9A%84%E6%93%8D%E4%BD%9C%E6%97%B6%EF%BC%8C%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E9%87%8D%E5%AE%9A%E5%90%91%E3%80%82">https://blog.csdn.net/wangjunjun2008/article/details/24351045)相关的内容，希望将一些内容写入到某个文件中，执行类似的操作时，可以使用重定向。</a></p>
 <p><strong>字符串的拼接</strong></p>
-<p>关于字符串的拼接，直接 $command&#x3D;string1’xxxx’ 之后再echo $command就是可以的。<br>或者$command&#x3D;${var1}${var2}这样也是可以拼接起来的。</p>
-<p><strong>命令替换与变量替换</strong><br>区别命令替换与变量替换 $()这种方式与${}这种方式的区别。具体可以参考shell十三问之8。</p>
+<p>关于字符串的拼接，直接 <code>$command=string1’xxxx’</code> 之后再<code>echo $command</code>就是可以的。<br>或者<code>$command=$&#123;var1&#125;$&#123;var2&#125;</code>这样也是可以拼接起来的。</p>
+<p><strong>命令替换与变量替换</strong><br>区别命令替换与变量替换 <code>$()</code>这种方式与<code>$&#123;&#125;</code>这种方式的区别。具体可以参考shell十三问之8。</p>
 <p><strong>变量分配时候的默认值</strong><br>直接看别人整理的<br><a target="_blank" rel="noopener" href="http://unix.stackexchange.com/questions/122845/using-a-b-for-variable-assignment-in-scripts">http://unix.stackexchange.com/questions/122845/using-a-b-for-variable-assignment-in-scripts</a></p>
 <h3 id="其他参考资源"><a href="#其他参考资源" class="headerlink" title="其他参考资源"></a>其他参考资源</h3><p>shell 十三问<br><a target="_blank" rel="noopener" href="http://bbs.chinaunix.net/forum.php?mod=viewthread&amp;tid=218853">http://bbs.chinaunix.net/forum.php?mod=viewthread&amp;tid=218853</a></p>
 <p>这里找到了一个简体版<br><a target="_blank" rel="noopener" href="http://www.eefocus.com/haijiaoyouzi/blog/11-05/210795_9d1d9.html">http://www.eefocus.com/haijiaoyouzi/blog/11-05/210795_9d1d9.html</a></p>
@@ -240,7 +246,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/bash-tips/" data-id="clahnddpk003pv7jrbuwhg0pt" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/bash-tips/" data-id="clcnv8qbt0040avjra2l54ad9" class="article-share-link">分享</a>
       
       
       
@@ -339,7 +345,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E4%BA%8E%E2%80%9C%E7%94%9F%E5%AD%98%E2%80%9D%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">用于“生存”的基本命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E7%A7%8D%E5%B8%B8%E7%94%A8%E5%88%B0%E7%9A%84shell%E8%84%9A%E6%9C%AC"><span class="toc-number">2.</span> <span class="toc-text">几种常用到的shell脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#command-substitution"><span class="toc-number">2.1.</span> <span class="toc-text">command substitution</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E5%86%99%E5%9C%A8%E4%B8%80%E8%A1%8C"><span class="toc-number">2.2.</span> <span class="toc-text">脚本写在一行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6-x2F-%E5%8F%98%E9%87%8F%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8"><span class="toc-number">2.3.</span> <span class="toc-text">判断某个文件&#x2F;变量是否存在</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Ewhile%E5%BE%AA%E7%8E%AF"><span class="toc-number">2.4.</span> <span class="toc-text">关于while循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%A9%E8%AE%B8%E5%A4%9A%E5%8F%B0%E6%9C%BA%E5%99%A8%E4%BD%BF%E7%94%A8ssh%E7%9A%84%E6%96%B9%E5%BC%8F%E8%BF%9B%E8%A1%8C%E9%80%9A%E4%BF%A1"><span class="toc-number">2.5.</span> <span class="toc-text">让许多台机器使用ssh的方式进行通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E5%90%8E%E5%8F%B0%E9%9D%99%E9%BB%98%E8%BF%90%E8%A1%8C%E6%9F%90%E4%B8%AA%E7%A8%8B%E5%BA%8F"><span class="toc-number">2.6.</span> <span class="toc-text">在后台静默运行某个程序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8EIO-buffer"><span class="toc-number">2.7.</span> <span class="toc-text">关于IO buffer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E8%BF%87grep%E5%91%BD%E4%BB%A4%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%88%AA%E5%8F%96%E5%87%BA%E7%9B%B8%E5%85%B3%E7%9A%84%E5%86%85%E5%AE%B9"><span class="toc-number">2.8.</span> <span class="toc-text">通过grep命令判断是否截取出相关的内容</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%B6%E7%A2%8E%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">零碎的知识点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="toc-number">4.</span> <span class="toc-text">其他参考资源</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E4%BA%8E%E2%80%9C%E7%94%9F%E5%AD%98%E2%80%9D%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">用于“生存”的基本命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E7%A7%8D%E5%B8%B8%E7%94%A8%E5%88%B0%E7%9A%84shell%E8%84%9A%E6%9C%AC"><span class="toc-number">2.</span> <span class="toc-text">几种常用到的shell脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#command-substitution"><span class="toc-number">2.1.</span> <span class="toc-text">command substitution</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E5%86%99%E5%9C%A8%E4%B8%80%E8%A1%8C"><span class="toc-number">2.2.</span> <span class="toc-text">脚本写在一行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6-x2F-%E5%8F%98%E9%87%8F%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8"><span class="toc-number">2.3.</span> <span class="toc-text">判断某个文件&#x2F;变量是否存在</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#For-loop-%E5%BE%AA%E7%8E%AF"><span class="toc-number">2.4.</span> <span class="toc-text">For loop 循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Ewhile%E5%BE%AA%E7%8E%AF"><span class="toc-number">2.5.</span> <span class="toc-text">关于while循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%A9%E8%AE%B8%E5%A4%9A%E5%8F%B0%E6%9C%BA%E5%99%A8%E4%BD%BF%E7%94%A8ssh%E7%9A%84%E6%96%B9%E5%BC%8F%E8%BF%9B%E8%A1%8C%E9%80%9A%E4%BF%A1"><span class="toc-number">2.6.</span> <span class="toc-text">让许多台机器使用ssh的方式进行通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E5%90%8E%E5%8F%B0%E9%9D%99%E9%BB%98%E8%BF%90%E8%A1%8C%E6%9F%90%E4%B8%AA%E7%A8%8B%E5%BA%8F"><span class="toc-number">2.7.</span> <span class="toc-text">在后台静默运行某个程序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8EIO-buffer"><span class="toc-number">2.8.</span> <span class="toc-text">关于IO buffer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E8%BF%87grep%E5%91%BD%E4%BB%A4%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%88%AA%E5%8F%96%E5%87%BA%E7%9B%B8%E5%85%B3%E7%9A%84%E5%86%85%E5%AE%B9"><span class="toc-number">2.9.</span> <span class="toc-text">通过grep命令判断是否截取出相关的内容</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%B6%E7%A2%8E%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">零碎的知识点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="toc-number">4.</span> <span class="toc-text">其他参考资源</span></a></li></ol>
           </div>
       </div>
     </div>
@@ -362,7 +368,7 @@ ga('send', 'pageview');
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2022 zhe&nbsp;|&nbsp;
+      &copy; 2014 - 2023 zhe&nbsp;|&nbsp;
       主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">

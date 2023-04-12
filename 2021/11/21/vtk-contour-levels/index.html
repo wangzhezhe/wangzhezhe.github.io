@@ -12,14 +12,10 @@
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="This article discuss some ideas about the marching cube algorithm.">
 <meta property="og:locale">
-<meta property="og:image" content="http://yoursite.com/images/contour1.png">
-<meta property="og:image" content="http://yoursite.com/images/datasource.png">
-<meta property="og:image" content="http://yoursite.com/images/cppoutput.png">
 <meta property="article:published_time" content="2021-11-22T02:59:35.000Z">
-<meta property="article:modified_time" content="2022-04-26T01:28:59.000Z">
+<meta property="article:modified_time" content="2023-01-15T02:07:37.450Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/images/contour1.png">
   
     <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
   
@@ -122,10 +118,6 @@ ga('send', 'pageview');
 <p>Isosurface might be one of the most common algorithm for analysing the scientific data. In this video, we try to decompose it into multiple levels to explain how to understand and use the marching cube algorithm to achieve the isosurface step by step. Specifically, we will go through every steps of the marching cube algorithm and we will also use the VTK as the implementation library to understand the details of the marching cube algorithm.</p>
 <h3 id="Level-1"><a href="#Level-1" class="headerlink" title="Level 1"></a>Level 1</h3><p>The goal of the first level is simple, we just need to know how to use marching cube algorithm from the perspective of programming. We try to figure out what it can do, what is the input and output of the algorithm.</p>
 <p>We first show that how to do the isocountor operation in the Paraview, which is a desktop software based on the VTK. </p>
-<img src="/images/contour1.png" width="600"/>
-
-<img src="/images/datasource.png" width="600"/>
-
 <p>Here, We try to generate a data source from the paraview such as wavelet1 shown in the figure above, and then click the contour button, then click the apply, by this way, the countour surface with specific value is created, which is shown in the figure.</p>
 <p>If we try to do the isosurface operation by ourself with the cpp code, we may first save the wavelet data into the disk firstly. You may get the sample file <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/vtk_example/isosurface/wavelet.vti">here</a></p>
 <p>We then need to load the image file and generate the vtkImageData in cpp program, please check <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=94P-PSbsT70">the video below</a> to see how to read the vtk image file by xml reader if you are not familiar with the VTK data read and write operation.</p>
@@ -137,8 +129,6 @@ ga('send', 'pageview');
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// marching cube filter</span><br><span class="line">vtkNew&lt;vtkMarchingCubes&gt; surface;</span><br><span class="line"></span><br><span class="line">surface-&gt;SetInputData(waveletdata);</span><br><span class="line">surface-&gt;ComputeNormalsOn();</span><br><span class="line">surface-&gt;SetValue(0, 157);</span><br><span class="line">surface-&gt;SetValue(1, 160);</span><br><span class="line">surface-&gt;SetValue(2, 200);</span><br><span class="line"></span><br><span class="line">// get output data</span><br><span class="line">surface-&gt;Update();</span><br><span class="line">vtkPolyData *polySurface = surface-&gt;GetOutput();</span><br><span class="line">std::cout &lt;&lt; &quot;------isosurface------&quot; &lt;&lt; std::endl;</span><br><span class="line">polySurface-&gt;Print(std::cout);</span><br></pre></td></tr></table></figure>
 
 <p>The code example listed here insert several iso values and then output a polygonal data object that describes these values. We may also render the existing vtk object direactly based on online <a target="_blank" rel="noopener" href="https://kitware.github.io/vtk-examples/site/Cxx/Modelling/MarchingCubes/">example</a>, here we just try to write out the vtk polygonal data by the vtk file and render it on the paraview. In summary, this example shows that we input the vtk image data and the filter returns the vtk polygonal data.</p>
-<img src="/images/cppoutput.png" width="600"/>
-
 <p>The above code and associated image data can be found <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/vtk_example/isosurface/test_isosurface.cpp">here</a> and we also list the link below this video. </p>
 <h3 id="Level-2"><a href="#Level-2" class="headerlink" title="Level 2"></a>Level 2</h3><p>From the example shown in Level 1, we have some ideas about how to use the VTK library to execute the marching cube algorithm, the goal of the level 2 is try to understand key ideas behind this algorithm and how it is implemented. We use two references in this video, the first is the vtk document online about the marching cube algorithm <a target="_blank" rel="noopener" href="https://kitware.github.io/vtk-examples/site/VTKBook/06Chapter6/">here</a>, the second reference is the original paper that describes the marching cube algorithm: Lorensen W E, Cline H E. Marching cubes: A high resolution 3D surface construction algorithm[J]. ACM siggraph computer graphics, 1987, 21(4): 163-169.</p>
 <p>Let’s look at some core ideas behind this algorithm together.</p>
@@ -179,7 +169,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/11/21/vtk-contour-levels/" data-id="clcnv8qc8008kavjr52ztaew6" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2021/11/21/vtk-contour-levels/" data-id="clgcz6n5d008y01jrgpoy5v45" class="article-share-link">分享</a>
       
       
       

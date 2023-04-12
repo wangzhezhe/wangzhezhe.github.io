@@ -13,7 +13,7 @@
 <meta property="og:description" content="manipulate the data">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-11-14T00:20:26.000Z">
-<meta property="article:modified_time" content="2022-12-28T03:01:08.974Z">
+<meta property="article:modified_time" content="2023-01-09T03:37:57.982Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -141,11 +141,15 @@ ga('send', 'pageview');
 <p>EvaluatePosition<br>This function calls the DistanceToLine to get necessary information.<br>It returns the if the associated point is in the line or out of the line. This function also compute the weight to interpolate the dedicated point based on givin points (the weight for p1 and p2 in this example)</p>
 <p>EvaluateLocation</p>
 <p>Then in actual probe operation, the pointData can use these weight values to construct the interpolated values.</p>
-<h3 id="Create-datasize-as-needed-based-on-the-interpolation"><a href="#Create-datasize-as-needed-based-on-the-interpolation" class="headerlink" title="Create datasize as needed based on the interpolation"></a>Create datasize as needed based on the interpolation</h3>
+<p>This is an <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/vtk_example/interpolate/vtkprob_example.cpp">example</a> code to show how the prob filter works, the coars grid is the original one and then we create a fine granularity grid based on it and use the prob to sample the data accordingly.</p>
+<h3 id="PointCloud"><a href="#PointCloud" class="headerlink" title="PointCloud"></a>PointCloud</h3><p>For the case that there is no cell, how could we do that? Assuming the input the data is just a point cloud. In this case, we can use the vtkPointInterpolator.</p>
+<p>The form for using the filter is similar to the previous one, the good thing is that we can switch different interpolation kernel in this example.</p>
+<p>This <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/vtk_example/interpolate/vtk_different_interp_kernel.cpp">example</a> shows that how to set the inerp kernel, this is different since the input is supposed to be the points clouds, which is more flexible compared with the previous one for cellset.</p>
+<h3 id="Python-scripts-for-this"><a href="#Python-scripts-for-this" class="headerlink" title="Python scripts for this"></a>Python scripts for this</h3><h3 id="Create-datasize-as-needed-based-on-the-interpolation"><a href="#Create-datasize-as-needed-based-on-the-interpolation" class="headerlink" title="Create datasize as needed based on the interpolation"></a>Create datasize as needed based on the interpolation</h3><h3 id="More-theoretical-backend-for-this"><a href="#More-theoretical-backend-for-this" class="headerlink" title="More theoretical backend for this"></a>More theoretical backend for this</h3>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/11/13/Resample-and-interpolation/" data-id="clcnv8qbp002yavjrhzcj6sg8" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/11/13/Resample-and-interpolation/" data-id="clgcz6n4u002y01jre2mq86np" class="article-share-link">分享</a>
       
       
       
@@ -244,7 +248,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Resample-the-data"><span class="toc-number">1.</span> <span class="toc-text">Resample the data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Decompose-data-into-blocks"><span class="toc-number">2.</span> <span class="toc-text">Decompose data into blocks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-operation"><span class="toc-number">3.</span> <span class="toc-text">VTK operation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-datasize-as-needed-based-on-the-interpolation"><span class="toc-number">4.</span> <span class="toc-text">Create datasize as needed based on the interpolation</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Resample-the-data"><span class="toc-number">1.</span> <span class="toc-text">Resample the data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Decompose-data-into-blocks"><span class="toc-number">2.</span> <span class="toc-text">Decompose data into blocks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-operation"><span class="toc-number">3.</span> <span class="toc-text">VTK operation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PointCloud"><span class="toc-number">4.</span> <span class="toc-text">PointCloud</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python-scripts-for-this"><span class="toc-number">5.</span> <span class="toc-text">Python scripts for this</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-datasize-as-needed-based-on-the-interpolation"><span class="toc-number">6.</span> <span class="toc-text">Create datasize as needed based on the interpolation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#More-theoretical-backend-for-this"><span class="toc-number">7.</span> <span class="toc-text">More theoretical backend for this</span></a></li></ol>
           </div>
       </div>
     </div>

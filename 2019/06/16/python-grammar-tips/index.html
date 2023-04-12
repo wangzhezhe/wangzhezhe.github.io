@@ -13,7 +13,7 @@
 <meta property="og:description" content="记录一些python中的基本语法知识点（主要是2.7版本的），总是忘记。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-06-16T21:39:23.000Z">
-<meta property="article:modified_time" content="2022-12-04T22:42:20.368Z">
+<meta property="article:modified_time" content="2023-01-08T21:52:56.276Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -190,7 +190,9 @@ ga('send', 'pageview');
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class A:</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.a = &#x27;a&#x27;</span><br><span class="line">    def method(self):</span><br><span class="line">        print &quot;method print&quot;</span><br><span class="line">a = A()</span><br><span class="line">print &quot;output 1: &quot;</span><br><span class="line"># instance a contains the element &#x27;a&#x27; print a</span><br><span class="line">print getattr(a, &#x27;a&#x27;, &#x27;default&#x27;)</span><br><span class="line"># instance a do not contain the element &#x27;b&#x27; print default</span><br><span class="line">print &quot;output 2: &quot;</span><br><span class="line">print getattr(a, &#x27;b&#x27;, &#x27;default&#x27;)</span><br><span class="line"># instance a contain the function &#x27;method&#x27; return the address of function</span><br><span class="line">print &quot;output 3: &quot;</span><br><span class="line">print getattr(a, &#x27;method&#x27;, &#x27;default&#x27;)</span><br><span class="line"># instance a contain the function &#x27;method&#x27; return that function to value</span><br><span class="line"># use value() to invoke the function and print it</span><br><span class="line">print &quot;output 4:&quot;</span><br><span class="line">value=getattr(a, &#x27;method&#x27;, &#x27;default&#x27;)</span><br><span class="line">value()</span><br><span class="line">&quot;&quot;&quot;&quot;</span><br><span class="line">output:</span><br><span class="line">output 1: </span><br><span class="line">a</span><br><span class="line">output 2: </span><br><span class="line">default</span><br><span class="line">output 3: </span><br><span class="line">&lt;bound method A.method of &lt;__main__.A instance at 0x7f9bcf896a70&gt;&gt;</span><br><span class="line">output 4:</span><br><span class="line">method print</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
 
 <h3 id="File-operation"><a href="#File-operation" class="headerlink" title="File operation"></a>File operation</h3><p>load a file and check the key ward in each line of the file, remember to use the line strip operation.</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">fo=open(file_name, &quot;r&quot;)</span><br><span class="line">for line in fo:</span><br><span class="line">	line_strip=line.strip()</span><br><span class="line">	if specific_str in line_strip:</span><br><span class="line">		# do sth here</span><br><span class="line">fo.close()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">fo=open(file_name, &quot;r&quot;)</span><br><span class="line">for line in fo:</span><br><span class="line">	line_strip=line.strip()</span><br><span class="line">	if specific_str in line_strip:</span><br><span class="line">		# do sth here, such as split the line</span><br><span class="line">fo.close()</span><br></pre></td></tr></table></figure>
+<p>write file into the specific dir</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">f = open(file_name,&#x27;w&#x27;)</span><br><span class="line"># do sth to create the str for writting</span><br><span class="line">f.write(str+&quot;\n&quot;)</span><br><span class="line">f.close() </span><br></pre></td></tr></table></figure>
 
 <h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p>learn python step by step 的比较好的tutorial</p>
 <p><a target="_blank" rel="noopener" href="https://intermediate-and-advanced-software-carpentry.readthedocs.io/en/latest/day2.html">https://intermediate-and-advanced-software-carpentry.readthedocs.io/en/latest/day2.html</a></p>
@@ -198,7 +200,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/python-grammar-tips/" data-id="clcnv8qc3007iavjr7xqj2ik9" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/python-grammar-tips/" data-id="clgcz6n5a007t01jr1tdoftao" class="article-share-link">分享</a>
       
       
       

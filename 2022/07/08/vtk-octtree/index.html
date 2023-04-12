@@ -13,7 +13,7 @@
 <meta property="og:description" content="Some notes about oct tree. This is the online video">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-07-09T00:56:32.000Z">
-<meta property="article:modified_time" content="2022-11-08T02:44:07.004Z">
+<meta property="article:modified_time" content="2023-02-12T23:37:57.821Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -145,11 +145,13 @@ ga('send', 'pageview');
 <p>Be careful about the index part, use three digit to represent it. The index start from 000 to the 111 For each dimention, it can either be 0 or 1, the number of digits equals to the numbers of the dimention. If is larger than middle position value, the index is 1 for that position, otherwise, the index is 0.</p>
 <p>In DivideRegion function, order array is a little bit tricky to understand.</p>
 <p>Originally, we set it by natural order, then during the index computation, we select out the points belonging to each sub space, these index are stored into a points list, then we reuse that order array, for each sub division, we try to assign it to corsponding segment of the ordering array. Then setting the start position of the order at different position based on the counter. Without this array, we can not know how many points belongs to the next level after the subdivision. We do not know the virtual nody contains how many points.</p>
+<h3 id="Difference-between-the-OCTree-and-HyperGridTree"><a href="#Difference-between-the-OCTree-and-HyperGridTree" class="headerlink" title="Difference between the OCTree and HyperGridTree"></a>Difference between the OCTree and HyperGridTree</h3><p>The octtree is like a kind of index based on the specific dataset. We can use the octtree as the locator to find the specific points. The original data is in a different structure and we build the oct tree overit. The HyberGridTree is different, its original data is stored in the tree format direactly.</p>
+<p>(TODO) amr data in the hdf5 format</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/07/08/vtk-octtree/" data-id="clcnv8qc8008mavjr4gg9ayew" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/07/08/vtk-octtree/" data-id="clgcz6n5d009001jr8fax5r5q" class="article-share-link">分享</a>
       
       
       
@@ -207,7 +209,7 @@ ga('send', 'pageview');
       <strong class="article-nav-caption">上一篇</strong>
       <div class="article-nav-title">
         
-          Software design experiences
+          Software design and code review experiences
         
       </div>
     </a>
@@ -248,7 +250,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Basic-ideas-about-oct-tree"><span class="toc-number">1.</span> <span class="toc-text">Basic ideas about oct tree</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Example-of-using-the-oct-tree-in-VTK"><span class="toc-number">2.</span> <span class="toc-text">Example of using the oct tree in VTK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Understanding-VTK-oct-tree-implementation"><span class="toc-number">3.</span> <span class="toc-text">Understanding VTK oct tree implementation</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Basic-ideas-about-oct-tree"><span class="toc-number">1.</span> <span class="toc-text">Basic ideas about oct tree</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Example-of-using-the-oct-tree-in-VTK"><span class="toc-number">2.</span> <span class="toc-text">Example of using the oct tree in VTK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Understanding-VTK-oct-tree-implementation"><span class="toc-number">3.</span> <span class="toc-text">Understanding VTK oct tree implementation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Difference-between-the-OCTree-and-HyperGridTree"><span class="toc-number">4.</span> <span class="toc-text">Difference between the OCTree and HyperGridTree</span></a></li></ol>
           </div>
       </div>
     </div>

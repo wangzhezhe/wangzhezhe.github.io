@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Python based non linear regression | AverageMind</title>
+  <title>ps scratch | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Some tips about how to use the linear or non-linear regression approach in python.">
+  <meta name="description" content="Some notes about photo shop.  It always requires the photo shop to make the 2 intch times 2 intch passport photo or other related photos.  Taking some note regarding all details.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python based non linear regression">
-<meta property="og:url" content="http://yoursite.com/2023/01/02/Python-based-non-linear-regression/index.html">
+<meta property="og:title" content="ps scratch">
+<meta property="og:url" content="http://yoursite.com/2023/03/12/ps-scratch/index.html">
 <meta property="og:site_name" content="AverageMind">
-<meta property="og:description" content="Some tips about how to use the linear or non-linear regression approach in python.">
+<meta property="og:description" content="Some notes about photo shop.  It always requires the photo shop to make the 2 intch times 2 intch passport photo or other related photos.  Taking some note regarding all details.">
 <meta property="og:locale">
-<meta property="article:published_time" content="2023-01-02T14:45:17.000Z">
-<meta property="article:modified_time" content="2023-01-02T15:49:57.917Z">
+<meta property="article:published_time" content="2023-03-13T01:34:30.000Z">
+<meta property="article:modified_time" content="2023-03-13T02:05:39.883Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -83,12 +83,16 @@ ga('send', 'pageview');
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Python-based-non-linear-regression" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-ps-scratch" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2023/01/02/Python-based-non-linear-regression/" class="article-date">
-  <time datetime="2023-01-02T14:45:17.000Z" itemprop="datePublished">2023-01-02</time>
+    <a href="/2023/03/12/ps-scratch/" class="article-date">
+  <time datetime="2023-03-13T01:34:30.000Z" itemprop="datePublished">2023-03-12</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/others/">others</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -97,7 +101,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      Python based non linear regression
+      ps scratch
     </h1>
   
 
@@ -107,32 +111,33 @@ ga('send', 'pageview');
       
         <!-- Table of Contents -->
         
-        <p>Some tips about how to use the linear or non-linear regression approach in python.</p>
+        <p>Some notes about photo shop. </p>
+<p>It always requires the photo shop to make the 2 intch times 2 intch passport photo or other related photos. </p>
+<p>Taking some note regarding all details.</p>
 <span id="more"></span>
 
-<h3 id="Mathematical-background"><a href="#Mathematical-background" class="headerlink" title="Mathematical background"></a>Mathematical background</h3><p>For these kind of algorithm, we do not need to know all details about the math background since we mainly library provided by others instead of implementing it from the scratch.</p>
-<p>This <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=8evmj2L-iCY">video</a> provides some detailed background about how this works. The main idea is to come up with a expression about residual and then a matrix vector multiplication question. The metrix is jacobian matrix, the vector is the change of the parameters used that defines the non-linear curve.</p>
-<h3 id="python-program"><a href="#python-program" class="headerlink" title="python program"></a>python program</h3><p>The scipy provids a good abstraction about the linear&#x2F;nonlinear least squares fitting this is an example:</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/python_scipy/least-square.py">https://github.com/wangzhezhe/5MCST/blob/master/python_scipy/least-square.py</a></p>
-<p>In this example, we assume the x is the resource of a particular algorithm and the y is the execution time of that algorithm, we try to come up with a fitting function that describe how the execution time changes with different resources. For this simple case, the <code>least_squares</code> interface only need two parameters, the first one is a function that we provided to describe the residual (for each input parameters, we return its error compared with the actual data), the second one is the initial guess of the function. For the model function, it also requires two parameters, the first one is the list of variables used in the function, such as the theta in this case, the second one is the x.</p>
-<p>In summary, we need three function <code>rr_model</code> that describe the fitting curve we provided, <code>rr_fun</code> use the <code>rr_model</code> and actual data to return the error. <code>least_squares</code> use the <code>rr_fun</code> and initial guess to return the predicted results. Then we use the predicted parameters and the the <code>rr_model</code> to compute the predicted results, we can compare the predicted results with the actual data to evaluate the error of the model prediction.</p>
-<h3 id="Others"><a href="#Others" class="headerlink" title="Others"></a>Others</h3><p>There are some practical techniques, such as taking the log operator of the raw data or how to select a good fitting curve. These things are more depedent on the actual experiences.</p>
-<p>When we get a fitting function and assocaited values used in the function, we usually plot several extra steps and to see if the trend match the tren of the data. </p>
-<p>Personally speaking, these fitting functions based on least square more suitable for the data which have a simple shape of the curve. It is pure statistical approach and the term in the fitting function might be meaningless from the aspect of the real problem. (how every term contributes to the results in a real problem). This <a target="_blank" rel="noopener" href="https://www.statisticssolutions.com/free-resources/directory-of-statistical-analyses/assumptions-of-multiple-linear-regression/">blog</a> describes some assumptions about using the linear least square approach. (It is important to figure out the assumption before adopting a particular approach)</p>
-<p>Be careful of the difference between the curve fitting and the interpolation, for the curve fitting, we use known points to generate a curve and then use the curve (predicted model) to predict the point with a different location. For the interpolation, we use the known points to compute unknonwn points. Assuming the value of the unknown point is P, its value is <code>P = w1*P1+w2*P2+...wn*Pn</code> and the P1, P2 … Pn are known points.</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>This article provides a good example about how to use scipy to do the work</p>
-<p><a target="_blank" rel="noopener" href="https://hernandis.me/2020/04/05/three-examples-of-nonlinear-least-squares-fitting-in-python-with-scipy.html">https://hernandis.me/2020/04/05/three-examples-of-nonlinear-least-squares-fitting-in-python-with-scipy.html</a></p>
-<p>Math background of nonlinear least squares</p>
-<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=8evmj2L-iCY">https://www.youtube.com/watch?v=8evmj2L-iCY</a></p>
-<p>Another good blog about the math backgrounud of nonlinear least square regression</p>
-<p><a target="_blank" rel="noopener" href="https://www.itl.nist.gov/div898/handbook/pmd/section1/pmd142.htm">https://www.itl.nist.gov/div898/handbook/pmd/section1/pmd142.htm</a></p>
-<p>Another good references</p>
-<p><a target="_blank" rel="noopener" href="https://pythonnumericalmethods.berkeley.edu/notebooks/chapter16.05-Least-Square-Regression-for-Nonlinear-Functions.html">https://pythonnumericalmethods.berkeley.edu/notebooks/chapter16.05-Least-Square-Regression-for-Nonlinear-Functions.html</a></p>
+<h3 id="presteps"><a href="#presteps" class="headerlink" title="presteps"></a>presteps</h3><p>The light is important, just make sure there is good light condition or put the light before the face.</p>
+<p>For the uscis, there is more strict checking. Maybe taking a photo and then use their online clip tool to clip the photo, if the photo can pass the checking, then start to try to use the ps to reset the background into the white (this is really important)</p>
+<h3 id="detailed-steps"><a href="#detailed-steps" class="headerlink" title="detailed steps"></a>detailed steps</h3><p>This video provides really good step by step explanation</p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=KnXjLMw0a7M&amp;t=543s">https://www.youtube.com/watch?v=KnXjLMw0a7M&amp;t=543s</a></p>
+<p>0 load t photo into ps</p>
+<p>1 copy layer</p>
+<p>2 click new layer, go to channel</p>
+<p>3 copy the blue channel, click the blue channel</p>
+<p>4 hit ctrl + L and get the “layer options” for that blue channel</p>
+<p>5 move specific small bar and to let it to a specific region where there<br>are most distinctitve boundrary</p>
+<p>6 press the ctrl, at the same time, do the left click the copyed blue layer, the figure with people is select out</p>
+<p>7 use the quickly choose tool, and use <code>+</code> or <code>-</code> to refine the selection, use <code>[</code> and <code>]</code> to ctrl the size of the operation region</p>
+<p>8 after doing this, clicking the adding mask at the bottom right corner. pressing the <code>alt</code> key at the same time, the figure with people’s body can be selected out by that mask</p>
+<p>9 inserting a new layer by clicking the adding new layer button</p>
+<p>10 then right clicking the inserted new layer and selecting the solid color, change it to the white backgound, the value of r, g and b are 255 for that case.</p>
+<p>11 Moving the new inserted layer under the layer with a figure on it.</p>
+<p>12 using the crop tool to select the 2 by 2 figure, for that ratio sections, the default value is in inch. There are lot of good online resource to teach how to do it correctly.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/01/02/Python-based-non-linear-regression/" data-id="clcnv8qbo002iavjr96m52a6t" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/03/12/ps-scratch/" data-id="clgcz6n5a007m01jretd89883" class="article-share-link">分享</a>
       
       
       
@@ -186,19 +191,19 @@ ga('send', 'pageview');
     
 <nav id="article-nav">
   
-    <a href="/2023/01/08/Many-faces-of-vtkm/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2023/03/18/latex-tips/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
       <div class="article-nav-title">
         
-          Many faces of vtkm
+          latex tips
         
       </div>
     </a>
   
   
-    <a href="/2023/01/01/ML-optimiazation/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2023/02/19/algorithm-bit-index/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">ML_optimiazation</div>
+      <div class="article-nav-title">algorithm bit index</div>
     </a>
   
 </nav>
@@ -231,7 +236,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Mathematical-background"><span class="toc-number">1.</span> <span class="toc-text">Mathematical background</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python-program"><span class="toc-number">2.</span> <span class="toc-text">python program</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Others"><span class="toc-number">3.</span> <span class="toc-text">Others</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#presteps"><span class="toc-number">1.</span> <span class="toc-text">presteps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#detailed-steps"><span class="toc-number">2.</span> <span class="toc-text">detailed steps</span></a></li></ol>
           </div>
       </div>
     </div>

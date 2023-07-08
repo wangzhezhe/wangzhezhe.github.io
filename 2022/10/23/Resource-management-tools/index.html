@@ -13,7 +13,7 @@
 <meta property="og:description" content="This blog mainly discuss about some tips for commonly used tools to allocated resources for distrirbuted system and parallel computing.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-10-23T21:10:18.000Z">
-<meta property="article:modified_time" content="2023-04-12T00:50:03.671Z">
+<meta property="article:modified_time" content="2023-04-26T02:22:03.530Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -43,7 +43,11 @@ ga('send', 'pageview');
 <!-- End Google Analytics -->
 
 
-<meta name="generator" content="Hexo 6.2.0"></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -131,7 +135,7 @@ ga('send', 'pageview');
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$showquota</span><br></pre></td></tr></table></figure>
 
 <p><strong>scontrol</strong></p>
-<p>scontrol show hostname command, this can show all host names of a running job, if the program need to access the allocated nodes, we can use this command.</p>
+<p><code>scontrol show hostname</code> command, this can show all host names of a running job, if the program need to access the allocated nodes, we can use this command. For some program that requires the service registration for the master process, this is really helpful. Since the ip address changes each time when there is new allocation.</p>
 <p><strong>commonly used parameters for srun</strong></p>
 <p><code>--nodes</code> specify how many nodes will be used, <code>--constraint</code> can specify the specific type of the node (such as using specific cpu architecture, these information is depends on the cluster’s properties) <code>-c</code> can specify how many cores will be used for each task (ranks) and <code>-n</code> specifies how many taks (ranks).</p>
 <p><strong>Other tips</strong></p>
@@ -158,6 +162,8 @@ ga('send', 'pageview');
 <p>Another way is to use cpu as the distinction, for example, 1 resource set per node and use all cpu here by 1 MPI program.</p>
 <p><code>-n 1 -a 1 -c 42 -b packed:42 -g 0</code></p>
 <p>This <a target="_blank" rel="noopener" href="https://docs.olcf.ornl.gov/systems/summit_user_guide.html#common-use-cases">common use cases</a> and <a target="_blank" rel="noopener" href="https://docs.olcf.ornl.gov/systems/summit_user_guide.html#jsrun-examples">jsun example</a> can show all details.</p>
+<p>This <a target="_blank" rel="noopener" href="https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=cluster-viewing-information">document</a> lists all details of the spectrum things. These commands are really similar to the K8s things. The slurm can also provide similar functionalities. </p>
+<p><code>bparams -a</code> this can show all setting for the LSF, maybe some capabilities are disabled such as elasticity jobs.</p>
 <h3 id="Docker-and-k8s"><a href="#Docker-and-k8s" class="headerlink" title="Docker and k8s"></a>Docker and k8s</h3><p>Docker and k8s are mainsream manager for managing the cluster on the cloud env. We do not list details here, there are all kinds of resources online, the idea is similar with the slurm and lsf, we can allocate the job and run specific program based on docker. There is better support for the web application.</p>
 <p>The k8s things is still very popular, if you have a good understanding about it, you may get a decent job offer from the high tech company. However, it only focuse on the resource management layer, which is not much difference in concept compared with the slurm and lsf. Or you may call it PaaS in the scope of cloud computing.</p>
 <h3 id="Test-program"><a href="#Test-program" class="headerlink" title="Test program"></a>Test program</h3><p>One tricky thing is that sometimes you are not make sure if the scheduler actually works as you expected.</p>
@@ -171,7 +177,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/10/23/Resource-management-tools/" data-id="clgczf9w000334fjr8yltfj2a" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/10/23/Resource-management-tools/" data-id="cljukfm7g0037k7jr9pihch3f" class="article-share-link">分享</a>
       
       
       

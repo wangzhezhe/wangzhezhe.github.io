@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Many aspects of MG and GMM | AverageMind</title>
+  <title>Many aspects of MG, GMM and implementing linear algorithm | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Some notes about using multivariate gaussian (MG) and Gasussian mixture model (GMM) in research works.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Many aspects of MG and GMM">
+<meta property="og:title" content="Many aspects of MG, GMM and implementing linear algorithm">
 <meta property="og:url" content="http://yoursite.com/2023/04/02/Many-aspects-of-MG-and-GMM/index.html">
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="Some notes about using multivariate gaussian (MG) and Gasussian mixture model (GMM) in research works.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-04-03T03:27:26.000Z">
-<meta property="article:modified_time" content="2023-04-10T03:45:41.944Z">
+<meta property="article:modified_time" content="2023-06-18T23:07:01.325Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -43,7 +43,11 @@ ga('send', 'pageview');
 <!-- End Google Analytics -->
 
 
-<meta name="generator" content="Hexo 6.2.0"></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -101,7 +105,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      Many aspects of MG and GMM
+      Many aspects of MG, GMM and implementing linear algorithm
     </h1>
   
 
@@ -115,13 +119,39 @@ ga('send', 'pageview');
 <span id="more"></span>
 
 <p>In one of the program, we need to provide a model assumption and fit the existing data into model, and I learned a lot from that process and recap a lot of mathmatical knowledge. These knowledge is belonging to the statistics maching learning and statistics things. Since we need to implement it from scratch to let them run well on different devices, we need to implement our own linear algorithm from scratch, although the concepts are old but there are a lot of works here.</p>
-<h3 id="type-of-distributions"><a href="#type-of-distributions" class="headerlink" title="type of distributions"></a>type of distributions</h3><p>This represents a specific variable satisfies what kind of distribution. There are two principles to classifies the distributions, one is the type of the distribution function, such as the uniform distribution, normal distribution, etc and there are different types of distribution functions.</p>
+<h3 id="Type-of-distributions"><a href="#Type-of-distributions" class="headerlink" title="Type of distributions"></a>Type of distributions</h3><p>This represents a specific variable satisfies what kind of distribution. There are two principles to classifies the distributions, one is the type of the distribution function, such as the uniform distribution, normal distribution, etc and there are different types of distribution functions.</p>
 <p>Another principles is the indepedent of multivariate. For example, if we try to use a model to fit 2 samples from two variables. We can either assume they are indepedent or corelated. Either multiple indepedent variabels or using one density function with multiple variables, such as multivariate gaussian model, belongs to the category of multivariate probability analysis (be careful about this). The key difference is that for the indepedent assumption, there is <code>P(A,B)=P(A)*P(B)</code>, for the colrelated case, there is <code>P(A,B)=P(A|B)*P(B)</code>. In multivariate case, there is concept about joint probability.</p>
 <p>Be careful about the term using when we say a particular variable satisfies a distribution. In this case, we actually mean two things, one is its <code>probability density function(pdf)</code>, such as the Gaussian distribution, its probability density function is that classic shape. Another things is that <code>cumulative distribution function(cdf)</code>, which is the integral of the probability density function. When we say the probability of <code>P(x=a)</code> it represents a point in the pdf (continuous case), or <code>P(a&lt;x&lt;b)</code>, which represents a specific integration in the region between a and b in pdf function.</p>
 <p>Be careful about the defination of likelihood, look at this <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=pYxNSUDSFH4">viedo</a> <code>L(mean is a and stdev is b | sample is c)</code> this is likelihood, what we know is the sample and express the likelihood of particular probability value when it is specific model (we can change the model). Given the sample, when model is specific one, how much probability to get this sample. Which is a kind of reserse process of computing probability (in this case, we know the probability density function, and check the probability of get specific sample)</p>
 <p>Q-Q plot can be used to choose which distribution assumption should be used</p>
 <p>Deciding if to use multivariate assumption or indepedent assumption. (there are still some questions in actual using, for example, when we founud two variables have some kinds of relations, the correlation coefficient is between 0 and 1, which assumption should we use?)</p>
 <p>There is no simple way to compute the cumulative distribution function, the monte carlo approach is simple and efficient way to use by computers (integral is hard, but we can map the input variables into the outcome probability). There is a <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Multivariate_normal_distribution">figure here</a> that shows the converge rate, it converges fast after 1k samples for, we can get similar converge figure for different types of problems we have. The output of the monte carlo results can be <code>P(a&lt;x&lt;b)</code>  </p>
+<h3 id="Density-estimation"><a href="#Density-estimation" class="headerlink" title="Density estimation"></a>Density estimation</h3><p>The idea of histogram is the straightforward step based on simple statistics description. Just dividing regions into different bins and count how many observations collated in each bin.</p>
+<p>There are all kinds of documents about the kernel density estimation, the straightforard idea is to acquire a continuous version based on histogram. So we basically stack each unit together to construct the density function. The unit is the standard unit such as the gaussian kernel. The approach is also simple, when there is one observation, we put one standard kernel here. (both pyplot hist and the seaborn can be used to do that)</p>
+<p>The python implementaion of KDE is scipy KernelDensity function. The input data is the original observation raw data</p>
+<p>Pay attention that the y axis of the histogram. The label of y can be changes from the count scale to the frequency scale. The operation is simple, just divide the total number of bins. (Pay attention about the meaning of y axis when drawing the figure)</p>
+<p>Maybe the MSE is a simple metric to see if there is a good match between the obvervation data and the KDE function.</p>
+<p>histogram, density plot, probability density function</p>
+<p>density plot can be viewed as the estimation of the probability density function. The probability function is the function in theory.</p>
+<table>
+<thead>
+<tr>
+<th>Approach\Assumptions</th>
+<th>Indepedent</th>
+<th>Depedent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Parametric</td>
+<td>Uniform distribution, Single variate Gaussian distribution</td>
+<td>Multivariate Gaussian distribution</td>
+</tr>
+<tr>
+<td>Nonparametric</td>
+<td>Histogram, KDE (mixture model based on different kernel functions), Single variate Gaussian Mixture Model</td>
+<td>Multivariate Gaussian Mixture Model (GMM)</td>
+</tr>
+</tbody></table>
 <h3 id="Distinguish-with-regreesion-model"><a href="#Distinguish-with-regreesion-model" class="headerlink" title="Distinguish with regreesion model"></a>Distinguish with regreesion model</h3><p>The correlation between two variables. The naive idea is to use the scatter plot to see if two variables are correlated, if there is noise everywhere, it can show that there is no relationship between these two variables. In the excel, we can use the <code>CORREL</code> parameter to show that, which is also known as the pearson correlation coefficient.</p>
 <p>If there is correlation between two variables (such as the temprature and the ice crease sales example), then we can derive the regression model to show this relationship, the model here can be the linear or non-linear regression model. The approach adapoted here is the least square approach. We do not dive into details here.</p>
 <h3 id="Sampling-the-multivariate-gaussian-based-on-normal-distribution"><a href="#Sampling-the-multivariate-gaussian-based-on-normal-distribution" class="headerlink" title="Sampling the multivariate gaussian based on normal distribution"></a>Sampling the multivariate gaussian based on normal distribution</h3><p>It takes me some time to figure out how to do the sampling for the multivariate gaussian distribution. The key idea is to do the sampling from the single variable gaussian distribution firstly, and then try to convert it into multivariate gaussina distribution. In wiki page, there is a straightforward explanation. When X is multivariate gaussian distribution, there is X&#x3D;AZ+u, where covariance matrix is AA^T and the Z is the normal random vector from the gaussian distribution. u is the mean value for each variable of multivariate gaussian distribution.</p>
@@ -135,28 +165,28 @@ ga('send', 'pageview');
 <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/6142576/sample-from-multivariate-normal-gaussian-distribution-in-c">https://stackoverflow.com/questions/6142576/sample-from-multivariate-normal-gaussian-distribution-in-c</a></p>
 <p>However, there is no avalible code to implement assocaited math functions on GPU (pure c code) conveniently. We may use cuda associated libraies, but it is hard to make that code adaptable for both CPU, CUDA GPU and NVIDIA GPU. Here are some other avalible resources</p>
 <p>Single node CPUs: </p>
-<p>LAPACK:   <a target="_blank" rel="noopener" href="https://netlib.org/lapack/">https://netlib.org/lapack/</a>  De facto standard library (Fortran and C APIs),  developed by UTK. Vendors like Intel, IBM and Cray provides their own proprietary version.</p>
+<p>LAPACK: <a target="_blank" rel="noopener" href="https://netlib.org/lapack/">https://netlib.org/lapack/</a>  De facto standard library (Fortran and C APIs),  developed by UTK. Vendors like Intel, IBM and Cray provides their own proprietary version.</p>
 <p>PLASMA: New library developed by UTK (C APIs). Adapted to multicore CPUs (OpenMP). <a target="_blank" rel="noopener" href="https://github.com/icl-utk-edu/plasma/">https://github.com/icl-utk-edu/plasma/</a><br>Eige:, C++ library, but the performance is not so great.  <a target="_blank" rel="noopener" href="https://eigen.tuxfamily.org/index.php?title=Main_Page">https://eigen.tuxfamily.org/index.php?title=Main_Page</a></p>
-<p>GPUs:<br>MAGMA: Another package from UTK.  <a target="_blank" rel="noopener" href="https://icl.utk.edu/magma/software/index.html">https://icl.utk.edu/magma/software/index.html</a> It supports both NVIDIA and AMD GPUs.<br>cuSolver:  <a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cusolver/">https://docs.nvidia.com/cuda/cusolver/</a>  </p>
+<p>GSL library. GNU scientific library.</p>
+<p>GPUs:</p>
+<p>MAGMA: Another package from UTK.  <a target="_blank" rel="noopener" href="https://icl.utk.edu/magma/software/index.html">https://icl.utk.edu/magma/software/index.html</a> It supports both NVIDIA and AMD GPUs.<br>cuSolver:  <a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cusolver/">https://docs.nvidia.com/cuda/cusolver/</a>  </p>
 <p>It seems that the MAGMA has support for both NVIDIA GPU and HIP. We do not know that when we do the project. Try to get familar with associated libray.</p>
-<h3 id="Techniques-used-for-writting-eigen-value-solver-from-scratch-and-related-issues"><a href="#Techniques-used-for-writting-eigen-value-solver-from-scratch-and-related-issues" class="headerlink" title="Techniques used for writting eigen value solver from scratch and related issues"></a>Techniques used for writting eigen value solver from scratch and related issues</h3><p>Writting these eigen library from scratch is never easy, I need to refresh the linear algebra things a lot.</p>
-<p>Necessary background information for matrix things.</p>
-<p>defination of matrix</p>
-<p>using dynamic or static matrix allocation</p>
-<p>QR decomposition</p>
-<p>Computing inverse matrix for small scale case</p>
+<h3 id="Techniques-used-for-writting-eigen-value-solver-from-scratch-and-related-issues"><a href="#Techniques-used-for-writting-eigen-value-solver-from-scratch-and-related-issues" class="headerlink" title="Techniques used for writting eigen value solver from scratch and related issues"></a>Techniques used for writting eigen value solver from scratch and related issues</h3><p>Check another blog regarding the linear algorithm</p>
 <h3 id="The-idea-of-likely-hood-expectaion-of-computing-GMM"><a href="#The-idea-of-likely-hood-expectaion-of-computing-GMM" class="headerlink" title="The idea of likely hood expectaion of computing GMM"></a>The idea of likely hood expectaion of computing GMM</h3><p>It turns that the multivariate gaussian is not enough. After going through some papers, we found that more common and general way to use a model to represent the variable is the gaussian mixture model. It can better fit the sample data compared with the single normal distribution. The question is how to implement this GMM for indepedent 1d variable and multivariable. The standard way is the maximiaztion expectation model and there is a good explanation <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=3JYcCbO5s6M">in this serie</a> of online video.</p>
-<p>One related paper to implement this thing on GPU is<br><a target="_blank" rel="noopener" href="https://www.mdpi.com/1999-4893/14/10/285">https://www.mdpi.com/1999-4893/14/10/285</a></p>
+<p>One related paper to implement this thing on GPU is</p>
+<p><a target="_blank" rel="noopener" href="https://www.mdpi.com/1999-4893/14/10/285">https://www.mdpi.com/1999-4893/14/10/285</a></p>
 <p>The core idea can be descirbed as follow, assumping there are two components. If we have a guss of the (u1,sigma1), and (u2,sigma2), we can compute the likelihood of each observered data sample actually comes from these two distributions.</p>
 <h3 id="Implementing-GMM-on-GPU"><a href="#Implementing-GMM-on-GPU" class="headerlink" title="Implementing GMM on GPU"></a>Implementing GMM on GPU</h3><p>python example</p>
 <p><a target="_blank" rel="noopener" href="https://python-course.eu/machine-learning/expectation-maximization-and-gaussian-mixture-models-gmm.php">https://python-course.eu/machine-learning/expectation-maximization-and-gaussian-mixture-models-gmm.php</a></p>
 <h3 id="Least-square-regression-vs-maximal-expectation"><a href="#Least-square-regression-vs-maximal-expectation" class="headerlink" title="Least square regression vs maximal expectation"></a>Least square regression vs maximal expectation</h3><p><a target="_blank" rel="noopener" href="https://stats.stackexchange.com/questions/143705/maximum-likelihood-method-vs-least-squares-method?newreg=565ce6ee48e947d885b795e6cb3a442d">https://stats.stackexchange.com/questions/143705/maximum-likelihood-method-vs-least-squares-method?newreg=565ce6ee48e947d885b795e6cb3a442d</a></p>
 <p><a target="_blank" rel="noopener" href="https://stats.stackexchange.com/questions/12562/equivalence-between-least-squares-and-mle-in-gaussian-model">https://stats.stackexchange.com/questions/12562/equivalence-between-least-squares-and-mle-in-gaussian-model</a></p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><p>A good tutorial about using the gsl library</p>
+<p><a target="_blank" rel="noopener" href="https://sites.google.com/a/phys.buruniv.ac.in/numerical/laboratory/example-codes/matrix-vector-operations-with-gsl-blas">https://sites.google.com/a/phys.buruniv.ac.in/numerical/laboratory/example-codes/matrix-vector-operations-with-gsl-blas</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/04/02/Many-aspects-of-MG-and-GMM/" data-id="clgczf9vv001t4fjrbgs77845" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/04/02/Many-aspects-of-MG-and-GMM/" data-id="cljukfm7c001yk7jrbl0sg63z" class="article-share-link">分享</a>
       
       
       
@@ -210,6 +240,15 @@ ga('send', 'pageview');
     
 <nav id="article-nav">
   
+    <a href="/2023/04/25/Many-faces-of-mesh/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          many faces of mesh
+        
+      </div>
+    </a>
+  
   
     <a href="/2023/03/18/latex-tips/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
@@ -246,7 +285,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#type-of-distributions"><span class="toc-number">1.</span> <span class="toc-text">type of distributions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Distinguish-with-regreesion-model"><span class="toc-number">2.</span> <span class="toc-text">Distinguish with regreesion model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sampling-the-multivariate-gaussian-based-on-normal-distribution"><span class="toc-number">3.</span> <span class="toc-text">Sampling the multivariate gaussian based on normal distribution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Techniques-used-for-writting-eigen-value-solver-from-scratch-and-related-issues"><span class="toc-number">4.</span> <span class="toc-text">Techniques used for writting eigen value solver from scratch and related issues</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-idea-of-likely-hood-expectaion-of-computing-GMM"><span class="toc-number">5.</span> <span class="toc-text">The idea of likely hood expectaion of computing GMM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Implementing-GMM-on-GPU"><span class="toc-number">6.</span> <span class="toc-text">Implementing GMM on GPU</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Least-square-regression-vs-maximal-expectation"><span class="toc-number">7.</span> <span class="toc-text">Least square regression vs maximal expectation</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Type-of-distributions"><span class="toc-number">1.</span> <span class="toc-text">Type of distributions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Density-estimation"><span class="toc-number">2.</span> <span class="toc-text">Density estimation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Distinguish-with-regreesion-model"><span class="toc-number">3.</span> <span class="toc-text">Distinguish with regreesion model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sampling-the-multivariate-gaussian-based-on-normal-distribution"><span class="toc-number">4.</span> <span class="toc-text">Sampling the multivariate gaussian based on normal distribution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Techniques-used-for-writting-eigen-value-solver-from-scratch-and-related-issues"><span class="toc-number">5.</span> <span class="toc-text">Techniques used for writting eigen value solver from scratch and related issues</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-idea-of-likely-hood-expectaion-of-computing-GMM"><span class="toc-number">6.</span> <span class="toc-text">The idea of likely hood expectaion of computing GMM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Implementing-GMM-on-GPU"><span class="toc-number">7.</span> <span class="toc-text">Implementing GMM on GPU</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Least-square-regression-vs-maximal-expectation"><span class="toc-number">8.</span> <span class="toc-text">Least square regression vs maximal expectation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#References"><span class="toc-number">9.</span> <span class="toc-text">References</span></a></li></ol>
           </div>
       </div>
     </div>

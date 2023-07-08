@@ -13,7 +13,7 @@
 <meta property="og:description" content="在使用profiling之类的工具之前，更灵活简单的方式就是设置timer">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-06-27T01:00:28.000Z">
-<meta property="article:modified_time" content="2023-04-07T01:24:31.381Z">
+<meta property="article:modified_time" content="2023-04-23T19:47:47.553Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -43,7 +43,11 @@ ga('send', 'pageview');
 <!-- End Google Analytics -->
 
 
-<meta name="generator" content="Hexo 6.2.0"></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -162,12 +166,13 @@ ga('send', 'pageview');
 <h3 id="Performance-model"><a href="#Performance-model" class="headerlink" title="Performance model"></a>Performance model</h3><p>Timing 的一个重要的意义就是构建 performance model 或者了解当前这个service的质量是如何的。有时候在想一个research是不是interests可能是要看看这research当中使用了多少python。换句话说就是使用了多少数学工具或者相关的算法。</p>
 <p>以前总有那种all thing in real time的感觉，现在更多的是offline和online结合的方式。就是offline的model先training好之后然后再进行online的prediction或者classification。就是不要试图去回避这种offline的learning或者是training的过程，本身重要的是model的quality而不是inline 或者 offline。offline 训练好的模型总是可以搬到inline的方式上面来。offline的数据进行model的traning之后就是learning knowledge的过程，这些knowledge就可以用到具体的 online processing的过程中。</p>
 <h3 id="Take-care-of-the-error-and-uncertainty"><a href="#Take-care-of-the-error-and-uncertainty" class="headerlink" title="Take care of the error and uncertainty"></a>Take care of the error and uncertainty</h3><p>Always trying to ask what are associated errors when time sth or using this timer for specific performance model. (Type of the error, bouond of the error, source of the error etc.). Figuring out these things can give you a better understanding regarding the model. The error bar is always needed to describe the figure. Testing one group of results or doing one experiments are not enough, you need to get enough results to show the uncertainty. The error is always a good aspects to discuss the quality of the model, or how to move forward based on the current model approach.</p>
+<p>Therefore, when trying to write a performance test, a good habits is just try to use a for loop and let it run three or five times and then printout the avg time and stdev of the time. This is not a big deal from the perspective of the programming, just use a simple for loop. But that means a lot for processing the results. You do not copy past results back into the excel and execute the env manually (this can save a lot of energy for post processing the results), and you can also say confidently in the paper that we execute multiple runs instead of one run. Reviewer will not complain about your results.</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/27618032/i-o-bound-performance-speedup/27618217">https://stackoverflow.com/questions/27618032/i-o-bound-performance-speedup/27618217</a> </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/26/Time-it/" data-id="clgczf9w1003h4fjrb36i6pb9" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/26/Time-it/" data-id="cljukfm7i003nk7jr4ksh657z" class="article-share-link">分享</a>
       
       
       

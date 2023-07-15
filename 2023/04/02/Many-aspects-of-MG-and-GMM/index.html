@@ -13,7 +13,7 @@
 <meta property="og:description" content="Some notes about using multivariate gaussian (MG) and Gasussian mixture model (GMM) in research works.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-04-03T03:27:26.000Z">
-<meta property="article:modified_time" content="2023-06-18T23:07:01.325Z">
+<meta property="article:modified_time" content="2023-07-14T15:26:45.384Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -122,7 +122,7 @@ ga('send', 'pageview');
 <h3 id="Type-of-distributions"><a href="#Type-of-distributions" class="headerlink" title="Type of distributions"></a>Type of distributions</h3><p>This represents a specific variable satisfies what kind of distribution. There are two principles to classifies the distributions, one is the type of the distribution function, such as the uniform distribution, normal distribution, etc and there are different types of distribution functions.</p>
 <p>Another principles is the indepedent of multivariate. For example, if we try to use a model to fit 2 samples from two variables. We can either assume they are indepedent or corelated. Either multiple indepedent variabels or using one density function with multiple variables, such as multivariate gaussian model, belongs to the category of multivariate probability analysis (be careful about this). The key difference is that for the indepedent assumption, there is <code>P(A,B)=P(A)*P(B)</code>, for the colrelated case, there is <code>P(A,B)=P(A|B)*P(B)</code>. In multivariate case, there is concept about joint probability.</p>
 <p>Be careful about the term using when we say a particular variable satisfies a distribution. In this case, we actually mean two things, one is its <code>probability density function(pdf)</code>, such as the Gaussian distribution, its probability density function is that classic shape. Another things is that <code>cumulative distribution function(cdf)</code>, which is the integral of the probability density function. When we say the probability of <code>P(x=a)</code> it represents a point in the pdf (continuous case), or <code>P(a&lt;x&lt;b)</code>, which represents a specific integration in the region between a and b in pdf function.</p>
-<p>Be careful about the defination of likelihood, look at this <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=pYxNSUDSFH4">viedo</a> <code>L(mean is a and stdev is b | sample is c)</code> this is likelihood, what we know is the sample and express the likelihood of particular probability value when it is specific model (we can change the model). Given the sample, when model is specific one, how much probability to get this sample. Which is a kind of reserse process of computing probability (in this case, we know the probability density function, and check the probability of get specific sample)</p>
+<p>Be careful about the defination of likelihood, look at this <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=pYxNSUDSFH4">viedo</a> <code>L(mean is a and stdev is b | sample is c)</code> this is likelihood, what we know is the sample and express the likelihood of particular probability value when it is specific model (we can change the model). Given the sample, when model is specific one, how much probability to get this sample. Which is a kind of reverse process of computing probability (in this case, we know the probability density function, and check the probability of get specific sample)</p>
 <p>Q-Q plot can be used to choose which distribution assumption should be used</p>
 <p>Deciding if to use multivariate assumption or indepedent assumption. (there are still some questions in actual using, for example, when we founud two variables have some kinds of relations, the correlation coefficient is between 0 and 1, which assumption should we use?)</p>
 <p>There is no simple way to compute the cumulative distribution function, the monte carlo approach is simple and efficient way to use by computers (integral is hard, but we can map the input variables into the outcome probability). There is a <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Multivariate_normal_distribution">figure here</a> that shows the converge rate, it converges fast after 1k samples for, we can get similar converge figure for different types of problems we have. The output of the monte carlo results can be <code>P(a&lt;x&lt;b)</code>  </p>
@@ -182,11 +182,13 @@ ga('send', 'pageview');
 <p><a target="_blank" rel="noopener" href="https://stats.stackexchange.com/questions/12562/equivalence-between-least-squares-and-mle-in-gaussian-model">https://stats.stackexchange.com/questions/12562/equivalence-between-least-squares-and-mle-in-gaussian-model</a></p>
 <h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><p>A good tutorial about using the gsl library</p>
 <p><a target="_blank" rel="noopener" href="https://sites.google.com/a/phys.buruniv.ac.in/numerical/laboratory/example-codes/matrix-vector-operations-with-gsl-blas">https://sites.google.com/a/phys.buruniv.ac.in/numerical/laboratory/example-codes/matrix-vector-operations-with-gsl-blas</a></p>
+<p>likelihood concepts, good paper:</p>
+<p><a target="_blank" rel="noopener" href="https://journals.sagepub.com/doi/10.1177/2515245917744314">https://journals.sagepub.com/doi/10.1177/2515245917744314</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/04/02/Many-aspects-of-MG-and-GMM/" data-id="cljukfm7c001yk7jrbl0sg63z" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/04/02/Many-aspects-of-MG-and-GMM/" data-id="clk4n6vti001wt2jr2p3pa92v" class="article-share-link">分享</a>
       
       
       

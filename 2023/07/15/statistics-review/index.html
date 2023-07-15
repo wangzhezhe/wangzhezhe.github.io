@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Statistics Review | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Reviewing some key notes regarding the statistics.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Statistics Review">
+<meta property="og:url" content="http://yoursite.com/2023/07/15/statistics-review/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Reviewing some key notes regarding the statistics.">
+<meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/images/BayesianInference.png">
+<meta property="article:published_time" content="2023-07-15T14:00:48.000Z">
+<meta property="article:modified_time" content="2023-07-15T23:31:28.234Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/BayesianInference.png">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-statistics-review" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/07/15/statistics-review/" class="article-date">
+  <time datetime="2023-07-15T14:00:48.000Z" itemprop="datePublished">2023-07-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/AI-Math-NumericalAnalysis/">AI&Math&NumericalAnalysis</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Statistics Review
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Reviewing some key notes regarding the statistics.</p>
+<span id="more"></span>
+
+<h3 id="Likelihood-vs-Probability"><a href="#Likelihood-vs-Probability" class="headerlink" title="Likelihood vs Probability"></a>Likelihood vs Probability</h3><p>When discussing the pure defination of likelihood, just follow the documentation <a target="_blank" rel="noopener" href="https://journals.sagepub.com/doi/10.1177/2515245917744314">here</a>. Likelihood is a strange concept in that it is not a probability but is proportional to a probability.</p>
+<blockquote>
+<p>The likelihood of a hypothesis (H) given some data (D) is the probability of obtaining D given that H is true multiplied by an arbitrary positive constant K: L(H) &#x3D; K × P(D|H). In most cases, a hypothesis represents a value of a parameter in a statistical model, such as the mean of a normal distribution. Because a likelihood is not actually a probability, it does not obey various rules of probability; for example, likelihoods need not sum to 1. </p>
+</blockquote>
+<p>It takes me some time to consider why the L is proportinal to the P(D|H). For example, assuming there is gaussian cdf function, and the x axis is the variable, y axis is is probability densify value. For the likelihood function, its x axis can be some unknown parameter such as u, which is one parameter of the model in gaussian distribution. It is easy to get that the y value of the L function has a similar shape with the pdf. Assuming the data are knonw, we can get an prediction of <code>u1</code> for its distribution, when value of u is far from the <code>u1</code>, associated y value is small, when u is close to the <code>u1</code>, associated y value is large, the shape of the L function is therefore quite similar to the shape of the pdf.</p>
+<p>Pay attention, even for the conditional probability, it is still have a D and H notation. It might not be good to explain D and H in p(D|H) as event H and event D, it is good to explain it as data and hypothesis (a value of parameter in a specific distribution model). Key to distinguish them is to explain which one is fixed</p>
+<p>Just remember that the likelihood is not the probability since the integration of the likelihood function is not nacessarily equals to 1.</p>
+<p>In the context of the Bayesian ingerence, the P(D|H) is called the likelihood direaclty, its name only makes sense in the context of Bayesian, it is actually a pdf, not the formal defination of likelihood function.</p>
+<h3 id="Bayesan-inference"><a href="#Bayesan-inference" class="headerlink" title="Bayesan inference"></a>Bayesan inference</h3><p>When discsussing the Bayesan things, the defination of likelihood is a little bit different, the best explanation I can find is this one (<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=HZGCoVF3YvM&amp;t=629s">https://www.youtube.com/watch?v=HZGCoVF3YvM&amp;t=629s</a>) at around 7:00. using the geographic representation to explain the Bayesan things can make it easier to understand. Pay attention that in the context of the Bayesan, the explanation of likelihood is a little bit different with the pure defination of the likelihood function. When we defien the likelihood function, we tend to use the L instead of the p. The L(theta) is not probability since the integration of the L is not necessarily 1. There are still some confusion about likelihhod for me. The easiest way is just to put them into different contexts. In the Bayesian context, just look at the grpahic representation, in the context with more strict defination, just use its pure defination.  </p>
+<img src="/images/BayesianInference.png" width="800"/>
+
+<p>This figure shows a comprehensive understanding about the Bayesian Inference. The idea come from <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=HZGCoVF3YvM">here</a>, which is a really good video to explain associated ideas from graphic view. Instead of memorizing the equation, it is more convenient to memory the graphical figure to show the main idea. The main idea is to update the belief of the probability based on new evidence (data), as the explanation in the video, the evidence or the new data is just the thing that helps to update the belief instead of determine it. After understanding this figure, we can easily utilize the Bayesian inference into different contexts.</p>
+<h3 id="Histogram-and-Kernel-density-estimation"><a href="#Histogram-and-Kernel-density-estimation" class="headerlink" title="Histogram and Kernel density estimation"></a>Histogram and Kernel density estimation</h3><p>Currently, we put all these information into another blog that discussed the MG and GMM</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2023/07/15/statistics-review/" data-id="clk4n6vu3008tt2jraa13b4i8" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/07/09/deep-leaning-notes/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Deep leaning notes</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Likelihood-vs-Probability"><span class="toc-number">1.</span> <span class="toc-text">Likelihood vs Probability</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bayesan-inference"><span class="toc-number">2.</span> <span class="toc-text">Bayesan inference</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Histogram-and-Kernel-density-estimation"><span class="toc-number">3.</span> <span class="toc-text">Histogram and Kernel density estimation</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2023 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Deep leaning notes | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Some notes about the deep learning related knowledge.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deep leaning notes">
+<meta property="og:url" content="http://yoursite.com/2023/07/09/deep-leaning-notes/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Some notes about the deep learning related knowledge.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-07-10T02:47:55.000Z">
+<meta property="article:modified_time" content="2023-07-12T02:16:49.417Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-deep-leaning-notes" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/07/09/deep-leaning-notes/" class="article-date">
+  <time datetime="2023-07-10T02:47:55.000Z" itemprop="datePublished">2023-07-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/AI-Math-NumericalAnalysis/">AI&Math&NumericalAnalysis</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Deep leaning notes
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Some notes about the deep learning related knowledge.</p>
+<span id="more"></span>
+
+<p>There is a strong feeling that if you do not learn and use learning things actively, you will be eliminated quickly, failed to apply fundings and hard to find a good job.</p>
+<p>instead of considering why I need to learn this and how it can be used into my own work, a practical attitude might be to learn it firstly.</p>
+<p>The main index are this series of youtube <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=YCzL96nL7j0&list=PLblh5JKOoLUIxGDQs4LFFD--41Vzf-ME1&index=16">video</a></p>
+<h3 id="Typical-NN"><a href="#Typical-NN" class="headerlink" title="Typical NN"></a>Typical NN</h3><p>This blog provide a good representation with different colors (<a target="_blank" rel="noopener" href="https://www.jeremyjordan.me/intro-to-neural-networks/">https://www.jeremyjordan.me/intro-to-neural-networks/</a>).</p>
+<p>We do not go through the most basic concepts about neuro networks, just put a simple form of mathmetical expression here. Assuming there are 4 input and 3 output, it is ensiensially a matrix operation. The transformation matrix should be 3 by 4. The row index represents this weigt belongs to which output, the colum index match with the input value. It represents how the input values are contributes to each output.</p>
+<p>$$<br>\begin{pmatrix}<br>w_{11} &amp; w_{12} &amp; w_{13} &amp; w_{14} \\w_{21} &amp; w_{22} &amp; w_{23} &amp; w_{24} \\w_{31} &amp; w_{32} &amp; w_{33} &amp; w_{34}<br>\end{pmatrix}<br>\begin{pmatrix}<br>x_{1} \\x_{2} \\x_{3} \\x_{4}<br>\end{pmatrix}<br>+<br>\begin{pmatrix}<br>b_{1} \\b_{2} \\b_{3}<br>\end{pmatrix}<br>&#x3D;<br>\begin{pmatrix}<br>z_{1} \\z_{2} \\z_{3}<br>\end{pmatrix}<br>,<br>\begin{pmatrix}<br>w_{11} &amp; w_{12} &amp; w_{13} &amp; w_{14} \\w_{21} &amp; w_{22} &amp; w_{23} &amp; w_{24} \\w_{31} &amp; w_{32} &amp; w_{33} &amp; w_{34}<br>\end{pmatrix}<br>&#x3D;<br>\begin{pmatrix}<br>w_{1}^T \\w_{2}^T \\w_{3}^T<br>\end{pmatrix}<br>$$</p>
+<p>The vector b represents the bias, and the value in the weight matrix represents the weight value. This is the most foundation operation. If there are multiple hidden layer, we just use z vector as the input to execute similar matrix multiplication and add new bias vector.</p>
+<p>Another important operation is the activation function, it is a function that applied to each value in the vector. For example, in the previous example, after we go through the first layer, then we can apply the activavtion function to the elements in vector, the typical one is ReLU function. So each value in the z vector becomes ReLU(z) after this layer.</p>
+<p>The output layer usually generate one decision. The ArgMax or SoftMax is applied to a vector to interpret the results. Both the input and output for ArgMax and SoftMax is a vector. This is a good video to visualize the SoftMax results (<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=ytbYRIN0N4g">https://www.youtube.com/watch?v=ytbYRIN0N4g</a>)(this video is really cool and there are a lot of visual results for math things) the idea is to transfer the output into the probability values.</p>
+<p>When saying the typical NN graph, it might be helpful to understand it from mathematical’s perspective. It is important to consider what are input and output for each operator.</p>
+<h3 id="Backward-propagation"><a href="#Backward-propagation" class="headerlink" title="Backward propagation"></a>Backward propagation</h3><p>It is straightforward to undersdanding how we map the input to output with known weight matrix in each layer (forward propagation). In actaull example, we need to compute or train the weight matrix by knowning input and output, this requires the loss function and back proporgation.</p>
+<p>A loss function can be used to define the difference betweem the acurate value and the predicted value. Typical loss are MSR, mean squared error. The cross entropy is another type of common loss function for classification task. No matter what form of loss function we used, we can  measure the difference bewteen the predicted value and the acurate value. The goal is to minimize this loss function.</p>
+<p>This <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=khUVIZ3MON8&t=321s">video</a> is inspiring, which provides a really good explanation about the backward propagation. Assuming the NN is simple and there is one layer one input <code>i</code>(known parameter), the output is $y_hat$, the accurate value is <code>y</code>(known parameter). The loss function is simple:<br>$$<br>L &#x3D; (\hat{y}-y)^2 &#x3D; (w \cdot i-y)^2<br>$$<br>We want to find the gradient of the loss function towards the w, which is the unknown parameter. Based on the chain rule, there is<br>$$<br>\frac {\partial L}{\partial w} &#x3D; \frac{\partial L}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial w} &#x3D; 2(\hat{y}-y)i &#x3D; 2i(w \cdot  i - y)<br>$$<br>Then assume the initial value of the w is $w^0$, according to the gradiant descent approach:<br>$$<br>g^0 &#x3D; 2i(w^0 \cdot  i - y), w^1 &#x3D; w^0 - g^0 \cdot r<br>$$<br>where <code>r</code> represents the learning rate, namely the step that each step goes forwared. Then we can get $g^1$ based on $w^1$. When we hit the maximal iteration step or the change of the $g^i$ is less than a threshold, we can find the good approximation of the w.</p>
+<p>This is probably the simplest case for backward proporgation, we can either extend the number of layer or the number of input&#x2F;output at each layer to make the equation become more compicated, but ideas are same.</p>
+<p>It is easier to look at associated simple python code after figureing out these details.</p>
+<h4 id="An-simple-pytorch-exmaple"><a href="#An-simple-pytorch-exmaple" class="headerlink" title="An simple pytorch exmaple"></a>An simple pytorch exmaple</h4><p>Let’s look at the example shown in <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=FHdlXe1bSe4&list=PLblh5JKOoLUIxGDQs4LFFD--41Vzf-ME1&index=21">this video</a> </p>
+<p>Before using pytorch to program it, it is good to try to express it clearly mathmatically. we use $w1$ and $w2$ to express two layers. For the first layer there is:<br>$$<br>\begin{pmatrix}<br>W1_{00} \\W1_{01}<br>\end{pmatrix}<br>\cdot I &#x3D; \begin{pmatrix}<br>Z1_0 \\Z1_1<br>\end{pmatrix}<br>$$<br>the first subscript represent the index of the output, there is one input value so there is one column for the matrix. Then there is a ReLU function for output and the output, it can be described as<br>$$<br>(W2_{00},W2_{01}) \cdot<br>\begin{pmatrix}<br>ReLu(Z1_{0}) \\ ReLu(Z1_{1})<br>\end{pmatrix} &#x3D; Z2<br>$$<br>which get the final output.</p>
+<p>After figureing out these details, it is easy to understand associated pytorch example.</p>
+<h4 id="Chain-rule"><a href="#Chain-rule" class="headerlink" title="Chain rule"></a>Chain rule</h4><h4 id="Backward-proporgation"><a href="#Backward-proporgation" class="headerlink" title="Backward proporgation"></a>Backward proporgation</h4><h4 id="ArgMax"><a href="#ArgMax" class="headerlink" title="ArgMax"></a>ArgMax</h4><h4 id="SoftMax"><a href="#SoftMax" class="headerlink" title="SoftMax"></a>SoftMax</h4><h4 id="Gradient-decent"><a href="#Gradient-decent" class="headerlink" title="Gradient decent"></a>Gradient decent</h4><h4 id="programming"><a href="#programming" class="headerlink" title="programming"></a>programming</h4><h3 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h3><h3 id="RNN-and-LSTM"><a href="#RNN-and-LSTM" class="headerlink" title="RNN and LSTM"></a>RNN and LSTM</h3><h3 id="Other-need-to-be-studied"><a href="#Other-need-to-be-studied" class="headerlink" title="Other need to be studied"></a>Other need to be studied</h3><p>ResNet,<br>Seq2Seq,<br>Transformer</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2023/07/09/deep-leaning-notes/" data-id="clk4n6vtu005xt2jr8k3bbzpx" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2023/07/15/statistics-review/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Statistics Review
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/05/28/Many-aspects-of-cpp-template/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Many aspects of cpp template</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Typical-NN"><span class="toc-number">1.</span> <span class="toc-text">Typical NN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Backward-propagation"><span class="toc-number">2.</span> <span class="toc-text">Backward propagation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#An-simple-pytorch-exmaple"><span class="toc-number">2.1.</span> <span class="toc-text">An simple pytorch exmaple</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Chain-rule"><span class="toc-number">2.2.</span> <span class="toc-text">Chain rule</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Backward-proporgation"><span class="toc-number">2.3.</span> <span class="toc-text">Backward proporgation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ArgMax"><span class="toc-number">2.4.</span> <span class="toc-text">ArgMax</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SoftMax"><span class="toc-number">2.5.</span> <span class="toc-text">SoftMax</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Gradient-decent"><span class="toc-number">2.6.</span> <span class="toc-text">Gradient decent</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#programming"><span class="toc-number">2.7.</span> <span class="toc-text">programming</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CNN"><span class="toc-number">3.</span> <span class="toc-text">CNN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RNN-and-LSTM"><span class="toc-number">4.</span> <span class="toc-text">RNN and LSTM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Other-need-to-be-studied"><span class="toc-number">5.</span> <span class="toc-text">Other need to be studied</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2023 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

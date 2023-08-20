@@ -13,7 +13,7 @@
 <meta property="og:description" content="Some notes about the deep learning related knowledge.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-07-10T02:47:55.000Z">
-<meta property="article:modified_time" content="2023-07-12T02:16:49.417Z">
+<meta property="article:modified_time" content="2023-07-16T19:41:20.293Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -134,14 +134,15 @@ ga('send', 'pageview');
 <p>This is probably the simplest case for backward proporgation, we can either extend the number of layer or the number of input&#x2F;output at each layer to make the equation become more compicated, but ideas are same.</p>
 <p>It is easier to look at associated simple python code after figureing out these details.</p>
 <h4 id="An-simple-pytorch-exmaple"><a href="#An-simple-pytorch-exmaple" class="headerlink" title="An simple pytorch exmaple"></a>An simple pytorch exmaple</h4><p>Let’s look at the example shown in <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=FHdlXe1bSe4&list=PLblh5JKOoLUIxGDQs4LFFD--41Vzf-ME1&index=21">this video</a> </p>
-<p>Before using pytorch to program it, it is good to try to express it clearly mathmatically. we use $w1$ and $w2$ to express two layers. For the first layer there is:<br>$$<br>\begin{pmatrix}<br>W1_{00} \\W1_{01}<br>\end{pmatrix}<br>\cdot I &#x3D; \begin{pmatrix}<br>Z1_0 \\Z1_1<br>\end{pmatrix}<br>$$<br>the first subscript represent the index of the output, there is one input value so there is one column for the matrix. Then there is a ReLU function for output and the output, it can be described as<br>$$<br>(W2_{00},W2_{01}) \cdot<br>\begin{pmatrix}<br>ReLu(Z1_{0}) \\ ReLu(Z1_{1})<br>\end{pmatrix} &#x3D; Z2<br>$$<br>which get the final output.</p>
+<p>Before using pytorch to program it, it is good to try to express it clearly mathmatically. we use $w1$ and $w2$ to express two layers. For the first layer there is:<br>$$<br>\begin{pmatrix}<br>W1_{00} \\W1_{10}<br>\end{pmatrix}<br>\cdot I<br>+<br>\begin{pmatrix}<br>b1_{0} \\b1_{1}<br>\end{pmatrix}<br>&#x3D;<br>\begin{pmatrix}<br>Z1_0 \\Z1_1<br>\end{pmatrix}<br>$$<br>the first subscript represent the index of the output, there is one input value so there is one column for the matrix. Then there is a ReLU function for output and the output, it can be described as<br>$$<br>(W2_{00},W2_{01}) \cdot<br>\begin{pmatrix}<br>ReLu(Z1_{0}) \\ ReLu(Z1_{1})<br>\end{pmatrix} &#x3D; Z2<br>$$<br>which get the final output.</p>
 <p>After figureing out these details, it is easy to understand associated pytorch example.</p>
+<p>Associated code example can be founud <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/NN/BasicNN.py">here</a>, what we need to do is to provide a forward function, and the pytorch library will help us to execute the backward function and the traning function automatically. Becareful about the properties of the function such as <code>requires_gradient=True</code> (the parameter that needs to be optimized)</p>
 <h4 id="Chain-rule"><a href="#Chain-rule" class="headerlink" title="Chain rule"></a>Chain rule</h4><h4 id="Backward-proporgation"><a href="#Backward-proporgation" class="headerlink" title="Backward proporgation"></a>Backward proporgation</h4><h4 id="ArgMax"><a href="#ArgMax" class="headerlink" title="ArgMax"></a>ArgMax</h4><h4 id="SoftMax"><a href="#SoftMax" class="headerlink" title="SoftMax"></a>SoftMax</h4><h4 id="Gradient-decent"><a href="#Gradient-decent" class="headerlink" title="Gradient decent"></a>Gradient decent</h4><h4 id="programming"><a href="#programming" class="headerlink" title="programming"></a>programming</h4><h3 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h3><h3 id="RNN-and-LSTM"><a href="#RNN-and-LSTM" class="headerlink" title="RNN and LSTM"></a>RNN and LSTM</h3><h3 id="Other-need-to-be-studied"><a href="#Other-need-to-be-studied" class="headerlink" title="Other need to be studied"></a>Other need to be studied</h3><p>ResNet,<br>Seq2Seq,<br>Transformer</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/07/09/deep-leaning-notes/" data-id="clk4n6vtu005xt2jr8k3bbzpx" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/07/09/deep-leaning-notes/" data-id="clliqzmd00065ygjrgu0egv6h" class="article-share-link">分享</a>
       
       
       

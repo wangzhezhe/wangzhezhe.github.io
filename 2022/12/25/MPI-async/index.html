@@ -5,15 +5,15 @@
   
   <title>MPI advanced | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Some ideas about using the advanced API for MPI, such as prob, non-blocking call etc.">
+  <meta name="description" content="Some ideas about using the advanced API for MPI, such as prob, non-blocking call etc. All kinds of basic operations and API can be found in MPI tutorials.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MPI advanced">
 <meta property="og:url" content="http://yoursite.com/2022/12/25/MPI-async/index.html">
 <meta property="og:site_name" content="AverageMind">
-<meta property="og:description" content="Some ideas about using the advanced API for MPI, such as prob, non-blocking call etc.">
+<meta property="og:description" content="Some ideas about using the advanced API for MPI, such as prob, non-blocking call etc. All kinds of basic operations and API can be found in MPI tutorials.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-12-25T17:55:26.000Z">
-<meta property="article:modified_time" content="2022-12-26T21:58:40.792Z">
+<meta property="article:modified_time" content="2023-07-24T02:38:56.574Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -116,9 +116,10 @@ ga('send', 'pageview');
         <!-- Table of Contents -->
         
         <p>Some ideas about using the advanced API for MPI, such as prob, non-blocking call etc.</p>
+<p>All kinds of basic operations and API can be found in <a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/">MPI tutorials</a>.</p>
 <span id="more"></span>
 
-<h3 id="Prob-and-get-count"><a href="#Prob-and-get-count" class="headerlink" title="Prob and get count"></a>Prob and get count</h3><p>The <code>MPI_Prob</code> is similar to the operation of getting the meta data, these meta data are stored into the MPI status. This <a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/dynamic-receiving-with-mpi-probe-and-mpi-status/">blog</a> provides a good explanation about the prob and the associated get count operation after the prob. There are also some good examples here. The main idea is that we can allocated space dynamically based on the results of the prob instead of using the fixed amount of memory. This provides a lot of flexibility for mpi recv call.</p>
+<h3 id="Prob-and-get-count"><a href="#Prob-and-get-count" class="headerlink" title="Prob and get count"></a>Prob and get count</h3><p>The <code>MPI_Prob</code> is similar to the operation of getting the meta data, these meta data are stored into the MPI status. This <a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/dynamic-receiving-with-mpi-probe-and-mpi-status/">blog</a> provides a really good and straightforwrd explanation about the prob and the associated get count operation after the prob. The main idea is that we can allocated space dynamically based on the results of the prob instead of using the fixed amount of memory. This provides a lot of flexibility for mpi recv call. The simple implementation just use the same buffer size for sending and reciving.</p>
 <p>This sentences provides a really good explanation about the MPI Probe operation: In fact, you can think of <code>MPI_Probe</code> as an <code>MPI_Recv</code> that does everything but receive the message. Similar to <code>MPI_Recv</code>, <code>MPI_Probe</code> will block for a message with a matching tag and sender. When the message is available, it will fill the status structure with information (only the metadata information here). </p>
 <h3 id="Non-blocking-and-all-kinds-of-Wait"><a href="#Non-blocking-and-all-kinds-of-Wait" class="headerlink" title="Non-blocking and all kinds of Wait"></a>Non-blocking and all kinds of Wait</h3><p>The high quality software that uses the MPI library may need the MPI nonblocking send and recv, this can overlap multiple communications or overlap the communciation and communication.</p>
 <p>This is the simple version of the send and recv </p>
@@ -127,14 +128,20 @@ ga('send', 'pageview');
 <p>Let’s see how to update it into the isend and irecv version.</p>
 <p>The basic version is to use isend&#x2F;irecv and wait, the wait MPI is used to wait for the completion of specific request handle. After the irecv operation, we could do other things and put the wait operation at last. If the data transfer operation is completed, the wait returns.</p>
 <p>More advanced version is the wait some&#x2F;any for exampe <a target="_blank" rel="noopener" href="http://mpi.deino.net/mpi_functions/MPI_Waitsome.html">here</a> explains the waitsome. This is used for the case where there are multiple requests, instead of waiting for the completion of all the request in the list. It seems that the waitsome provides a fine granularity control of how to process the recieved request. Once the request can be processed, such as the completion of the sending opertaion, we can move to the subsequent operations.</p>
-<h3 id="MPI-Wait-and-MPI-Test"><a href="#MPI-Wait-and-MPI-Test" class="headerlink" title="MPI_Wait and MPI_Test"></a>MPI_Wait and MPI_Test</h3><p><code>MPI_Test</code> seems like the non-blocking version fo the <code>MPI_Wait</code>, instead of waiting here, we can use a while loop and call the <code>MPI_Test</code> in that while loop, if the message is recieved successfully, we process the message, otherwise, we can do some other computaion tasks. This <a target="_blank" rel="noopener" href="https://mpi.deino.net/mpi_functions/MPI_Test.html">exmaple</a> shows some ideas.</p>
+<h3 id="MPI-Wait-and-MPI-Test"><a href="#MPI-Wait-and-MPI-Test" class="headerlink" title="MPI_Wait and MPI_Test"></a><code>MPI_Wait</code> and <code>MPI_Test</code></h3><p><code>MPI_Test</code> seems like the non-blocking version fo the <code>MPI_Wait</code>, instead of waiting here, we can use a while loop and call the <code>MPI_Test</code> in that while loop, if the message is recieved successfully, we process the message, otherwise, we can do some other computaion tasks. This <a target="_blank" rel="noopener" href="https://mpi.deino.net/mpi_functions/MPI_Test.html">exmaple</a> shows some ideas.</p>
+<p>Similarly, there are <code>MPI_TestSome</code> and <code>MPI_WaitSome</code>, for the <code>MPI_TestSome</code> it will look at all associated requests, if some of them are satisfied, then it will return associated number of completed requests. for <code>MPI_WaitSome</code>, it will block here and wait for the coming of the new requests. It will return at least one of the requests complete.</p>
+<h3 id="Desgin-for-an-actual-usecase"><a href="#Desgin-for-an-actual-usecase" class="headerlink" title="Desgin for an actual usecase"></a>Desgin for an actual usecase</h3><p>There are several ways to desgine isend and irecv pattern. Let’s adding several assumptions:</p>
+<p>Assuming one MPI packet is used in one MPI isend&#x2F;irecv message. And each rank can be both the sender or reciever, communication pattern is clear. (such as 0 send to 1, 1 send to 2 … n-1 send to 0). Assuming the size of the message (length of the message) is known beforehand. Assuming using the isend for sending and common recv for recieving.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Compute for current iteration</span><br><span class="line">MPI_Send</span><br><span class="line">MPI_Recv (any source)</span><br><span class="line">CheckRequests to make sure requests are ready to be consumed</span><br></pre></td></tr></table></figure>
+
+<p>One design for processing the case with unknown size of message. Using fixed number of recievers and number of buffersize. When sending message, break it into several packets with fixed length. When recv, just iterate these fixed number of irecv. If all work are done, just cancel the extra irecv. </p>
 <h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><p>good references containing detailed MPI exmaples</p>
 <p><a target="_blank" rel="noopener" href="http://mpi.deino.net/mpi_functions/">http://mpi.deino.net/mpi_functions/</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/12/25/MPI-async/" data-id="clk4n6vth001ht2jr9ugugffp" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/12/25/MPI-async/" data-id="clliqzmck001lygjr0itvgspm" class="article-share-link">分享</a>
       
       
       
@@ -233,7 +240,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Prob-and-get-count"><span class="toc-number">1.</span> <span class="toc-text">Prob and get count</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Non-blocking-and-all-kinds-of-Wait"><span class="toc-number">2.</span> <span class="toc-text">Non-blocking and all kinds of Wait</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MPI-Wait-and-MPI-Test"><span class="toc-number">3.</span> <span class="toc-text">MPI_Wait and MPI_Test</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#References"><span class="toc-number">4.</span> <span class="toc-text">References</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Prob-and-get-count"><span class="toc-number">1.</span> <span class="toc-text">Prob and get count</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Non-blocking-and-all-kinds-of-Wait"><span class="toc-number">2.</span> <span class="toc-text">Non-blocking and all kinds of Wait</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MPI-Wait-and-MPI-Test"><span class="toc-number">3.</span> <span class="toc-text">MPI_Wait and MPI_Test</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Desgin-for-an-actual-usecase"><span class="toc-number">4.</span> <span class="toc-text">Desgin for an actual usecase</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#References"><span class="toc-number">5.</span> <span class="toc-text">References</span></a></li></ol>
           </div>
       </div>
     </div>

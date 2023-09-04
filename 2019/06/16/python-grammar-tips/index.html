@@ -13,7 +13,7 @@
 <meta property="og:description" content="记录一些python中的基本语法知识点（主要是2.7版本的），总是忘记。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-06-16T21:39:23.000Z">
-<meta property="article:modified_time" content="2023-01-08T21:52:56.276Z">
+<meta property="article:modified_time" content="2023-09-04T13:06:18.000Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -162,8 +162,9 @@ ga('send', 'pageview');
 <li>通过变量可以调用函数</li>
 <li>装饰器实际上返回的就是一个高阶函数，就是函数的函数</li>
 <li>装饰器通过@的语法生效</li>
-<li><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 定义一个可以打印日志的decorator</span><br><span class="line">def log(func):</span><br><span class="line">    # 这里的wrapper可以接受任何的参数</span><br><span class="line">    def wrapper(*args, **kw):</span><br><span class="line">        print &#x27;call %s():&#x27; % func.__name__</span><br><span class="line">        return func(*args, **kw)</span><br><span class="line">    return wrapper</span><br><span class="line">    </span><br><span class="line"># 在now函数前 放置装饰器 相当于now=log(now)</span><br><span class="line"># now 函数被log装饰器所装饰 返回的now是一个新的now</span><br><span class="line">@log</span><br><span class="line">def now():</span><br><span class="line">    print &#x27;2013-12-25&#x27;</span><br></pre></td></tr></table></figure></li>
 </ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 定义一个可以打印日志的decorator</span><br><span class="line">def log(func):</span><br><span class="line">    # 这里的wrapper可以接受任何的参数</span><br><span class="line">    def wrapper(*args, **kw):</span><br><span class="line">        print &#x27;call %s():&#x27; % func.__name__</span><br><span class="line">        return func(*args, **kw)</span><br><span class="line">    return wrapper</span><br><span class="line">    </span><br><span class="line"># 在now函数前 放置装饰器 相当于now=log(now)</span><br><span class="line"># now 函数被log装饰器所装饰 返回的now是一个新的now</span><br><span class="line"># 相当于在正常的now被调用之前，又加上了一层通用的逻辑，比如这个例子里的func name</span><br><span class="line">@log</span><br><span class="line">def now():</span><br><span class="line">    print &#x27;2013-12-25&#x27;</span><br></pre></td></tr></table></figure>
+
 <h3 id="python-mysql"><a href="#python-mysql" class="headerlink" title="python mysql"></a>python mysql</h3><p>python-mysql 常见操作</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 导入MySQL驱动:</span><br><span class="line">&gt;&gt;&gt; import mysql.connector</span><br><span class="line"># 注意把password设为你的root口令:</span><br><span class="line">&gt;&gt;&gt; conn = mysql.connector.connect(user=&#x27;root&#x27;, password=&#x27;password&#x27;, database=&#x27;test&#x27;, use_unicode=True)</span><br><span class="line">&gt;&gt;&gt; cursor = conn.cursor()</span><br><span class="line"># 创建user表:</span><br><span class="line">&gt;&gt;&gt; cursor.execute(&#x27;create table user (id varchar(20) primary key, name varchar(20))&#x27;)</span><br><span class="line"># 插入一行记录，注意MySQL的占位符是%s:</span><br><span class="line">&gt;&gt;&gt; cursor.execute(&#x27;insert into user (id, name) values (%s, %s)&#x27;, [&#x27;1&#x27;, &#x27;Michael&#x27;])</span><br><span class="line">&gt;&gt;&gt; cursor.rowcount</span><br><span class="line">1</span><br><span class="line"># 提交事务:</span><br><span class="line">&gt;&gt;&gt; conn.commit()</span><br><span class="line">&gt;&gt;&gt; cursor.close()</span><br><span class="line"># 运行查询:</span><br><span class="line">&gt;&gt;&gt; cursor = conn.cursor()</span><br><span class="line">&gt;&gt;&gt; cursor.execute(&#x27;select * from user where id = %s&#x27;, (&#x27;1&#x27;,))</span><br><span class="line">&gt;&gt;&gt; values = cursor.fetchall()</span><br><span class="line">&gt;&gt;&gt; values</span><br><span class="line">[(u&#x27;1&#x27;, u&#x27;Michael&#x27;)]</span><br><span class="line"># 关闭Cursor和Connection:</span><br><span class="line">&gt;&gt;&gt; cursor.close()</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; conn.close()</span><br></pre></td></tr></table></figure>
 <h3 id="ORM"><a href="#ORM" class="headerlink" title="ORM"></a>ORM</h3><p>相当于在程序中把db中的数据结构实现一下，常用到的工具就是sqlalchemy。</p>
@@ -204,7 +205,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/python-grammar-tips/" data-id="clliqzmd6008aygjr8f3f9rl9" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/python-grammar-tips/" data-id="clm4wb47b008c8pjr3xjf5reg" class="article-share-link">分享</a>
       
       
       

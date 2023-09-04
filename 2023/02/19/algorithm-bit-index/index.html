@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>algorithm bit index(By solution) | AverageMind</title>
+  <title>Tips of bit index and bitmask (By solution) | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Some notes about the bit index used in the programming.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="algorithm bit index(By solution)">
+<meta property="og:title" content="Tips of bit index and bitmask (By solution)">
 <meta property="og:url" content="http://yoursite.com/2023/02/19/algorithm-bit-index/index.html">
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="Some notes about the bit index used in the programming.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-02-19T20:07:58.000Z">
-<meta property="article:modified_time" content="2023-06-18T13:42:51.283Z">
+<meta property="article:modified_time" content="2023-09-01T01:47:26.159Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -105,7 +105,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      algorithm bit index(By solution)
+      Tips of bit index and bitmask (By solution)
     </h1>
   
 
@@ -131,11 +131,19 @@ ga('send', 'pageview');
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0 bit is positive</span><br><span class="line">1 bit is positive</span><br><span class="line">2 bit is positive</span><br><span class="line">3 bit is negative</span><br><span class="line">4 bit is negative</span><br><span class="line">5 bit is negative</span><br><span class="line">6 bit is negative</span><br><span class="line">7 bit is negative</span><br></pre></td></tr></table></figure>
 
 <p>The first three digits are positive for 7 and other digits are negative.</p>
-
+<h3 id="using-bitmask-to-replace-the-visit-array"><a href="#using-bitmask-to-replace-the-visit-array" class="headerlink" title="using bitmask to replace the visit array"></a>using bitmask to replace the visit array</h3><p>Typical operation includes set a specific position to 1 or 0. The initilization is just to init as a number, such as int or long int, which depends on number of bit. For the int, there is 4 byte, so it can represents 32 bit, the flag index for 32 bit,  long int number can represent 64 bit.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">uint visited=0;</span><br><span class="line">visited |= (1&lt;&lt;index);</span><br></pre></td></tr></table></figure>
+<p>This can replace the <code>visited[index]=1</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">visited = visited &amp; ~(1 &lt;&lt; index);</span><br></pre></td></tr></table></figure>
+<p>This can replace the <code>visited[index]=0</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if((visited&amp;(1&lt;&lt;index))==1)</span><br><span class="line">or</span><br><span class="line">if((visited&amp;(1&lt;&lt;index))==0)</span><br></pre></td></tr></table></figure>
+<p>This can check the existance of specific bit to check if it is 0 or 1.</p>
+<p>By doing this, we can improve the algorithm’s time and even use this bitmask as a index for dp based memorization.</p>
+<h3 id="The-math-behind-the-bitmask-operation"><a href="#The-math-behind-the-bitmask-operation" class="headerlink" title="The math behind the bitmask operation"></a>The math behind the bitmask operation</h3>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/02/19/algorithm-bit-index/" data-id="clliqzmcu004fygjrb5f57rlq" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/02/19/algorithm-bit-index/" data-id="clm4wb46z004d8pjr2ei49j0b" class="article-share-link">分享</a>
       
       
       
@@ -234,7 +242,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#bit-index-to-int-tree-based-index-to-flattern-index"><span class="toc-number">1.</span> <span class="toc-text">bit index to int (tree based index to flattern index)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#int-to-bit-index-flattern-index-to-the-tree-based-index"><span class="toc-number">2.</span> <span class="toc-text">int to bit index (flattern index to the tree based index)</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#bit-index-to-int-tree-based-index-to-flattern-index"><span class="toc-number">1.</span> <span class="toc-text">bit index to int (tree based index to flattern index)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#int-to-bit-index-flattern-index-to-the-tree-based-index"><span class="toc-number">2.</span> <span class="toc-text">int to bit index (flattern index to the tree based index)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#using-bitmask-to-replace-the-visit-array"><span class="toc-number">3.</span> <span class="toc-text">using bitmask to replace the visit array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-math-behind-the-bitmask-operation"><span class="toc-number">4.</span> <span class="toc-text">The math behind the bitmask operation</span></a></li></ol>
           </div>
       </div>
     </div>

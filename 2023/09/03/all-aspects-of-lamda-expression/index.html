@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>all aspects of lamda expression | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Some tips about the cpp lambda expression.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="all aspects of lamda expression">
+<meta property="og:url" content="http://yoursite.com/2023/09/03/all-aspects-of-lamda-expression/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Some tips about the cpp lambda expression.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-09-03T23:06:22.000Z">
+<meta property="article:modified_time" content="2023-09-04T00:47:22.916Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-all-aspects-of-lamda-expression" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/09/03/all-aspects-of-lamda-expression/" class="article-date">
+  <time datetime="2023-09-03T23:06:22.000Z" itemprop="datePublished">2023-09-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/c-c/">c/c++</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      all aspects of lamda expression
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Some tips about the cpp lambda expression.</p>
+<span id="more"></span>
+
+<p>When you start to use the cpp, one thing that can not be avoided is the lambda expression. The senior programmer may use it a lot and consider it as a flexible way to do things. But the junior programmer may think it is hard to understnad.</p>
+<p>Most of the detilas about the lambda expression can be found <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/language/lambda">here</a>, and I jsut list some points that might be neglected.</p>
+<h3 id="capture-all"><a href="#capture-all" class="headerlink" title="capture all"></a>capture all</h3><p><code>&amp;</code> (implicitly capture the used automatic variables by reference)</p>
+<p><code>=</code> (implicitly capture the used automatic variables by copy)</p>
+<p>but the good practice is not do capture all, to controle the captured variable in an explicit way. The reason why the capture was problematic is that with <code>[&amp;]</code> you capture everything by reference, including variables on stack. When the thread actually starts executing (if we assume the lambda exprestion is used to start another thread and it is executed asyncronous with the current thread), your are already outside of the calling function and these references don’t point to something valid anymore on the stack.</p>
+<p>it is crutial to figure out the life cycle and the scope of every variable, which is temporay variable that in the scope of the function, which is belong to class, which is on the heap. By this way, it is easy to figure out if you need to copy a variable or use reference for it.</p>
+<p>essentially, the goal of the capture part is just to set the context for actual task, some variables maybe used in the task and they should be initilized well when writting the lambda expression.</p>
+<h3 id="functor-vs-the-lambda-expression"><a href="#functor-vs-the-lambda-expression" class="headerlink" title="functor vs the lambda expression"></a>functor vs the lambda expression</h3><p>it seems the lambda expression are really similar with the <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/functors-in-cpp/">functors</a> (<a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/utility/functional">function opject, callable object</a>) in cpp, the functors are more general case, but some times, using the lambda expression properly and simplify the soure code.</p>
+<p>For example, if we want the customized struct to be a key of the <code>unorderd_map</code>, we may need to provide a function object that contains the hash function of the self defined class&#x2F;struct.</p>
+<p>But for other case, such as the <code>find_if</code> operation, the third parameter might be a lambda expression, which is more simple for the code.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">std::find_if(req_list.begin(), req_list.end(),</span><br><span class="line">                     [src, tag](const key_req &amp;k) &#123; return k.m_tag == tag;&#125;);</span><br></pre></td></tr></table></figure>
+<p>for this case, we want to find firt value that have the same key, and the key is determined during the program execution, we may need more redoundant code to wrap the simple operation <code>k.m_tag == tag</code> if we use the functor.</p>
+<h3 id="Simple-lambda-function-in-one-line"><a href="#Simple-lambda-function-in-one-line" class="headerlink" title="Simple lambda function in one line"></a>Simple lambda function in one line</h3><p>If there is smaller function in the code, just using this type of lambda function to do the smaller function call. Capture all variables, no input variables, do some simple operations, such as updating some metadata.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[&amp;]()&#123; do sth, return&#125; ();</span><br></pre></td></tr></table></figure>
+<h3 id="Some-typical-use-cases"><a href="#Some-typical-use-cases" class="headerlink" title="Some typical use cases"></a>Some typical use cases</h3><p>When there are two levels or several levels of for loop, we may try to return the results when we find specific i,j,k that satisfies specific condition. This is how we use it by lambda expression:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[&amp;]()&#123;</span><br><span class="line">for(int i=0;i&lt;this-&gt;m_r;i++)&#123;</span><br><span class="line">	 for(int j=0;j&lt;this-&gt;m_c;j++)&#123;</span><br><span class="line">     if(grid[i][j]==1)&#123;</span><br><span class="line">       ir=i;ic=j;</span><br><span class="line">       return;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;();</span><br></pre></td></tr></table></figure>
+<p>This can simplify the code a lot since we do not need an extra function. If we do it in original cpp, we need to set a specific flag and check it in each for loop, and the code is redaundant in that case.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2023/09/03/all-aspects-of-lamda-expression/" data-id="clm4wb46z004j8pjrfgdxdc9g" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/08/12/%E5%BF%85%E8%A6%81%E6%9D%A1%E4%BB%B6%E6%80%9D%E7%BB%B4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">必要条件思维</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#capture-all"><span class="toc-number">1.</span> <span class="toc-text">capture all</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#functor-vs-the-lambda-expression"><span class="toc-number">2.</span> <span class="toc-text">functor vs the lambda expression</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Simple-lambda-function-in-one-line"><span class="toc-number">3.</span> <span class="toc-text">Simple lambda function in one line</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-typical-use-cases"><span class="toc-number">4.</span> <span class="toc-text">Some typical use cases</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2023 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

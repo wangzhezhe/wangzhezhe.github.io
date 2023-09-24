@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>General thoughts about AI | AverageMind</title>
+  <title>Code review taolu | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Some thoghuts about the AI related approach.">
+  <meta name="description" content="This blog describe some tips and experience about the code review.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="General thoughts about AI">
-<meta property="og:url" content="http://yoursite.com/2022/12/18/General-thoughts-about-AI/index.html">
+<meta property="og:title" content="Code review taolu">
+<meta property="og:url" content="http://yoursite.com/2021/06/21/code-review-story/index.html">
 <meta property="og:site_name" content="AverageMind">
-<meta property="og:description" content="Some thoghuts about the AI related approach.">
+<meta property="og:description" content="This blog describe some tips and experience about the code review.">
 <meta property="og:locale">
-<meta property="article:published_time" content="2022-12-18T22:18:38.000Z">
-<meta property="article:modified_time" content="2023-04-03T01:25:09.852Z">
+<meta property="article:published_time" content="2021-06-22T03:29:40.000Z">
+<meta property="article:modified_time" content="2023-09-24T01:25:06.912Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -87,14 +87,14 @@ ga('send', 'pageview');
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-General-thoughts-about-AI" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-code-review-story" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2022/12/18/General-thoughts-about-AI/" class="article-date">
-  <time datetime="2022-12-18T22:18:38.000Z" itemprop="datePublished">2022-12-18</time>
+    <a href="/2021/06/21/code-review-story/" class="article-date">
+  <time datetime="2021-06-22T03:29:40.000Z" itemprop="datePublished">2021-06-21</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/AI-Math-NumericalAnalysis/">AI&Math&NumericalAnalysis</a>
+    <a class="article-category-link" href="/categories/methodology/">methodology</a>
   </div>
 
   </div>
@@ -105,7 +105,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      General thoughts about AI
+      Code review taolu
     </h1>
   
 
@@ -115,23 +115,17 @@ ga('send', 'pageview');
       
         <!-- Table of Contents -->
         
-        <p>Some thoghuts about the AI related approach.</p>
+        <p>This blog describe some tips and experience about the code review. </p>
 <span id="more"></span>
 
-<h3 id="Doing-AI-and-Using-AI-is-different"><a href="#Doing-AI-and-Using-AI-is-different" class="headerlink" title="Doing AI and Using AI is different"></a>Doing AI and Using AI is different</h3><p>I try to divide the research into AMD previously, new appraoch, new method and new data. For the people that do not work on AI approach itsself, the AI or deep learning approach belongs to the dimension of the new method. When I start my undergraduate study, the AI things are popular, the statistical learning theory is popular at that time. and there are all kinds of papers start with the title, … based on SVM approach, these years, there are all kinds of papers such as … based on Deeplearning or neural network approach.</p>
-<p>Beforeing diving into the AI approach, I think the important thing is to ask yourself what domain are you working on and what are real challenge here. AI method is not the bullet obviously, only using the AI approach in the right place for the right questions can provides some good benifits.</p>
-<h3 id="When-to-use-AI-approach"><a href="#When-to-use-AI-approach" class="headerlink" title="When to use AI approach"></a>When to use AI approach</h3><p>There is a phrase in Chinese called 锦上添花. I think it is proper for using the AI method, for most of the cases, there are similar solutions without using the AI approach, and the AI approach may bring some benifits here.</p>
-<p>Using AI means you want the system to be more smart and use more math model or computation operations here, that is a endless process, maybe that is the one reason that the AI related approach always have a high position in the research field.</p>
-<p>Only when you get to the level that your existing approach does not solve your problem in an efficient way, then you may start to use the AI, otherwise, you may not figure out the history of how this problem are solved in history and what are research path for this method, it is dangerous to jump into the AI approach direactly at this time. It means you do not have enough understanding about the existing approach and the abstracted AI method might not be a critical one.</p>
-<h3 id="Abstraction"><a href="#Abstraction" class="headerlink" title="Abstraction"></a>Abstraction</h3><p>If we do not work on AI and just use the AI, we usually just call the ai library and fit our data into it instead of developing the ai library.</p>
-<p>In that case, figuring out what data is critical in our own domain is more important. More specificly, we need try to abstract out an math problem from the domain specific question. What are the form of the math problem? This <a target="_blank" rel="noopener" href="https://www.ted.com/talks/blaise_aguera_y_arcas_how_computers_are_learning_to_be_creative?language=en&subtitle=en">video</a> provide a really good explanation. Especially for the section about what are known things are what are unknown things. Highly recommended.</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>A really good reference that can explain clear the thoughts about some AI abstraction, highly recommended, some ideas about the perception, creativity etc.</p>
-<p><a target="_blank" rel="noopener" href="https://www.ted.com/talks/blaise_aguera_y_arcas_how_computers_are_learning_to_be_creative?language=en&amp;subtitle=en">https://www.ted.com/talks/blaise_aguera_y_arcas_how_computers_are_learning_to_be_creative?language=en&amp;subtitle=en</a></p>
+<h3 id="Naming-convention"><a href="#Naming-convention" class="headerlink" title="Naming convention"></a>Naming convention</h3><p>For example, in some c++ code, it uses the camel cases, for other code, it may use the  underscore convention. Make sure that the parameter should be consistent with the existing coding style. This is the easist thing which only need some patience to do so.</p>
+<h3 id="using-existing-mechanism"><a href="#using-existing-mechanism" class="headerlink" title="using existing mechanism"></a>using existing mechanism</h3><p>When trying to add some new functions, the first step is trying to figure out if the current code base or framework provide these type of functions or mechanism. Do not introduce new features only if it is necessary. A simple case is in vtkm filter, the base class of filter provides the ActiveField parameter. So try to use this instead of setting a new parameter in the customized filter class.</p>
+<h3 id="using-worklet-instead-of-for-loop"><a href="#using-worklet-instead-of-for-loop" class="headerlink" title="using worklet instead of for loop"></a>using worklet instead of for loop</h3><p>This is in the context of the vtkm’s code. When there is a for loop, we always try to consider if it is ok to use worklet to do so to run it in parallel on specific devices instead of using the for loop, there are some testing helper function such as <code>test_equal_arrayHandle</code> which can compare two arrays to check if they equal with each other.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/12/18/General-thoughts-about-AI/" data-id="clmxzebo60011aijr0aqf08b1" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2021/06/21/code-review-story/" data-id="clmxzebol005kaijr6fu6e29z" class="article-share-link">分享</a>
       
       
       
@@ -185,19 +179,19 @@ ga('send', 'pageview');
     
 <nav id="article-nav">
   
-    <a href="/2022/12/25/MPI-async/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2021/06/21/Editing-taolu/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
       <div class="article-nav-title">
         
-          MPI advanced
+          Editing-taolu
         
       </div>
     </a>
   
   
-    <a href="/2022/12/18/Many-faces-of-vis-research/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2021/06/11/Reading-Story-WeiCheng/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">Many faces of vis research</div>
+      <div class="article-nav-title">Reading Story (WeiCheng)</div>
     </a>
   
 </nav>
@@ -230,7 +224,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Doing-AI-and-Using-AI-is-different"><span class="toc-number">1.</span> <span class="toc-text">Doing AI and Using AI is different</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#When-to-use-AI-approach"><span class="toc-number">2.</span> <span class="toc-text">When to use AI approach</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Abstraction"><span class="toc-number">3.</span> <span class="toc-text">Abstraction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">4.</span> <span class="toc-text">Reference</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Naming-convention"><span class="toc-number">1.</span> <span class="toc-text">Naming convention</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#using-existing-mechanism"><span class="toc-number">2.</span> <span class="toc-text">using existing mechanism</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#using-worklet-instead-of-for-loop"><span class="toc-number">3.</span> <span class="toc-text">using worklet instead of for loop</span></a></li></ol>
           </div>
       </div>
     </div>

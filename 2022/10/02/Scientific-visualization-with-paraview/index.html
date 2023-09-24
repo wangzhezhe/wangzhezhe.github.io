@@ -13,7 +13,7 @@
 <meta property="og:description" content="This blog write some quick notes about using the paraview to do the visualization. There are some videos here, this article records some quick notes, which can be useful for daily use.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-10-03T01:29:11.000Z">
-<meta property="article:modified_time" content="2022-10-23T19:47:41.425Z">
+<meta property="article:modified_time" content="2023-09-21T02:07:54.042Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -133,11 +133,13 @@ ga('send', 'pageview');
 <p>When we have to window for rendering the data, we can click right position of mouse and link the view, to let two windows have the same view.</p>
 <p>One online tutorial at olcf about paraview</p>
 <p>The video is <a target="_blank" rel="noopener" href="https://vimeo.com/olcf">here</a>, the online page is <a target="_blank" rel="noopener" href="https://kmorel.gitlab.io/pv-tutorial-olcf-2022/getting-started/">here</a> </p>
+<h3 id="Some-archetecture-regarding-the-Paraview-design"><a href="#Some-archetecture-regarding-the-Paraview-design" class="headerlink" title="Some archetecture regarding the Paraview design."></a>Some archetecture regarding the Paraview design.</h3><p>Paraview are divided into the client, render server and data server. The design is based on Proxy pattern. We can find a lot of class name start with SMProxy, this means that the class is a proxy for server manager. Details of proxy pattern can be found <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Proxy_pattern">here</a>.</p>
+<h3 id="Particle-advection-and-pathline"><a href="#Particle-advection-and-pathline" class="headerlink" title="Particle advection and pathline"></a>Particle advection and pathline</h3><p>The particle tracer is just the particle advection operation in vtk, from paraview’s interface, when using the particle tracer filter. The first input is the source, which can be the the line source or other similar one. For the source, the resolution can shows how many particles are selected. With this filter, it only advect particle at different steps. Only some of options are exposed by paraview interface, we can set more to call vtk filter separately. One important parameter is <code>Force Reinjection every NSteps</code> if we set it as 1, it means that after each iteration, we put a particle at the start position of the source and let it advected through the flow field. If we want to draw some lines based on it, then we need to use the <code>TemporalParticlesPathlines</code> the input of this filter is the output of the particle tracer.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/10/02/Scientific-visualization-with-paraview/" data-id="clm4wb46w003d8pjr0zalcq47" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/10/02/Scientific-visualization-with-paraview/" data-id="clmxzebof003gaijr9kitaz0a" class="article-share-link">分享</a>
       
       
       
@@ -236,7 +238,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Find-the-data-id-list"><span class="toc-number">1.</span> <span class="toc-text">Find the data id list</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Connect-to-remote-server"><span class="toc-number">2.</span> <span class="toc-text">Connect to remote server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-spread-view-and-the-particle-x2F-cell-finder"><span class="toc-number">3.</span> <span class="toc-text">The spread view and the particle&#x2F;cell finder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-small-but-important-operations"><span class="toc-number">4.</span> <span class="toc-text">Some small but important operations</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Find-the-data-id-list"><span class="toc-number">1.</span> <span class="toc-text">Find the data id list</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Connect-to-remote-server"><span class="toc-number">2.</span> <span class="toc-text">Connect to remote server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-spread-view-and-the-particle-x2F-cell-finder"><span class="toc-number">3.</span> <span class="toc-text">The spread view and the particle&#x2F;cell finder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-small-but-important-operations"><span class="toc-number">4.</span> <span class="toc-text">Some small but important operations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-archetecture-regarding-the-Paraview-design"><span class="toc-number">5.</span> <span class="toc-text">Some archetecture regarding the Paraview design.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Particle-advection-and-pathline"><span class="toc-number">6.</span> <span class="toc-text">Particle advection and pathline</span></a></li></ol>
           </div>
       </div>
     </div>

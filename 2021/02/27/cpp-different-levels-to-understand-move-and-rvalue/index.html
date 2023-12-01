@@ -13,7 +13,7 @@
 <meta property="og:description" content="Concepts about move rvalue and forward etc, in cpp, it seems important and ambiguous for the most of the people, we try to understand thoese concepts in different levels.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-02-28T03:44:53.000Z">
-<meta property="article:modified_time" content="2021-06-06T15:10:10.000Z">
+<meta property="article:modified_time" content="2023-11-17T01:40:32.468Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -119,9 +119,9 @@ ga('send', 'pageview');
 <span id="more"></span>
 
 <h3 id="if-we-can-take-the-addresses"><a href="#if-we-can-take-the-addresses" class="headerlink" title="if we can take the addresses"></a>if we can take the addresses</h3><p>Although there are lots of types such as <code>lvalue</code> <code>rvalue</code> <code>xvalue</code> <code>prvalues</code> etc, refer to <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/3601602/what-are-rvalues-lvalues-xvalues-glvalues-and-prvalues">this</a>, we start from the general lvalue and rvalue.</p>
-<p>Simply speaking, the value that we can take address is the lvalue (it is on the left side of the expression), the value that we can not take it’s address is an rvalue (it is on the right side of the expression).</p>
+<p>Simply speaking, the value that we can take address is the lvalue (it is on the left side of the expression), the value that we can not take it’s address is an rvalue (it is on the right side of the expression). This article provides a <a target="_blank" rel="noopener" href="https://bajamircea.github.io/coding/cpp/2016/04/07/move-forward.html">good summary</a>, one principle is if <strong>we can we take its address</strong>, another principle is <strong>can the object be move from</strong>. This is the <a target="_blank" rel="noopener" href="https://www.stroustrup.com/terminology.pdf">detailed documentation</a>.</p>
 <p>How do we express that object in the parameter list of the fuction call? For the <code>lvalue</code>, we can use pointer to the original object or the reference like this <code>TypeName &amp;</code>. In particular, if X is any type, then <code>X&amp;&amp;</code> is called an rvalue reference to X. For better distinction, the ordinary reference <code>X&amp;</code> is now also called an lvalue reference.</p>
-<h3 id="before-the-rvalue-reference"><a href="#before-the-rvalue-reference" class="headerlink" title="before the rvalue reference"></a>before the rvalue reference</h3><p>lvalue and rvalue exists before the creation of rvalue reference, here are two typical examples:</p>
+<h3 id="Before-the-rvalue-reference"><a href="#Before-the-rvalue-reference" class="headerlink" title="Before the rvalue reference"></a>Before the rvalue reference</h3><p>lvalue and rvalue exists before the creation of rvalue reference, here are two typical examples:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">std::string name0 = &quot;rvalue&quot;;</span><br><span class="line">const std::string&amp; name = &quot;rvalue&quot;;</span><br></pre></td></tr></table></figure>
 <p>for the second line, if we use the <code>std::string&amp; name = &quot;rvalue&quot;</code>, there is error:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">non-const lvalue reference to type &#x27;std::string&#x27; (aka &#x27;basic_string&lt;char, char_traits&lt;char&gt;, allocator&lt;char&gt; &gt;&#x27;) cannot bind to a value of unrelated type</span><br><span class="line">      &#x27;const char [7]&#x27;</span><br><span class="line">  std::string&amp; name = &quot;rvalue&quot;;</span><br></pre></td></tr></table></figure>
@@ -174,7 +174,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/02/27/cpp-different-levels-to-understand-move-and-rvalue/" data-id="clnjpa1i9005n8zjrcwhgdx0g" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2021/02/27/cpp-different-levels-to-understand-move-and-rvalue/" data-id="clply45ct005r4ajr2b6me1ck" class="article-share-link">分享</a>
       
       
       
@@ -273,7 +273,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#if-we-can-take-the-addresses"><span class="toc-number">1.</span> <span class="toc-text">if we can take the addresses</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#before-the-rvalue-reference"><span class="toc-number">2.</span> <span class="toc-text">before the rvalue reference</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#basic-move-semantic"><span class="toc-number">3.</span> <span class="toc-text">basic move semantic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#copy-constructor-vs-the-move-constructor"><span class="toc-number">4.</span> <span class="toc-text">copy constructor vs the move constructor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#range-based-for-loop"><span class="toc-number">5.</span> <span class="toc-text">range based for loop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">6.</span> <span class="toc-text">references</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#if-we-can-take-the-addresses"><span class="toc-number">1.</span> <span class="toc-text">if we can take the addresses</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Before-the-rvalue-reference"><span class="toc-number">2.</span> <span class="toc-text">Before the rvalue reference</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#basic-move-semantic"><span class="toc-number">3.</span> <span class="toc-text">basic move semantic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#copy-constructor-vs-the-move-constructor"><span class="toc-number">4.</span> <span class="toc-text">copy constructor vs the move constructor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#range-based-for-loop"><span class="toc-number">5.</span> <span class="toc-text">range based for loop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">6.</span> <span class="toc-text">references</span></a></li></ol>
           </div>
       </div>
     </div>

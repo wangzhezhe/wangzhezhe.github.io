@@ -13,7 +13,7 @@
 <meta property="og:description" content="The typical algorithm questions based on the tree structure.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-04-21T20:22:42.000Z">
-<meta property="article:modified_time" content="2023-06-18T13:44:04.179Z">
+<meta property="article:modified_time" content="2023-11-16T04:07:24.988Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -166,6 +166,8 @@ ga('send', 'pageview');
 <li><p>For the problem of searching, we first need to figure out the total status and the total combinations, then we use the constrains and the techniques discussed above to narrow down these situations. For the problem of modifying, just be caring of common operations for create delete nodes, the tricks of keeping parent pointer etc.</p>
 </li>
 <li><p>Other specific type of problems (such as search possible solutions) are related to tree, but not totally related, we use another blog to discuss these questions (parathesis match, work search, sudoku problem, queens problem and puzzle problem).</p>
+</li>
+<li><p>(8) Sth that might be asked in the interview is actually the multi order tree or the tree with multiple children. The thought can be limited if only considering the tree with two branch. One typical question is to build a index that can find a min value in specific sub range of array. In this case, we might have multiple segment, we store the min value of each segment, the min value of whole array is must one of the these subrange, then we just find the one that is minimal in this subrange, we can even sort each level of children to accelarate the searching process. The multiple node tree can be the founudation of B tree, these question might be asked in practical interview. The start point is find an element in specific range, then move to the harder one. The complicated idea of b tree than multi-branch tree is how to make each node more balanced and split the node. The key idea behind the index is just remember the search path as it is, not the searching operation itsself. (When we search it, we build it and then we can reuse this index tree)</p>
 </li>
 </ul>
 <h3 id="Traverse-tree"><a href="#Traverse-tree" class="headerlink" title="Traverse tree"></a>Traverse tree</h3><p><strong>94. Binary Tree Inorder Traversal</strong></p>
@@ -375,7 +377,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/04/21/Algorithm-8-Tree/" data-id="clnjpa1hr000b8zjrhu146paa" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/04/21/Algorithm-8-Tree/" data-id="clply45c700084ajr65pm3kkn" class="article-share-link">分享</a>
       
       
       

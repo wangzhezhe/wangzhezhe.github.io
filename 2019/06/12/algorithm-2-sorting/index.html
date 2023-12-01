@@ -13,7 +13,7 @@
 <meta property="og:description" content="主要是记录一些sort相关的题目。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-06-13T02:46:41.000Z">
-<meta property="article:modified_time" content="2023-06-18T13:41:30.650Z">
+<meta property="article:modified_time" content="2023-11-19T22:02:01.261Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -120,8 +120,14 @@ ga('send', 'pageview');
 
 <h3 id="经典排序算法（8个）"><a href="#经典排序算法（8个）" class="headerlink" title="经典排序算法（8个）"></a>经典排序算法（8个）</h3><p>一定不要眼高手低，对基本排序算法的时间复杂度和空间复杂度的良好掌握是后续各种变化题目以及算法改进的基础。而且排序往往是检索的基础，算是各种复杂操作的核心的核心了。</p>
 <h4 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h4><p>基本的排序算法叙述要准确。要达到流利叙述思路的程度，就想视频中那样，注意快速排序的一个partition过程(小区间的理解)，划分过程的时间复杂度为O(N)，具体的算法就不再罗列，要能根据书上的内容自己叙述下来。</p>
+<p>以ascent sorting为例子:<br>冒泡排序，两个for loop 每次比较相邻的元素，选出最大的放在最右边。</p>
+<p>快速排序，选出一个pivotal元素（第一个），所有小于pivotal的值放在左边，大于pivotal元素的值放在右边</p>
+<p>选择排序：第一次从待排序的数据元素中选出最小（或最大）的一个元素，存放在序列的起始位置，然后再从剩余的未排序元素中寻找到最小（大）元素，然后放到已排序的序列的末尾。</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/42541704">这里</a>列出了一个各种排序算法的比较，reresh的时候注意一下。特别注意一下冒泡与选择的区别，冒泡要交换好多轮。</p>
+<p>插入排序与希尔排序，希尔排序是插入排序的一种。<br>插入排序，假定原始已知的序列是有序的，每次遇到一个新的元素就从已有的array中找对应的位置，然后将新的元素插入到对应的位置中。<br>希尔排序又称为缩小增量排序，有点strided version的感觉，每次有一个offset 比如i号元素和i+offset,i+offset+offset … 位置上的元素进行比较(这里的比较使用插入排序)，然后不断地缩小offset，直到最小缩小到1。</p>
+<p>归并排序，典型的利用divide and conqure 的思路，left child 与 right child 排好序之后merge 到当前的node。</p>
 <p>时间复杂度</p>
-<p>TODO 再整理下</p>
+<p>直接参考一些网上的资源，比如<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/42541704">这个</a>.</p>
 <p>补充：</p>
 <ul>
 <li>介绍快排的时候分两步，一个是递归过程的介绍，一个是划分过程的介绍，一般先是介绍一次划分的思路，然后是介绍如何递归进行。</li>
@@ -176,9 +182,10 @@ ga('send', 'pageview');
 <td>O(M) 其中M表示选择桶的数量</td>
 </tr>
 </tbody></table>
-<p><strong>关于稳定性</strong><br>相同值的元素在排序前后，相对次序保持不变。</p>
-<p>不稳定算法的的口诀：<br><code>希望选择用快速的方法构造一个堆</code></p>
-<p>选择排序 快速排序 希尔排序 堆排序</p>
+<p><strong>关于稳定性</strong></p>
+<p>相同值的元素在排序前后，相对次序保持不变。</p>
+<p>不稳定算法的的口诀：<br><code>希望选择用快速的方法构造一个堆是不稳定的</code></p>
+<p>希尔排序 选择排序 快速排序 堆排序 这几种是不稳定的</p>
 <p>但实际上最好给别人讲的时候，能通过一个例子来模拟说明，看对算法的理解是否透彻，其实都是很easy的case。</p>
 <ul>
 <li><p>选择排序 比如 2 2 2 1 第一步 元素1被选中，与第一个位置上的2进行交换，这样就导致了不稳定的情况出现。</p>
@@ -204,8 +211,10 @@ ga('send', 'pageview');
 <p><strong>QuickSort</strong></p>
 <p>手写快排应该是很common的一个面试题目了，对于这种比较经典的算法，最好的办法就是记住，特别是连接部分，怎么定义的，怎么返回的，等等，自己再写的时候，有以下几个启发：</p>
 <ul>
-<li>题目中给的函数声明是 int A, int n 这种显然不适合进行递归的调用，这个时候要灵活变通，额外声明函数quick(intA,int low,int high)，转化为熟悉的形式，递归存在的时候要注意好函数的声明。</li>
-<li>在partition的时候，为了思路上的简易，直接写成交换元素的方式，这个时候要用一个额外的元素记录locationp，因为每次都会改变，最后返回。<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class QuickSort &#123;    </span><br><span class="line">public:</span><br><span class="line">    int* quickSort(int* A, int n) &#123;</span><br><span class="line">        // write code here</span><br><span class="line">        this-&gt;quick(A,0,n-1);</span><br><span class="line">        return A;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    void quick(int*A,int low,int high)&#123;</span><br><span class="line">        if(low&lt;high)&#123;</span><br><span class="line">            //选择枢轴元素</span><br><span class="line">            int pivotal=this-&gt;Patrition(A,low,high);</span><br><span class="line">            //枢轴左边部分排好</span><br><span class="line">            quick(A,low,pivotal-1);</span><br><span class="line">            //枢轴右边部分排好</span><br><span class="line">            quick(A,pivotal+1,high);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //return the location of the pivotal element</span><br><span class="line">    int Patrition(int*A ,int low,int high)&#123;</span><br><span class="line">        int pivotal=A[low];</span><br><span class="line">        //让序列开始位置的元素作为枢值元素</span><br><span class="line">        int indexp=low;</span><br><span class="line">        int temp;</span><br><span class="line">        while(low&lt;high)&#123;</span><br><span class="line">            while(low&lt;high&amp;&amp;A[high]&gt;=pivotal) high--;</span><br><span class="line">            temp=A[indexp];</span><br><span class="line">            A[indexp]=A[high];</span><br><span class="line">            A[high]=temp;</span><br><span class="line">            indexp=high;</span><br><span class="line">            while(low&lt;high&amp;&amp;A[low]&lt;=pivotal) low++;</span><br><span class="line">            temp=A[indexp];</span><br><span class="line">            A[indexp]=A[low];</span><br><span class="line">            A[low]=temp;</span><br><span class="line">            indexp=low;   </span><br><span class="line">        &#125;</span><br><span class="line">        return indexp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li><p>题目中给的函数声明是 int A, int n 这种显然不适合进行递归的调用，这个时候要灵活变通，额外声明函数quick(intA,int low,int high)，转化为熟悉的形式，递归存在的时候要注意好函数的声明。</p>
+</li>
+<li><p>在partition的时候，为了思路上的简易，直接写成交换元素的方式，这个时候要用一个额外的元素记录location of pivotal，因为每次都会改变，最后返回。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class QuickSort &#123;    </span><br><span class="line">public:</span><br><span class="line">    int* quickSort(int* A, int n) &#123;</span><br><span class="line">        // write code here</span><br><span class="line">        this-&gt;quick(A,0,n-1);</span><br><span class="line">        return A;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    void quick(int*A,int low,int high)&#123;</span><br><span class="line">        if(low&lt;high)&#123;</span><br><span class="line">            //Typical binary search style</span><br><span class="line">            //选择枢轴元素</span><br><span class="line">            int pivotal=this-&gt;Patrition(A,low,high);</span><br><span class="line">            //枢轴左边部分排好</span><br><span class="line">            quick(A,low,pivotal-1);</span><br><span class="line">            //枢轴右边部分排好</span><br><span class="line">            quick(A,pivotal+1,high);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //return the location of the pivotal element</span><br><span class="line">    int Patrition(int*A ,int low,int high)&#123;</span><br><span class="line">        int pivotal=A[low];</span><br><span class="line">        //让序列开始位置的元素作为枢值元素</span><br><span class="line">        int indexp=low;</span><br><span class="line">        int temp;</span><br><span class="line">        //围绕pivoal元素进行交换</span><br><span class="line">        while(low&lt;high)&#123;</span><br><span class="line">        		  //右边大于pivotal就直接跳过</span><br><span class="line">            //右指针从右边移动到第一个小于pivotal的位置</span><br><span class="line">               		  // 然后和pivoal的element进行交换</span><br><span class="line">            while(low&lt;high&amp;&amp;A[high]&gt;=pivotal) high--;</span><br><span class="line">            temp=A[indexp];</span><br><span class="line">            A[indexp]=A[high];</span><br><span class="line">            A[high]=temp;</span><br><span class="line">            indexp=high;</span><br><span class="line">            </span><br><span class="line">            //左边也类似，移动到第一个大于pivotal的位置</span><br><span class="line">                     //之后和pivotal的位置进行交换</span><br><span class="line">            while(low&lt;high&amp;&amp;A[low]&lt;=pivotal) low++;</span><br><span class="line">            temp=A[indexp];</span><br><span class="line">            A[indexp]=A[low];</span><br><span class="line">            A[low]=temp;</span><br><span class="line">            indexp=low;   </span><br><span class="line">        &#125;</span><br><span class="line">        return indexp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
 </ul>
 <p><strong>Heapsort</strong></p>
 <p>一直以来最不会写的就是heapsort，因此要多熟悉熟悉。<br>实际编写的时候，为了方便，位置为0的第一个元素没有存值，前面搞得有点乱。。。<br>AdjustDown的思路还是有点绕的</p>
@@ -269,7 +278,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/12/algorithm-2-sorting/" data-id="clnjpa1i400428zjrecdn60qx" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/12/algorithm-2-sorting/" data-id="clply45cn004b4ajr5nkl651u" class="article-share-link">分享</a>
       
       
       

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Algorithm(11) Binary search | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="The questions related to binary search.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Algorithm(11) Binary search">
+<meta property="og:url" content="http://yoursite.com/2023/10/12/Algorithm-11-Binary-search/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="The questions related to binary search.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-10-13T01:22:12.000Z">
+<meta property="article:modified_time" content="2023-11-19T22:06:06.165Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Algorithm-11-Binary-search" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/10/12/Algorithm-11-Binary-search/" class="article-date">
+  <time datetime="2023-10-13T01:22:12.000Z" itemprop="datePublished">2023-10-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Algorithm(11) Binary search
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>The questions related to binary search.</p>
+<span id="more"></span>
+
+<table>
+<thead>
+<tr>
+<th>Input data</th>
+<th>Basic types</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SingleNumber</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td>Array</td>
+<td>35,34,704</td>
+</tr>
+<tr>
+<td>Matrix</td>
+<td>TBD</td>
+</tr>
+</tbody></table>
+<p>Useful tips:</p>
+<ul>
+<li><p>Divide and conquer (D&amp;C) is not an algorithm but algorithm design paradigm used by Binary search algorithm. The only difference is that in binary search we discard half of the remaining elements at each iteration, whereas in most other D&amp;C problems, we don’t discard any elements. For example, the merging sort is famouse divide and conqure approach, we divede the work space into several small parts and then merge results back. In some dp related question, we can also find this pattern easily. The start point is considering how this problem can be formed by solving a smaller scale problem.</p>
+</li>
+<li><p>注意使用binary search 的前提，<strong>在有序序列</strong>的基础上，通过binary search可以减少时间复杂度，从O(n)的复杂度降低到O(logn)，一看到O(logn)的复杂度的要求，一个标记就是binary search</p>
+</li>
+<li><p>The basic thing is to write the binary search template quickly, there are multiple syle, just remember one in mind. in while loop, the comparision is left&lt;&#x3D;right, it is important to add &#x3D; here, since left and right pointer can move to the same position, when they overlap with each other, just return the mid value. There are three cases here</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">while (left &lt;= right)&#123;</span><br><span class="line">mid = (left + right) / 2;</span><br><span class="line">if (array[mid]==val)&#123;return mid&#125;</span><br><span class="line">else if (array[mid]&lt;val)&#123;left=mid+1&#125;</span><br><span class="line">else //(array[mid]&gt;val)&#123;right=mid-1&#125;</span><br><span class="line">&#125;</span><br><span class="line">return left or not find (the left and right pointer is switched here)</span><br></pre></td></tr></table></figure>
+
+<p>Why this template work: </p>
+<p>Assuming the array value equals to their index value. If the left is n, right is n+1, there are three cases: </p>
+<p>Case 1, target is n, the value of (l+r)&#x2F;2&#x3D;n is the correct position (namely the n), we can find element. </p>
+<p>Case 2, target is n+1, (l+r)&#x2F;2&#x3D;n, mid&lt;target, move left from n to n+1, than (l+r)&#x2F;2 &#x3D; n+1, target is found.</p>
+<p>Attention for the Case 3, the template dose not work well in this case. Assuming the target is a value between n and n+1, such as n+0.5, (l+r)&#x2F;2&#x3D;n, the return value is smaller than the target value, left pointer still move from n to n+1, the return value of next time is n+1 which is larger than the target, then the right pointer moves from n+1 to n, then the condition in while loop is broken, left pointer is at value n and right pointer is at value n+1. In this case, when we return the left value, it is the first element that has a value larger than target value. <strong>If we want to approach the target from the left side, we need to return left-1 or just right index in this case when the condition is broken</strong></p>
+<ul>
+<li>The case where there are multiple array elements having same values. Another typical patten of the binary search framework is to consider the case when there are multiple elements have same value, for example the 378, <strong>it requires us to return leftmost elements when there are multiple elements have same value</strong>, in this case, we need to merge the condition when the element equals to target and smaller than target. When the condition is broken, if the element exists, we can return current L, otherwise, we can reutrn -1, this is a simple example:</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int test2(int *array, int len, int t)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    int l = 0;</span><br><span class="line">    int h = len - 1;</span><br><span class="line">    while (l &lt;= h)</span><br><span class="line">    &#123;</span><br><span class="line">        int m = (l + h) / 2;</span><br><span class="line">        if (array[m] == t)</span><br><span class="line">        &#123;</span><br><span class="line">            h = m - 1;</span><br><span class="line">        &#125;</span><br><span class="line">        else if (array[m] &lt; t)</span><br><span class="line">        &#123;</span><br><span class="line">            l = m + 1;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            // array[m]&gt;t</span><br><span class="line">            h = m - 1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //current l is the leftmost elements for subarray with equal values</span><br><span class="line">    //if multiple elements have same value, and we also found it</span><br><span class="line">    if (array[l] == t)</span><br><span class="line">    &#123;</span><br><span class="line">        return l;</span><br><span class="line">    &#125;</span><br><span class="line">    // not find</span><br><span class="line">    return -1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Recursive-style"><a href="#Recursive-style" class="headerlink" title="Recursive style"></a>Recursive style</h3><p>35 This is the standard binary search question, it can be also written in a form of while loop, when start position value is larger than end position value, the condition is broken and we can not find the value, we want a position where we can insert it, this is tricky, assuming the current list is [3,5] we want insert 4, the when the start position moves to element 5(index 1), we break the loop, this is also the position we want to insert 4, so we return s in this case.</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">searchInsert</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">bsearch</span>(<span class="number">0</span>,nums.<span class="built_in">size</span>()<span class="number">-1</span>,nums,target);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">bsearch</span><span class="params">(<span class="type">int</span> s, <span class="type">int</span> e, vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span></span>&#123;</span><br><span class="line">        <span class="comment">//check edge case</span></span><br><span class="line">        <span class="comment">//the opposit case of s&lt;=e</span></span><br><span class="line">        <span class="keyword">if</span>(s&gt;e)&#123;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//check middle</span></span><br><span class="line">        <span class="type">int</span> m = (s+e)/<span class="number">2</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(target==nums[m])&#123;</span><br><span class="line">            <span class="keyword">return</span> m;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//process current situation</span></span><br><span class="line">        <span class="keyword">if</span>(target&lt;nums[m])&#123;</span><br><span class="line">            <span class="comment">//search left, s to m-1</span></span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">bsearch</span>(s,m<span class="number">-1</span>,nums,target);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//last case</span></span><br><span class="line">        <span class="comment">//search right, m+1 to e</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">bsearch</span>(m+<span class="number">1</span>,e,nums,target);   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>34 This question extend the original form of binary search from one branch to the two branch, so it is not conveient use the while loop style program to go through one brach of the tree each time. The basic form to considing this quesiton is as follows: The goal is to find the left end and the right end of the substr. The original two pointer approach is to set a start and end pointer at the each end of the array, then move from the middle if they does not equal with target. When they does not equal, just move, the logic is simple, but this is O(n) time complexity.</p>
+<p>For the O(logn) case, we split the whole array into three cases at each iteration, mid element, left part of the middle (from negative infinity to mid-1), right part of the middle (from mid+1 to the positive infinity), for the general case, if the middle equals to the target, then left end and right end of the substr is at the left range and right range, then we just need to write a recursive style algorithm to do similar things. At each iteration, we update left and right when we hit the situation when v[mid] equals target. Be care of the edge case, when position of mid index is out of the range between left to right index, we return it.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    int spos=INT_MAX;</span><br><span class="line">    int epos=INT_MIN;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; searchRange(vector&lt;int&gt;&amp; nums, int target) &#123;</span><br><span class="line">        </span><br><span class="line">        //bsearch</span><br><span class="line">        int s = 0;</span><br><span class="line">        int e = nums.size()-1;</span><br><span class="line">        bsearch(s,e,nums,target);</span><br><span class="line">        </span><br><span class="line">        if(spos==INT_MAX || epos==INT_MIN)&#123;</span><br><span class="line">            //did not find</span><br><span class="line">            return &#123;-1,-1&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        vector&lt;int&gt; ans = &#123;spos,epos&#125;;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //binary search</span><br><span class="line">    //start pos, end pos</span><br><span class="line">    void bsearch(int s, int e, vector&lt;int&gt;&amp; nums, int&amp; target)&#123;</span><br><span class="line">        //if the end of the tree</span><br><span class="line">        int mid = (s+e)/2;</span><br><span class="line">        if(mid&lt;s || mid &gt;e)&#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        //the opertion in curren node</span><br><span class="line">        if(nums[mid]==target)&#123;</span><br><span class="line">            if(mid&lt;spos) spos = mid;</span><br><span class="line">            if(mid&gt;epos) epos = mid;</span><br><span class="line">        &#125;</span><br><span class="line">        //search left half in dfs manner</span><br><span class="line">        bsearch(s,mid-1,nums,target);</span><br><span class="line">            </span><br><span class="line">        //search right half in dfs manner</span><br><span class="line">        bsearch(mid+1,e,nums,target);</span><br><span class="line">        </span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>704 The idea is similar to previous one, it is easy to come up with a binary search solution based on while loop</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">search</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums, <span class="type">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> s=<span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> e=nums.<span class="built_in">size</span>()<span class="number">-1</span>;</span><br><span class="line">        <span class="comment">//the termination condition of searching is s&gt;e</span></span><br><span class="line">        <span class="keyword">while</span>(s&lt;=e)&#123;</span><br><span class="line">            <span class="type">int</span> m = (s+e)/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(nums[m]==target)&#123;</span><br><span class="line">                <span class="keyword">return</span> m;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(target&lt;nums[m])&#123;</span><br><span class="line">                <span class="comment">//search left</span></span><br><span class="line">                e=m<span class="number">-1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                s=m+<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>981 The value stored in the map should be sorted according to the timestep, which is tyical binary search use case scenarios. In some online code, we can use <code>upper_bound</code> function to get the first element in array which is larger than dedicated value. However, we can use a binaray search based subroutine here.</p>
+<p>33</p>
+<p>81</p>
+<p>153</p>
+<p>154</p>
+<p>162</p>
+<p>852</p>
+<p>69</p>
+<p>74</p>
+<p>875</p>
+<p>1011</p>
+<p>4</p>
+<p>378 (similar to 74)</p>
+<p>668</p>
+<p>719</p>
+<p>786</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2023/10/12/Algorithm-11-Binary-search/" data-id="clply45c600044ajr1sp59hcb" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2023/10/14/Thoughts-about-computing-history-musem-and-ECP/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Thoughts about computing history musem and ECP
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/10/04/common-mathmetical-operations-and-python-examples/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Common mathmetical operations and python examples</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Recursive-style"><span class="toc-number">1.</span> <span class="toc-text">Recursive style</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2023 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

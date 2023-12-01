@@ -13,7 +13,7 @@
 <meta property="og:description" content="This blog describe some tips and experience about the code review.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-06-22T03:29:40.000Z">
-<meta property="article:modified_time" content="2023-09-24T01:25:06.912Z">
+<meta property="article:modified_time" content="2023-11-24T01:47:25.087Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -118,14 +118,17 @@ ga('send', 'pageview');
         <p>This blog describe some tips and experience about the code review. </p>
 <span id="more"></span>
 
-<h3 id="Naming-convention"><a href="#Naming-convention" class="headerlink" title="Naming convention"></a>Naming convention</h3><p>For example, in some c++ code, it uses the camel cases, for other code, it may use the  underscore convention. Make sure that the parameter should be consistent with the existing coding style. This is the easist thing which only need some patience to do so.</p>
+<h3 id="Naming-convention"><a href="#Naming-convention" class="headerlink" title="Naming convention"></a>Naming convention</h3><p>For example, in some c++ code, it uses the camel cases, for other code, it may use the  underscore convention. Make sure that the parameter should be consistent with the existing coding style. This is the easist thing which only need some patience to do so.<br>For example, <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/vtk/vtk-m/-/blob/master/docs/CodingConventions.md?ref_type=heads">this</a> is the coding style convention of VTK and VTKm, it is important to keep them in mind before and check each item before submitting the code. Especially for when to use capital letter and camel case. For example, local variables should start in lower case and then to use camel case.</p>
 <h3 id="using-existing-mechanism"><a href="#using-existing-mechanism" class="headerlink" title="using existing mechanism"></a>using existing mechanism</h3><p>When trying to add some new functions, the first step is trying to figure out if the current code base or framework provide these type of functions or mechanism. Do not introduce new features only if it is necessary. A simple case is in vtkm filter, the base class of filter provides the ActiveField parameter. So try to use this instead of setting a new parameter in the customized filter class.</p>
 <h3 id="using-worklet-instead-of-for-loop"><a href="#using-worklet-instead-of-for-loop" class="headerlink" title="using worklet instead of for loop"></a>using worklet instead of for loop</h3><p>This is in the context of the vtkm’s code. When there is a for loop, we always try to consider if it is ok to use worklet to do so to run it in parallel on specific devices instead of using the for loop, there are some testing helper function such as <code>test_equal_arrayHandle</code> which can compare two arrays to check if they equal with each other.</p>
+<h3 id="Avoid-using-unnecessary-variables"><a href="#Avoid-using-unnecessary-variables" class="headerlink" title="Avoid using unnecessary variables"></a>Avoid using unnecessary variables</h3><p>I tend set a bool variable and update the bool variable in the function and return that bool varibale at last. Actually, we could just return the true or false direactly instead of returning that variable at last, we just return that bool variable when it is possible.</p>
+<h3 id="Long-function-in-hierarchical-layout"><a href="#Long-function-in-hierarchical-layout" class="headerlink" title="Long function in hierarchical layout"></a>Long function in hierarchical layout</h3><p>I was working on a function that tries to merge multiple vtkm data set in one data set. Originally, I put everything in a do merge function, even if I add enough comments in each subsection of that function, but it is still vary long, the code is hard to maintatin and some variable defined at the beginning might be used at the last part of the function. Based on the advice from the senior engineer, I break it into several part, namely checking the edge case of the input data, merge connectivity, merge field and merge coordinates system etc. The do merge function contains the main skeleton of the code, each subsection is a particular function that calls a subroutine. After doing this, the code is much more clear and each function basically do one thing, the logic is more clear. </p>
+<p>Sometimes, writting code is just like writting paper, you want to make sure each paragraph only discuss one thing. Either the summary of whole section or explain the specific one point. With this idea in mind, the code can be more easily to read and maintain in future.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/06/21/code-review-story/" data-id="clnjpa1i8005j8zjrhy4n8rdj" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2021/06/21/code-review-story/" data-id="clply45ct005n4ajr8de4a262" class="article-share-link">分享</a>
       
       
       
@@ -224,7 +227,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Naming-convention"><span class="toc-number">1.</span> <span class="toc-text">Naming convention</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#using-existing-mechanism"><span class="toc-number">2.</span> <span class="toc-text">using existing mechanism</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#using-worklet-instead-of-for-loop"><span class="toc-number">3.</span> <span class="toc-text">using worklet instead of for loop</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Naming-convention"><span class="toc-number">1.</span> <span class="toc-text">Naming convention</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#using-existing-mechanism"><span class="toc-number">2.</span> <span class="toc-text">using existing mechanism</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#using-worklet-instead-of-for-loop"><span class="toc-number">3.</span> <span class="toc-text">using worklet instead of for loop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Avoid-using-unnecessary-variables"><span class="toc-number">4.</span> <span class="toc-text">Avoid using unnecessary variables</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Long-function-in-hierarchical-layout"><span class="toc-number">5.</span> <span class="toc-text">Long function in hierarchical layout</span></a></li></ol>
           </div>
       </div>
     </div>

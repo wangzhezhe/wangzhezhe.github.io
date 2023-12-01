@@ -13,7 +13,7 @@
 <meta property="og:description" content="Key concepts and optimization strategies about the cuda based gpu programming.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-06-13T22:02:57.000Z">
-<meta property="article:modified_time" content="2022-06-13T22:28:13.349Z">
+<meta property="article:modified_time" content="2023-11-16T00:24:53.179Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -170,6 +170,10 @@ ga('send', 'pageview');
 <p>When consider the optimization in this part, the good thing is to consider the memory access pattern first, when we figure out this part, the following optimization idea becomes easy. Instaead of only considering the thread id, we can consider the memory address and then how to assign the data entry to the thread.</p>
 <p>This is the code example that use the warp, it still takes some time to make sure every thing is correct. In order to make sure it works, we limit the block size so the total number of threads is limited compared with the whole data element array. Then we just move the base part to map the thread id into the specific memory position.</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/parallelBLK/blob/master/cuda/MVM/main_warp.cu">https://github.com/wangzhezhe/parallelBLK/blob/master/cuda/MVM/main_warp.cu</a></p>
+<p>This is the best version of the article about the <a target="_blank" rel="noopener" href="https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/">grid-stride loops</a>, it explains why the strided way is a good practice. Thread reuse, easy to debug, and avoid memory coalesing issue.</p>
+<p>The sample here also provides a lot of good coding practice, such as the tradeoff between thread reuese and the the creation overhead, the debugging of the gpu program and process the problem that is larger than the theritical gpu threads. It use the <code>monolithic kernel</code> and <code>grid-stride loop</code> to represents two verions of the code. This blog provides some <a target="_blank" rel="noopener" href="https://developer.nvidia.com/blog/n-ways-to-saxpy-demonstrating-the-breadth-of-gpu-programming-options/">good figures</a> to explain the strided access.</p>
+<p>The optimization strategy if kind of fixed in typical cuda programmming. The difficult part is how to properly use these ideas to solve different types of questions.</p>
+<p>The naive way is monotholic kernel, then the strided for loop, then the vectorized data access, then we use the shared memory.</p>
 <h3 id="Using-the-shared-memory"><a href="#Using-the-shared-memory" class="headerlink" title="Using the shared memory"></a>Using the shared memory</h3><p>In the previous exmaple, we use the global memeory, another key operation is to use different gpu memory efficiently.</p>
 <p>For the scope of the global memory, it can be accessed by whole GPU. From the hardware’s perspective, the shared memory is on each SM, so different SM can access different shread memory. From the software’s perspective, the shread memory is associated with each thread block. The meaning of the shared means the memory shared between the threads in each block.</p>
 <p>This <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/14093692/whats-the-difference-between-cuda-shared-and-global-memory">question</a> explains some details of the shared memory and global memory. According to the number they listed, there are around 100x gap between shared memory access and global memory access. The scenario of using the shared memory is to optimize the multi read memory access. If in the kernal call, we just need to fetch data once from the global memory, it is pointless to use the shread memory, however, if we need to fetch data multiple times, instead of access gpu each time, we can put the associated data into the shread memory and access shared memory.</p>
@@ -191,9 +195,6 @@ ga('send', 'pageview');
 <p>When we discuss the coalesceing, we targeted on the access to the global memory, the uncoalesced operation lead to more transactions to load the data. <a target="_blank" rel="noopener" href="https://cvw.cac.cornell.edu/gpu/coalesced">Check the figure listed here</a></p>
 <p>For the bank conflict, we means discuss this concept in the context of the shared memory. The threads in warp access the same bank address (the segment to store the data in shared memory) can lead to the bank conflicts. This <a target="_blank" rel="noopener" href="http://cuda-programming.blogspot.com/2013/02/bank-conflicts-in-shared-memory-in-cuda.html">blog</a> list several common bank conflict cases</p>
 <p><strong>Data representation for the sparse matrix</strong></p>
-<h3 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h3><p>This is the best version of the article about the <a target="_blank" rel="noopener" href="https://developer.nvidia.com/blog/cuda-pro-tip-write-flexible-kernels-grid-stride-loops/">grid-stride loops</a> The sample here also provides a lot of good coding practice, such as the tradeoff between thread reuese and the the creation overhead, the debugging of the gpu program and process the problem that is larger than the theritical gpu threads. It use the <code>monolithic kernel</code> and <code>grid-stride loop</code> to represents two verions of the code. This blog provides some <a target="_blank" rel="noopener" href="https://developer.nvidia.com/blog/n-ways-to-saxpy-demonstrating-the-breadth-of-gpu-programming-options/">good figures</a> to explain the strided access.</p>
-<p>The optimization strategy if kind of fixed in typical cuda programmming. The difficult part is how to properly use these ideas to solve different types of questions.</p>
-<p>The naive way is monotholic kernel, then the strided for loop, then the vectorized data access, then we use the shared memory.</p>
 <h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><p>Cuda Fermi architecture:</p>
 <p><a target="_blank" rel="noopener" href="https://www.nvidia.com/content/PDF/fermi_white_papers/NVIDIA_Fermi_Compute_Architecture_Whitepaper.pdf">https://www.nvidia.com/content/PDF/fermi_white_papers/NVIDIA_Fermi_Compute_Architecture_Whitepaper.pdf</a></p>
 <p>This blog shows some compiling issue about different version of cuda</p>
@@ -220,7 +221,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/06/13/Cuda-programming-1/" data-id="clnjpa1ht000l8zjr2s7247ka" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/06/13/Cuda-programming-1/" data-id="clply45ca000k4ajr1g0x3gea" class="article-share-link">分享</a>
       
       
       
@@ -319,7 +320,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Number-of-block-per-grid-number-of-thread-per-block"><span class="toc-number">1.</span> <span class="toc-text">Number of block per grid, number of thread per block</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Warp"><span class="toc-number">2.</span> <span class="toc-text">Warp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Strided-loaded-and-memory-coalescing"><span class="toc-number">3.</span> <span class="toc-text">Strided loaded and memory coalescing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using-the-shared-memory"><span class="toc-number">4.</span> <span class="toc-text">Using the shared memory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Other-issues"><span class="toc-number">5.</span> <span class="toc-text">Other issues</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Summary"><span class="toc-number">6.</span> <span class="toc-text">Summary</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#References"><span class="toc-number">7.</span> <span class="toc-text">References</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Number-of-block-per-grid-number-of-thread-per-block"><span class="toc-number">1.</span> <span class="toc-text">Number of block per grid, number of thread per block</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Warp"><span class="toc-number">2.</span> <span class="toc-text">Warp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Strided-loaded-and-memory-coalescing"><span class="toc-number">3.</span> <span class="toc-text">Strided loaded and memory coalescing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using-the-shared-memory"><span class="toc-number">4.</span> <span class="toc-text">Using the shared memory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Other-issues"><span class="toc-number">5.</span> <span class="toc-text">Other issues</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#References"><span class="toc-number">6.</span> <span class="toc-text">References</span></a></li></ol>
           </div>
       </div>
     </div>

@@ -13,7 +13,7 @@
 <meta property="og:description" content="Several questions about the simulation, the typical one is to follow specific rules to go through each element of the matrix.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-08-03T21:21:58.000Z">
-<meta property="article:modified_time" content="2023-08-14T19:27:50.945Z">
+<meta property="article:modified_time" content="2023-12-02T01:21:22.515Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -128,6 +128,8 @@ ga('send', 'pageview');
 </li>
 <li><p>2d vector for iterating the 4 direaction. In order to make the code simple, the good practice is to maintain a 2d vector to control how the x and y move, this is an exmaple, we just need to go through these 2d vector gradually to control the movement of the current element.</p>
 </li>
+<li><p>Double check the position of (0,0). In most of the case, we set the upper left position as 0,0 which match with our habit to write a matrix in math, we set the first row as 0, and if we have second row, it is 1. Be careful when we output associated reuslts for visualization, in that case, or in the commonly used coordinates system, the left bottom corner is usualy set as 0,0. Which is a common practice when we set coordinates. So be careful about it when we want to visualize sth. In that case, the first row in the output data might be actually the last row in the original data!!! Be careful about this difference.</p>
+</li>
 </ul>
 <p> Some of these questions can also be considered from perspective of the two pointers. Since x and y are ensentially two index of iterating. Instead of going through every combination of x and y, we just select proper combination of x and y and choose suitable elements.</p>
 <ul>
@@ -165,7 +167,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/08/03/Algorithm-10-simulation/" data-id="clply45c500034ajr64o2daww" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/08/03/Algorithm-10-simulation/" data-id="clqelxoyx0004mzjr4vg27m91" class="article-share-link">分享</a>
       
       
       

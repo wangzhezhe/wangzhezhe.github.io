@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>many faces of mesh | AverageMind</title>
+  <title>Many faces of mesh and image data | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="One complicated thing in scientific data is its mesh representation. Since the simulation adopts different types of mesh to simulate the data, that mesh makes the data complicated. This blog take some">
 <meta property="og:type" content="article">
-<meta property="og:title" content="many faces of mesh">
+<meta property="og:title" content="Many faces of mesh and image data">
 <meta property="og:url" content="http://yoursite.com/2023/04/25/Many-faces-of-mesh/index.html">
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="One complicated thing in scientific data is its mesh representation. Since the simulation adopts different types of mesh to simulate the data, that mesh makes the data complicated. This blog take some">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-04-26T01:33:12.000Z">
-<meta property="article:modified_time" content="2023-04-26T01:55:27.679Z">
+<meta property="article:modified_time" content="2023-12-15T04:07:13.583Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -105,7 +105,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      many faces of mesh
+      Many faces of mesh and image data
     </h1>
   
 
@@ -118,17 +118,22 @@ ga('send', 'pageview');
         <p>One complicated thing in scientific data is its mesh representation.</p>
 <p>Since the simulation adopts different types of mesh to simulate the data, that mesh makes the data complicated.</p>
 <p>This blog take some notes about tips of processing the mesh of the scientific data set.</p>
+<p>Commonly used mesh can be founud in <a target="_blank" rel="noopener" href="https://examples.vtk.org/site/VTKBook/05Chapter5/#56-types-of-datasets">vtk document</a> and <a target="_blank" rel="noopener" href="https://vtk.org/Wiki/VTK/Tutorials/3DDataTypes#Image_Data">wiki page</a> or vtkm documents about <a target="_blank" rel="noopener" href="https://vtk-m.readthedocs.io/en/latest/dataset.html#cell-sets">cell set</a>.</p>
 <span id="more"></span>
 
 <h3 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h3><p>Generally speaking, the mesh and raw scalar or vector data compose the scientific data set. The VTK data structure is de facto standard. We do not write everything again here in details. The VTK’s online text book has a good explanation about it. VTK-m’s user guide provides another good explanaionts about it.</p>
-<h3 id="Image-data"><a href="#Image-data" class="headerlink" title="Image data"></a>Image data</h3><p>Image data in vtk is the heritage of the structured grid. Just use the structured grid when trying to load specific data.</p>
+<h3 id="Image-data"><a href="#Image-data" class="headerlink" title="Image data"></a>Image data</h3><p>Image data might be most commonly used one.</p>
+<p>Image data in vtk is the parent of the structured grid. Just use the structured grid when trying to load specific data.</p>
 <p>When initilizing the image data, three necessary things are origin, dims, and the spacing. We do not need to further setting the extends if we have already set the origin, dims and the spacing.</p>
+<p>Their file suffix can also be different, image data always use the .vti and the structured point just use the .vtk suffix</p>
+<p>One different between image data and structured grid is about the extends. According to the online documents, the data extent of the Structured point match with the update extent but for the image data, it can be smaller(still not sure about the meaning for this). Maybe it means that the image data can include the data with blanking in it (another subclass of vtk image data), so the actual extents in the data might be smaller than the extents we specified by crop operation.</p>
+<p>Here is an tutorial about the <a target="_blank" rel="noopener" href="https://vtk.org/Wiki/VTK/Tutorials/Extents">extent</a>, it just represents the start and end position&#x2F;pixles of the image.</p>
 <h3 id="Explicit-grid"><a href="#Explicit-grid" class="headerlink" title="Explicit grid"></a>Explicit grid</h3><p>In paraview filter, there is a clean to grid filter, the goal of this filter is to trafer grid to a explicit representation. The output is the unstructured grid in this case with full connectiveity information. However, it will take much more space compared with the grid that has an inexplicit representation. For example, the inexplicit bounding box for structured grid only need to store the boundry information, but the explicit mesh need to store all informtaion for that mesh.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/04/25/Many-faces-of-mesh/" data-id="clply45cg002c4ajrf84l0zuy" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/04/25/Many-faces-of-mesh/" data-id="clqelxoz8002hmzjrc83p7ssd" class="article-share-link">分享</a>
       
       
       

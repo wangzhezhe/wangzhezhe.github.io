@@ -13,7 +13,7 @@
 <meta property="og:description" content="All kinds of details regarding to use the latex in writing paper.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-03-19T01:36:04.000Z">
-<meta property="article:modified_time" content="2023-03-19T01:55:45.870Z">
+<meta property="article:modified_time" content="2023-12-24T21:45:54.626Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -118,20 +118,7 @@ ga('send', 'pageview');
         <p>All kinds of details regarding to use the latex in writing paper.</p>
 <span id="more"></span>
 
-<p><a target="_blank" rel="noopener" href="http://www.mohu.org/info/lshort-cn.pdf">http://www.mohu.org/info/lshort-cn.pdf</a></p>
-<p>注意在表格编译的时候 ccc的地方标记的是具体有多少列 这个小错误很容易忽略然后造成表格显示不全面</p>
-<p>使用bibtex的时候可以参考<a target="_blank" rel="noopener" href="https://cn.sharelatex.com/learn/Bibliography_management_with_bibtex">这个</a></p>
-<p>注意只有cite之后的引用才会在文章中显示出来 没有cite的话就不会显示</p>
-<p>多行公式</p>
-<p>叠加</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">3、上标和下标</span><br><span class="line">用 ^ 来表示上标，用 _ 来表示下标，看一简单例子：</span><br><span class="line"></span><br><span class="line">$$\sum_&#123;i=1&#125;^n a_i=0$$</span><br></pre></td></tr></table></figure>
-
-
-<p>latex中输入罗马数字<br><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_5e16f1770100g5sl.html">http://blog.sina.com.cn/s/blog_5e16f1770100g5sl.html</a></p>
-<p>不使用首行的缩进<br><a target="_blank" rel="noopener" href="https://tex.stackexchange.com/questions/27802/set-noindent-for-entire-file">https://tex.stackexchange.com/questions/27802/set-noindent-for-entire-file</a></p>
-<p>使用reference不需要manually的方式直接修改paper的内容</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\section&#123;Introduction&#125;</span><br><span class="line">\label&#123;sec:intro&#125;</span><br><span class="line"></span><br><span class="line">In Section \ref&#123;sec:intro&#125; ...</span><br></pre></td></tr></table></figure>
-<p><strong>表格</strong></p>
+<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h3><p>注意在表格编译的时候 ccc的地方标记的是具体有多少列 这个小错误很容易忽略然后造成表格显示不全面 l r c 表示 左右或者居中</p>
 <p>双栏排版中 表格放在单栏 并且居中</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\begin&#123;table*&#125;[htbp]</span><br><span class="line">\centering</span><br><span class="line">\begin&#123;tabular&#125;&#123;| l | l | l | l | l | l | l | &#125;</span><br><span class="line">\hline</span><br><span class="line">Number of Node           &amp; 2   &amp; 4   &amp; 16  &amp; 32  &amp; 64   &amp; 128  \\ \hline</span><br><span class="line">Number of Server Process &amp; 16                     &amp; 32                    &amp; 256                     &amp; 512                    &amp; 1024                      &amp; 8192 \\ \hline</span><br><span class="line">Number of Work Load        &amp; 256$\times$16 &amp; 256$\times$32 &amp; 256$\times$256 &amp; 256$\times$512 &amp; 256$\times$1024  &amp; 256$\times$8192  \\ \hline</span><br><span class="line">\end&#123;tabular&#125;</span><br><span class="line">\caption&#123;Experiment setup for weak scaling&#125;\label&#123;tab:weaksetup&#125;</span><br><span class="line">\end&#123;table*&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -147,27 +134,30 @@ ga('send', 'pageview');
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\begin&#123;table*&#125;[ht]</span><br><span class="line">\begin&#123;center&#125;</span><br><span class="line">\caption &#123;Adding captions here&#125;</span><br><span class="line"></span><br><span class="line">\begin&#123;tabular&#125;&#123;lllllll&#125;</span><br><span class="line">\toprule</span><br><span class="line">Approach &amp; Distribution &amp;  Serial &amp; OpenMP &amp; CUDA &amp; Kokkos\_CUDA &amp; Kokkos\_HIP \\ \midrule</span><br><span class="line">\multirow&#123;3&#125;&#123;*&#125;&#123;Reduce by key&#125; &amp; Uniform &amp; $24363$  &amp; $713$ ($34\times$) &amp; $635$ ($\mathbf&#123;38\times&#125;$) &amp; $3188$ ($7\times$)&amp; $1423$ ($17\times$)\\</span><br><span class="line"> &amp; IndependentG &amp; $25117$ &amp; $716$ ($35\times$) &amp; $624$ ($\mathbf&#123;40\times&#125;$) &amp; $3183$ ($7\times$) &amp; $1475$ ($17\times$)\\ </span><br><span class="line"> &amp; MultivariateG ($1000$ samples) &amp; $24996$  &amp; $725$ ($\mathbf&#123;34\times&#125;$)&amp; $826$ ($30\times$)&amp; $3351$ ($7\times$) &amp; $1454$ ($17\times$)\\</span><br><span class="line"> \midrule</span><br><span class="line"> \multirow&#123;3&#125;&#123;*&#125;&#123;Fixed block size&#125; &amp; Uniform &amp; $1075$ &amp; $91$ ($11\times$) &amp; $171$ ($6\times$)&amp; $147$ ($7\times$)&amp; $74$ ($\mathbf&#123;14\times&#125;$)\\ </span><br><span class="line"> &amp; IndependentG &amp; $1609$ &amp; $92$ ($17\times$)&amp; $171$ ($9\times$)&amp; $155$ ($10\times$)&amp; $78$ ($\mathbf&#123;20\times&#125;$)\\ </span><br><span class="line"> &amp; MultivariateG ($1000$ samples) &amp; $1444$ &amp; $93$ ($15\times$)&amp; $357$ ($4\times$)&amp; $302$ ($4\times$)&amp; $94$ ($\mathbf&#123;15\times&#125;$)\\</span><br><span class="line"> \bottomrule</span><br><span class="line">\end&#123;tabular&#125;</span><br><span class="line">\end&#123;center&#125;</span><br><span class="line">\end&#123;table*&#125;</span><br></pre></td></tr></table></figure>
 
 
-<p><strong>公式</strong></p>
-<p>公式换行 注意使用 split + &amp; + \</p>
+<h3 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h3><p>公式换行 注意使用 split + &amp; + \</p>
 <p>refer to </p>
 <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2860145/how-can-i-have-linebreaks-in-my-long-latex-equations">https://stackoverflow.com/questions/2860145/how-can-i-have-linebreaks-in-my-long-latex-equations</a></p>
-<p>补充：</p>
+<p>或者使用一些特定的library来实现自动换行，比如 amsmath 或者 multline</p>
+<p><strong>Break the how tex into several pices</strong></p>
+<p>Spliting latex into several pieces might be good for people that use latex locally to compile all things. Things updates of one file will not influences others. If only using one latex file, it is easy to get the conflictx in the file.</p>
+<p>using <code>\input&#123;some lax file&#125;</code> can split the table into a separate latex file and insert into the main latex file. </p>
+<p>According to this answer<br><a target="_blank" rel="noopener" href="https://tex.stackexchange.com/questions/246/when-should-i-use-input-vs-include">https://tex.stackexchange.com/questions/246/when-should-i-use-input-vs-include</a></p>
+<p>The include will add a clearpage operation</p>
+<h3 id="使用item"><a href="#使用item" class="headerlink" title="使用item"></a>使用item</h3><p>example:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\begin&#123;itemize&#125;[noitemsep,leftmargin=*]</span><br><span class="line"></span><br><span class="line">\item We design and implement the scalable topic based Pub/Sub broker based on dynamic group management.</span><br><span class="line"></span><br><span class="line">\item We use the dynamic data redistribution mechanism to solve the load imbalance issue for topic based Pub/Sub when there is  large subscribers.</span><br><span class="line"></span><br><span class="line">\item We provide the architecture for event based framework to construct the workflow based on event based task dependency.</span><br><span class="line">  </span><br><span class="line">\item We implement the  data centric Pub/Sub mechanism letting user provide customized scripts (predicates) for multiple backend data storage service during subscription, when interesting patten described in scripts happen, the subscriber will be notified and following task will be triggered.</span><br><span class="line"></span><br><span class="line">\end&#123;itemize&#125;</span><br></pre></td></tr></table></figure>
+<p>通过leftmargin可以让不同的item产生左对齐的效果</p>
+<h3 id="figures"><a href="#figures" class="headerlink" title="figures"></a>figures</h3><p>2*2 subfigures across multiple columns, there are lots of online resource, this one works best</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\usepackage&#123;graphicx&#125;</span><br><span class="line">\usepackage&#123;subfigure&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\begin&#123;figure*&#125;</span><br><span class="line">\centering     %%% not \center</span><br><span class="line">\subfigure[Figure A]&#123;\label&#123;fig:a&#125;\includegraphics[width=85mm]&#123;./submission/figure/umlmcp.pdf&#125;&#125;</span><br><span class="line">\subfigure[Figure B]&#123;\label&#123;fig:b&#125;\includegraphics[width=85mm]&#123;./submission/figure/umlmcp.pdf&#125;&#125;</span><br><span class="line">\subfigure[Figure C]&#123;\label&#123;fig:b&#125;\includegraphics[width=85mm]&#123;./submission/figure/umlmcp.pdf&#125;&#125;</span><br><span class="line">\hspace&#123;0.12in&#125;</span><br><span class="line">\subfigure[Figure D]&#123;\label&#123;fig:b&#125;\includegraphics[width=85mm]&#123;./submission/figure/umlmcp.pdf&#125;&#125;</span><br><span class="line">\caption&#123;my caption&#125;</span><br><span class="line">\end&#123;figure*&#125;</span><br></pre></td></tr></table></figure>
+<p>using hspace between the two subgraphics could control the distance between two pictures.</p>
+<h3 id="vspace-and-shrink-the-paper"><a href="#vspace-and-shrink-the-paper" class="headerlink" title="vspace and shrink the paper"></a>vspace and shrink the paper</h3><p>When finish the paper, at last, you need to adjust the content to make it fit the page size, how to make it to fit the size perfectly? The first is that use the <code>[h]</code> to make all the figure al the top of the page. Second is to use the <code>vspace</code> command wisely, by this way, you could adjust it properly according to the content of the data. It is always good to set the table at the top of the specific page  </p>
+<p>Other techniques include adjusting the reference, for example, use the simplified version for the reference can decrease the paper length in a large amount. In most cases, one reference item should be 2-3 lines, if it is 5 lines, it might be too long and we can choose proper reference format to decrease its length.</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>补充：</p>
 <p>添加comment的技巧</p>
 <p>导出图片的时候要弄成pdf的形式 而不是 png或者是jpg的形式 pdf的形式 效果会更清晰</p>
 <p>开始一个新的段落的时候不要求额外的缩进 使用这个符号 <code>~\\</code></p>
 <p>latex插入多张图片 并排或者竖放</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/a6822342/article/details/80533135">https://blog.csdn.net/a6822342/article/details/80533135</a></p>
 <p>注意中间的空格</p>
-<p><strong>使用item</strong></p>
-<p>example:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\begin&#123;itemize&#125;[noitemsep,leftmargin=*]</span><br><span class="line"></span><br><span class="line">\item We design and implement the scalable topic based Pub/Sub broker based on dynamic group management.</span><br><span class="line"></span><br><span class="line">\item We use the dynamic data redistribution mechanism to solve the load imbalance issue for topic based Pub/Sub when there is  large subscribers.</span><br><span class="line"></span><br><span class="line">\item We provide the architecture for event based framework to construct the workflow based on event based task dependency.</span><br><span class="line">  </span><br><span class="line">\item We implement the  data centric Pub/Sub mechanism letting user provide customized scripts (predicates) for multiple backend data storage service during subscription, when interesting patten described in scripts happen, the subscriber will be notified and following task will be triggered.</span><br><span class="line"></span><br><span class="line">\end&#123;itemize&#125;</span><br></pre></td></tr></table></figure>
-<p>通过leftmargin可以让不同的item产生左对齐的效果</p>
-<p><strong>figures</strong></p>
-<p>2*2 subfigures across multiple columns, there are lots of online resource, this one works best</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\usepackage&#123;graphicx&#125;</span><br><span class="line">\usepackage&#123;subfigure&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\begin&#123;figure*&#125;</span><br><span class="line">\centering     %%% not \center</span><br><span class="line">\subfigure[Figure A]&#123;\label&#123;fig:a&#125;\includegraphics[width=85mm]&#123;./submission/figure/umlmcp.pdf&#125;&#125;</span><br><span class="line">\subfigure[Figure B]&#123;\label&#123;fig:b&#125;\includegraphics[width=85mm]&#123;./submission/figure/umlmcp.pdf&#125;&#125;</span><br><span class="line">\subfigure[Figure C]&#123;\label&#123;fig:b&#125;\includegraphics[width=85mm]&#123;./submission/figure/umlmcp.pdf&#125;&#125;</span><br><span class="line">\hspace&#123;0.12in&#125;</span><br><span class="line">\subfigure[Figure D]&#123;\label&#123;fig:b&#125;\includegraphics[width=85mm]&#123;./submission/figure/umlmcp.pdf&#125;&#125;</span><br><span class="line">\caption&#123;my caption&#125;</span><br><span class="line">\end&#123;figure*&#125;</span><br></pre></td></tr></table></figure>
-<p>using hspace between the two subgraphics could control the distance between two pictures.</p>
-<p><strong>magic vspace</strong></p>
-<p>when finish the paper, at last, you need to adjust the content to make it fit the page size, how to make it to fit the size perfectly? The first is that use the <code>[h]</code> to make all the figure al the top of the page. Second is to use the <code>vspace</code> command wisely, by this way, you could adjust it properly according to the content of the data. It is always good to set the table at the top of the specific page  </p>
 
       
     </div>
@@ -265,42 +255,24 @@ ga('send', 'pageview');
     <aside id="sidebar">
   
     
-  
+    <div class="widget-wrap">
     
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title recent-posts">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2023/12/13/use-ninja/">Using ninja</a>
-          </li>
-        
-          <li>
-            <a href="/2023/11/25/Amdahl-law-and-scale-experiments/">Amdahl law and scale experiments</a>
-          </li>
-        
-          <li>
-            <a href="/2023/11/23/Inspiring-sentences/">Inspiring sentences</a>
-          </li>
-        
-          <li>
-            <a href="/2023/11/16/Interview-preparation-list/">Interview preparation list</a>
-          </li>
-        
-          <li>
-            <a href="/2023/11/11/SciVis-R-D-Scope/">SciVis R&amp;D Scope</a>
-          </li>
-        
-      </ul>
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E6%A0%BC"><span class="toc-number">1.</span> <span class="toc-text">表格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8item"><span class="toc-number">3.</span> <span class="toc-text">使用item</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#figures"><span class="toc-number">4.</span> <span class="toc-text">figures</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vspace-and-shrink-the-paper"><span class="toc-number">5.</span> <span class="toc-text">vspace and shrink the paper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">6.</span> <span class="toc-text">其他</span></a></li></ol>
+          </div>
+      </div>
     </div>
-  </div>
 
+  
+    
+
+  
+    
+  
+    
   
     
 
@@ -312,7 +284,7 @@ ga('send', 'pageview');
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2023 zhe&nbsp;|&nbsp;
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
       主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">

@@ -3,15 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Working taolu | AverageMind</title>
+  <title>Many faces of data format for scivis (WIP) | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="article">
-<meta property="og:title" content="Working taolu">
-<meta property="og:url" content="http://yoursite.com/2024/01/09/Working-taolu-1/index.html">
+  <meta name="description" content="This blog documents some practical references about different datasets used for scientific visualization, which are first step to do the further detailed data analysis.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Many faces of data format for scivis (WIP)">
+<meta property="og:url" content="http://yoursite.com/2024/01/13/Many-faces-of-data-format-for-scivis/index.html">
 <meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="This blog documents some practical references about different datasets used for scientific visualization, which are first step to do the further detailed data analysis.">
 <meta property="og:locale">
-<meta property="article:published_time" content="2024-01-10T04:49:14.000Z">
-<meta property="article:modified_time" content="2024-01-10T04:49:14.996Z">
+<meta property="article:published_time" content="2024-01-13T23:08:11.000Z">
+<meta property="article:modified_time" content="2024-01-14T05:13:03.438Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -95,12 +97,16 @@ ga('send', 'pageview');
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Working-taolu-1" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Many-faces-of-data-format-for-scivis" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2024/01/09/Working-taolu-1/" class="article-date">
-  <time datetime="2024-01-10T04:49:14.000Z" itemprop="datePublished">2024-01-09</time>
+    <a href="/2024/01/13/Many-faces-of-data-format-for-scivis/" class="article-date">
+  <time datetime="2024-01-13T23:08:11.000Z" itemprop="datePublished">2024-01-13</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Visualization/">Visualization</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -109,7 +115,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      Working taolu
+      Many faces of data format for scivis (WIP)
     </h1>
   
 
@@ -119,11 +125,18 @@ ga('send', 'pageview');
       
         <!-- Table of Contents -->
         
-        
+        <p>This blog documents some practical references about different datasets used for scientific visualization, which are first step to do the further detailed data analysis.</p>
+<span id="more"></span>
+
+<h3 id="General-vtk-dataset"><a href="#General-vtk-dataset" class="headerlink" title="General vtk dataset"></a>General vtk dataset</h3><h3 id="General-vtkm-dataset"><a href="#General-vtkm-dataset" class="headerlink" title="General vtkm dataset"></a>General vtkm dataset</h3><p>The good practice to understand details of the vtkm data set is through some filters such as MergeDataSets filter to see how two data sets are <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/vtk/vtk-m/-/blob/master/vtkm/cont/MergePartitionedDataSet.h">merged together from scratch</a>.</p>
+<h3 id="Converting-between-vtk-to-vtkm-data-sets"><a href="#Converting-between-vtk-to-vtkm-data-sets" class="headerlink" title="Converting between vtk to vtkm data sets"></a>Converting between vtk to vtkm data sets</h3><p>In VTK, there are same shape with different name for <code>VTK_POLYGAN</code> and <code>VTK_QUAD</code> the only difference for these two data sets are the sequence of adding the vortex (maybe for the reason of the memory efficiency). In vtkm only one type is supported. It will not convert the data into vtkm if the dataset is not in the list <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/vtk/vtk/-/blob/master/Accelerators/Vtkm/DataModel/vtkmlib/DataSetConverters.cxx?ref_type=heads#L270">here</a>.</p>
+<h3 id="Amrex-related-data"><a href="#Amrex-related-data" class="headerlink" title="Amrex related data"></a>Amrex related data</h3><p>Using hdf5 adios as the backend</p>
+<p>this is the assocaited description <a target="_blank" rel="noopener" href="https://openpmd-api.readthedocs.io/en/0.14.4/index.html">https://openpmd-api.readthedocs.io/en/0.14.4/index.html</a> </p>
+<h3 id="Openfoam-data"><a href="#Openfoam-data" class="headerlink" title="Openfoam data"></a>Openfoam data</h3><h3 id="Conduit"><a href="#Conduit" class="headerlink" title="Conduit"></a>Conduit</h3>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2024/01/09/Working-taolu-1/" data-id="clrc9gx5i0047lxjr99yw2qro" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2024/01/13/Many-faces-of-data-format-for-scivis/" data-id="clrd0xmj900008ljrfjxr3cdj" class="article-share-link">分享</a>
       
       
       
@@ -180,7 +193,7 @@ ga('send', 'pageview');
   
     <a href="/2024/01/09/Camera-model-and-rendering-pipeline/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">Camera model and rendering pipeline</div>
+      <div class="article-nav-title">Camera model and rendering pipeline (WIP)</div>
     </a>
   
 </nav>
@@ -207,42 +220,24 @@ ga('send', 'pageview');
     <aside id="sidebar">
   
     
-  
+    <div class="widget-wrap">
     
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title recent-posts">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2024/01/09/Working-taolu-1/">Working taolu</a>
-          </li>
-        
-          <li>
-            <a href="/2024/01/09/Camera-model-and-rendering-pipeline/">Camera model and rendering pipeline</a>
-          </li>
-        
-          <li>
-            <a href="/2024/01/09/many-faces-of-uncertainty-vis/">many faces of uncertainty vis</a>
-          </li>
-        
-          <li>
-            <a href="/2023/12/13/use-ninja/">Using ninja</a>
-          </li>
-        
-          <li>
-            <a href="/2023/11/25/Amdahl-law-and-scale-experiments/">Amdahl law and scale experiments</a>
-          </li>
-        
-      </ul>
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#General-vtk-dataset"><span class="toc-number">1.</span> <span class="toc-text">General vtk dataset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#General-vtkm-dataset"><span class="toc-number">2.</span> <span class="toc-text">General vtkm dataset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Converting-between-vtk-to-vtkm-data-sets"><span class="toc-number">3.</span> <span class="toc-text">Converting between vtk to vtkm data sets</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Amrex-related-data"><span class="toc-number">4.</span> <span class="toc-text">Amrex related data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Openfoam-data"><span class="toc-number">5.</span> <span class="toc-text">Openfoam data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conduit"><span class="toc-number">6.</span> <span class="toc-text">Conduit</span></a></li></ol>
+          </div>
+      </div>
     </div>
-  </div>
 
+  
+    
+
+  
+    
+  
+    
   
     
 

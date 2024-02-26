@@ -13,7 +13,7 @@
 <meta property="og:description" content="This blog write some quick notes about using the paraview to do the visualization. There are some videos here, this article records some quick notes, which can be useful for daily use.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-10-03T01:29:11.000Z">
-<meta property="article:modified_time" content="2024-02-26T01:13:32.155Z">
+<meta property="article:modified_time" content="2024-02-26T01:16:27.338Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -210,24 +210,24 @@ ga('send', 'pageview');
 <li><p>The good practice is to start the pvserver on a dedicated compute node instead of the login node. For example:</p>
 </li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">srun -A &lt;project id&gt; -t 00:30:00 -N 1 -n 8 ./pvserver --force-offscreen-rendering</span><br><span class="line">``` 		</span><br><span class="line"></span><br><span class="line">The output is like this when the node is allocated:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>Waiting for client…<br>Connection URL: cs:&#x2F;&#x2F;frontier07337:11111<br>Accepting connection(s): frontier07337:11111</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">In this case, when building the ssh tunnel, we should use </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>ssh -L 11111:frontier07337:11111 <username>@login01.frontier.olcf.ornl.gov</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">This means that we actually build a tunnel through login01 to the compute node `frontier07337`, the ip of `frontier07337` can be recognized on login node. We can also build to tunnels first one is </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>ssh -L 11111:localhost:11111 <username>@login01.frontier.olcf.ornl.gov</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">After logining into the login node, then build the second one, which is</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>ssh -L 11111:localhost:11111 frontier07337</p>
-<pre><code>After building this tunnel, we can connect the client with the pvserver.
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">srun -A &lt;project id&gt; -t 00:30:00 -N 1 -n 8 ./pvserver --force-offscreen-rendering</span><br></pre></td></tr></table></figure>
 
+<p>The output is like this when the node is allocated:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Waiting for client...</span><br><span class="line">Connection URL: cs://frontier07337:11111</span><br><span class="line">Accepting connection(s): frontier07337:11111</span><br></pre></td></tr></table></figure>
 
+<p>In this case, when building the ssh tunnel, we should use </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -L 11111:frontier07337:11111 &lt;username&gt;@login01.frontier.olcf.ornl.gov</span><br></pre></td></tr></table></figure>
+<p>This means that we actually build a tunnel through login01 to the compute node <code>frontier07337</code>, the ip of <code>frontier07337</code> can be recognized on the login node. We can also build to tunnels first one is </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -L 11111:localhost:11111 &lt;username&gt;@login01.frontier.olcf.ornl.gov</span><br></pre></td></tr></table></figure>
 
-</code></pre>
+<p>After logining into the login node, then build the second one, which is</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -L 11111:localhost:11111 frontier07337</span><br></pre></td></tr></table></figure>
+<p>After building this tunnel, we can connect the client with the pvserver. Checking associated document to learn how to use reverse connection.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/10/02/Scientific-visualization-with-paraview/" data-id="clrc9gx5h003tlxjred6n43tj" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/10/02/Scientific-visualization-with-paraview/" data-id="clt2dormk003xyjjrgxcfbr99" class="article-share-link">分享</a>
       
       
       

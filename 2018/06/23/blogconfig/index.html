@@ -13,7 +13,7 @@
 <meta property="og:description" content="又开始使用新博客主要介绍了这个blog的迁移历史，以及使用hexo，octopress部署blog的一些相关资源。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2018-06-23T12:35:14.000Z">
-<meta property="article:modified_time" content="2024-01-13T18:25:16.196Z">
+<meta property="article:modified_time" content="2024-01-21T21:54:26.739Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -128,69 +128,16 @@ ga('send', 'pageview');
         <p>又开始使用新博客<br>主要介绍了这个blog的迁移历史，以及使用hexo，octopress部署blog的一些相关资源。</p>
 <span id="more"></span>
 
-<h3 id="为什么又要迁移"><a href="#为什么又要迁移" class="headerlink" title="为什么又要迁移"></a>为什么又要迁移</h3><p>2018.6.23<br>这次迁移的原因是因为自己一不小心把vm删掉了(总是犯这种低级错误，老老实实定期把重要内容备份在本地disk上才是保险但有效的方式啊)，连同上面所有的hexo的blog备份。github上虽然有之前记录的各种文档但始终仅仅是静态页面。趁着假期有一点时间就可以把之前的一些记录重新梳理校对下。</p>
+<h3 id="为什么又要迁移"><a href="#为什么又要迁移" class="headerlink" title="为什么又要迁移"></a>为什么又要迁移</h3><p>2018.6.23</p>
+<p>这次迁移的原因是因为自己一不小心把vm删掉了(总是犯这种低级错误，老老实实定期把重要内容备份在本地disk上才是保险但有效的方式啊)，连同上面所有的hexo的blog备份。github上虽然有之前记录的各种文档但始终仅仅是静态页面。趁着假期有一点时间就可以把之前的一些记录重新梳理校对下。</p>
 <p>最早的blog是在<a target="_blank" rel="noopener" href="http://www.cnblogs.com/Goden/">csdn上</a>，记录自己的一些小心思和学到的一些技术感想。算是自己一点一点觉得什么叫做认真生活，后来受到<a target="_blank" rel="noopener" href="http://wonderflow.github.io/">dbg的影响</a>，开始搭建blog，从octpress到hexo，到了现在这里，如今dbg的blog也不再更新了。从blog也能看到自己掌握的一些技术的变化，从java,golang,docker到k8s再到现在的parallel与distributed,中间还零星的Python与ruby，看看过去的文章除了感叹物是人非与自己的幼稚之外也庆幸的是自己最起码也是认真过的。</p>
 <h3 id="为什么要迁移"><a href="#为什么要迁移" class="headerlink" title="为什么要迁移"></a>为什么要迁移</h3><p>为什么要迁移(大致写在2017年初的样子)</p>
 <p>过了小半年左右的时光，又回来了。这一段的经历需要好好整理，回头看之前的blog又有了许多启发。首先是个人认为的一个blog应该具备的基本功能：markdown显示，分类检索，文章内容的目录，评论。之前使用的octopress，排版上也是不错的，但就是没有文章的目录显示的功能，找了一些相关的主题，也都不满意（主要是找不到文章目录的功能），看着同学使用hexo，心想索性迁移过来。吐槽有一些主题，花哨得恨不得上天，但是基本的功能都没有。</p>
 <p>过程并不想原先想的那么顺利，因为版本问题折腾了好久，本来想先把新的blog部署在coding上，然后把旧的迁移过来，但是部署上去竟然背景都加载不出来，只能说disappointed。想着再部署到git试一试，结果把原来octopress的分支又弄乱了，索性直接迁移到新的blog上吧。</p>
 <p>这也说明了一个问题，就是对知识一知半解的时候，是很危险的，这个时候只能按照通常的套路来，但是想要定制，或者玩一些花样的时候，一知半解的知识就满足不了需求了。比如这次，git的那些基本流程和操作是清楚的，但是octopress对于git分支的管理当初并没有细看，它执行rake deploy的操作，到底是更新哪个分支，也没有细看，git的一些不常用的操作也没弄懂，结果只能从头再来了。</p>
 <p>到是之前的那些文章都在。</p>
-<h3 id="写什么样的blog"><a href="#写什么样的blog" class="headerlink" title="写什么样的blog"></a>写什么样的blog</h3><p>回头看看之前的blog，好多文章的价值并不高，因为仅仅是相关内容的粗浅罗列缺乏自己的思考，这些内容，看官方文档自然是更权威的，那自己罗列在一起的价值又在哪里呢？每次搜索一个问题的时候，会发现好多没用的文章，自己的文章，恐怕也是其中之一吧。所以以后没整理一篇，都要明确这一篇能够给自己，或者给别人带来什么样的价值，此点是很重要的。</p>
+<h3 id="写什么样的blog"><a href="#写什么样的blog" class="headerlink" title="写什么样的blog"></a>写什么样的blog</h3><p>回头看看之前的blog，好多文章的价值并不高，因为仅仅是相关内容的粗浅罗列缺乏自己的思考，这些内容，看官方文档自然是更权威的，那自己罗列在一起的价值又在哪里呢？每次搜索一个问题的时候，会发现好多没用的文章，自己的文章，恐怕也是其中之一吧。所以以后每整理一篇，都要明确这一篇能够给自己，或者给别人带来什么样的价值，此点是很重要的。</p>
 <p>万不可再“贡献”冗余文章了，同时再清理掉一些过时的文章，从这一点看，把之前的文章重新审视一遍，也是好的。</p>
-<h3 id="hexo部署blog的一些资源"><a href="#hexo部署blog的一些资源" class="headerlink" title="hexo部署blog的一些资源"></a>hexo部署blog的一些资源</h3><p>定制hexo的一个教程（从源码的角度分析 比较有参考价值）<br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000006057336">https://segmentfault.com/a/1190000006057336</a></p>
-<p>hexo官方文档(吐槽下bd)</p>
-<p><a target="_blank" rel="noopener" href="https://hexo.io/">https://hexo.io/</a></p>
-<p>通过在hexo中添加一些关键代码来控制文章是否在主页面上显示</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/giscafer/hexo-theme-cafe/issues/8">https://github.com/giscafer/hexo-theme-cafe/issues/8</a></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">在_partial/archive.ejs中加简单的判断</span><br><span class="line">  &lt;% if ( post.visible!==false)&#123; %&gt;</span><br><span class="line">    &lt;%- partial(&#x27;article&#x27;, &#123;post: post, index: true&#125;) %&gt;</span><br><span class="line">  &lt;% &#125; %&gt;</span><br><span class="line">除非文章加visible:false，不然都会默认显示</span><br></pre></td></tr></table></figure>
-
-<p>使用mac部署的时候，会遇到dtrace的依赖无法安装的问题，这个依赖mac是不支持的，相关的解决方案：</p>
-<p>1<br>rm -rf node_modules&#x2F; &amp;&amp; npm install –no-optional<br>还可以参考这个issue:</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/trentm/node-bunyan/issues/216">https://github.com/trentm/node-bunyan/issues/216</a></p>
-<p>npm 命令的 no-optional的含义，可以参考：</p>
-<p><a target="_blank" rel="noopener" href="http://unix.stackexchange.com/questions/168034/is-there-an-option-to-install-an-npm-package-without-dependencies">http://unix.stackexchange.com/questions/168034/is-there-an-option-to-install-an-npm-package-without-dependencies</a></p>
-<p>没有dtrace的时候，在一些主题上，使用是不影响的，但是有些主题的布局还是会采用dtrace的依赖包的，比如我使用的这个shihuangse主题（前端的问题真是解决起来很麻烦啊，Docker的优势又一次显现了）。后来使用linux部署，奇怪的问题才没有再出现，目前我也没有找到一个比较完美的方案。</p>
-<h3 id="octopress使用的一些资源"><a href="#octopress使用的一些资源" class="headerlink" title="octopress使用的一些资源"></a>octopress使用的一些资源</h3><p>看到大波哥用Octopress搭建的博客还挺不错的，于是也跟风搞了一个。还有一个原因是原来在cnblog上面的旧博客对markdown编辑方式的支持简直是丑cry，默认的时候，字太小，都挤在中间的匡匡中，有的时候自己都不想看，抽时间把旧的还蛮有价值的文章一点一点搬过来。</p>
-<p>Octopress摸索了一下，勉强可以做一些简单的操作了，再搞一搞语法高亮，加上一些定制的组件，就更好了。</p>
-<p>把一些octpress使用时候的参考资料也记录在下面：</p>
-<p>基本的使用命令：</p>
-<p><a target="_blank" rel="noopener" href="http://octopress.org/docs/blogging/">http://octopress.org/docs/blogging/</a></p>
-<p>vim设置编码格式:</p>
-<p>:set fileencoding&#x3D;utf-8</p>
-<p>vim设置无bomb:</p>
-<p>:set nobomb<br><a target="_blank" rel="noopener" href="http://segmentfault.com/q/1010000000256502">http://segmentfault.com/q/1010000000256502</a></p>
-<p>相关的定制可以参考看这个blog:</p>
-<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/oec2003/archive/2013/05/31/3109577.html">http://www.cnblogs.com/oec2003/archive/2013/05/31/3109577.html</a></p>
-<p>这个定制教程也不错：</p>
-<p><a target="_blank" rel="noopener" href="http://foggry.com/blog/2014/04/28/custom-your-octopress-blog/">http://foggry.com/blog/2014/04/28/custom-your-octopress-blog/</a></p>
-<p>更换主题教程</p>
-<p><a target="_blank" rel="noopener" href="http://blog.flatironschool.com/how-to-install-a-custom-theme-on-octopress/">http://blog.flatironschool.com/how-to-install-a-custom-theme-on-octopress/</a></p>
-<p>每次编辑好之后可以 rake preview 命令在本地看一下效果</p>
-<p>具体部署的时候，可以参考这个：<a target="_blank" rel="noopener" href="http://www.tuicool.com/articles/jYZ7jy">http://www.tuicool.com/articles/jYZ7jy</a></p>
-<p>主要是 rake generate 、 rake preiew 、 rake deploy 几个命令的使用。</p>
-<p>在首页显示摘要，默认的情况下，显示的是文章所有的内容，如果只想显示摘要部分，可以用这个标记：</p>
-<p>&lt;!中划线中划线more中划线中划线&gt; , 后面部分就会自动被隐藏起来。</p>
-<p>注意代码块是三个反引号 或者直接用标签 pre code 的标签</p>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>有几次 报了下面的错误</p>
-<p>jekyll 2.5.3 | Error: Pygments can’t parse unknown language: class.</p>
-<p>主要是因为代码块引入的问题，注意代码块和文字之间都留好空格，还有 如果用 三个单引号 表示代码块不行的话，就换成 &lt; pre &gt;&lt; code &gt; 。。。&lt; &#x2F;code &gt;&lt; &#x2F;pre &gt;的表示试试看。</p>
-<p>还有一个挺郁闷的地方就是，每次从编辑器中拷过来的代买，都被弄成了一行，感觉有什么显示不出来的奇怪字符在后面，也可能是从虚拟机里面拷出来的原因，格式不对。还得放到txt中把没用的东西都过滤掉。手工重新调整一次，比较麻烦。</p>
-<h3 id="hexo-debug"><a href="#hexo-debug" class="headerlink" title="hexo debug"></a>hexo debug</h3><p>主要是一些hexo使用过程中的一些debug记录</p>
-<p>hexo deploy的时候ENOSPC</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">INFO  Start processing</span><br><span class="line">FATAL Something&#x27;s wrong. Maybe you can find the solution here: http://hexo.io/docs/troubleshooting.html</span><br><span class="line">Error: watch /home/parallels/Documents/hexoblog/themes/cafe/ ENOSPC</span><br><span class="line">    at exports._errnoException (util.js:873:11)</span><br><span class="line">    at FSWatcher.start (fs.js:1234:19)</span><br><span class="line">    at Object.fs.watch (fs.js:1262:11)</span><br><span class="line">    at createFsWatchInstance (/home/parallels/Documents/hexoblog/node_modules/chokidar/lib/nodefs-handler.js:37:15)</span><br><span class="line">    at setFsWatchListener (/home/parallels/Documents/hexoblog/node_modules/chokidar/lib/nodefs-handler.js:80:15)</span><br><span class="line">    at FSWatcher.NodeFsHandler._watchWithNodeFs (/home/parallels/Documents/hexoblog/node_modules/chokidar/lib/nodefs-handler.js:228:14)</span><br><span class="line">    at FSWatcher.NodeFsHandler._handleDir (/home/parallels/Documents/hexoblog/node_modules/chokidar/lib/nodefs-handler.js:407:19)</span><br><span class="line">    at FSWatcher.&lt;anonymous&gt; (/home/parallels/Documents/hexoblog/node_modules/chokidar/lib/nodefs-handler.js:455:19)</span><br><span class="line">    at FSWatcher.&lt;anonymous&gt; (/home/parallels/Documents/hexoblog/node_modules/chokidar/lib/nodefs-handler.js:460:16)</span><br><span class="line">    at FSReqWrap.oncomplete (fs.js:82:15)</span><br><span class="line">FATAL watch /home/parallels/Documents/hexoblog/themes/cafe/ ENOSPC</span><br><span class="line">Error: watch /home/parallels/Documents/hexoblog/themes/cafe/ ENOSPC</span><br><span class="line">    at exports._errnoException (util.js:873:11)</span><br><span class="line">    at FSWatcher.start (fs.js:1234:19)</span><br><span class="line">    at Object.fs.watch (fs.js:1262:11)</span><br><span class="line">    at createFsWatchInstance (/home/parallels/Documents/hexoblog/node_modules/chokidar/lib/nodefs-handler.js:37:15)</span><br><span class="line">    at setFsWatchListener (/home/parallels/Documents/hexoblog/node_modules/chokidar/lib/nodefs-handler.js:80:15)</span><br><span class="line">    at FSWatcher.NodeFsHandler._watchWithNodeFs (/home/parallels/Documents/hexoblog/node_modules/chokidar/lib/nodefs-handler.js:228:14)</span><br><span class="line">    at FSWatcher.NodeFsHandler._handleDir (/home/parallels/Documents/hexoblog/node_modules/chokidar/lib/nodefs-handler.js:407:19)</span><br><span class="line">    at FSWatcher.&lt;anonymous&gt; (/home/parallels/Documents/hexoblog/node_modules/chokidar/lib/nodefs-handler.js:455:19)</span><br><span class="line">    at FSWatcher.&lt;anonymous&gt; (/home/parallels/Documents/hexoblog/node_modules/chokidar/lib/nodefs-handler.js:460:16)</span><br><span class="line">    at FSReqWrap.oncomplete (fs.js:82:15)</span><br></pre></td></tr></table></figure>
-
-<p>需要修改一个系统参数：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf &amp;&amp; sudo sysctl -p</span><br><span class="line">hexo deploy的时候permission denied(public key)</span><br><span class="line">https://www.zhihu.com/question/21402411</span><br><span class="line">+</span><br><span class="line">https://stackoverflow.com/questions/17846529/could-not-open-a-connection-to-your-authentication-agen</span><br></pre></td></tr></table></figure>
-
-<h3 id="Hexo-equation"><a href="#Hexo-equation" class="headerlink" title="Hexo equation"></a>Hexo equation</h3><p>After configuring the equation, it is easy to write some blog that use a lot math:</p>
-<p>$$ e^{ix}&#x3D;\cos x + i\sin x $$</p>
-<p>This is an example to write things in multiple lines</p>
-<p>$$\begin{split}<br>\frac{\partial{\mathcal{E}}}{\partial{x_l}} &amp; &#x3D; \frac{\partial{\mathcal{E}}}{\partial{x_L}}\frac{\partial{x_L}}{\partial{x_l}}\\<br>&amp; &#x3D; \frac{\partial{\mathcal{E}}}{\partial{x_L}}\Big(1+\frac{\partial{}}{\partial{x_l}}\sum_{i&#x3D;l}^{L-1}\mathcal{F}(x_i,\mathcal{W}_i)\Big)<br>\end{split}$$</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$$\begin&#123;split&#125;</span><br><span class="line">\frac&#123;\partial&#123;\mathcal&#123;E&#125;&#125;&#125;&#123;\partial&#123;x_l&#125;&#125; &amp; = \frac&#123;\partial&#123;\mathcal&#123;E&#125;&#125;&#125;&#123;\partial&#123;x_L&#125;&#125;\frac&#123;\partial&#123;x_L&#125;&#125;&#123;\partial&#123;x_l&#125;&#125;\\\\</span><br><span class="line">&amp; = \frac&#123;\partial&#123;\mathcal&#123;E&#125;&#125;&#125;&#123;\partial&#123;x_L&#125;&#125;\Big(1+\frac&#123;\partial&#123;&#125;&#125;&#123;\partial&#123;x_l&#125;&#125;\sum_&#123;i=l&#125;^&#123;L-1&#125;\mathcal&#123;F&#125;(x_i,\mathcal&#123;W&#125;_i)\Big)</span><br><span class="line">\end&#123;split&#125;$$</span><br></pre></td></tr></table></figure>
-
-<p>It is easy to do this thing in hexo, I use the MathJax, there are lots of blogs explain how to add it, such as <a target="_blank" rel="noopener" href="https://typewind.github.io/2017/03/12/mathjax/">this</a>.</p>
-<h3 id="Insert-image"><a href="#Insert-image" class="headerlink" title="Insert image"></a>Insert image</h3><p>根据这个<a target="_blank" rel="noopener" href="https://hexo.io/docs/asset-folders.html">文档</a>在hexo中使用image直接放在source&#x2F;images目录下面就行，之前有几次把image放在了_posts目录下面，这个_posts目录中的文件看起来是在暂时的文件，每次更新generate所有的blog之后里面的image就被删除了。</p>
-<h3 id="Hexo-adding-google-analytics-and-goodle-adds"><a href="#Hexo-adding-google-analytics-and-goodle-adds" class="headerlink" title="Hexo adding google analytics and goodle adds"></a>Hexo adding google analytics and goodle adds</h3><p>One important lesson about this is that update the content at the right theme topic. Under the theme topic, there might multiple one, make sure the theme you updated is the one that you adopted. You might update the partial dir to apply the customized code for analytics or google adds</p>
 
       
     </div>
@@ -289,7 +236,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%88%E8%A6%81%E8%BF%81%E7%A7%BB"><span class="toc-number">1.</span> <span class="toc-text">为什么又要迁移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%BF%81%E7%A7%BB"><span class="toc-number">2.</span> <span class="toc-text">为什么要迁移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84blog"><span class="toc-number">3.</span> <span class="toc-text">写什么样的blog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo%E9%83%A8%E7%BD%B2blog%E7%9A%84%E4%B8%80%E4%BA%9B%E8%B5%84%E6%BA%90"><span class="toc-number">4.</span> <span class="toc-text">hexo部署blog的一些资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#octopress%E4%BD%BF%E7%94%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E8%B5%84%E6%BA%90"><span class="toc-number">5.</span> <span class="toc-text">octopress使用的一些资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">6.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo-debug"><span class="toc-number">7.</span> <span class="toc-text">hexo debug</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hexo-equation"><span class="toc-number">8.</span> <span class="toc-text">Hexo equation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Insert-image"><span class="toc-number">9.</span> <span class="toc-text">Insert image</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hexo-adding-google-analytics-and-goodle-adds"><span class="toc-number">10.</span> <span class="toc-text">Hexo adding google analytics and goodle adds</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%88%E8%A6%81%E8%BF%81%E7%A7%BB"><span class="toc-number">1.</span> <span class="toc-text">为什么又要迁移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%BF%81%E7%A7%BB"><span class="toc-number">2.</span> <span class="toc-text">为什么要迁移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%99%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84blog"><span class="toc-number">3.</span> <span class="toc-text">写什么样的blog</span></a></li></ol>
           </div>
       </div>
     </div>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Scientific visualization with Paraview | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="This blog write some quick notes about using the paraview to do the visualization. There are some videos here, this article records some quick notes, which can be useful for daily use.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scientific visualization with Paraview">
+<meta property="og:url" content="http://yoursite.com/2022/10/03/Scientific-visualization-with-paraview/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="This blog write some quick notes about using the paraview to do the visualization. There are some videos here, this article records some quick notes, which can be useful for daily use.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-10-03T01:29:11.000Z">
+<meta property="article:modified_time" content="2024-04-01T02:21:46.917Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Scientific-visualization-with-paraview" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/10/03/Scientific-visualization-with-paraview/" class="article-date">
+  <time datetime="2022-10-03T01:29:11.000Z" itemprop="datePublished">2022-10-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Visualization/">Visualization</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Scientific visualization with Paraview
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>This blog write some quick notes about using the paraview to do the visualization. There are some <a target="_blank" rel="noopener" href="https://www.youtube.com/playlist?list=PLCiOACzVKBLkGXqk19i-FADF7ukYnz351">videos here</a>, this article records some quick notes, which can be useful for daily use.</p>
+<span id="more"></span>
+
+<h3 id="All-kinds-of-details-about-color-mapping"><a href="#All-kinds-of-details-about-color-mapping" class="headerlink" title="All kinds of details about color mapping"></a>All kinds of details about color mapping</h3><p>TODO meaning of the 2d color plot<br>TODO discriticesed value and continuous values (check the discriticese button todo that)</p>
+<h3 id="Necessary-thing-for-taking-screenshot"><a href="#Necessary-thing-for-taking-screenshot" class="headerlink" title="Necessary thing for taking screenshot"></a>Necessary thing for taking screenshot</h3><p>Backgound color might be set to white color when taking a screen shot and put results into the paper as visualization reuslts. There is a color plaette at the top row of the GUI, click that can set the backgound color.</p>
+<p>Setting legend is a trick part. The default legend is using scientific format. There is a legend label with the letter ‘e’ on that in the editing region (information section), click that button can edit the figure as needed. We can adjust title size, the anotation size, the style of the legend number as needed. If there are multiple render view in the window, and you want to save each output one by one, we may want to make sure the legend is in the same place for all figure, in this case we can set legend position section and set its lengend as needed (such as setting it to 1), so all legend will stay at the same place.</p>
+<p>Setting multiple render view. We ususlly want to visualize multiple figures in one row in the paper to show the results with or without specific visualization effects. In this case we want to have same view for whole visualization results. It is good to open multiple render view and use link camera to link views together. Then we can zoom in and out a little bit to find a good angle and click the save screenshot to save results. Remember to set the image resolution x and y as the same value each time when you want to save the image.</p>
+<p>Remember to save the state if there are mutliple views and complicated settings, you do not want to redo all things from scratch when you want to show results to your colleages or continue to edit the previous visualization results.</p>
+<p>Sometimes we may use the isocontour, or iso related thing, if there is only one value associated with it, we just set it as a solid color, otherwise, the color might be messed up, it will still think that we choose color from a specific range (which is not the expected results since we only have one value associated with it).</p>
+<h3 id="Find-the-data-id-list"><a href="#Find-the-data-id-list" class="headerlink" title="Find the data id list"></a>Find the data id list</h3><p>Once, I need to check if the adjacent id of the mesh also locates at the adjacent physical positions, there is really useful function: using <code>view-&gt;find</code> data to label out the particle ids in a specific range. We can select out specific data and the associated selected data will be labeled out by pink dot, we can track the id associated with each data point, that can be helpful for debugging parallel processing based on vtkm. We can only select the region with wrong output and check it in particular.</p>
+<h3 id="Connect-to-remote-server"><a href="#Connect-to-remote-server" class="headerlink" title="Connect to remote server"></a>Connect to remote server</h3><p>For a long time, I run the paraview in local machine, I basically transfer the node to my local env. It is not the most efficient way to do use the paraview. For lots of cases, the large scale data is located on the Cluster, we need to run the paraview by a job on the cluster and then use local paraview as a client to login to the remote server. Just click that connet botton, and fetch all configurable servers. If you run the code on the typical HPC, then there is a terminal will be poped out, after login the password and token, the pv server is then started according to the configurations, such as process number.</p>
+<p>Be careful, we need to install the XQuartz for mac to trigger that terminal. After install the XQuartz, we need to restart the os. This is the related <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/37826094/xt-error-cant-open-display-if-using-default-display">discussion</a>, after reinstalling, the display parameter is sth like this:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ echo $DISPLAY</span><br><span class="line">/private/tmp/com.apple.launchd.DAdu1PW5GV/org.xquartz:0</span><br></pre></td></tr></table></figure>
+
+<p>The good thing is that we can run multple paraview server to accelarate the rendering speed. When everything is work, we can then use the extractor to generated png and send back to local machine to make animation. The png file is comparatively small and easy to transfer back and forth between client and server.</p>
+<h3 id="The-spread-view-and-the-particle-x2F-cell-finder"><a href="#The-spread-view-and-the-particle-x2F-cell-finder" class="headerlink" title="The spread view and the particle&#x2F;cell finder"></a>The spread view and the particle&#x2F;cell finder</h3><p>When click the split tab, we can get a new tab which shows different view, the default view is called the render view which shows the graphics data, another commonly used view is called the spreadsheet view, the good thing for this view is that we can clearly check the point data, cell data, field data etc, which can provide a good understading for the position of the specific points or cells.</p>
+<p>Furthermore, we can use the <code>View</code>-&gt;<code>FindData</code> to select different data points or cells according to the properties of the id, which is really useful for debuging some of the algorithm related to the vtk. The selected points or cells will be labeled out in the figure. These can provide a direact understanding for the position of points&#x2F;cells in the rendered geometry. We can even click the extract to extract the associated geometry with different colors. </p>
+<h3 id="Data-selection-mechanism"><a href="#Data-selection-mechanism" class="headerlink" title="Data selection mechanism"></a>Data selection mechanism</h3><p>The Paraview provide a really flexible data selection machanism, you could select the interested region from the visualized results direactly. This <a target="_blank" rel="noopener" href="https://docs.paraview.org/en/latest/UsersGuide/selectingData.html#selecting-in-render-view">doc</a> and this <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=U2sKoN9NGc8">video</a> provides a detailed explanation about it. After selecting the dedicated region, we can then use a specific filter called extracting selection to export the selected data region as a separate data set. This is helpful in selecting the perticular region to generate a data set used for debuging. It can save us a lot of energy for preparing dedicated data set for debug, we can just select them out from the rendered figure and export it for testing, this is really a flexible capability and can be used together with find data view.</p>
+<h3 id="Processing-multiple-data-blocks"><a href="#Processing-multiple-data-blocks" class="headerlink" title="Processing multiple data blocks"></a>Processing multiple data blocks</h3><p>In parallel computing, it is common that the data are outputed into separate vtk files. In visit, we can set the metadata file and load associated vtk file once. Such as </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">!NBLOCKS 4</span><br><span class="line">Block0.vtk</span><br><span class="line">Block1.vtk</span><br><span class="line">Block2.vtk</span><br><span class="line">Block3.vtk</span><br></pre></td></tr></table></figure>
+<p>In paraview, one possible solution I find is to output all associated data into the vtkPartitionedDataCollection, there is no conveienit way to do that, and this is a <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/vtk_example/python/datacollection.py">python script</a> to show how to load the data and useing the filter to add data together.</p>
+<h3 id="Some-small-but-important-operations"><a href="#Some-small-but-important-operations" class="headerlink" title="Some small but important operations"></a>Some small but important operations</h3><p>Clear the reset session (The circle button) to clean the current loaded data</p>
+<p>Click the View -&gt; Memory inspector to get the monitor about the system memory utilization.</p>
+<p>When we try to load a new data, we just put the dir name into the File Name column, (then click the navigate button) the window can jump to the specific dir where the data located, sometimes, it is inconvenient to open that dir.</p>
+<p>When we have to window for rendering the data, we can click right position of mouse and link the view, to let two windows have the same view.</p>
+<p>If our data only has the <code>scalar field</code> but we want to try some vector field visualization techniques, the simple way is to use the <strong>gradient filter</strong> (compute the change of the scalar value through each directions), then we have an vector field to play with.</p>
+<p>Similarly, if we have a 2d data set and want to change it into a 3d data set, we can use <code>WarpByScalar</code> filter. This kind of data is really cool to visualize the geo related data, or the region with a low value at the center. The visulaized results will show a large hole within it. This is an <a target="_blank" rel="noopener" href="https://ipygany.readthedocs.io/en/latest/api_reference/warpbyscalar.html">online exmaple</a>. Using <code>Extract Surface</code> after that can put the associated values onto that warped 3d surface and we can edit values based on that. One recent use case is that using the critical point filter based on that, this plugin can help to find the minimal values. We can do this through TTK plugin, we can enable the TTK and choose associated critical point based on scalar, it can provide more infomative resutls.</p>
+<p>One online tutorial at olcf about paraview</p>
+<p>The video is <a target="_blank" rel="noopener" href="https://vimeo.com/olcf">here</a>, the online page is <a target="_blank" rel="noopener" href="https://kmorel.gitlab.io/pv-tutorial-olcf-2022/getting-started/">here</a> </p>
+<h3 id="Some-archetecture-regarding-the-Paraview-design"><a href="#Some-archetecture-regarding-the-Paraview-design" class="headerlink" title="Some archetecture regarding the Paraview design."></a>Some archetecture regarding the Paraview design.</h3><p>Paraview are divided into the client, render server and data server. The design is based on Proxy pattern. We can find a lot of class name start with SMProxy, this means that the class is a proxy for server manager. Details of proxy pattern can be found <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Proxy_pattern">here</a>.</p>
+<h3 id="Common-flow-vis-tasks"><a href="#Common-flow-vis-tasks" class="headerlink" title="Common flow vis tasks"></a>Common flow vis tasks</h3><p>1&gt; show flow data by glyph direactly</p>
+<p>I do not know the good way to show it in paraview, just use the visit, hit the vector button direactly and we can get the general feeling about how vector field looks like, and get a quick generaly opinion about the dataset. If the data is from some special source which is not well suppoted by visit, maybe using clean to grid to conver the data into a standard vtk file and then load it into the visit.</p>
+<p>2&gt; streamline (steady flow)</p>
+<p>The easiest way:<br>Using the streamline representation view (the seeds are placed through all data domains). Just load associated stream line plugin, and the results can be checked in new representation view.</p>
+<p><a target="_blank" rel="noopener" href="https://www.kitware.com/new-animated-stream-lines-representation-for-paraview-5-3/">https://www.kitware.com/new-animated-stream-lines-representation-for-paraview-5-3/</a></p>
+<p>The associated visit way are listed in another blog (need to do a lot of manual work)</p>
+<p>3&gt; Extracting the streamline for detailed analysis:</p>
+<p>Checking <a target="_blank" rel="noopener" href="https://discourse.paraview.org/t/need-help-extracting-streamline-data-in-paraview/13608/5">this answer</a>. The results output by stream trace is really informative, it is conveneint to show the specific polyline through the data finder view of the paraview. After that, using the extraction to extract that data set and the coordinates of each points are included in that results. It is conveneint to output the coordinates of these points for further processing. Such as using python to do the further analysis.</p>
+<p>4&gt; particle path with unsteady flow</p>
+<p>The <code>particle tracer</code> filter is just the particle advection operation in vtk for the unsteady flow. There are two necessary input parameter, the first is the input data, which can be a 2d slice of the original data, the second parameter is the seed, which can be a line, we need to add a line source separately before using this fileter.</p>
+<p>From paraview’s interface, when using the particle tracer filter. The first input is the source, which can be the the line source or other similar one. For the source, the <code>resolution</code> parameter can shows how many particles are selected. With this filter, it only advect particle at different steps. Only some of options are exposed by paraview interface, we can set more to call vtk filter separately. </p>
+<p>One important parameter is <code>Force Reinjection every NSteps</code> if we set it as 1, it means that after each iteration, we put a particle at the start position of the source and let it advected through the flow field. </p>
+<p>If we want to draw some lines based on it, then we need to use the <code>TemporalParticlesPathlines</code> the input of this filter is the output of the particle tracer.</p>
+<p>One important parameter is <code>mask points</code> under the <code>TemporalParticlesPathlines</code>, this filter can tell us how many point will be skiped when we visualize the path line.</p>
+<p>5&gt; FTLE</p>
+<h3 id="Tips-of-building-paraview-in-all-kinds-of-scenarios"><a href="#Tips-of-building-paraview-in-all-kinds-of-scenarios" class="headerlink" title="Tips of building paraview in all kinds of scenarios"></a>Tips of building paraview in all kinds of scenarios</h3><p>General step by step process can be found here on the official dodument</p>
+<p><a target="_blank" rel="noopener" href="https://gitlab.kitware.com/paraview/paraview/-/blob/master/Documentation/dev/build.md">https://gitlab.kitware.com/paraview/paraview/-/blob/master/Documentation/dev/build.md</a></p>
+<p>But I got some small issues during the installing.</p>
+<p>1&gt; python issue. The details can be found <a target="_blank" rel="noopener" href="https://discourse.paraview.org/t/symbol-not-found-in-flat-namespace-pyerr-clear-when-build-paraview-with-python/13614/2">here</a>. Maybe just do not mix the anaconda and the homebrew python, they might not work together properly. And linker might find a wrong so libraray. Trying to use the <code>otool</code> or <code>ld</code> to double check the correctness of the linked shared library is a typical way to find the root issue. Or just distable the python and mpi build if we do not need these capabilities.</p>
+<p>2&gt; Wrong rpath of the python library when executing the final binary file. Maybe the paraview did not set the rpath in a right way during the compilation, using the <code>make VERBOSE=1</code> or <code>ninja -v</code> to show all compilation details to check the rpath, <a target="_blank" rel="noopener" href="https://discourse.paraview.org/t/library-not-loaded-rpath-python3-framework-versions-3-9-python3/14013">this</a> is detailed description of issue </p>
+<p>3&gt; qt issue. The details can be found <a target="_blank" rel="noopener" href="https://discourse.paraview.org/t/issue-for-changing-representation-in-self-build-paraview/13600">here</a>. Just double checking the installed package, for example, on mac, check the homebrew env and make sure only the qt5 or qt6 is installed. The default one is qt6, for the qt5, the package name is <code>qt@5</code>.</p>
+<p>4&gt; some other issues, such as linkinng to a wrong so file for some depedenceis, check this <a target="_blank" rel="noopener" href="https://discourse.paraview.org/t/paraview-found-is-set-to-false/4651/3">one</a></p>
+<p>5&gt; One time, i got some networking issue, then git submodule does not run successfully, remember to check <code>git status</code> to make sure it runs well, otherwise, try <code>git submodule deinit -f .</code> to set it back to the initial status. If the git-lfs is not there, it might still fail</p>
+<p><strong>build paraview on HPC</strong></p>
+<p>These are steps to build the paraview on Frontier supercomputer, this is the one withtout using the qt and try to run paraivew through the server mode.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">module load gcc</span><br><span class="line">Module load python</span><br><span class="line">module load ninja</span><br><span class="line">module load mesa</span><br><span class="line">module git-lfs</span><br><span class="line"></span><br><span class="line">cmake -GNinja -DPARAVIEW_USE_PYTHON=ON -DPARAVIEW_USE_MPI=ON -DVTK_SMP_IMPLEMENTATION_TYPE=OPENMP -DCMAKE_BUILD_TYPE=Release -DPARAVIEW_USE_QT=OFF -DVTK_OPENGL_HAS_OSMESA=ON -DVTK_USE_X=OFF ../paraview</span><br></pre></td></tr></table></figure>
+
+<p><strong>build paraview by cuda</strong></p>
+<p>When cuda is enabled, it will also enable the vtk-m gpu version automatically. This is an example to build the paraview based on GeForce 2080, be careful about different cuda architecture version, this is an key parameter to make cuda things work properly.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cmake ../paraview/ -DPARAVIEW_USE_CUDA=ON -DVTKm_ENABLE_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES=75</span><br></pre></td></tr></table></figure>
+
+<p><strong>build paraview with adios enabled</strong></p>
+<p>The paraview could detect the adios bp file if associated bp reader plugin is enabled. But we need to make sure the associated bp reader is built when installing adios. This is an exmaple:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cmake ../paraview/ -DPARAVIEW_USE_QT=OFF -DVTK_USE_X=OFF -DVTK_OPENGL_HAS_OSMESA=ON -DPARAVIEW_ENABLE_ADIOS2=ON -DADIOS2_DIR=/ccs/home/zw241/cworkspace/install_adios/lib64/cmake/adios2/ -DPARAVIEW_USE_MPI=ON</span><br></pre></td></tr></table></figure>
+
+<p>After building by this way, when we load the bp file, we can load it automatically. However, it might be more flexible to use the adios cpp reader to load the raw data and write out the data as needed. This is an <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/vtk_example/adiosToVTK/adiosToRawCommon.cpp">online example</a> to get the adios file and write it out (it might still be necessary to add the vtk.xml file under the associated bp folder as described by the online document). Ensentially, the adios thing is just a bounch of n-d array, the <code>vtk.xml</code> is the metadata that tells paraview how to parse the data (the structure of the mesh).</p>
+<p>For the metadata of the adios, for example, if it is {d1,d2,d3}, the d3 is the slowest changed one and the d1 is the fastest changing one. For x-y-z case, it should be {dz,dy,dx} where the x dim changes fast and then y and then z.</p>
+<p>There is a ADIOS AdiosReaderPixie reder, which is not maintained for a long time, it also need to include adios1 which is time-consuming when compiling things. It seems there are still some compiling errors associated with it. The best way is still to use the cpp bp reader to get the data and write the resutls out into the raw data, and rendered by other associated softwares.</p>
+<h3 id="Paraview-loading-the-raw-data"><a href="#Paraview-loading-the-raw-data" class="headerlink" title="Paraview loading the raw data"></a>Paraview loading the raw data</h3><p>If the data is stored as raw format, it is easy to load associated data by paraview through the <filename>.raw file. Just use the image reader, and input the small or big endian, and also the extend value for each dimention, then the results can be rendered properly.</p>
+<h3 id="Customized-filter"><a href="#Customized-filter" class="headerlink" title="Customized filter"></a>Customized filter</h3><p>When we set a pipeline that contains multiple filters, we can simply compose these filters together into one filter. Using ctrl to select multiple filter and then click customized filter to create a new filter. For this new filter, we can set input, output and exposed parameter conveniently, we can specify which parameters need to be exposed and other unexposed filter will adopt the </p>
+<h3 id="Paraview-plugin"><a href="#Paraview-plugin" class="headerlink" title="Paraview plugin"></a>Paraview plugin</h3><p>This can be a really useful techniques, since wrapping your algorithm into a plugin can let it share other paraview’s capabilities. We will use detailed example to explain how to wrap vtkm things into the filter.</p>
+<p>Let’s take <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/paraview/paraview/-/tree/master/Plugins/VTKmFilters">VTKmFilters plugin</a> as an example to show what should you do if you want to add your own plugin.</p>
+<p>Step 1, set up associated CMakeLists to make the algorithm compiled under the paraview plugin command. Such as <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/paraview/paraview/-/tree/master/Plugins/VTKmFilters">these files</a>. The specific command can be added through <a target="_blank" rel="noopener" href="https://vtk.org/doc/nightly/html/md__builds_gitlab-kitware-sciviz-ci_Documentation_Doxygen_ModuleSystem.html">vtk module build system</a>, instead of naive cmake.</p>
+<p>Step 2, clone the paraview code and build it locally. Pay attention that there are depedencies in paraview, after clone code, remember to use <code>git submodule update --recursive</code> to update all depedencies such as VTK and VTKm associated with it. </p>
+<p>Step 3, make sure the naive version of plugin can be compiled by paraview, this is <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/UCV/blob/exp_el/CMakeLists.txt#L10">an example</a> of my personal project. It needs to find the vtkm and paraview through the paraview build dir (maybe just use build dir to avoid the symbal link issue sometimes).</p>
+<p>Step 4, adding the xml file to make sure how the plugin can be interacted with the paraview frontend. This <a target="_blank" rel="noopener" href="https://www.paraview.org/Wiki/ParaView/Plugin_HowTo">doc</a> details a lot of xml label and its meaning.</p>
+<p>Step 5, Just try to debug the algorithm to make sure it can work as expeced, maybe run the paraview by command line to see the printed log message. For the mac, just go into that paraview.app folder and run the paraview through the command line.</p>
+<p>Step 6, Program the class that inherit from specific vtk algorithm such as vtkImageAlgorithm and implement the <code>RequestData</code> function. In this function, we need to make sure how to get data form vtk data object and return the vtk data etc. It is quite flexible and case by case. Try to look at <a target="_blank" rel="noopener" href="https://www.kitware.com//a-vtk-pipeline-primer-part-1/">these blogs</a> and <a target="_blank" rel="noopener" href="https://vtk.org/Wiki/VTK/Tutorials/New_Pipeline">this doc</a> to get more ideas.</p>
+<h3 id="Using-client-x2F-remote-mode-run-paraview"><a href="#Using-client-x2F-remote-mode-run-paraview" class="headerlink" title="Using client&#x2F;remote mode run paraview."></a>Using client&#x2F;remote mode run paraview.</h3><ul>
+<li>Building and install same version of paraview on client and server respectively. For example, this is the cmake command to build and install paraview on server. Remember to load necessary module such as mesa, gcc on HPC.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cmake -GNinja -DPARAVIEW_USE_PYTHON=ON -DPARAVIEW_USE_MPI=ON \</span><br><span class="line">-DVTK_SMP_IMPLEMENTATION_TYPE=OPENMP \</span><br><span class="line">-DCMAKE_BUILD_TYPE=Release \</span><br><span class="line">-DPARAVIEW_USE_QT=OFF \</span><br><span class="line">-DVTK_OPENGL_HAS_OSMESA=ON \</span><br><span class="line">-DVTK_USE_X=OFF ../paraview</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>This is example command to build the paraview on client, check the official <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/paraview/paraview/-/blob/master/Documentation/dev/build.md?ref_type=heads">documents</a> to get ideas for different platform.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cmake -GNinja -DPARAVIEW_USE_PYTHON=ON -DPARAVIEW_USE_MPI=ON \</span><br><span class="line">-DVTK_SMP_IMPLEMENTATION_TYPE=OPENMP \</span><br><span class="line">-DCMAKE_BUILD_TYPE=Release ../../src/paraview</span><br></pre></td></tr></table></figure>
+<p>Be careful about several common issue listed above, such as python version issue (mix the system python and the conda python), rpath issue (wrong rpath when link the executable) and qt issue (mix the qt5 and qt6).</p>
+<ul>
+<li>Using frontier HPC as an exmaple, we first run the paraview server on login node. Be careful to login to dedicated login node. If we use <code>ssh &lt;username&gt;@frontier.olcf.ornl.gov</code> we might ssh to a random login node. There are different name patterns for these login node. On Frontier cluster, it is <code>login01.frontier, login02.frontier</code> etc. This can be different for different cluster. Assuming we are on <code>login01.frontier</code>, then run the pvserver by <code>./pvserver --force-offscreen-rendering</code>, the output is:</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Waiting for client...</span><br><span class="line">Connection URL: cs://login01:11111</span><br><span class="line">Accepting connection(s): login01:11111</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Building a ssh tunnel between local machine (laptop) and the HPC login node. This is an important step and we can do it by this way:</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -L 11111:login01:11111 &lt;username&gt;@login01.frontier.olcf.ornl.gov </span><br></pre></td></tr></table></figure>
+
+<p>This means that we map the 11111 port on local machine to the <code>login01:11111</code> through the <code>&lt;username&gt;@login01.frontier.olcf.ornl.gov</code>. This is same to the normal ssh login process, we input password and login to the HPC.</p>
+<ul>
+<li><p>Starting the paraview on local machine, choose File-&gt;Connect-&gt;Add server, then add <code>localhost:11111</code> the start up type is manual. Since the we have already map the local port to remote HPC machine, once we connect button, the client could connect to the pvserver on remote machine successfully. The server end shows <code>Client connected</code>.</p>
+</li>
+<li><p>The good practice is to start the pvserver on a dedicated compute node instead of the login node. For example:</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">srun -A &lt;project id&gt; -t 00:30:00 -N 1 -n 8 ./pvserver --force-offscreen-rendering</span><br></pre></td></tr></table></figure>
+
+<p>The output is like this when the node is allocated:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Waiting for client...</span><br><span class="line">Connection URL: cs://frontier07337:11111</span><br><span class="line">Accepting connection(s): frontier07337:11111</span><br></pre></td></tr></table></figure>
+
+<p>In this case, when building the ssh tunnel, we should use </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -L 11111:frontier07337:11111 &lt;username&gt;@login01.frontier.olcf.ornl.gov</span><br></pre></td></tr></table></figure>
+<p>This means that we actually build a tunnel through login01 to the compute node <code>frontier07337</code>, the ip of <code>frontier07337</code> can be recognized on the login node. We can also build to tunnels first one is </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -L 11111:localhost:11111 &lt;username&gt;@login01.frontier.olcf.ornl.gov</span><br></pre></td></tr></table></figure>
+
+<p>After logining into the login node, then build the second one, which is</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -L 11111:localhost:11111 frontier07337</span><br></pre></td></tr></table></figure>
+<p>After building this tunnel, we can connect the client with the pvserver. Checking associated document to learn how to use reverse connection.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2022/10/03/Scientific-visualization-with-paraview/" data-id="clt2e88mm003w8xjr51s12cj8" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2022/10/23/Tips-of-using-gmsh/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Tips of using gmsh
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/09/25/HPC-scratch/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">HPC scratch</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#All-kinds-of-details-about-color-mapping"><span class="toc-number">1.</span> <span class="toc-text">All kinds of details about color mapping</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Necessary-thing-for-taking-screenshot"><span class="toc-number">2.</span> <span class="toc-text">Necessary thing for taking screenshot</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Find-the-data-id-list"><span class="toc-number">3.</span> <span class="toc-text">Find the data id list</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Connect-to-remote-server"><span class="toc-number">4.</span> <span class="toc-text">Connect to remote server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-spread-view-and-the-particle-x2F-cell-finder"><span class="toc-number">5.</span> <span class="toc-text">The spread view and the particle&#x2F;cell finder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Data-selection-mechanism"><span class="toc-number">6.</span> <span class="toc-text">Data selection mechanism</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Processing-multiple-data-blocks"><span class="toc-number">7.</span> <span class="toc-text">Processing multiple data blocks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-small-but-important-operations"><span class="toc-number">8.</span> <span class="toc-text">Some small but important operations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-archetecture-regarding-the-Paraview-design"><span class="toc-number">9.</span> <span class="toc-text">Some archetecture regarding the Paraview design.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Common-flow-vis-tasks"><span class="toc-number">10.</span> <span class="toc-text">Common flow vis tasks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tips-of-building-paraview-in-all-kinds-of-scenarios"><span class="toc-number">11.</span> <span class="toc-text">Tips of building paraview in all kinds of scenarios</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Paraview-loading-the-raw-data"><span class="toc-number">12.</span> <span class="toc-text">Paraview loading the raw data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Customized-filter"><span class="toc-number">13.</span> <span class="toc-text">Customized filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Paraview-plugin"><span class="toc-number">14.</span> <span class="toc-text">Paraview plugin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using-client-x2F-remote-mode-run-paraview"><span class="toc-number">15.</span> <span class="toc-text">Using client&#x2F;remote mode run paraview.</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

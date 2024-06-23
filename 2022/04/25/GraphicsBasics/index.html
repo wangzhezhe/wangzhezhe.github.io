@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Graphics Basics | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Some basic concepts about rendering pipeline and graphics. The main contents come from the VTK text book.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Graphics Basics">
+<meta property="og:url" content="http://yoursite.com/2022/04/25/GraphicsBasics/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Some basic concepts about rendering pipeline and graphics. The main contents come from the VTK text book.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-04-24T21:07:17.000Z">
+<meta property="article:modified_time" content="2023-01-02T20:11:07.885Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-GraphicsBasics" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/04/25/GraphicsBasics/" class="article-date">
+  <time datetime="2022-04-24T21:07:17.000Z" itemprop="datePublished">2022-04-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Visualization/">Visualization</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Graphics Basics
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Some basic concepts about rendering pipeline and graphics. The main contents come from the <a target="_blank" rel="noopener" href="https://kitware.github.io/vtk-examples/site/VTKBook/03Chapter3/">VTK text book</a>.</p>
+<span id="more"></span>
+
+<h2 id="Math-foundations"><a href="#Math-foundations" class="headerlink" title="Math foundations"></a>Math foundations</h2><p>Vector space</p>
+<h2 id="Basic-concepts"><a href="#Basic-concepts" class="headerlink" title="Basic concepts"></a>Basic concepts</h2><p>During the programing for rendering sth, it is easy to get confused if we lack the knowledge about the meaning of the terms used by computer graphics, such as actor, scence, mapper, canvas, views. etc.</p>
+<p>This sentences shows the relationship between the graphics and visulization “Computer graphics is the foundation of data visualization. Practically speaking, visualization is the process that transforms data into a set of graphics primitives.”</p>
+<p>No matter how the rendering pipeline defined or different terms are adopted, two key parts are data pipeline and graphics primiteves.</p>
+<h3 id="VTK-rendering-pipeline"><a href="#VTK-rendering-pipeline" class="headerlink" title="VTK rendering pipeline"></a>VTK rendering pipeline</h3><p>This paragraph describes clearly about the relationship between different concepts:</p>
+<p>Actors represent graphical data or objects, lights illuminate the actors, and the camera constructs a picture by projecting the actors onto a view plane. We call the combination of lights, camera, and actors the scene, and refer to the rendering process as rendering the scene.</p>
+<p>light source and actors are easy to understand. When considering how to project the 3d scene into the 2d plane, we need the concepts of cameras. The position of th camera can be described clearly based on figure used in the VTK text book, and we do not describe details here.</p>
+<p>The Figure 3-24 shows how different concepts can work together.</p>
+<p>Concrete example in VTK rendering process, such as the exmaple in 3.10 of the vtk text boook.</p>
+<p>The code example above the figure 3-26 may provide mode direact ideas about how different components can work together.</p>
+<p>The operation before the mapper belongs to the data pipeline, the output of the data pipeline is set to the mapper, which map the data into the graphics operation,  the operation after the mapper belongs to the graphics pipeline. The actor contains the mapper. The vtkRenderer object handles the actor, light and camera. The vtkRenderWindow object can contains multiple renderers. Then the renderWindowInteractor help to process the interactive operations such as handling the mouse and the keyboard events. It can transfer these events from user to the graphics primitives such as change the view of the camera.</p>
+<h3 id="VTK-m-rendering-pipeline"><a href="#VTK-m-rendering-pipeline" class="headerlink" title="VTK-m rendering pipeline"></a>VTK-m rendering pipeline</h3><p>Concrete example in VTK-m rendering process.</p>
+<p>a view is a unit that collects all the structure needed to perform the rendering. The scene contains a actor (same with vtk). Canvas is a unit that represent the image space that is the target of the rendering. Mappers are similar with the vtk. </p>
+<h3 id="Alpine-x2F-ascent-example"><a href="#Alpine-x2F-ascent-example" class="headerlink" title="Alpine&#x2F;ascent example"></a>Alpine&#x2F;ascent example</h3><p>Another example is the rendering process for <a target="_blank" rel="noopener" href="https://ascent.readthedocs.io/en/latest/Actions/Scenes.html#scenes">ascent project</a></p>
+<p>According to their document, the basic concepts is <code>Scenes</code>, which contains all necessary information, then there is <code>Plots</code> which basically defines the more details data pipeline such as what kind of vis type (mesh volume etc.). One co-existing concepts is <code>Render</code> here, which defines the graphics primitives, such as image size and camera angle etc. They use another different visuzliation pipline, which is different with the vtk-m, their library is called the rover (<a target="_blank" rel="noopener" href="https://github.com/LLNL/rover">https://github.com/LLNL/rover</a>)</p>
+<h2 id="Rendering-algorithm-and-library"><a href="#Rendering-algorithm-and-library" class="headerlink" title="Rendering algorithm and library"></a>Rendering algorithm and library</h2><p>Although the opengl is adopted as the foundation for most of the rendering pipeline, their upper layer can be different.</p>
+<p>We mainly take some nots for the rending things used in the scientific visulization.</p>
+<h3 id="Parallel-Rendering-Algorithm"><a href="#Parallel-Rendering-Algorithm" class="headerlink" title="Parallel Rendering Algorithm"></a>Parallel Rendering Algorithm</h3><p>Ray tracing<br>Volume rendering<br>Image compositing, Radixk</p>
+<h3 id="Library"><a href="#Library" class="headerlink" title="Library"></a>Library</h3><p>IceT (used by paraview)</p>
+<p>Rover (used by ascent) <a target="_blank" rel="noopener" href="https://github.com/LLNL/rover">https://github.com/LLNL/rover</a></p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><p>The Intriduction of Graphics Class online</p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=01YSK5gIEYQ&amp;list=PL_w_qWAQZtAZhtzPI5pkAtcUVgmzdAP8g&amp;index=1">https://www.youtube.com/watch?v=01YSK5gIEYQ&amp;list=PL_w_qWAQZtAZhtzPI5pkAtcUVgmzdAP8g&amp;index=1</a></p>
+<p>good references about the opengl camera position</p>
+<p><a target="_blank" rel="noopener" href="https://learnopengl.com/Getting-started/Camera">https://learnopengl.com/Getting-started/Camera</a></p>
+<h3 id="Some-notes-about-the-references"><a href="#Some-notes-about-the-references" class="headerlink" title="Some notes about the references"></a>Some notes about the references</h3><p>ep1<br>vector spaces，frames<br>This expression can save some energy, it just express a coordinates vector as a point p in space<br>the relationship between vector and points, p1+t(p2-p1) any points along the line between p1 and p2, (1-t)p1+tP2, affine combination. Vector + Points-&gt; Affine space.<br>P in a trangle p1,p2,p3, how to express the P.  P &#x3D; alpa1 P1+alpha2 P2+alpha3 P3 (a1+a2+a3&#x3D;1) Barycentric coordinate system</p>
+<p>45:42, get the matrix form from the affine operation, (1,t,t^2,t^3)^T M (p1,p2,p3,p4)</p>
+<p>ep2<br>the function for a random curve?how to generate curve?<br>Chaikin’s Algorithm (recursive subdivision), subdivision curve<br>get several points on the curve line, get control points, tangent, use the cross point as new control points, </p>
+<p>ep3</p>
+<p>Moving object in space (basic primitives)<br>use matrix a express the things (scaling + tranform) 3 times 3 for 2d and 4 times 4 for 3d<br>rotation:<br>right hand rule, rotate theta, rotate sth around the line (such as x, y and z axis)</p>
+<p>ep4</p>
+<p>Model-View-Controller (design pattern), the qt make the controller and view interction easier.</p>
+<p>Qcompiler, implement siganal and slots(call back function), qglwidget, Canvas, draw routines</p>
+<p>Rotation along the arbitry axis</p>
+<p>transport the point to the origin, manipulate the vector to the z axis (we multiple rotation along different axis to move the targeted axis back to z), use elementary matrixes to construct more complicated one</p>
+<p>Quaternion<br>Translation between quaternions and matrixes (an intersting way to express the relatioship between the 4th space and other 3d space)<br>projective space, viewing pyramid</p>
+<p>ep5</p>
+<p>Camera transform</p>
+<p>pinhole camera as the model, image space</p>
+<p>view transform (there are some math that is hard to understand for this episode)<br>camera point, center of attention(direaction vector), up direaction, angle of view, near and far distances</p>
+<p>image space is mapped to the screen space</p>
+<p>evey single point will multiple that matrix</p>
+<p>ep6</p>
+<p>viewing pipeline, geometry pipeline</p>
+<p>clipping</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2022/04/25/GraphicsBasics/" data-id="clt2e88me001d8xjr5b2s1f00" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2022/04/27/cpptemplateCRPT/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Cpp template about CRPT
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/04/22/Algorithm-8-Tree/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Algorithm(8) Naive Tree(By input data structure)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Math-foundations"><span class="toc-number">1.</span> <span class="toc-text">Math foundations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Basic-concepts"><span class="toc-number">2.</span> <span class="toc-text">Basic concepts</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-rendering-pipeline"><span class="toc-number">2.1.</span> <span class="toc-text">VTK rendering pipeline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-m-rendering-pipeline"><span class="toc-number">2.2.</span> <span class="toc-text">VTK-m rendering pipeline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Alpine-x2F-ascent-example"><span class="toc-number">2.3.</span> <span class="toc-text">Alpine&#x2F;ascent example</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rendering-algorithm-and-library"><span class="toc-number">3.</span> <span class="toc-text">Rendering algorithm and library</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Parallel-Rendering-Algorithm"><span class="toc-number">3.1.</span> <span class="toc-text">Parallel Rendering Algorithm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Library"><span class="toc-number">3.2.</span> <span class="toc-text">Library</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#References"><span class="toc-number">3.3.</span> <span class="toc-text">References</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-notes-about-the-references"><span class="toc-number">3.4.</span> <span class="toc-text">Some notes about the references</span></a></li></ol></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

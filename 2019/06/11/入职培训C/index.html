@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>入职培训C | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="入职培训感想">
+<meta property="og:type" content="article">
+<meta property="og:title" content="入职培训C">
+<meta property="og:url" content="http://yoursite.com/2019/06/11/%E5%85%A5%E8%81%8C%E5%9F%B9%E8%AE%ADC/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="入职培训感想">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-06-11T01:08:00.000Z">
+<meta property="article:modified_time" content="2022-06-11T20:25:25.277Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-入职培训C" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/11/%E5%85%A5%E8%81%8C%E5%9F%B9%E8%AE%ADC/" class="article-date">
+  <time datetime="2019-06-11T01:08:00.000Z" itemprop="datePublished">2019-06-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/c-c/">c/c++</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      入职培训C
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>入职培训感想</p>
+<span id="more"></span>
+
+<p>想到终于有机会上手一个正式的c&#x2F;c++项目了，又把之前的一些旧文拿出来整理整理，这一篇是入职培训时候的一个小项目感想。</p>
+<p>培训的最后一个阶段是小型项目的上手演练，有很多有意思的体会。</p>
+<h3 id="表驱动法编程模式"><a href="#表驱动法编程模式" class="headerlink" title="表驱动法编程模式"></a>表驱动法编程模式</h3><p>实际的需求是一个地铁站的计费功能，要根据不同的里程数计算地铁票的价格，最容易想到的模式是按照以下方式进行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if (dis&lt;d1&amp;&amp;dis&gt;=d2)&#123;</span><br><span class="line">   price caculating;</span><br><span class="line">&#125;else if(dis&gt;d2&amp;&amp;dis&lt;=d3)&#123;</span><br><span class="line">   price caculating;</span><br><span class="line">&#125;else &#123;</span><br><span class="line">   ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>表驱动法的核心思路是尽量把以后可能要变化的部分都抽取出来，就是通过定义table来对应实际的映射关系，实际上就是把对应的映射关系预先存储在一个表中，之后直接读取表就行，说白了就是空间换时间的思路。针对于逻辑性不是很强但是分支比较多的代码。简而言之就是通过查表的方式来获取值。数据驱动（表驱动）编程的核心出发点是相对于程序逻辑，人类更擅长于处理数据。</p>
+<p>比如对于以上的情景，可以自己先定义一个struct，把具体的逻辑表述数据化：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">typedef struct distanceTable&#123;</span><br><span class="line">	int price;</span><br><span class="line">	int start;</span><br><span class="line">	int end;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之后把实际的关键点对应的票价存储在这个数组中，具体判断的时候，如果发现实际输入的dist在某个start与end之间，就得到了对应的price。</p>
+<h3 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h3><p>在实际项目中，错误处理是严谨而全面的。一个严谨的项目中对于错误的处理也应该是严谨全买客观的，一般涉及<code>ERROR_CODE</code>（代码中常用枚举类型表示，返回<code>SUCCESS</code>的形式常定义在第一个位置）以及<code>ERROR_STR</code>（用户可读的信息），<code>ERROR_STR</code>中的每一种与<code>ERROR_CODE</code>中的每个枚举值应该都是对应的，这些信息最好是单独定义在一个错误处理的模块中，对于新手来说，错误处理常常表现的过于随意，常常都是什么时候想用就什么时候输出。</p>
+<p>在C++编程的时候，<strong>由于返回值只能返回一个结果，这个结果常常就是ERROR_CODE，如果函数有其他的多个返回值，常常通过形式参数引用的形式放在形式参数的位置上传入进来，之后在函数中就可以直接对这个值进行修改（set这个值）这样就起到了返回值的效果。</strong>对于Golang来说比较烦的就是每次判断<code>err!=nil&#123;&#125;</code>这种，在C++中也是有类似的判断，一种是在每次关键步骤完成之后就判断，如果有对应的错误就返回，另外一种是使用 do while的方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">do &#123;</span><br><span class="line">   returncode=functiona(...);</span><br><span class="line">   if(returncode!=SUCCESS)&#123;</span><br><span class="line">      //process err</span><br><span class="line">      break;</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   ...</span><br><span class="line">   </span><br><span class="line">   returncode=functionb(...);</span><br><span class="line">   if(returncode!=SUCCESS)&#123;</span><br><span class="line">      //proess err</span><br><span class="line">      break;</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   ...</span><br><span class="line">   </span><br><span class="line">   //final output</span><br><span class="line">&#125;while(0)</span><br></pre></td></tr></table></figure>
+<p>在整个的do语句中对每次的返回值进行判断如果中途有err则直接break出来进行最后的处理。</p>
+<h3 id="不带数据项的链表实现"><a href="#不带数据项的链表实现" class="headerlink" title="不带数据项的链表实现"></a>不带数据项的链表实现</h3><p>在项目中使用了一个不带数据项的双向链表的实现，具体的链表节点的插入删除操作都是通过宏定义来进行的，貌似是直接从Linux内核的代码中借鉴过来的，这里罗列一些关键步骤，感觉还是很有启发的。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">typedef struct ListHead&#123;</span><br><span class="line">	struct ListHead* next;</span><br><span class="line">	struct ListHead* prev;</span><br><span class="line">&#125;ListHead;</span><br></pre></td></tr></table></figure>
+
+<p>这里的链表节点在定义的时候没有数据元素仅仅是定义了标记位置，具体求元素的操作主要依赖了这个宏定义：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#define container_of(ptr, type, member) (&#123;                 </span><br><span class="line">const typeof( ((type *)0)-&gt;member ) *__mptr = (ptr);    </span><br><span class="line">(type *)( (char *)__mptr - offsetof(type,member) );&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>网上的参考资料很多，当前链表元素的开始部分为ptr，链表中存储的具体元素是类型为type，其中需要访问的字段为member。第一步的意思是求出结构中的具体元素相对于结构体起始位置的偏移。也就是这一句：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const typeof( ((type *)0)-&gt;member ) *__mptr = (ptr);  </span><br></pre></td></tr></table></figure>
+<p>大概就是说把type类型放在0号位置上然后看member的位置是什么，此处的member的值就是其相对于起始位置的偏移。之后再把指针从起始位置向后移动偏移的位置就得到实际需要访问的字段的位置。巧妙之处在于将地址0强制转换为type类型的指针，从而定位到member在结构体中偏移位置。编译器认为0是一个有效的地址，从而认为0是type指针的起始地址。</p>
+<p>下面是一个实际的例子，在具体介绍例子之前再强调一下container_of的功能，已经知道一个struct中某个元素的位置，通过这个元素以及这个元素所在的结构体的类型就可以找到这个结构体实例起始的位置：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/** </span><br><span class="line"> * container_of - cast a member of a structure out to the containing structure </span><br><span class="line"> * @ptr:        the pointer to the member. </span><br><span class="line"> * @type:       the type of the container struct this is embedded in. </span><br><span class="line"> * @member:     the name of the member within the struct. </span><br><span class="line"> * </span><br><span class="line"> */ </span><br><span class="line">  </span><br><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#define offsetof(type, member) (size_t)&amp;(((type*)0)-&gt;member)</span><br><span class="line">#define container_of(ptr, type, member) (&#123; \</span><br><span class="line">     const typeof( ((type *)0)-&gt;member ) *__mptr = (ptr); \</span><br><span class="line">     (type *)( (char *)__mptr - offsetof(type,member) );&#125;)</span><br><span class="line">using namespace std;</span><br><span class="line">struct test&#123;</span><br><span class="line">   char i;</span><br><span class="line">   char j;</span><br><span class="line">   char k;</span><br><span class="line">&#125;;</span><br><span class="line">typedef struct ListNode&#123;</span><br><span class="line">     ListNode* prev;</span><br><span class="line">     ListNode* next;</span><br><span class="line">&#125;ListNode;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    struct test temp;</span><br><span class="line">    printf(&quot;&amp;temp = %p\n&quot;,&amp;temp);</span><br><span class="line">    printf(&quot;&amp;temp.i = %p\n&quot;,&amp;temp.i);</span><br><span class="line">    printf(&quot;&amp;temp.j = %p\n&quot;,&amp;temp.j);</span><br><span class="line">    printf(&quot;&amp;temp.k = %p\n&quot;,&amp;temp.k);</span><br><span class="line">    printf(&quot;&amp;((struct test *)0)-&gt;k = %d\n&quot;,((size_t)&amp;((struct test*)0)-&gt;k));</span><br><span class="line">    test * startAddr=container_of(&amp;temp.j,test,j);</span><br><span class="line">    printf(&quot;&amp;temp start addr by containerof : %p\n&quot;,startAddr);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">output</span><br><span class="line">&amp;temp = 0069FF05</span><br><span class="line">&amp;temp.i = 0069FF05</span><br><span class="line">&amp;temp.j = 0069FF06</span><br><span class="line">&amp;temp.k = 0069FF07</span><br><span class="line">&amp;((struct test *)0)-&gt;k = 2</span><br><span class="line">&amp;temp addr by containerof : 0069FF05</span><br><span class="line">*/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>可以看到最后通过container_of找到的结构体的起始位置正好是结构体本身所在的位置。</p>
+<h3 id="关于双向链表的实现"><a href="#关于双向链表的实现" class="headerlink" title="关于双向链表的实现"></a>关于双向链表的实现</h3><p>主要内容参考这一篇。从linux2.6.39版本中摘录了一些双向list实现的代码，结合前面的内容一点点分析下，体会这种简洁的list实现。</p>
+<p>这种list的实现思路与在教科书上最大的差别：教科书上的链表中，具体的元素被定义在链表的struct中，类似于下面这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">typedef struct ListNode&#123;</span><br><span class="line">    ListNode* prev;</span><br><span class="line">    ListNode* next;</span><br><span class="line">    Elemtype item;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样的问题就是链表的结构的无法复用。对于新元素类型的话，必须重新定义链表节点的数据结构。在Linux的代码中链表节点的结构是作为具体数据struct的一部分而存在的，相当于是包含在具体的数据节点的结构定义中。</p>
+<p>换句话来说，第一种模式就像是连在一起的不同的盒子，每个盒子的规格是固定的，盒子里面可以装不同的元素。第二种模式是把用于连接的部分单独抽象了出来，不同的盒子可以使用同样的连接工具链接在一起。这个链接工具就是链表结构的定义，至于再往后一步，如何通过这个链表找到自定义数据结构的起始位置从而定位到结构中的任何其他元素，这里通过其中的list元素之后使用前面介绍的container_of的方式就可以定义到整个数据的起始部分。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct list_head &#123;</span><br><span class="line">	struct list_head *next, *prev;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>linux中的Simple doubly linked list implementation，具体的节点仅有前后两个指针。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#define LIST_HEAD_INIT(name) &#123; &amp;(name), &amp;(name) &#125;</span><br></pre></td></tr></table></figure>
+<p>初始化的时候，前后两个指针都指向当前的元素，由于不涉及到具体的元素，仅仅是指针的移动，因此初始化的时候不会涉及到内存空间的申请与释放。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">static inline void __list_add(struct list_head *new,</span><br><span class="line">			      struct list_head *prev, struct list_head *next)</span><br><span class="line">&#123;</span><br><span class="line">	next-&gt;prev = new;</span><br><span class="line">	new-&gt;next = next;</span><br><span class="line">	new-&gt;prev = prev;</span><br><span class="line">	prev-&gt;next = new;</span><br><span class="line">&#125;</span><br><span class="line">//insert tail 采用尾插发</span><br><span class="line">__list_add(new, head-&gt;prev, head);</span><br><span class="line">//insert head 采用头插法</span><br><span class="line">__list_add(new, head, head-&gt;next);</span><br></pre></td></tr></table></figure>
+
+<p>插入新元素的时候，就是常见的套路，注意头插和尾插在元素上位置上的调整，这个与课本中的都一样。</p>
+<p>至于列出结构体元素起始部分的地址，需要使用list_entry函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/**</span><br><span class="line"> * list_entry - get the struct for this entry</span><br><span class="line"> * @ptr:	the &amp;struct list_head pointer.</span><br><span class="line"> * @type:	the type of the struct this is embedded in.</span><br><span class="line"> * @member:	the name of the list_struct within the struct.</span><br><span class="line"> */</span><br><span class="line">#define list_entry(ptr, type, member) \</span><br><span class="line">	container_of(ptr, type, member)</span><br></pre></td></tr></table></figure>
+
+<p>可以看到其中直接使用的就是container_of的宏定义，列出当前结构体的首地址。</p>
+<p>其他的方法暂时不列出了，总是比较有参考价值，可以慢慢学习一下，具体在Linux的代码中，不同组件中list的代码被复制了好多次，比如可以参考这个<code>/tools/firewire/list.h</code>这个里面实现了一些最基本的函数。</p>
+<h3 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h3><p>介绍通用宏的一些知识<br><a target="_blank" rel="noopener" href="http://blog.chinaunix.net/uid-21977330-id-3755194.html">http://blog.chinaunix.net/uid-21977330-id-3755194.html</a></p>
+<p>很详细地解释了Linux中的list实现 比较有参考价值<br><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/linux/kernel/l-chain/">https://www.ibm.com/developerworks/cn/linux/kernel/l-chain/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/11/%E5%85%A5%E8%81%8C%E5%9F%B9%E8%AE%ADC/" data-id="clt2e88n600ao8xjr2mhm2sin" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/11/func-pointer/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          funcPointer, callBack and depedencies
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/11/liteide/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">liteide</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E9%A9%B1%E5%8A%A8%E6%B3%95%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">表驱动法编程模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">错误处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%B8%A6%E6%95%B0%E6%8D%AE%E9%A1%B9%E7%9A%84%E9%93%BE%E8%A1%A8%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">不带数据项的链表实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.</span> <span class="toc-text">关于双向链表的实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%8F%82%E8%80%83"><span class="toc-number">5.</span> <span class="toc-text">相关参考</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

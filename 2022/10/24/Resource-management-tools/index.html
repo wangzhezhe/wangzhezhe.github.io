@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Resource management tools | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="This blog mainly discuss about some tips for commonly used tools to allocated resources for distrirbuted system and parallel computing.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Resource management tools">
+<meta property="og:url" content="http://yoursite.com/2022/10/24/Resource-management-tools/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="This blog mainly discuss about some tips for commonly used tools to allocated resources for distrirbuted system and parallel computing.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-10-23T21:10:18.000Z">
+<meta property="article:modified_time" content="2023-04-26T02:22:03.530Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Resource-management-tools" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/10/24/Resource-management-tools/" class="article-date">
+  <time datetime="2022-10-23T21:10:18.000Z" itemprop="datePublished">2022-10-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/distributed-system/">distributed system</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Resource management tools
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>This blog mainly discuss about some tips for commonly used tools to allocated resources for distrirbuted system and parallel computing. </p>
+<span id="more"></span>
+
+<h3 id="SLURM"><a href="#SLURM" class="headerlink" title="SLURM"></a>SLURM</h3><p>The slurm is popular workload manager for HPC cluster. Here is detailed <a target="_blank" rel="noopener" href="https://slurm.schedmd.com/srun.html">document</a>.</p>
+<p>User can specify how many nodes they want, how many cores and memory etc.</p>
+<p>The idea is to submit job into associated queues and the manager will allocate resources according to the job information.</p>
+<p>Here are some tips</p>
+<p><strong>search queue info</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">squeue -p gpu</span><br></pre></td></tr></table></figure>
+
+<p><strong>cancel job</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">scancel + jobid</span><br></pre></td></tr></table></figure>
+
+<p><strong>submit job</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sbatch &lt;job name&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>show quota</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$showquota</span><br></pre></td></tr></table></figure>
+
+<p><strong>scontrol</strong></p>
+<p><code>scontrol show hostname</code> command, this can show all host names of a running job, if the program need to access the allocated nodes, we can use this command. For some program that requires the service registration for the master process, this is really helpful. Since the ip address changes each time when there is new allocation.</p>
+<p><strong>commonly used parameters for srun</strong></p>
+<p><code>--nodes</code> specify how many nodes will be used, <code>--constraint</code> can specify the specific type of the node (such as using specific cpu architecture, these information is depends on the cluster’s properties) <code>-c</code> can specify how many cores will be used for each task (ranks) and <code>-n</code> specifies how many taks (ranks).</p>
+<p><strong>Other tips</strong></p>
+<p>Each srun will specify a new node, it is important to specify the memory associated with each srun command (otherwise, it assumes to use all the memory associated with each node)</p>
+<h3 id="MPIRUN"><a href="#MPIRUN" class="headerlink" title="MPIRUN"></a>MPIRUN</h3><p>This <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/51300165/any-use-case-for-mpirun-on-slurm-managed-cluster">question</a> discusses some differences between the srun and the mpirun. From my understanding, the srun is prefered compared with using the mpirun direactly.</p>
+<p>Here is a exmaple for how to set multi openmp thread for mpi run</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mpirun -n 1 --bind-to none -x OMP_NUM_THREADS=1 ...</span><br></pre></td></tr></table></figure>
+
+<p>Otherwise, if we use the <code>mpirun -n &lt;executable&gt;</code> without specifying the openmp thread, it is possible that each process use multiple threads or oversubscribe the number of cores. The good practice is always to set the <code>export OMP_NUM_THREADS=&lt;numbers&gt;</code> explicitly. It depends on the operating system about how the threads are scheduled.</p>
+<h3 id="LSF"><a href="#LSF" class="headerlink" title="LSF"></a>LSF</h3><p>This is also designed for the HPC cluster, this is designed by the IBM. The summit cluster use this scheduler.</p>
+<p>One main difference between the LSF and the SLURM is that the LSF use the concepts of resource set, user can not control the node, they just control how many resource set they will need.</p>
+<p><strong>basic control</strong></p>
+<p><code>bsub &lt;job name&gt;</code> can submit the job</p>
+<p><code>bkill &lt;job id&gt;</code> can kill the job</p>
+<p><code>jsrun</code> can be used to start the specific process. In the job script, we use the <code>jsrun</code> to start the program.</p>
+<p><code>bjobs -l &lt;jobid&gt;</code> can show the details for the jobs</p>
+<p><code>jslist -c &lt;allocation id&gt;</code> can show the details resources of the allocation. That allocation id is printed out by the bjobs info.</p>
+<p>This <a target="_blank" rel="noopener" href="https://www.olcf.ornl.gov/wp-content/uploads/2019/12/jsrun_basics.pdf">document</a> contains some detailed information about running the job. And there are also several specific use cases, such as how to fully use all allocated resources.</p>
+<p>This <a target="_blank" rel="noopener" href="https://www.olcf.ornl.gov/wp-content/uploads/2019/12/Jsrun-Multi.pdf">document</a> shows how to run multiple jsrun at the same time.</p>
+<p>Illustrating things by that topological figure of HPC computing node is important.</p>
+<p>One special concept of the LSF is the <strong>resource set</strong>, this is similar to the concept of the container which provide a good resource isolation view  and user can orgaznize reosuces flexibaly in one node. The good thing is that when we use the node with multiple gpu, using resource isolation can  decrease the dificult for programming. The program just need to control one gpu instead of multiple gpu at the same time.</p>
+<p>For the experiment that need to use more than 1 node, the good way to determine how many resource sets is to use the gpu as the indicator, for example on summit node, there is 6 gpu per node, so try to use 6 resource sets, since there are 42 cores, when than assign 42&#x2F;6 &#x3D; 7 cores for each resource set. And one task per resource set can be easy to manage. Then just need to adjust the number of resource sets when change use different number of processes.</p>
+<p><code>-n 1 -a 1 -c 7 -b packed:7 -g 1</code></p>
+<p>Another way is to use cpu as the distinction, for example, 1 resource set per node and use all cpu here by 1 MPI program.</p>
+<p><code>-n 1 -a 1 -c 42 -b packed:42 -g 0</code></p>
+<p>This <a target="_blank" rel="noopener" href="https://docs.olcf.ornl.gov/systems/summit_user_guide.html#common-use-cases">common use cases</a> and <a target="_blank" rel="noopener" href="https://docs.olcf.ornl.gov/systems/summit_user_guide.html#jsrun-examples">jsun example</a> can show all details.</p>
+<p>This <a target="_blank" rel="noopener" href="https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=cluster-viewing-information">document</a> lists all details of the spectrum things. These commands are really similar to the K8s things. The slurm can also provide similar functionalities. </p>
+<p><code>bparams -a</code> this can show all setting for the LSF, maybe some capabilities are disabled such as elasticity jobs.</p>
+<h3 id="Docker-and-k8s"><a href="#Docker-and-k8s" class="headerlink" title="Docker and k8s"></a>Docker and k8s</h3><p>Docker and k8s are mainsream manager for managing the cluster on the cloud env. We do not list details here, there are all kinds of resources online, the idea is similar with the slurm and lsf, we can allocate the job and run specific program based on docker. There is better support for the web application.</p>
+<p>The k8s things is still very popular, if you have a good understanding about it, you may get a decent job offer from the high tech company. However, it only focuse on the resource management layer, which is not much difference in concept compared with the slurm and lsf. Or you may call it PaaS in the scope of cloud computing.</p>
+<h3 id="Test-program"><a href="#Test-program" class="headerlink" title="Test program"></a>Test program</h3><p>One tricky thing is that sometimes you are not make sure if the scheduler actually works as you expected.</p>
+<p>Here are some examples for testing:</p>
+<p>MPI+Openmp</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/parallelBLK/tree/master/benchmark/mpi_openmp">https://github.com/wangzhezhe/parallelBLK/tree/master/benchmark/mpi_openmp</a></p>
+<p>MPI+Cuda</p>
+<p>This is a exmple for testing the run on ornl cluster</p>
+<p><a target="_blank" rel="noopener" href="https://code.ornl.gov/t4p/Hello_jsrun">https://code.ornl.gov/t4p/Hello_jsrun</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2022/10/24/Resource-management-tools/" data-id="clt2e88ml003q8xjr6nbw676k" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2022/10/30/Proposal-taolu/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Proposal taolu
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/10/23/Tips-of-using-gmsh/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Tips of using gmsh</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#SLURM"><span class="toc-number">1.</span> <span class="toc-text">SLURM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MPIRUN"><span class="toc-number">2.</span> <span class="toc-text">MPIRUN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LSF"><span class="toc-number">3.</span> <span class="toc-text">LSF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-and-k8s"><span class="toc-number">4.</span> <span class="toc-text">Docker and k8s</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Test-program"><span class="toc-number">5.</span> <span class="toc-text">Test program</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

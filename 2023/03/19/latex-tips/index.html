@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>latex tips | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="All kinds of details regarding to use the latex in writing paper.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="latex tips">
+<meta property="og:url" content="http://yoursite.com/2023/03/19/latex-tips/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="All kinds of details regarding to use the latex in writing paper.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-03-19T01:36:04.000Z">
+<meta property="article:modified_time" content="2023-12-24T21:45:54.626Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-latex-tips" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/03/19/latex-tips/" class="article-date">
+  <time datetime="2023-03-19T01:36:04.000Z" itemprop="datePublished">2023-03-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/others/">others</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      latex tips
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>All kinds of details regarding to use the latex in writing paper.</p>
+<span id="more"></span>
+
+<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h3><p>注意在表格编译的时候 ccc的地方标记的是具体有多少列 这个小错误很容易忽略然后造成表格显示不全面 l r c 表示 左右或者居中</p>
+<p>双栏排版中 表格放在单栏 并且居中</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\begin&#123;table*&#125;[htbp]</span><br><span class="line">\centering</span><br><span class="line">\begin&#123;tabular&#125;&#123;| l | l | l | l | l | l | l | &#125;</span><br><span class="line">\hline</span><br><span class="line">Number of Node           &amp; 2   &amp; 4   &amp; 16  &amp; 32  &amp; 64   &amp; 128  \\ \hline</span><br><span class="line">Number of Server Process &amp; 16                     &amp; 32                    &amp; 256                     &amp; 512                    &amp; 1024                      &amp; 8192 \\ \hline</span><br><span class="line">Number of Work Load        &amp; 256$\times$16 &amp; 256$\times$32 &amp; 256$\times$256 &amp; 256$\times$512 &amp; 256$\times$1024  &amp; 256$\times$8192  \\ \hline</span><br><span class="line">\end&#123;tabular&#125;</span><br><span class="line">\caption&#123;Experiment setup for weak scaling&#125;\label&#123;tab:weaksetup&#125;</span><br><span class="line">\end&#123;table*&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>refer to <a target="_blank" rel="noopener" href="https://blog.csdn.net/zjccsg/article/details/51926069">https://blog.csdn.net/zjccsg/article/details/51926069</a></p>
+<p>表格宽度</p>
+<p>refer to<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/ProgramChangesWorld/article/details/51867351">https://blog.csdn.net/ProgramChangesWorld/article/details/51867351</a></p>
+<p>控制表格宽度的例子</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\begin&#123;table&#125;[h]</span><br><span class="line">\caption&#123;User Interfaces&#125;</span><br><span class="line">\label&#123;tab:interfaces&#125;</span><br><span class="line">\centering  </span><br><span class="line">\begin&#123;tabular&#125;&#123;|p&#123;3cm&#125;|p&#123;5cm&#125;|&#125;</span><br><span class="line">\hline</span><br><span class="line">topic\_subscribe &amp; subscribe event with topic based messages \\ </span><br><span class="line">\hline</span><br><span class="line">data\_subscribe &amp; subscribe event with customized scripts for data properties \\ </span><br><span class="line">\hline</span><br><span class="line">topic\_unsubscibe &amp; unsubscribe event with topic based messages \\ </span><br><span class="line">\hline</span><br><span class="line">data\_unsubscribe &amp; unsubscribe event with customized scripts for data properties \\ </span><br><span class="line">\hline</span><br><span class="line">publish &amp; publish event with topic based event messages \\ </span><br><span class="line">\hline</span><br><span class="line">notify &amp; send notification to the operator to trigger the action related with this notification \\ </span><br><span class="line">\hline</span><br><span class="line">\end&#123;tabular&#125;</span><br><span class="line">\end&#123;table&#125;</span><br></pre></td></tr></table></figure>
+
+<p>制作表头的例子</p>
+<p><a target="_blank" rel="noopener" href="https://tex.stackexchange.com/questions/110018/professional-slashbox-alternative">https://tex.stackexchange.com/questions/110018/professional-slashbox-alternative</a></p>
+<p>一个非常好看的表格的例子，中间省略掉了多余的线，表头部分重点标记出来，看起来比默认的表格形式好很多。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\begin&#123;table*&#125;[ht]</span><br><span class="line">\begin&#123;center&#125;</span><br><span class="line">\caption &#123;Adding captions here&#125;</span><br><span class="line"></span><br><span class="line">\begin&#123;tabular&#125;&#123;lllllll&#125;</span><br><span class="line">\toprule</span><br><span class="line">Approach &amp; Distribution &amp;  Serial &amp; OpenMP &amp; CUDA &amp; Kokkos\_CUDA &amp; Kokkos\_HIP \\ \midrule</span><br><span class="line">\multirow&#123;3&#125;&#123;*&#125;&#123;Reduce by key&#125; &amp; Uniform &amp; $24363$  &amp; $713$ ($34\times$) &amp; $635$ ($\mathbf&#123;38\times&#125;$) &amp; $3188$ ($7\times$)&amp; $1423$ ($17\times$)\\</span><br><span class="line"> &amp; IndependentG &amp; $25117$ &amp; $716$ ($35\times$) &amp; $624$ ($\mathbf&#123;40\times&#125;$) &amp; $3183$ ($7\times$) &amp; $1475$ ($17\times$)\\ </span><br><span class="line"> &amp; MultivariateG ($1000$ samples) &amp; $24996$  &amp; $725$ ($\mathbf&#123;34\times&#125;$)&amp; $826$ ($30\times$)&amp; $3351$ ($7\times$) &amp; $1454$ ($17\times$)\\</span><br><span class="line"> \midrule</span><br><span class="line"> \multirow&#123;3&#125;&#123;*&#125;&#123;Fixed block size&#125; &amp; Uniform &amp; $1075$ &amp; $91$ ($11\times$) &amp; $171$ ($6\times$)&amp; $147$ ($7\times$)&amp; $74$ ($\mathbf&#123;14\times&#125;$)\\ </span><br><span class="line"> &amp; IndependentG &amp; $1609$ &amp; $92$ ($17\times$)&amp; $171$ ($9\times$)&amp; $155$ ($10\times$)&amp; $78$ ($\mathbf&#123;20\times&#125;$)\\ </span><br><span class="line"> &amp; MultivariateG ($1000$ samples) &amp; $1444$ &amp; $93$ ($15\times$)&amp; $357$ ($4\times$)&amp; $302$ ($4\times$)&amp; $94$ ($\mathbf&#123;15\times&#125;$)\\</span><br><span class="line"> \bottomrule</span><br><span class="line">\end&#123;tabular&#125;</span><br><span class="line">\end&#123;center&#125;</span><br><span class="line">\end&#123;table*&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h3><p>公式换行 注意使用 split + &amp; + \</p>
+<p>refer to </p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2860145/how-can-i-have-linebreaks-in-my-long-latex-equations">https://stackoverflow.com/questions/2860145/how-can-i-have-linebreaks-in-my-long-latex-equations</a></p>
+<p>或者使用一些特定的library来实现自动换行，比如 amsmath 或者 multline</p>
+<p><strong>Break the how tex into several pices</strong></p>
+<p>Spliting latex into several pieces might be good for people that use latex locally to compile all things. Things updates of one file will not influences others. If only using one latex file, it is easy to get the conflictx in the file.</p>
+<p>using <code>\input&#123;some lax file&#125;</code> can split the table into a separate latex file and insert into the main latex file. </p>
+<p>According to this answer<br><a target="_blank" rel="noopener" href="https://tex.stackexchange.com/questions/246/when-should-i-use-input-vs-include">https://tex.stackexchange.com/questions/246/when-should-i-use-input-vs-include</a></p>
+<p>The include will add a clearpage operation</p>
+<h3 id="使用item"><a href="#使用item" class="headerlink" title="使用item"></a>使用item</h3><p>example:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\begin&#123;itemize&#125;[noitemsep,leftmargin=*]</span><br><span class="line"></span><br><span class="line">\item We design and implement the scalable topic based Pub/Sub broker based on dynamic group management.</span><br><span class="line"></span><br><span class="line">\item We use the dynamic data redistribution mechanism to solve the load imbalance issue for topic based Pub/Sub when there is  large subscribers.</span><br><span class="line"></span><br><span class="line">\item We provide the architecture for event based framework to construct the workflow based on event based task dependency.</span><br><span class="line">  </span><br><span class="line">\item We implement the  data centric Pub/Sub mechanism letting user provide customized scripts (predicates) for multiple backend data storage service during subscription, when interesting patten described in scripts happen, the subscriber will be notified and following task will be triggered.</span><br><span class="line"></span><br><span class="line">\end&#123;itemize&#125;</span><br></pre></td></tr></table></figure>
+<p>通过leftmargin可以让不同的item产生左对齐的效果</p>
+<h3 id="figures"><a href="#figures" class="headerlink" title="figures"></a>figures</h3><p>2*2 subfigures across multiple columns, there are lots of online resource, this one works best</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\usepackage&#123;graphicx&#125;</span><br><span class="line">\usepackage&#123;subfigure&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\begin&#123;figure*&#125;</span><br><span class="line">\centering     %%% not \center</span><br><span class="line">\subfigure[Figure A]&#123;\label&#123;fig:a&#125;\includegraphics[width=85mm]&#123;./submission/figure/umlmcp.pdf&#125;&#125;</span><br><span class="line">\subfigure[Figure B]&#123;\label&#123;fig:b&#125;\includegraphics[width=85mm]&#123;./submission/figure/umlmcp.pdf&#125;&#125;</span><br><span class="line">\subfigure[Figure C]&#123;\label&#123;fig:b&#125;\includegraphics[width=85mm]&#123;./submission/figure/umlmcp.pdf&#125;&#125;</span><br><span class="line">\hspace&#123;0.12in&#125;</span><br><span class="line">\subfigure[Figure D]&#123;\label&#123;fig:b&#125;\includegraphics[width=85mm]&#123;./submission/figure/umlmcp.pdf&#125;&#125;</span><br><span class="line">\caption&#123;my caption&#125;</span><br><span class="line">\end&#123;figure*&#125;</span><br></pre></td></tr></table></figure>
+<p>using hspace between the two subgraphics could control the distance between two pictures.</p>
+<h3 id="vspace-and-shrink-the-paper"><a href="#vspace-and-shrink-the-paper" class="headerlink" title="vspace and shrink the paper"></a>vspace and shrink the paper</h3><p>When finish the paper, at last, you need to adjust the content to make it fit the page size, how to make it to fit the size perfectly? The first is that use the <code>[h]</code> to make all the figure al the top of the page. Second is to use the <code>vspace</code> command wisely, by this way, you could adjust it properly according to the content of the data. It is always good to set the table at the top of the specific page  </p>
+<p>Other techniques include adjusting the reference, for example, use the simplified version for the reference can decrease the paper length in a large amount. In most cases, one reference item should be 2-3 lines, if it is 5 lines, it might be too long and we can choose proper reference format to decrease its length.</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>补充：</p>
+<p>添加comment的技巧</p>
+<p>导出图片的时候要弄成pdf的形式 而不是 png或者是jpg的形式 pdf的形式 效果会更清晰</p>
+<p>开始一个新的段落的时候不要求额外的缩进 使用这个符号 <code>~\\</code></p>
+<p>latex插入多张图片 并排或者竖放</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/a6822342/article/details/80533135">https://blog.csdn.net/a6822342/article/details/80533135</a></p>
+<p>注意中间的空格</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2023/03/19/latex-tips/" data-id="clt2e88mz007z8xjrgsnd28hy" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2023/04/03/Many-aspects-of-MG-and-GMM/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Many aspects of MG, GMM and implementing linear algorithm
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/03/13/ps-scratch/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">ps scratch</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E6%A0%BC"><span class="toc-number">1.</span> <span class="toc-text">表格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8item"><span class="toc-number">3.</span> <span class="toc-text">使用item</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#figures"><span class="toc-number">4.</span> <span class="toc-text">figures</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vspace-and-shrink-the-paper"><span class="toc-number">5.</span> <span class="toc-text">vspace and shrink the paper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">6.</span> <span class="toc-text">其他</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

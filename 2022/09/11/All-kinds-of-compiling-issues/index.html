@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>All kinds of compiling issues | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="This blog takes all kinds of compiling issues for the c&#x2F;cpp program.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="All kinds of compiling issues">
+<meta property="og:url" content="http://yoursite.com/2022/09/11/All-kinds-of-compiling-issues/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="This blog takes all kinds of compiling issues for the c&#x2F;cpp program.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-09-11T02:34:07.000Z">
+<meta property="article:modified_time" content="2023-03-19T01:21:03.498Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-All-kinds-of-compiling-issues" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/09/11/All-kinds-of-compiling-issues/" class="article-date">
+  <time datetime="2022-09-11T02:34:07.000Z" itemprop="datePublished">2022-09-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/compile/">compile</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      All kinds of compiling issues
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>This blog takes all kinds of compiling issues for the c&#x2F;cpp program.</p>
+<span id="more"></span>
+
+<p>Sometimes there are some unreasobale enthusiasm about the fixing the compiling issue. You just now it is not a complicated issue, maybe add one line code or fix some configurations, the whole things can work immediately, but you just don’t know how to make it work. You know it is not complicated, but you just don’t know how to solve it, and you must solve it anyway, that makes people uncomportable.</p>
+<p>Although it is not the most important issue compared with the algorithm and what you actually program, but I feel more comfortable actually when all compiling process can work as expected. Anyway, if you could not compiling it, you could not do other things and test your algorithm.</p>
+<p>Essentially, it is just some combination of the make commands. The previous blog discussed some <a target="_blank" rel="noopener" href="https://wangzhezhe.github.io/2018/06/27/crucial-env-in-c-c/">notes</a> about the key parameters of c compiling.</p>
+<p>One tips is that, do not too attached to the compiling things. You are not the system engineer anyway, you know how it works, that’s fine. If it can not work, ask the people that maintain the associated softwares firstly. Do not dive into to much details on the compiling part for other projects. We can find alternative solution most of the time. You should put more energy onto your project.</p>
+<h3 id="Undefiend-reference"><a href="#Undefiend-reference" class="headerlink" title="Undefiend reference"></a>Undefiend reference</h3><p>This <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/81681440">blog</a> sumarizes common cases for undefined reference to issue. We firs need to understand this happens to the link stage, <strong>we call that function but we do not know how it is implemented</strong>, that is a good angle to further investigating what are the real issues here. The next step to locate the issue can be summarized as follows, (1) if we can find the assocaited files, if we find the associated file, (2) if there are correct signature. If the siganature is correct, (3) if there are approporiate visibility property.</p>
+<p>####Could not find file</p>
+<p><strong>Forgot to add file</strong></p>
+<p>At link stage, if we forget to add <strong>source file</strong> (if we use one line compiling) or <strong>object file</strong>, or we forgot to add the <strong>library file</strong> during the linking stage, obviously the linker can not find how the function is implemented.</p>
+<p><strong>Wrong sequence</strong></p>
+<p>At the explanation <a target="_blank" rel="noopener" href="https://gcc.gnu.org/onlinedocs/gcc-5.5.0/gcc/Link-Options.html#Link-Options">here</a> about the -l library, it shows that the sequence of the library matters. The general library should be put at the end of the linker. If library a use the function defined in library b, the a should be put at the left side of b. It seems that if the linker find main.cpp called the function in fun() it will search the subsequent link list after the main.cpp in the compiling command to see if the implementation can be found here.</p>
+<p><strong>Found the file but the wrong defination</strong></p>
+<p>This is more related to the programming issues.</p>
+<p>The defination of the signature might have more parameters or different defination of the parameters of functions, those are more like typo issues, so the linker can not find the correct one. Which is comparatively easy to solve.</p>
+<p>The namespace to the function also belongs to the defination of the function. The function might be defined in a different path with the differnet namespace, it is highly possile that we forgot to add the namespace somewhere, so the linker can not find the approporiate one.</p>
+<p>The name mangling when c and cpp are compiled together. In c, there is no concept about the namespace, so the <code>extern c</code> must be adopted when these two things are compiled together. This <a target="_blank" rel="noopener" href="https://wangzhezhe.github.io/2019/08/04/library-linking-between-c-and-cpp/">blog</a> shows more details about using the extern c.</p>
+<p>An unobvious issue might be that the two code are compiled by two different compilers, these compiler can not work well with each other, the typical message are sth like this:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">undefined reference to `std::__throw_bad_array_new_length()@GLIBCXX_3.4.29</span><br></pre></td></tr></table></figure>
+<p>Similarly, we also need to be careful if the other common library such as MPI are linked with the same version.</p>
+<p><strong>The visibility issue</strong></p>
+<p>This is a <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/52719364/how-to-use-the-attribute-visibilitydefault">good reosurce</a> to show how the visibility works.</p>
+<p>Simply speaking, the compiler provides a capability that can hidden all the symbles. In the source code, user need to specify the visibility properties to show which symble is visible for the program that use the associated library. Otherwise, we still get the undefined reference issue. </p>
+<p>For example, in the vtk-m library, we need to manully specify the visibility for each function:<br><a target="_blank" rel="noopener" href="https://gitlab.kitware.com/vtk/vtk-m/-/blob/master/vtkm/internal/ExportMacros.h">https://gitlab.kitware.com/vtk/vtk-m/-/blob/master/vtkm/internal/ExportMacros.h</a></p>
+<p>Otherwise, all the symbal are label as the visibility hidden, and could not be used by other libraries.</p>
+<p><strong>Other possible issues</strong></p>
+<p>The template instance is not instantiated.</p>
+<p>From the aspect of the compiler or linker, life might be easier if it is good to show more detailed reasons to help the user to find what are more detailed problems that shows can not find the associated library. </p>
+<h3 id="Could-not-find-linked-library"><a href="#Could-not-find-linked-library" class="headerlink" title="Could not find linked library"></a>Could not find linked library</h3><h3 id="Wrong-compiler"><a href="#Wrong-compiler" class="headerlink" title="Wrong compiler"></a>Wrong compiler</h3><h3 id="MPI-related-issue"><a href="#MPI-related-issue" class="headerlink" title="MPI related issue"></a>MPI related issue</h3><h3 id="Cuda-related-issue"><a href="#Cuda-related-issue" class="headerlink" title="Cuda related issue"></a>Cuda related issue</h3><p>There are multiple ways from the perspective of the cmake to implement the cuda compiling. The lastest one I know is <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/cmake_example/testFindCudaMPI/CMakeLists.txt">this one</a>. No matter which one it adpted, the core idea is to firstly use the nvcc to create the cuda object, and then compile the associated object to the executable based on gcc.</p>
+<p>For example, these are make commands output from the cmake</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// Building CUDA object CMakeFiles/example.dir/example.cxx.o</span><br><span class="line">$nvcc -forward-unknown-to-host-compiler  -isystem=/global/common/cori_cle7/software/sles15_cgpu/openmpi/4.0.3/gcc/include --generate-code=arch=compute_70,code=[compute_70,sm_70] -Xcompiler -pthread -MD -MT CMakeFiles/example.dir/example.cxx.o -MF CMakeFiles/example.dir/example.cxx.o.d -x cu -dc /global/homes/z/zw241/cworkspace/src/5MCST/cmake_example/testFindCudaMPI/example.cxx -o CMakeFiles/example.dir/example.cxx.o</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// Linking CUDA device code CMakeFiles/example.dir/cmake_device_link.o</span><br><span class="line">$nvcc -forward-unknown-to-host-compiler  --generate-code=arch=compute_70,code=[compute_70,sm_70] -Xcompiler=-fPIC -Wno-deprecated-gpu-targets -shared -dlink CMakeFiles/example.dir/example.cxx.o -o CMakeFiles/example.dir/cmake_device_link.o   -lcudadevrt -lcudart_static -lrt -lpthread -ldl </span><br><span class="line"></span><br><span class="line">// Linking CUDA executable example</span><br><span class="line">$g++ -Wl,-rpath -Wl,/usr/common/software/sles15_cgpu/openmpi/4.0.3/gcc/lib -Wl,--enable-new-dtags -pthread CMakeFiles/example.dir/example.cxx.o CMakeFiles/example.dir/cmake_device_link.o -o example  -Wl,-rpath,/global/common/cori_cle7/software/sles15_cgpu/openmpi/4.0.3/gcc/lib /global/common/cori_cle7/software/sles15_cgpu/openmpi/4.0.3/gcc/lib/libmpi.so -lcudadevrt -lcudart_static -lrt -lpthread -ldl  -L&quot;/usr/common/software/sles15_cgpu/cuda/11.1.1/targets/x86_64-linux/lib/stubs&quot; -L&quot;/usr/common/software/sles15_cgpu/cuda/11.1.1/targets/x86_64-linux/lib&quot;</span><br></pre></td></tr></table></figure>
+
+<p>The issue related with the cuda compiling can be come down to two cases, (1) weather the source files are identified as cuda file. Just checking this command is set properly:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">set_source_files_properties(example.cxx PROPERTIES LANGUAGE &quot;CUDA&quot;)</span><br></pre></td></tr></table></figure>
+<p>(2) weather the target file is the cuda executable, just checking if this command is set properly for the associated target:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">set_target_properties(example PROPERTIES CUDA_SEPARABLE_COMPILATION ON)</span><br></pre></td></tr></table></figure>
+
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><p>all kinds of undefined reference issue</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/81681440">https://zhuanlan.zhihu.com/p/81681440</a></p>
+<p>good tutorial about the visibility</p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/52719364/how-to-use-the-attribute-visibilitydefault">https://stackoverflow.com/questions/52719364/how-to-use-the-attribute-visibilitydefault</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2022/09/11/All-kinds-of-compiling-issues/" data-id="clt2e88ma000b8xjr8ree38lt" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2022/09/18/Working-taolu/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Working-taolu
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/09/06/cmake-tips/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Several cmake tips</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Undefiend-reference"><span class="toc-number">1.</span> <span class="toc-text">Undefiend reference</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Could-not-find-linked-library"><span class="toc-number">2.</span> <span class="toc-text">Could not find linked library</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Wrong-compiler"><span class="toc-number">3.</span> <span class="toc-text">Wrong compiler</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MPI-related-issue"><span class="toc-number">4.</span> <span class="toc-text">MPI related issue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cuda-related-issue"><span class="toc-number">5.</span> <span class="toc-text">Cuda related issue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#References"><span class="toc-number">6.</span> <span class="toc-text">References</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

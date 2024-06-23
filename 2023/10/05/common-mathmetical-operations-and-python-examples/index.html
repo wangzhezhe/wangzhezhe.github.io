@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Common mathmetical operations and python examples | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Some tips about mathmetical operations and how are they implemented in python library such as numpy.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Common mathmetical operations and python examples">
+<meta property="og:url" content="http://yoursite.com/2023/10/05/common-mathmetical-operations-and-python-examples/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Some tips about mathmetical operations and how are they implemented in python library such as numpy.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-10-04T20:09:48.000Z">
+<meta property="article:modified_time" content="2023-10-04T21:03:50.442Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-common-mathmetical-operations-and-python-examples" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/10/05/common-mathmetical-operations-and-python-examples/" class="article-date">
+  <time datetime="2023-10-04T20:09:48.000Z" itemprop="datePublished">2023-10-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/AI-Math-NumericalAnalysis/">AI&Math&NumericalAnalysis</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Common mathmetical operations and python examples
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Some tips about mathmetical operations and how are they implemented in python library such as numpy.</p>
+<span id="more"></span>
+
+
+<h3 id="Set-operations"><a href="#Set-operations" class="headerlink" title="Set operations"></a>Set operations</h3><h4 id="Cartesian-product"><a href="#Cartesian-product" class="headerlink" title="Cartesian product"></a>Cartesian product</h4><p>If A and B are two sets, the cartisian product is defined by (set-builder notation):</p>
+<p>$A \times B $ &#x3D; { (a,b) | a belongs to A and b belongs to B }</p>
+<p>The resutls is the set of all <strong>ordered pairs</strong> (a, b) where a is in A and b is in B. </p>
+<h3 id="Array-operations"><a href="#Array-operations" class="headerlink" title="Array operations"></a>Array operations</h3><p>单独的numpy array 更多地用来描述 vector math</p>
+<p>一个vector就相当于一个numpy中的array</p>
+<p>具体熟练使用的numpy array的操作应该包括如下部分</p>
+<p><strong>numpy array转python array</strong></p>
+<p><strong>python array转numpy array</strong></p>
+<p><strong>生成指定长度的array设置初始值</strong></p>
+<p>生成指定长度的元素 每个都有相同的初始值</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">u = np.empty(Num)</span><br><span class="line">u.fill(4.0)</span><br></pre></td></tr></table></figure>
+<p>或者采用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">np.ones(n) 的方式进行定义</span><br></pre></td></tr></table></figure>
+<p><strong>行列变换</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a = np.array([1, 2, 3])</span><br><span class="line">a = a.reshape(-1, 1)</span><br><span class="line">a</span><br><span class="line">array([[1],</span><br><span class="line">       [2],</span><br><span class="line">       [3]])</span><br></pre></td></tr></table></figure>
+
+<p><strong>Length</strong></p>
+<p><strong>Normalization</strong></p>
+<p><strong>basic operation such as vector sum substract multuply divide</strong></p>
+<p><strong>multiple for the elements at the corresponding position</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">np.array([1,2,3])*np.array([2,3,4])</span><br><span class="line">array([ 2,  6, 12])</span><br></pre></td></tr></table></figure>
+
+<p><strong>Dot Product (inner product)</strong></p>
+<p>projection one vector into another vector, the results of the dot product is a value. (remember the projection). For the value, it is a dot b &#x3D; |a||b|cos(theta), therefore, the a dot b can be used to describe the value of intersection angle between two vector.</p>
+<p>consider it in 3d space for vector represented by 2d, just projection one vector onto another one.</p>
+<p>you start with two vectors and ends up with a scalar value.</p>
+<p>For the complex number, since we need to make sure the energy (magnitude&#x2F;amplitude) is a postive value, we should use the conjugate transpose instead of the transpose of the original vector when we construct the dot product resutls.</p>
+<p>check out this vedio to get more ideas:<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Qpm85nC2BBE">https://www.youtube.com/watch?v=Qpm85nC2BBE</a></p>
+<p><strong>Cross Product</strong></p>
+<p>the results of the cross product is a vector. The direaction of this vector follows the right handed screw rule. The value of the vector is the area of parallelogram composed of these two vectors. (remember the rotation). there is a particular equation to compute the new vector of the cross product, for example the three dimention vetor times three dimention vector, the equation is a determinant. The first row is the i,j,k, the second row is the x1,y1,z1 and the last row is x2,y2,z2. Then the value of the determinant is a new vector.</p>
+<p>bracket representation, since the cross product is so common for some use cases such as in the robotics cases, we also use the <code>A X B = [A]B</code> to represent this, and the <code>[A]</code> can be represented by the 3*3 matrix, the matrix [A] is called the skew-symmetric matrix</p>
+<p>If we already know the vector and the rotation axis w than we want to caculate the linear velocity, the idea is to use the <code>-[w]xp</code> why there is a negative mark?</p>
+<p>using <code>numpy.cross</code> to express the coresponding results. </p>
+<p><strong>Projection</strong></p>
+<p><strong>Reflection</strong></p>
+<p><strong>tangential vector</strong></p>
+<p><strong>numpy init array</strong></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/4535374/initialize-a-numpy-array">https://stackoverflow.com/questions/4535374/initialize-a-numpy-array</a></p>
+<p>初始化array的时候直接使用numpy的方法 比如</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">numpy.zeros</span><br><span class="line"></span><br><span class="line">Return a new array of given shape and type, filled with zeros.</span><br><span class="line"></span><br><span class="line">使用tolist的方法可以把array再转化为list</span><br><span class="line"></span><br><span class="line">https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.tolist.html</span><br></pre></td></tr></table></figure>
+
+<h3 id="complex-vector-caculuse-gradient-divergency-Laplacian-curl-based-on-nabla-operator"><a href="#complex-vector-caculuse-gradient-divergency-Laplacian-curl-based-on-nabla-operator" class="headerlink" title="complex vector caculuse (gradient divergency Laplacian curl based on nabla operator)"></a>complex vector caculuse (gradient divergency Laplacian curl based on nabla operator)</h3><p>通俗理解可以参考这个：</p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/24074028">https://www.zhihu.com/question/24074028</a></p>
+<p>这几个量都是对于空间中的点而言的，就算是divergency，输入也是空间中的一个点所在位置的vector</p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Del">https://en.wikipedia.org/wiki/Del</a></p>
+<p><strong>gradient</strong></p>
+<p>input is a scalar, output is a vector</p>
+<p>gradient会作用在一个scalar field中，gradient操作会在每个点上都求出一个vector，这个vector方向就是scalar field中的值上升最快的方向</p>
+<p>具体计算的时候，每个scalar 由空间中的 x,y,z 的位置决定 (assume there is 3d) 这个scarlar value 实质上是空间上的每个点对应的值 v &#x3D; f (x,y,z) 之后这个函数对每个方向上的分量求偏导数然后每个方向上的分量组成一个vector，就是gradient of f。</p>
+<p>Gradient: grad f &#x3D; ∇ f</p>
+<p><strong>divergency</strong></p>
+<p>input is vector and the output is a scalar<br>具体运算 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Divergence">https://en.wikipedia.org/wiki/Divergence</a></p>
+<p>divergency作用在一个vector field中，物理含义是vector field的发散程度<br>比如在二维空间中，想想一个点周围的极小的圆圈，在每个方向的变化量相加，得到的是总的变化量，也就是发散程度，可以表示为是向正方向变化(向外发散)还是向负方向变化(向内收缩)。</p>
+<p>Divergence: div v &#x3D; ∇ dot v (the v here is a vector)</p>
+<p><strong>curl</strong></p>
+<p>curl v &#x3D; ∇ cross dot v (the v here is a vector)</p>
+<p><strong>Laplacian</strong></p>
+<p>input is the scalar (function value, this value depends on the coordinates, namely the position in the space), the output value is a scalar.</p>
+<p>divergency of the gradient, It is usually denoted by the symbols ∇·∇, ∇2</p>
+<p>basically, it will combine the gradient and laplacian together. First step is caculating the gradient of the scalar to get a vector, second step is caclulating the divergency of the vector to get the scalar again.</p>
+<p>表示偏离平均值的程度，本质上是对空间标量的一种操作，先求该标量的梯度场，再求梯度场的散度。</p>
+<p>为什么求scalar field的gradient field的divergency是比较重要的，这个量可以描述field本身的一些properties，中文可以解释为某种驱动力或者势。比如这个例子(<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/26822364">https://www.zhihu.com/question/26822364</a>) 通过温度场来理解Laplacian，值如果为正表示发散，说明了热量从这个点流出，反之则是热量流入这个区域。</p>
+<h3 id="Matrix-operation"><a href="#Matrix-operation" class="headerlink" title="Matrix operation"></a>Matrix operation</h3><p>More detailed conceptes regarding the linear alg (such as physical mearning of specific operaiton) can be found in the linear_alg_review.md blog</p>
+<h4 id="Determinant-of-matrix-absolute-value"><a href="#Determinant-of-matrix-absolute-value" class="headerlink" title="Determinant of matrix (absolute value)"></a>Determinant of matrix (absolute value)</h4><p>The determinant of matirx has a simple expression which is just a $|A|$ expression, namely adding the absolute operation around the matrix, the reuslt is a scalar value. </p>
+<h4 id="Matrix-norm"><a href="#Matrix-norm" class="headerlink" title="Matrix norm"></a>Matrix norm</h4><p>Matrix norm is in the format of $||A||_p$, the typical value of p is 1, 2 and positive infinity. When p is 1, it represents max column sum, when p is 2, it represents max row sum, when p is postive infinity, it represents the largest singular value of A (spectral norm).</p>
+<p><strong>basic concept of matrix used in linear algebra</strong></p>
+<p>symmetric</p>
+<p>conjungate</p>
+<p>singular matrix</p>
+<p>properties of singular matrix</p>
+<p>non-invertible</p>
+<p>explain one eigen value corresponds to multiple eigen vectors</p>
+<p>对应元素相乘 a[i][j] times b[i][j] &#x3D; c[i][j]</p>
+<p>矩阵乘法运算 c[i][j] 是 a matrix 中的j行 对应乘以b matrix中的j列，然后相加求和。</p>
+<p>module of matrix</p>
+<p><strong>numpy.matmul</strong></p>
+<p>there are still some confusion</p>
+<p>Matrix product of two arrays. 使用array表示matrix的时候用这个做乘法，如果本身就是matrix的形式就使用<code>.dot</code>的形式</p>
+<p>rank</p>
+<p>range</p>
+<p>singular matrix</p>
+<p>positive definite matrix</p>
+<p>null space column space row space left null space</p>
+<h3 id="advanced-tensor-products-and-Kronecker-product"><a href="#advanced-tensor-products-and-Kronecker-product" class="headerlink" title="advanced, tensor products and Kronecker product"></a>advanced, tensor products and Kronecker product</h3><p>This is a good vedio that compares these two concepts:</p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=qp_zg_TD0qE">https://www.youtube.com/watch?v=qp_zg_TD0qE</a></p>
+<p>There are some confusion since both the tensor products and the Kronecker product are using the circle corss. One thing that we should be clear is the elements for these two operations.</p>
+<p>For Kronecker product, the left and right side of the circle products symble are <strong>array</strong>, sometimes we can applied it to the two matrix, but be careful about the symbol at this time, we need to view the matrix as an array, which means to write the vector in an form of array.</p>
+<p>in numpy, just use the <code>numpy.kron</code>.</p>
+<p>This kron product is useful to describe the entanglement of the quantum status of the quantum computing.</p>
+<p>For tensor product, although the reaults looks same with the Kronecker product, it do works in different context.</p>
+<p>For the tensor operation, the left side and right side of the circle cross are two tensors and the reuslts is a third tensor. For Kronecker product, the left and right of the circle corss are two vector and the result is another vector, even if it can be used to express an matrix.</p>
+<h3 id="advanced-tensor-learning-notes"><a href="#advanced-tensor-learning-notes" class="headerlink" title="advanced, tensor learning notes"></a>advanced, tensor learning notes</h3><p>this is a good series about the tensors:</p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=8ptMTLzV4-I&amp;list=PLJHszsWbB6hrkmmq57lX8BV-o-YIOFsiG">https://www.youtube.com/watch?v=8ptMTLzV4-I&amp;list=PLJHszsWbB6hrkmmq57lX8BV-o-YIOFsiG</a></p>
+<p>here are some key concepts:</p>
+<p>although the quantum computing looks fancy, it is quite straightforward to explain it mathematically, for the superposition, it is just a fancy way to describe the linear compination. For the quantum entanglement, it is just the tensor productr of two (tensors) geometries.</p>
+<p>defination of the tensor: there are multiple defination about the tensor, such as the array defination, coordinates defination, and abstract defination. The one that I could figure out quickly but not most accurately is the array defination, basically, the tensor is a multidimentional array. The scarlar can be rank tensor, the vector can be rank 1 tensor, and the matrix can be rank 2 tensor, the 3d grid&#x2F;mesh is a rank 3 tensor. But this defination lose some key geometry properties. Try to dive into the coordinates defination when it is necessary.</p>
+<p>forward backward transformation: there are two coordinates system can be used to represents one tensor, how to tranform from the one coordinates system to another coordinates system. what is the transformation matrix here.</p>
+<p>covector: a function that takes a vector and produce a scalar&#x2F;number, one typical example of the covector is the first row vector when thers is a row vector times the column vector.</p>
+<h3 id="solving-linear-system"><a href="#solving-linear-system" class="headerlink" title="solving linear system"></a>solving linear system</h3><p>svd</p>
+<p>deeppeset descent</p>
+<p>conjugate descent</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p><strong>定义数据的类型以及memory layout</strong><br>由于python自身的性质可以在数据初始化的时候不定义数据的格式，常常让人有一种“自由”的感觉 但是有的时候这种“自由”反而容易给人带来不容易发现的bug，比如下面这个case：</p>
+<p>本来是想写一个对矩阵进行单位化的操作，就是每列上的元素的平方和相加起来为1，于是就这些写</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">a = np.array([</span><br><span class="line">    [1,0,0],</span><br><span class="line">    [1,4,0],</span><br><span class="line">    [1,0,5],</span><br><span class="line">    ]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for i in range(3):</span><br><span class="line">    norma = np.linalg.norm(a[:,i])</span><br><span class="line">    normdata = a[:,i]/norma</span><br><span class="line">    a[:,i]=normdata</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">print a</span><br></pre></td></tr></table></figure>
+<p>但是打印出来的结果比较奇怪</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[[0 0 0]</span><br><span class="line"> [0 1 0]</span><br><span class="line"> [0 0 1]]</span><br></pre></td></tr></table></figure>
+
+<p>后来同学提醒是数据格式有问题，修改之后按照如下形式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">def selfnorm(a):</span><br><span class="line"></span><br><span class="line">    for i in range(3):</span><br><span class="line">        norma = np.linalg.norm(a[:,i])</span><br><span class="line">        normdata = a[:,i]/norma</span><br><span class="line">        a[:,i]=normdata</span><br><span class="line">    </span><br><span class="line">    return a</span><br><span class="line">    </span><br><span class="line">a = np.array([</span><br><span class="line">    [1.0,0.0,0.0],</span><br><span class="line">    [1.0,4.0,0.0],</span><br><span class="line">    [0.0,0.0,5.0],</span><br><span class="line">    ],dtype=np.float32</span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">print selfnorm(a)</span><br></pre></td></tr></table></figure>
+
+<p>按照上面这样的操作在定义a的时候要加上数据类型，这样就不会被弄成默认的int类型</p>
+<h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p>334 class notes (确保334的内容涵盖在这个note中)</p>
+<p><a target="_blank" rel="noopener" href="https://orionquest.github.io/Numacom/">https://orionquest.github.io/Numacom/</a></p>
+<p>fluid engine development 的数学部分 </p>
+<p>sdf 函数</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26217154">https://zhuanlan.zhihu.com/p/26217154</a></p>
+<p><a target="_blank" rel="noopener" href="https://blogs.mathworks.com/videos/2010/05/05/set-up-finding-closest-point-on-a-surface/">https://blogs.mathworks.com/videos/2010/05/05/set-up-finding-closest-point-on-a-surface/</a></p>
+<p>如何直观形象的理解梯度，散度，旋度？</p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/24074028">https://www.zhihu.com/question/24074028</a></p>
+<p>不错的书</p>
+<p>linear algebra done right</p>
+<p><a target="_blank" rel="noopener" href="http://148.206.53.84/tesiuami/S_pdfs/Linear%20Algebra%20Done%20Right.pdf">http://148.206.53.84/tesiuami/S_pdfs/Linear%20Algebra%20Done%20Right.pdf</a></p>
+<p>congugate in painless way</p>
+<p>painless conjugate descent</p>
+<p>good vedio for linear algebra<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=LyGKycYT2v0&amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab&amp;index=10&amp;t=0s">https://www.youtube.com/watch?v=LyGKycYT2v0&amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab&amp;index=10&amp;t=0s</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2023/10/05/common-mathmetical-operations-and-python-examples/" data-id="clt2e88mu00608xjr4pivgwh8" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2023/10/13/Algorithm-11-Binary-search/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Algorithm(11) Binary search
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/09/25/parallel-primitives/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">parallel primitives</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Set-operations"><span class="toc-number">1.</span> <span class="toc-text">Set operations</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Cartesian-product"><span class="toc-number">1.1.</span> <span class="toc-text">Cartesian product</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Array-operations"><span class="toc-number">2.</span> <span class="toc-text">Array operations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#complex-vector-caculuse-gradient-divergency-Laplacian-curl-based-on-nabla-operator"><span class="toc-number">3.</span> <span class="toc-text">complex vector caculuse (gradient divergency Laplacian curl based on nabla operator)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Matrix-operation"><span class="toc-number">4.</span> <span class="toc-text">Matrix operation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Determinant-of-matrix-absolute-value"><span class="toc-number">4.1.</span> <span class="toc-text">Determinant of matrix (absolute value)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Matrix-norm"><span class="toc-number">4.2.</span> <span class="toc-text">Matrix norm</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#advanced-tensor-products-and-Kronecker-product"><span class="toc-number">5.</span> <span class="toc-text">advanced, tensor products and Kronecker product</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#advanced-tensor-learning-notes"><span class="toc-number">6.</span> <span class="toc-text">advanced, tensor learning notes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#solving-linear-system"><span class="toc-number">7.</span> <span class="toc-text">solving linear system</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">8.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#reference"><span class="toc-number">9.</span> <span class="toc-text">reference</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Time it | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在使用profiling之类的工具之前，更灵活简单的方式就是设置timer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Time it">
+<meta property="og:url" content="http://yoursite.com/2019/06/27/Time-it/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="在使用profiling之类的工具之前，更灵活简单的方式就是设置timer">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-06-27T01:00:28.000Z">
+<meta property="article:modified_time" content="2023-04-23T19:47:47.553Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Time-it" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/27/Time-it/" class="article-date">
+  <time datetime="2019-06-27T01:00:28.000Z" itemprop="datePublished">2019-06-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/performance/">performance</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Time it
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>在使用profiling之类的工具之前，更灵活简单的方式就是设置timer</p>
+<span id="more"></span>
+
+<h3 id="Concepts-about-time-and-performance"><a href="#Concepts-about-time-and-performance" class="headerlink" title="Concepts about time and performance"></a>Concepts about time and performance</h3><p><strong>CPU bound vs IO bound</strong></p>
+<p>参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/868568/what-do-the-terms-cpu-bound-and-i-o-bound-mean">这里</a>的解释，比较直接，或者说整个系统的bottleneck在哪里。</p>
+<p>A program is CPU bound if it would go faster if the CPU were faster, i.e. it spends the majority of its time simply using the CPU (doing calculations). A program that computes new digits of π will typically be CPU-bound, it’s just crunching numbers.</p>
+<p>解决cpu bound的问题一方面是优化算法本身，另一方面是采用并行算法。</p>
+<p>A program is I&#x2F;O bound if it would go faster if the I&#x2F;O subsystem was faster. Which exact I&#x2F;O system is meant can vary; I typically associate it with disk, but of course <strong>networking or communication in general is common too</strong>. A program that looks through a huge file for some data might become I&#x2F;O bound, since the <strong>bottleneck is then the reading of the data from disk</strong> (actually, this example is perhaps kind of old-fashioned these days with hundreds of MB&#x2F;s coming in from SSDs).</p>
+<p>注意因为使用了memory hierachy，除了disk IO之外还有memory，cache，涉及到具体优化的时候除了提升本身hardware的IO性能在算法层面就是合理地利用memory hierachy，更多的细节可以参wiki cache oblivious algorithm</p>
+<p>the goal of the optimizaiton is to change the CPU bound program into the IO bound program.</p>
+<p><strong>real time（wall time） vs user time vs sys time</strong></p>
+<p>Elapsed real time, real time, wall-clock time, or wall time is the actual time taken from the start of a computer program to the end (wall time 与 real time实际代表同样的含义). on linux，there is a command called <code>time</code>，use <code>time &lt;executable&gt;</code>可以得到sys，user，real time。一般说的cpu time 更多指的是cpu所花在这个程序上的时间，这里要注意用词的准确性，有几次把cpu time与wall time给弄混了。</p>
+<p>real time就是实际的时间，比如一个program从1:00开始运行，到2:00结束，这个process的real time就是1h，但是在这个1h的时间中，可能这个程序并没有一直在cpu上运行，比如可能是0.5h在cpu上运行，另外0.5小时在sleep，这个时候就cpu time实际上就不是1h。user time 表示在用户态所花的时间，sys time 表示cpu在内核状态下所花费的时间。比如下面这个case：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    //do some io operation</span><br><span class="line">    sleep(1.0);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">real    0m1.011s</span><br><span class="line">user    0m0.001s</span><br><span class="line">sys     0m0.002s</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+
+<p>real time 花费掉了1s，然后user和sys很少，并且user和sys的总和也远小于real，这说明虽然程序从开始运行到结束是1s，但cpu的占用率在这个程序运行的这段时间还是比较低(0.003s in total)。</p>
+<h3 id="c中的timer方式"><a href="#c中的timer方式" class="headerlink" title="c中的timer方式"></a>c中的timer方式</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//sample code</span><br><span class="line">#include &lt;time.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#define BILLION 1000000000L</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    struct timespec start, end;</span><br><span class="line">    double diff;</span><br><span class="line">    clock_gettime(CLOCK_REALTIME, &amp;start); /* mark start time */</span><br><span class="line">    sleep(1.0);</span><br><span class="line">    //some functions here</span><br><span class="line">    clock_gettime(CLOCK_REALTIME, &amp;end); /* mark end time */</span><br><span class="line">    diff = (end.tv_sec - start.tv_sec) * 1.0 + (end.tv_nsec - start.tv_nsec) * 1.0 / BILLION;</span><br><span class="line">    printf(&quot;time is %lf seconds \n&quot;, diff);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>python 中的timer就和strightforware</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import timeit</span><br><span class="line">start = timeit.default_timer()</span><br><span class="line">end = timeit.default_timer()</span><br><span class="line">print(&quot;time span &quot;, end-start)</span><br></pre></td></tr></table></figure>
+
+<h3 id="c-中的timer方式"><a href="#c-中的timer方式" class="headerlink" title="c++中的timer方式"></a>c++中的timer方式</h3><p>注意duration_cast的时候先转换成micro seconds再换算成seconds可以获得比较好的精确度。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;algorithm&gt; </span><br><span class="line">#include &lt;chrono&gt; </span><br><span class="line">#include &lt;iostream&gt; </span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">using namespace std; </span><br><span class="line">using namespace std::chrono; </span><br><span class="line">  </span><br><span class="line">// For demonstration purpose, we will fill up </span><br><span class="line">// a vector with random integers and then sort </span><br><span class="line">// them using sort function. We fill record </span><br><span class="line">// and print the time required by sort function </span><br><span class="line">int main() </span><br><span class="line">&#123; </span><br><span class="line">  </span><br><span class="line">    vector&lt;int&gt; values(10000); </span><br><span class="line">    // Generate Random values </span><br><span class="line">    auto f = []() -&gt; int &#123; return rand() % 10000; &#125;; </span><br><span class="line">    // Fill up the vector </span><br><span class="line">    generate(values.begin(), values.end(), f); </span><br><span class="line">    // Get starting timepoint </span><br><span class="line">    auto start = high_resolution_clock::now(); </span><br><span class="line">    // Call the function, here sort() </span><br><span class="line">    sort(values.begin(), values.end()); </span><br><span class="line">    // Get ending timepoint </span><br><span class="line">    auto stop = high_resolution_clock::now(); </span><br><span class="line">    // Get duration. Substart timepoints to  </span><br><span class="line">    // get durarion. To cast it to proper unit </span><br><span class="line">    // use duration cast method </span><br><span class="line">    auto duration_micro = duration_cast&lt;microseconds&gt;(stop - start); </span><br><span class="line">    auto duration_seconds = duration_cast&lt;seconds&gt; (stop - start); </span><br><span class="line">  </span><br><span class="line">    cout &lt;&lt; &quot;Time taken by function: &quot;</span><br><span class="line">         &lt;&lt; duration_micro.count() &lt;&lt; &quot; microseconds, &quot; &lt;&lt; duration_micro.count()*1.0/1000000 &lt;&lt; &quot; seconds&quot; &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; &quot;Time taken by function: &quot;</span><br><span class="line">         &lt;&lt; duration_seconds.count()*0.1 &lt;&lt; &quot; seconds&quot; &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    return 0; </span><br></pre></td></tr></table></figure>
+
+<p>Another way in cpp to add the timer:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">auto startT = std::chrono::steady_clock::now();</span><br><span class="line">//do some works here</span><br><span class="line">auto stopT = std::chrono::steady_clock::now();</span><br><span class="line">auto duration_milli = duration&lt;double, std::milli&gt;(stopT - startT);</span><br></pre></td></tr></table></figure>
+<p>It seems there is <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/13263277/difference-between-stdsystem-clock-and-stdsteady-clock">not much difference</a> between the <code>steady_clock</code> and the <code>high_resolution_clock</code>.</p>
+<h3 id="The-timer-in-parallel-sitution"><a href="#The-timer-in-parallel-sitution" class="headerlink" title="The timer in parallel sitution"></a>The timer in parallel sitution</h3><p>In general case, when we need to time the parallel execution, we just need to print out the timer for leader process, such as using rank&#x3D;0 to control it. It is unnecessary to print out the time spent on each specific process. If we need to time each specific process, writting the performance data to each file separately into parallel file system (this is a common operation for the data check pointing things) might be a more efficient way then writting all information into a one single file. </p>
+<p>One issue for the parallel I&#x2F;O is that, some specific process may need comparatively long time to open a file and write things into a file, such as the description <a target="_blank" rel="noopener" href="https://co-design.pop-coe.eu/best-practices/parallel-multi-file-io.html">in this article</a>.</p>
+<p>The common use case scenario is to write things into a buffer, which can be a vector<char> or just streamstring. The streamstring is more convenient to process the input and output if the contents are supposed to be read by human at last. The vector<char> is more general buffer. There is a discussion between these two containers <a target="_blank" rel="noopener" href="https://github.com/isocpp/CppCoreGuidelines/issues/1084">here</a>. We can just use naive <code>&lt;&lt;</code> to input data into the streamstring and use subsequent code to write the contents from streamstring object into a file.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">std::ofstream fileHandle;</span><br><span class="line">fileHandle(filename, std::ofstream::out);</span><br><span class="line">fileHandle &lt;&lt; streamstringObject.rdbuf();</span><br><span class="line">fileHandle();</span><br></pre></td></tr></table></figure>
+
+<h3 id="Timer-for-distributed-components"><a href="#Timer-for-distributed-components" class="headerlink" title="Timer for distributed components"></a>Timer for distributed components</h3><p>有一个case是需要测的timer间隔发生在不同的组件中，比如一个worklow，从component a 开始到 component z 结束，这个时候要测量a到z的执行时间。</p>
+<p>这个时候需要设置一个middleware来专门处理这个case，之前用的一个单节点的prototype放在<a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/MMServer">这里</a>，消息通信是基于grpc，单节点一般负载的case就能cover了，grpc的好处是不论cpp或者是python或者是其他的主流code都有比较好的client库可以直接调用。</p>
+<p>time 提供了两种方式 一种是tick record，每发一次请求记录一次时间，另一种是time span的形式，只记录开始和结束的时间。</p>
+<p>除此之外这个工具还提供了两种用于测试的message communication pattern。一种是shared space，另外一种是message queue，具体在README中有介绍，这里就不再赘述。</p>
+<p>总之用profile之前，针对性地设置timer然后运行bentchmark也是一种测量performance的方式。如果这个方法找不到bottleneck再使用profiling的工具。</p>
+<h3 id="timer-in-parallel-processing"><a href="#timer-in-parallel-processing" class="headerlink" title="timer in parallel processing"></a>timer in parallel processing</h3><p>这里有两点需要注意，第一个是在time之前要使用barrier的primitives，这样才能确保不同thread&#x2F;process的timer是准确的。第二个是求平均值的问题，经常使用的是reduce的primitives。比如<code>MPI_Reduce</code>把不同process的timer汇集到一个process中之后再求平均值。</p>
+<p>虽然可以使用前面介绍的例子measure一段时间的timer, 比如按照之前的介绍在compute前后设置time start 以及 time end， 然后compute difference但是这个不够灵活，比如这个example</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">while(sth)&#123;</span><br><span class="line">compute</span><br><span class="line">communicate</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>相比于测量period of time (比如每个while loop中花在compute和communicate的时间有多少)，更彻底的是测量当时的absolute time，程序的入口是start point, 这样就能plot出来一个比较完整的gantt chart，但是需要对于print出来的log做一些额外的操作，比如用不同的timer和开始时刻的timer进行比较</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ts = std::chrono::duration_cast&lt;std::chrono::milliseconds&gt;(</span><br><span class="line">               std::chrono::system_clock::now().time_since_epoch())</span><br><span class="line">               .count();</span><br></pre></td></tr></table></figure>
+
+<p>这个ts就是一个absolute的value，在关键的操作之前和之后把这个信息记录下来，然后再处理log的时候可以更加灵活，通过gant chart 显示也更加方便，可以显示出不同process的相对位置。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/VisPerfExp/blob/main/commonScripts/parse/parse_timetrace_multisteps.py">这个</a>是之前的一个例子。mapping到gant plot上的时候要注意，gant chart的长度是create figure时候的长度，而通过测量得到的time使用的是不同的unit，要把这个time 的 unit 转化到gant chart所使用的figure size 的 unit上。</p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/32188956/get-current-timestamp-in-microseconds-since-epoch">这里</a>是一些其他的测量current time的例子。</p>
+<p>在parallel case的重要的case是要考虑让所有的process 有共同的start time point，这样timing比较起来才比较有意义。通常是在需要测量的function开始的位置放置一个<code>MPI_Barrier</code>就行，但是有的时候放置一个barrier也不能够使得program有同样的起点，一些有经验的人说，这个时候放置两个barrier可以起到对应的效果。</p>
+<h3 id="timer-in-distributed-cases-with-slow-IO"><a href="#timer-in-distributed-cases-with-slow-IO" class="headerlink" title="timer in distributed cases with slow IO"></a>timer in distributed cases with slow IO</h3><p>When we has a timer, we always want to write it out, in the distributed case such as MPI program, we try to let each rank to write into one file. However, the file I&#x2F;O might influence the accuracy of the timer especially when there is a large number of processes. Instead of writing things each time and calls a lot of file I&#x2F;O operations, the good practice is to record all timer information into memory (for example, using a map to store assocaited timer information). When the targeted program complets its execution, then writing the timer from the memory into the file once. In this case, even if the file I&#x2F;O is slow, we do not need to worry about its influence to the accuracy of the timer.</p>
+<h3 id="关于timer的误区"><a href="#关于timer的误区" class="headerlink" title="关于timer的误区"></a>关于timer的误区</h3><p>量级的timer才有意义(算法优化上的意义)，根据时间复杂度O(n)的定义，也是n在很大数量的时候O(n)才有意义。有几次是对于很小的几分几秒进行测量，就没什么意义，最起码在算法上没什么意义，这个时候的strategy就是把这个差异放大，比如这个operation执行了100或者1000次，这个时候的时间，或者是输入的data变得很大的时候，这个时候的时间比较有意义。</p>
+<h3 id="Performance-model"><a href="#Performance-model" class="headerlink" title="Performance model"></a>Performance model</h3><p>Timing 的一个重要的意义就是构建 performance model 或者了解当前这个service的质量是如何的。有时候在想一个research是不是interests可能是要看看这research当中使用了多少python。换句话说就是使用了多少数学工具或者相关的算法。</p>
+<p>以前总有那种all thing in real time的感觉，现在更多的是offline和online结合的方式。就是offline的model先training好之后然后再进行online的prediction或者classification。就是不要试图去回避这种offline的learning或者是training的过程，本身重要的是model的quality而不是inline 或者 offline。offline 训练好的模型总是可以搬到inline的方式上面来。offline的数据进行model的traning之后就是learning knowledge的过程，这些knowledge就可以用到具体的 online processing的过程中。</p>
+<h3 id="Take-care-of-the-error-and-uncertainty"><a href="#Take-care-of-the-error-and-uncertainty" class="headerlink" title="Take care of the error and uncertainty"></a>Take care of the error and uncertainty</h3><p>Always trying to ask what are associated errors when time sth or using this timer for specific performance model. (Type of the error, bouond of the error, source of the error etc.). Figuring out these things can give you a better understanding regarding the model. The error bar is always needed to describe the figure. Testing one group of results or doing one experiments are not enough, you need to get enough results to show the uncertainty. The error is always a good aspects to discuss the quality of the model, or how to move forward based on the current model approach.</p>
+<p>Therefore, when trying to write a performance test, a good habits is just try to use a for loop and let it run three or five times and then printout the avg time and stdev of the time. This is not a big deal from the perspective of the programming, just use a simple for loop. But that means a lot for processing the results. You do not copy past results back into the excel and execute the env manually (this can save a lot of energy for post processing the results), and you can also say confidently in the paper that we execute multiple runs instead of one run. Reviewer will not complain about your results.</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/27618032/i-o-bound-performance-speedup/27618217">https://stackoverflow.com/questions/27618032/i-o-bound-performance-speedup/27618217</a> </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/27/Time-it/" data-id="clt2e88mn00468xjrhqbm11d8" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/27/Communication-Patterns/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Communication Patterns
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/25/Am-food-story/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Am Food Story</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Concepts-about-time-and-performance"><span class="toc-number">1.</span> <span class="toc-text">Concepts about time and performance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c%E4%B8%AD%E7%9A%84timer%E6%96%B9%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">c中的timer方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c-%E4%B8%AD%E7%9A%84timer%E6%96%B9%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">c++中的timer方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-timer-in-parallel-sitution"><span class="toc-number">4.</span> <span class="toc-text">The timer in parallel sitution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Timer-for-distributed-components"><span class="toc-number">5.</span> <span class="toc-text">Timer for distributed components</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#timer-in-parallel-processing"><span class="toc-number">6.</span> <span class="toc-text">timer in parallel processing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#timer-in-distributed-cases-with-slow-IO"><span class="toc-number">7.</span> <span class="toc-text">timer in distributed cases with slow IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Etimer%E7%9A%84%E8%AF%AF%E5%8C%BA"><span class="toc-number">8.</span> <span class="toc-text">关于timer的误区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Performance-model"><span class="toc-number">9.</span> <span class="toc-text">Performance model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Take-care-of-the-error-and-uncertainty"><span class="toc-number">10.</span> <span class="toc-text">Take care of the error and uncertainty</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reference"><span class="toc-number">11.</span> <span class="toc-text">Reference</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

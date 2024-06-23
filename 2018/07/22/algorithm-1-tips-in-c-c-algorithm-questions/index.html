@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Algorithm(1) tips in c/c++ algorithm questions | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="练习题目总是断断续续的，因此感觉从来也没有在某一个时间段内达到很高的水平，总是隔一段时间再做题有些基本的内容就忘记了（发人深思）。而且平时项目里用c&#x2F;c++并没有那么频繁，有一些零零碎碎的操作不便于快速回忆，于是那些做题目时会用到的内容还是梳理在一起比较好，也相当于是一个系统整理了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Algorithm(1) tips in c&#x2F;c++ algorithm questions">
+<meta property="og:url" content="http://yoursite.com/2018/07/22/algorithm-1-tips-in-c-c-algorithm-questions/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="练习题目总是断断续续的，因此感觉从来也没有在某一个时间段内达到很高的水平，总是隔一段时间再做题有些基本的内容就忘记了（发人深思）。而且平时项目里用c&#x2F;c++并没有那么频繁，有一些零零碎碎的操作不便于快速回忆，于是那些做题目时会用到的内容还是梳理在一起比较好，也相当于是一个系统整理了。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-07-22T01:45:04.000Z">
+<meta property="article:modified_time" content="2023-08-26T02:46:47.020Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-algorithm-1-tips-in-c-c-algorithm-questions" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/22/algorithm-1-tips-in-c-c-algorithm-questions/" class="article-date">
+  <time datetime="2018-07-22T01:45:04.000Z" itemprop="datePublished">2018-07-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Algorithm(1) tips in c/c++ algorithm questions
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>练习题目总是断断续续的，因此感觉从来也没有在某一个时间段内达到很高的水平，总是隔一段时间再做题有些基本的内容就忘记了（发人深思）。而且平时项目里用c&#x2F;c++并没有那么频繁，有一些零零碎碎的操作不便于快速回忆，于是那些做题目时会用到的内容还是梳理在一起比较好，也相当于是一个系统整理了。</p>
+<span id="more"></span>
+
+<h3 id="输入输出初始化相关"><a href="#输入输出初始化相关" class="headerlink" title="输入输出初始化相关"></a>输入输出初始化相关</h3><p>做pat的时候对于输入输出的要求比较严格，特别是对于输入输出的相关内容，但是letcode这里还好，只是写函数就行，要自己声明class 之后在class中实现对应的方法，总之两种模式都要很好的掌握，因为不知道笔试面试时候的oj会是哪一种。</p>
+<ul>
+<li>while(scanf(“%d”,&amp;n)!&#x3D;EOF){}这个基本上是pat里面开始的时候数据输入的基本模式了，这里就是从标准输入输入一个整数到变量n中，要是格式化的输入，比如一行中多个数字，写成scanf(“%d %d %d”,&amp;a,&amp;b,&amp;c)这样。</li>
+<li>scanf(“%c”,&amp;c) 从标准输入输入字符到变量c中</li>
+<li>对于那种测试用例会循环出入的情况,pat中的那种，可以用一个getchar()将多余的回车符吸收掉，特别是与gets(str)一起使用的时候。但是连续使用scanf就并不会存在这种问题，scanf本身会忽略掉前面输入的最后一个回车符。</li>
+<li>采用scanf输入 scanf(“%s”,str)输入遇到空格会被认为是当前字符串结束，要是使用gets(str)的话，会一直默认读取到正行的末尾才结束（遇到换行为止），即使中间有空格。</li>
+<li>sscanf 在一些情况下也有很好的使用，比如下面场景，需要读取矩阵，每行的元素可能是两个也可能是三个，如果是两个的话，value就为default这个时候就要同时支持两个或者3个值的读入，可以使用 buffer + sscanf 的操作，sscanf会返回一个int，标记到底几个值读取成功。一段示例代码如下：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">char line[256];</span><br><span class="line">if (fgets(line, sizeof(line), f) != NULL)</span><br><span class="line">&#123;</span><br><span class="line">    if (sscanf(line, &quot;%d %d %lg&quot;, &amp;rIndex[i], &amp;cIndex[i], &amp;tmp) == 2)</span><br><span class="line">    &#123;</span><br><span class="line">        tmp = 1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>c++ 里面输出bool的时候 直接是 0 1 类型的</li>
+<li>数组初始化的多种方式，直接使用中括号，或者使用memset int a[260] &#x3D; {0};int b[260];memset(b,0,sizeof(b));</li>
+<li>数字转化为字符串 <code>sprintf(s, “%d”, 123);</code> 可以把数字 123 转化为 字符串123注意sprintf对应的头文件为cstdio</li>
+<li>注意字符串转化为数字的操作，直接用cstdlib中的atoi函数就可以进行操作。但是把string类型的数据转换为int类型的时候，需要这样操作<code>int result = atoi(s.c_str());</code>因为atoi这个函数的声明方式如下<code>int atoi(const char *nptr);</code>，所以要用到string转数组的操作。</li>
+<li>pat那种读入文件用例的技巧 测试用例 以及 main函数都需要自己写 这个时候最好是通过一个文件的形式把每次的测试用例读进来 这样可以避免每次手工重新输入</li>
+<li>pat那种题目 需要从文件中读取进来多个测试用例的情况 记住在main函数开始的时候<code>freopen(&quot;in.txt&quot;,&quot;r&quot;,stdin);</code>注意 在多组输入的时候 每次在while开始的时候 记得把相关的实例都清空 比如vector以及map相关的实例 在while循环多次的时候 不要把旧的信息也给带上去</li>
+<li>在niucode上面或者leetcode上面，需要每次提交的是第一个class然后把方法写在class中，注意在自己写main文件的时候，先声明一个类，然后再调用其中的public 方法。比如<ClassName> classinstance 之后 classinstance.<methodname>这样进行操作。至于在声明的的时候加不加new，可以参考这个<a target="_blank" rel="noopener" href="http://www.cnblogs.com/frustrate2/archive/2012/08/14/2637475.html%E3%80%82">http://www.cnblogs.com/frustrate2/archive/2012/08/14/2637475.html。</a></li>
+<li>using namespace std 在有一点紧张的时候，总是忘记这个的输入</li>
+</ul>
+<p>&#x2F;&#x2F;<a target="_blank" rel="noopener" href="http://blog.csdn.net/cogbee/article/details/8931838">http://blog.csdn.net/cogbee/article/details/8931838</a> chr* char[] stirng<br>&#x2F;&#x2F;<a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/10186765/char-array-vs-char-pointer-in-c">http://stackoverflow.com/questions/10186765/char-array-vs-char-pointer-in-c</a></p>
+<p>&#x2F;&#x2F;<a target="_blank" rel="noopener" href="http://zhidao.baidu.com/link?url=xf4JoYof1TJ0GG0QsW_qsEIxvdRQCtG8TOn0ZT7ikSB7qN7JQbULPSqpe0wuxhiFUflCOmN50Xpblrhetk-RmK">http://zhidao.baidu.com/link?url=xf4JoYof1TJ0GG0QsW_qsEIxvdRQCtG8TOn0ZT7ikSB7qN7JQbULPSqpe0wuxhiFUflCOmN50Xpblrhetk-RmK</a></p>
+<ul>
+<li>设置<code>MAX_NUM</code>的时候可以采用如下操作，instead of using 999999.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;limits.h&gt;</span><br><span class="line">int x = INT_MAX;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>善于使用sprintf，特别是在字符串需要按照特定的方式拼接然后再进行输出的时候，比如输入的是hour与minutes，输出的是按照特定格式返回的字符串，此时就需要灵活地才用sprintf将多个输入的字符串按照指定的格式要求拼接起来。</li>
+</ul>
+<h3 id="关于头文件"><a href="#关于头文件" class="headerlink" title="关于头文件"></a>关于头文件</h3><p>常用的要记住的如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;cstring&gt;</span><br><span class="line">#include &lt;algorithm&gt; //sort之类的排序要用到</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;queue&gt;</span><br><span class="line">#include &lt;map&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="基本结构及其常用方法"><a href="#基本结构及其常用方法" class="headerlink" title="基本结构及其常用方法"></a>基本结构及其常用方法</h3><h4 id="队列模板的使用"><a href="#队列模板的使用" class="headerlink" title="队列模板的使用"></a>队列模板的使用</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">头文件 #include&lt;queue&gt;</span><br><span class="line">queue&lt;Node&gt; Q 声明一个Node类型的队列</span><br><span class="line">Q.push(arrynode[i]) arrynode中的第i个元素入队</span><br><span class="line">Q.front()返回队头元素（在BFS的时候pop与front往往是结合起来使用）</span><br><span class="line">Q.pop()  弹出对头元素 直接队首元素出队 并不返回元素</span><br><span class="line">Q.empty()判断队列是否为空</span><br><span class="line">Q.size()返回队列中元素的数目 （注意这里的括号）</span><br></pre></td></tr></table></figure>
+<h4 id="关于双端队列"><a href="#关于双端队列" class="headerlink" title="关于双端队列"></a>关于双端队列</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include&lt;deque&gt;</span><br><span class="line">deque&lt;int&gt; d</span><br><span class="line">d.push_back(value)</span><br><span class="line">d.push_front(value)</span><br><span class="line">d.pop_back(value)</span><br><span class="line">d.pop_front(value)</span><br><span class="line">d.back() //return last element</span><br><span class="line">d.fron() //return first element</span><br></pre></td></tr></table></figure>
+<h4 id="vector向量的使用"><a href="#vector向量的使用" class="headerlink" title="vector向量的使用"></a>vector向量的使用</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">头文件 #include&lt;vector&gt;</span><br><span class="line">vector&lt;type&gt;v 定义一个type类型的向量</span><br><span class="line">v[i]通过下标返回第i个元素 </span><br><span class="line">v.front()获取并返回首元素</span><br><span class="line">v.back()获取并返回尾元素</span><br><span class="line">v.push_back(x) 向尾部插入元素x(注意这里要使用push_back而不是insert)</span><br><span class="line">v.pop_back()删除尾元素</span><br><span class="line">v.size()获取并返回v的长度</span><br><span class="line">v.empty()判断v是否为空 若空则返回true 否则返回false</span><br><span class="line">v.clear()清空</span><br><span class="line">vector&lt;int&gt;::iterator == find(A.begin(),A.end(),3);查找标记为3的元素是否包含在向量中</span><br><span class="line">要注意一下这里的find是alogrithom的方法 并不是vector中自带的方法</span><br><span class="line">http://blog.csdn.net/helonsy/article/details/6859075</span><br><span class="line">vc 6.0中查看vector中的元素的方法：</span><br><span class="line">http://blog.sina.com.cn/s/blog_70441c8e0101hjtl.html</span><br><span class="line"></span><br><span class="line">关于vector中元素的复制：</span><br><span class="line">1、vector是一个构造对象，不能直接使用=符号进行复制，必须迭代每个元素来复制。或者重载=操作符。</span><br><span class="line">2、大致有一下几种方法实现用于把一个vector复制给另一个vector：</span><br><span class="line">方法1：</span><br><span class="line">vector&lt;int &gt; v1(v2);//声明</span><br><span class="line">方法2：使用swap进行赋值：</span><br><span class="line">vector&lt;int &gt; v1();v1.swap(v2);//将v2赋值给v1，此时v2变成了v1</span><br><span class="line">方法3：使用函数assign进行赋值：</span><br><span class="line">vector&lt;int &gt; v1;//声明v1</span><br><span class="line">v1.assign(v2.begin(), v2.end());//将v2赋值给v1</span><br><span class="line">方法4：使用循环语句赋值，效率较差</span><br><span class="line">vector&lt;int &gt;::iterator it;//声明迭代器</span><br><span class="line">for(it = v2.begin();it!=v2.end();++it)&#123;//遍历v2,赋值给v1</span><br><span class="line">v1.push_back(it);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">合并两个vector:</span><br><span class="line">可以直接使用insert函数，直接 v1.insert(v1.end(),v2.start(),v2.end()) 相当于把第二个vector中的元素insert到第一个中，注意这里有三个参数。第一个参数用来指定insert时候的start position.</span><br><span class="line"></span><br><span class="line">vector类型可以支持嵌套 即使说vector里面的每一个元素 又是一个vector </span><br><span class="line">比如这样 vector&lt;vector&lt;int&gt; &gt; shortestPaths;</span><br><span class="line">注意后面两个&gt;&gt; 要用 “ ”分割开 否则会被识别成右移符号  </span><br><span class="line"></span><br><span class="line">对vector进行遍历：</span><br><span class="line">http://www.2cto.com/kf/201404/291689.html</span><br><span class="line"></span><br><span class="line">vector嵌套操作的时候进行初始化 初始化都是0</span><br><span class="line">vector&lt; vector&lt;int&gt; &gt; dp(row,vector&lt;int&gt;(line))</span><br><span class="line"></span><br><span class="line">vector init by the &#123;&#125; notation, this is convenience for writing the test case</span><br><span class="line">std::vector&lt;std::vector&lt;int&gt;&gt; grid&#123;&#123;0, 0, 0&#125;, &#123;0, 0, 0&#125;, &#123;0, 0, 0&#125;&#125;;</span><br><span class="line">we can also inter the empty vector by using &#123;&#125; direactly</span><br><span class="line"></span><br><span class="line">注意整理行和列要是确定了之后才能进行如下操作</span><br><span class="line"></span><br><span class="line">相比分配一整块内存 缺点是效率问题 参考这个</span><br><span class="line">https://scicomp.stackexchange.com/questions/3159/is-it-a-good-idea-to-use-vectorvectordouble-to-form-a-matrix-class-for-high/3162</span><br><span class="line"></span><br><span class="line">使用vector之后空间就不连续了</span><br><span class="line"></span><br><span class="line">但这样做的方便之处就是可以控制所分配的空间的大小 而不用在开始的时候就确定好空间的大小</span><br><span class="line">比如如下的代码</span><br><span class="line">    scanf(&quot;%d\n&quot;, &amp;n);</span><br><span class="line">    std::vector&lt;std::vector&lt;int&gt; &gt; matrix(3, vector&lt;int&gt;(n,0));</span><br><span class="line">在读入了n之后才初始化vector并分配对等大小的空间，但这样做确定是空间是不连续的，在对performance要求敏感的代码上需要进一步进行优化。</span><br><span class="line"></span><br><span class="line">还有就是注意嵌套vector的时候 里面的元素中的template部分仅仅是一个字段 不要和map弄混淆了</span><br><span class="line"></span><br><span class="line">声明一个维vector时候参数的初始化</span><br><span class="line">vector fvec(10); </span><br><span class="line">// 10 elements, each initialized to 0</span><br><span class="line">vector ivec4(10, -1);     </span><br><span class="line">// 10 elements, each initialized to -1</span><br><span class="line">向量使用sort排序</span><br><span class="line">http://blog.csdn.net/hnu_zxc/article/details/6746029</span><br><span class="line">注意！！！如果写成class的形式的话 并且把cmp函数写在class内部 那cmp一定要写成 static 的形式 否则编译器会找不到sort函数 认为它是被重载过了的</span><br><span class="line">sort (myvector.begin(), myvector.end(), cmp);</span><br><span class="line">cmp 函数的两个输入的元素类型是myvector中的元素类型，返回值是true或者false</span><br><span class="line">如果使用descending的顺序来对vector进行排序的话，进行如下操作</span><br><span class="line">sort (myvector.rbegin(), myvector.rend())</span><br><span class="line">这里的rbegin和rend就是从vector的最后一个位置的元素往前面进行遍历</span><br><span class="line"></span><br><span class="line">对vector进行逆序操作，也可以使用begin end的操作, 相关的函数是</span><br><span class="line">reverse(myvector.begin(), myvector.end())</span><br><span class="line"></span><br><span class="line">在struct中包含vector：</span><br><span class="line">struct DataItem</span><br><span class="line">&#123;</span><br><span class="line">    int start;</span><br><span class="line">    int end;</span><br><span class="line">    int weight;</span><br><span class="line">    int flag;</span><br><span class="line">    struct DataItem *next;</span><br><span class="line">&#125;;</span><br><span class="line">typedef struct HeadNode</span><br><span class="line">&#123;</span><br><span class="line">    int maxweight;</span><br><span class="line">    vector&lt;struct DataItem *&gt; edgeV;</span><br><span class="line">&#125; HeadNode;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    vector&lt;struct HeadNode *&gt; HashArray;</span><br><span class="line">    int i;</span><br><span class="line">    for (i = 0; i &lt; 11; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        vector&lt;struct DataItem *&gt; ev;</span><br><span class="line">        struct DataItem *item = (struct DataItem *)malloc(sizeof(struct DataItem));</span><br><span class="line">        item-&gt;start = i + 1;</span><br><span class="line">        item-&gt;end = i + 1;</span><br><span class="line">        item-&gt;weight = 1;</span><br><span class="line">        item-&gt;flag = 0;</span><br><span class="line">        item-&gt;next = NULL;</span><br><span class="line">        ev.push_back(item);</span><br><span class="line">        HeadNode *node = new (HeadNode);</span><br><span class="line">        node-&gt;edgeV = ev;</span><br><span class="line">        node-&gt;maxweight = i;</span><br><span class="line">        HashArray.push_back(node);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">这里要注意如下：</span><br><span class="line">  * vector 是c++才支持的，因此初始化struct的instance的时候，一定要用new而不是malloc，由于习惯问题，常常一上手就用malloc，这样会导致vector中的值发生一些奇怪的变化，这种问题往往还特别难定位，都是由于惯性思维导致的。注意上下文环境，从而做出正确的选择。</span><br><span class="line">  * 再一个结构体定义的时候还是都按照c++的风格来吧，c的风格就是感觉很冗余。</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">关于iterate的同时又进行删除的操作, 主要是采用erase返回iterator的做法，这里的iterator可以理解为指向元素的特殊index。</span><br><span class="line"></span><br><span class="line">auto iter = a.begin();</span><br><span class="line">while (iter != a.end()) &#123;</span><br><span class="line">  if (*iter &gt; 30) &#123;</span><br><span class="line">      iter = a.erase(iter);</span><br><span class="line">     &#125;</span><br><span class="line">       else &#123;</span><br><span class="line">         ++iter;</span><br><span class="line">     &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">还有另外一种操作是</span><br><span class="line"></span><br><span class="line">for ( ; it != res.end(); ) &#123;</span><br><span class="line">  if (condition) &#123;</span><br><span class="line">    it = res.erase(it);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    ++it;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个需要特别注意的操作是remove the vector elements by value。<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/3385229/c-erase-vector-element-by-value-rather-than-by-position">这里</a>有比较细致的介绍。简单的方法是find和erase结合，但是这样需要多次call erase，因为array是顺序排列的，每次call之后都需要将其中的元素移动，这样的开销比较大。比较推荐的方式是使用<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Erase%E2%80%93remove_idiom">remove-erase pattern</a>.</p>
+<p>This is an example</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">std::vector&lt;int&gt; list = &#123;3,4,5,6&#125;;</span><br><span class="line">list.erase(std::remove(list.begin(), list.end(), 4), list.end());</span><br><span class="line"></span><br><span class="line">std::cout &lt;&lt; list.size() &lt;&lt; std::endl;</span><br><span class="line">for(int i=0;i&lt;list.size();i++)&#123;</span><br><span class="line">    std::cout &lt;&lt; &quot; &quot; &lt;&lt; list[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>It is worth noting that the remove operation do not actually delete the element or update the size of the container, it just move the elements in the containers and put the elements that does not satisfy the specified condition at the first several positions in the container.</p>
+<p>This is an example to show the idea of the remove, we can see that it returns the new iterator that points to the end position of the new array with out containing the elements specified by the user.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    std::vector&lt;int&gt; list = &#123;3, 4, 5, 6, 4, 7, 8&#125;;</span><br><span class="line">    auto pend = std::remove(list.begin(), list.end(), 4);</span><br><span class="line">    for (auto p = list.begin(); p != pend; ++p)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; &#x27; &#x27; &lt;&lt; *p;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line">// 3 5 6 7 8</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="关于set容器"><a href="#关于set容器" class="headerlink" title="关于set容器"></a>关于set容器</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http://blog.csdn.net/hnust_xiehonghao/article/details/7942541</span><br><span class="line">http://blog.csdn.net/longshengguoji/article/details/8546286</span><br><span class="line">输出的地方要特别注意一下 定义一个printSet 里面通过迭代器来进行操作</span><br><span class="line">注意set使用到的题目做的还不是很多 set与multiset通过底层是红黑树 </span><br><span class="line">只要使用好了 往往能省好多事</span><br><span class="line">比如 Contains Duplicate III 这个题</span><br><span class="line">set 中的元素默认是ascending排列的</span><br><span class="line">set 与 multiset 的关键区别是集合中是否可以包含重复的元素</span><br></pre></td></tr></table></figure>
+
+<h3 id="关于string的操作"><a href="#关于string的操作" class="headerlink" title="关于string的操作"></a>关于string的操作</h3><p>string输入 每次使用string的时候 总是很焦虑 因为输入总是搞不好 其实很容易</p>
+<p>参考这个，关键是风格的统一：</p>
+<p><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_7044b2550100p4ao.html">http://blog.sina.com.cn/s/blog_7044b2550100p4ao.html</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">C语法：</span><br><span class="line">   char buf[20];  gets(buf);  可以用scanf(&quot;%s&quot;,buf)进行输入</span><br><span class="line">C++语法：</span><br><span class="line">   如果用string buf;来保存：</span><br><span class="line">   getline(cin,buf);（推荐）</span><br><span class="line">   由于在做题的时候 大多是情况都是混合风格 对于用惯了scanf的那种多个输入值的循环判断风格 之后再判断是不是结束的时候 可以通过buf的长度来进行判断</span><br><span class="line">   如果buf.size()==0说明输入的是一个空字符串 这个时候就break出循环</span><br><span class="line">   如果用char buf[255]; 来保存： cin.getline( buf, 255 );</span><br></pre></td></tr></table></figure>
+<p>在一个很长的串中vector words，根据某个标记进行分割，把这个完整的串分割成几个小部分，把每一个分割出来的部分存在一个vector当中，这个操作可能会常常用到，总之要熟练使用，下面这个是以” “为例进行分割。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vector&lt;string&gt; words;</span><br><span class="line">int leftIdx  = 0;</span><br><span class="line">int rightIdx = 0;</span><br><span class="line">while (rightIdx &lt; str.size())</span><br><span class="line">&#123;</span><br><span class="line">    while (rightIdx &lt; str.size() &amp;&amp; str[rightIdx] != &#x27; &#x27;)</span><br><span class="line">        rightIdx++;</span><br><span class="line">    words.push_back(str.substr(leftIdx, rightIdx-leftIdx));</span><br><span class="line">    leftIdx  = rightIdx+1;</span><br><span class="line">    rightIdx = rightIdx+1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>这里的substr要特别留意一下，主要是两个参数的含义，第一个参数为子数组的起始位置，第二个参数是字数组的长度，就是从起始位置开始，往后延伸多少个数字。（之前有一次机试的时候 把这里理解成了右边界 导致浪费了很多时间调试 这些小地方一定要注意）</p>
+<p>有时可能会用到string转化成为字符串数组的操作：</p>
+<p>string 是c++标准库里面其中一个，封装了对字符串的操作<br>把string转换为char* 有3中方法：<br>1.data </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">string str=&quot;abc&quot;; </span><br><span class="line">const char *p=str.data(); </span><br></pre></td></tr></table></figure>
+<p>2.c_str </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">string str=&quot;gdfd&quot;; </span><br><span class="line">char *p=str.c_str(); </span><br></pre></td></tr></table></figure>
+
+<p>比如在使用atoi函数将一个string类型的字符串转化为int类型的时候，就需要用这个操作。<br>还要注意下<code>c_str</code>与<code>data</code>的区别，<code>data()</code>函数返回的内容没有以<code>\0</code>结尾，而<code>c_str()</code>返回的是str，并且以<code>\0</code>结尾<br>3.copy<br>比如 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">string str=&quot;hello&quot;; </span><br><span class="line">char p[40]; </span><br><span class="line">str.copy(p,5,0); //这里5，代表复制几个字符，0代表复制的位置</span><br><span class="line">*(p+5)=&#x27;/0&#x27;; //要手动加上结束符</span><br><span class="line">cout &lt;&lt;p;</span><br></pre></td></tr></table></figure>
+<p>string扩容，如果对于原来的string直接进行操作的话，直接.resize()这样就好。</p>
+<p>要是在后面继续添加元素，直接：<br>添加元素 直接 string s&#x3D;”abc” s&#x3D;s+”new string” 这样就可以</p>
+<h4 id="char-char-string-三者的相互转化"><a href="#char-char-string-三者的相互转化" class="headerlink" title="char* char[] string 三者的相互转化"></a>char* char[] string 三者的相互转化</h4><p>以下是一个三种不同类型的元素进行转化的例子</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;cstring&gt;</span><br><span class="line">#include &lt;cstdlib&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;-----------char* to char[] and string----------\n&quot;);</span><br><span class="line">    //char *¡¡to char[]</span><br><span class="line">    char * sptr=&quot;hello world&quot;;</span><br><span class="line">    printf(&quot;sptr output: %s\n&quot;,sptr);</span><br><span class="line">    char charstr[20];</span><br><span class="line">    strcpy(charstr, sptr);</span><br><span class="line">    printf(&quot;charstr output: %s\n&quot;,charstr);</span><br><span class="line">    //char* to string</span><br><span class="line">    string s =sptr;</span><br><span class="line">    //error</span><br><span class="line">    //printf(&quot;string output: %s\n&quot;,s);</span><br><span class="line">    printf(&quot;string output: %s\n&quot;,s.c_str());</span><br><span class="line">    printf(&quot;string output: %s\n&quot;,s.data());</span><br><span class="line">    printf(&quot;-----------char[] to char* and string----------\n&quot;);</span><br><span class="line">    //char[] to char *</span><br><span class="line">    char chararry[20]=&quot;hello world&quot;;</span><br><span class="line">    printf(&quot;chararry output: %s\n&quot;,chararry);</span><br><span class="line">    sptr=chararry;</span><br><span class="line">    printf(&quot;sptr output: %s\n&quot;,sptr);</span><br><span class="line">    //char[] to string</span><br><span class="line">    s=chararry;</span><br><span class="line">    printf(&quot;string output: %s\n&quot;,s.c_str());</span><br><span class="line">    printf(&quot;-----------string to char* and char[]----------\n&quot;);</span><br><span class="line">    s=&quot;goodbye world!&quot;;</span><br><span class="line">    //invalid conversion from const char * to char*</span><br><span class="line">    //sptr=s.data();</span><br><span class="line">    const char* csptr;</span><br><span class="line">    csptr=s.data();</span><br><span class="line">    printf(&quot;csptr output: %s\n&quot;,csptr);</span><br><span class="line">    strcpy(chararry,csptr);</span><br><span class="line">    printf(&quot;chararry output: %s\n&quot;,sptr);</span><br><span class="line">    int len=strlen(chararry);</span><br><span class="line">    printf(&quot;the len of chararry: %d\n&quot;,len);</span><br><span class="line">    int len2=s.length();</span><br><span class="line">    /*</span><br><span class="line">    failed to sort</span><br><span class="line">    const char * temp=s.data();</span><br><span class="line">    sort(temp,temp+len2);</span><br><span class="line">    printf(&quot;string output after sort: %s\n&quot;,s.data());</span><br><span class="line">    */</span><br><span class="line">    sort(chararry,chararry+len);</span><br><span class="line">    printf(&quot;chararry output after sort: %s\n&quot;,chararry);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>array 退化为指针的操作</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//如果函数期望输入的形参是一个指针 但是传入的是一个数组</span><br><span class="line">char s[10] = &quot;hello&quot;;</span><br><span class="line">printSomething(s);</span><br><span class="line">//编译器会认为实际输入的内容如下</span><br><span class="line">char s[10] = &quot;hello&quot;;</span><br><span class="line">printSomething(&amp;s[0]);</span><br></pre></td></tr></table></figure>
+<p><strong>实际刷题时候的tips</strong><br>因为涉及到函数的调用与返回值，所以char 类型总是难以避免的，一种是直接使用 char + string 类型解决问题，一种是使用 char* + char[] 类型解决问题，总是不要混用，大部分刷题时用到的功能，使用str类的函数都可以解决的，比如strlen求字符串的长度以及 strcpy进行数组元素的拷贝。除了按照指定元素分割这个需要自己实现之外，其他的基本上都可以满足了，千万不要在这种小的地方耗费时间进去。</p>
+<p>有一些地方是string无法解决的，因为s.data()返回的是const char 所以不能修改其元素？，所以要是想进行sort操作的话，还是需要转化为array类型，<strong>char 类型想要转化为array类型，还是需要用到strcpy赋值一遍过去！！！</strong></p>
+<h3 id="map常用操作"><a href="#map常用操作" class="headerlink" title="map常用操作"></a>map常用操作</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">关于map的一些常用操作（关键时候这个还是很好用的） </span><br><span class="line">比如一个map&lt;String,int&gt;</span><br><span class="line">插入或者检索某个元素的时候 直接map[str]=number就OK了 还是比较好用的</span><br><span class="line">元素查找</span><br><span class="line">map.find(key)</span><br><span class="line">返回的是迭代器 如果没有 就返回 map.end() 注意这里迭代器形式的书写</span><br><span class="line">// 定义一个迭代器</span><br><span class="line">map&lt;int,int&gt;::iterator iter</span><br><span class="line">// 进行查找</span><br><span class="line">iter = mapStudent.find(1);</span><br><span class="line">    if(iter != mapStudent.end())</span><br><span class="line">    &#123;</span><br><span class="line">        // map 迭代器的第一个值为key 第二个值为value</span><br><span class="line">        Cout&lt;&lt;”Find, the value is ”&lt;&lt;iter-&gt;second&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        Cout&lt;&lt;”Do not Find”&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">char数组转化成string 这个比较好用(这个很关键 因为map声明的时候 只是支持string类型的 而精细控制的时候用字符串数组又比较好 所以输入的时候可以用字符串数组 最后声明map的时候再转化为string类型)</span><br><span class="line">map.insert(make_pair(string(字符串数组)，value))</span><br><span class="line">注意前面的make_pair的操作</span><br><span class="line">或者直接 &lt;mapneme&gt;[key]=value 采用这种直接添加 key-value 值的形式定义</span><br><span class="line">map的操作好好整理一下：</span><br><span class="line">http://www.oschina.net/question/234345_48876</span><br><span class="line">map.find(key)操作会在map中查询key值如果查询失败会返回map.end()</span><br><span class="line">a simple way to adjust if a specifc value is in map is to use the m.count(key) to adjust if the return value is 0</span><br><span class="line">如果查询成功会返回一个迭代器，这个迭代器又有两个元素iterator-&gt;first和iterator-&gt;second两个元素分别代表 关键字 以及 实际存储的数据（即value值）</span><br><span class="line">清空map中的元素</span><br><span class="line">map.clear()</span><br><span class="line">关于map的遍历操作：</span><br><span class="line">http://blog.csdn.net/windren06/article/details/8141921</span><br><span class="line">map&lt;string,int&gt;::iterator it;</span><br><span class="line">    for(it=m.begin();it!=m.end();++it)</span><br><span class="line">        cout&lt;&lt;&quot;key: &quot;&lt;&lt;it-&gt;first &lt;&lt;&quot; value: &quot;&lt;&lt;it-&gt;second&lt;&lt;endl;</span><br><span class="line">    return   0;</span><br><span class="line"></span><br><span class="line">another important fact that the default value of the coresponding type will be returned if the key not exist in the map, for the following code, the output vlaue is 0:</span><br><span class="line"></span><br><span class="line">    std::map&lt;int , int &gt; m;</span><br><span class="line">    int b = m[1];</span><br><span class="line">    std::cout &lt;&lt; a &lt;&lt; std::endl;</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+<h3 id="pair-and-tuple"><a href="#pair-and-tuple" class="headerlink" title="pair and tuple"></a>pair and tuple</h3><p>when solving the bfs question, instead of creating a customized new node, if there are only two or three elements in the tree node, we can use pair or tuple. </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">For pair, we can just create it by &#123;v1,v2&#125;</span><br><span class="line">pair&lt;int, int&gt; p=&#123;v1,v2&#125;</span><br><span class="line">or use make_pair function</span><br><span class="line">or when we insert things into the vector with pair for each element, we can just use v.insert(&#123;v1,v2&#125;), this is similar for tuple, the difference is that there are three values for tuple.</span><br><span class="line"></span><br><span class="line">When access element, for pair, we can use</span><br><span class="line">p.first and p.second to get first and second element.</span><br><span class="line"></span><br><span class="line">For tuple, it is a little bit different, we need to use</span><br><span class="line">get&lt;0&gt;(t) get&lt;1&gt;(t) and get&lt;2&gt;(t) to access each element in a tuple. </span><br></pre></td></tr></table></figure>
+
+<h3 id="stack的常用操作"><a href="#stack的常用操作" class="headerlink" title="stack的常用操作"></a>stack的常用操作</h3><p>具体题目 队列和栈相关的的那个章节中 获取最小值的栈</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//像stack这种操作 肯定是不需要自己实现的</span><br><span class="line">//在做题目的时候 学会直接利现成的操作</span><br><span class="line">//栈的初始化操作</span><br><span class="line">stack &lt;int&gt; stacktest</span><br><span class="line">//判断一个栈在开始的时候是否为空 如果为空 则返回true</span><br><span class="line">//注意 在初始的时候对于 stack 是否为空的判断是特别关键 并且容易出错的</span><br><span class="line">stacktest.empty()</span><br><span class="line">//push一个元素</span><br><span class="line">stacktest.push(&lt;intvalue&gt;)</span><br><span class="line">//pop一个元素</span><br><span class="line">stacktest.pop</span><br><span class="line">//返回栈的top元素</span><br><span class="line">stacktest.top()</span><br></pre></td></tr></table></figure>
+
+<h3 id="About-the-iterator"><a href="#About-the-iterator" class="headerlink" title="About the iterator"></a>About the iterator</h3><ul>
+<li><p>The stl have implemented multiple algorithm based on the iterator. Be careful about the defination for the <code>begin</code> and the <code>end</code>. If we use the vector as an exmaple, the <code>begin()</code> operation returns the first position of the current stl. the <code>end()</code> returns the past-the-end element in the vector container. That means there is no avalible coresponding elements there. The past-the-end element is the theoretical element that would follow the last element in the vector. It does not point to any element, and thus shall not be dereferenced. We usually use the end as a label position. <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/15252002/what-is-the-past-the-end-iterator-in-stl-c">This</a> is a good resource to show the idea of the begin and end approach to get the iterator.</p>
+</li>
+<li><p>Take care some operation such as <code>upper_bound</code> which can be used to simplify the code, such as leetcode 981</p>
+</li>
+</ul>
+<h3 id="其他零零碎碎的"><a href="#其他零零碎碎的" class="headerlink" title="其他零零碎碎的"></a>其他零零碎碎的</h3><p>在letcode里面和pat不一样，通常只需要自己写一个完整的函数就好，不用考虑输入输出的问题，注意c++的面向对象的写法，一个class里面声明一个public 方法，main函数相当于是自己写的一个测试用例了。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include </span><br><span class="line">...</span><br><span class="line">#include </span><br><span class="line">using namespace std;</span><br><span class="line">class Solution &#123;</span><br><span class="line"></span><br><span class="line">    int findsolution(int left,int right,int nowindex,int sum,vector &amp;v)&#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    &#125;    </span><br><span class="line">    public:</span><br><span class="line">    int threeSumClosest(vector&amp; nums, int target) &#123;</span><br><span class="line">    ...</span><br><span class="line">            int min=findsolution(i+1,len-1,i,target,nums);</span><br><span class="line">    ...</span><br><span class="line">    &#125;;</span><br><span class="line">    int main()&#123;</span><br><span class="line"></span><br><span class="line">    Solution s;</span><br><span class="line">    vector v;</span><br><span class="line">    int answer;</span><br><span class="line"></span><br><span class="line">    int a[4] = &#123;-1,2,1,-4&#125;;</span><br><span class="line">    int i;</span><br><span class="line">    for (i=0;i&lt;4;i++)&#123; v.push_back(a[i]);=&quot;&quot; &#125;=&quot;&quot; answer=&quot;s.threeSumClosest(v,1);&quot; printf(&quot;%d&quot;,answer);=&quot;&quot; return=&quot;&quot; 0;=&quot;&quot; &lt;=&quot;&quot; code=&quot;&quot;&gt;</span><br></pre></td></tr></table></figure>
+<p>在parallel 中的 windows下 fn+ALT+f5 那样来调试 f8是调整格式</p>
+<h3 id="关于编译器的使用"><a href="#关于编译器的使用" class="headerlink" title="关于编译器的使用"></a>关于编译器的使用</h3><p>在codeblock的时候 要新建 terminal project 之后才能在新建的source文件中继续执行debug的相关操作</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/07/22/algorithm-1-tips-in-c-c-algorithm-questions/" data-id="clt2e88mo004i8xjr6x1f4z0m" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2018/09/10/if-you-can-use-mpi4py/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          if you can use mpi for python
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/07/19/c-c-file-io/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">c/c++ file io</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9B%B8%E5%85%B3"><span class="toc-number">1.</span> <span class="toc-text">输入输出初始化相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%A4%B4%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">关于头文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%E5%8F%8A%E5%85%B6%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">基本结构及其常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%9F%E5%88%97%E6%A8%A1%E6%9D%BF%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">3.1.</span> <span class="toc-text">队列模板的使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97"><span class="toc-number">3.2.</span> <span class="toc-text">关于双端队列</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#vector%E5%90%91%E9%87%8F%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">3.3.</span> <span class="toc-text">vector向量的使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Eset%E5%AE%B9%E5%99%A8"><span class="toc-number">3.4.</span> <span class="toc-text">关于set容器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Estring%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">4.</span> <span class="toc-text">关于string的操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#char-char-string-%E4%B8%89%E8%80%85%E7%9A%84%E7%9B%B8%E4%BA%92%E8%BD%AC%E5%8C%96"><span class="toc-number">4.1.</span> <span class="toc-text">char* char[] string 三者的相互转化</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#map%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="toc-number">5.</span> <span class="toc-text">map常用操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pair-and-tuple"><span class="toc-number">6.</span> <span class="toc-text">pair and tuple</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#stack%E7%9A%84%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="toc-number">7.</span> <span class="toc-text">stack的常用操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#About-the-iterator"><span class="toc-number">8.</span> <span class="toc-text">About the iterator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E9%9B%B6%E9%9B%B6%E7%A2%8E%E7%A2%8E%E7%9A%84"><span class="toc-number">9.</span> <span class="toc-text">其他零零碎碎的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E7%BC%96%E8%AF%91%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">10.</span> <span class="toc-text">关于编译器的使用</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

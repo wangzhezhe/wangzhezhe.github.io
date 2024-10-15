@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>cpp different levels to understand move and rvalue | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Concepts about move rvalue and forward etc, in cpp, it seems important and ambiguous for the most of the people, we try to understand thoese concepts in different levels.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpp different levels to understand move and rvalue">
+<meta property="og:url" content="http://yoursite.com/2021/02/27/cpp-different-levels-to-understand-move-and-rvalue/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Concepts about move rvalue and forward etc, in cpp, it seems important and ambiguous for the most of the people, we try to understand thoese concepts in different levels.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-02-27T14:44:53.000Z">
+<meta property="article:modified_time" content="2023-11-17T01:40:32.468Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-cpp-different-levels-to-understand-move-and-rvalue" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/02/27/cpp-different-levels-to-understand-move-and-rvalue/" class="article-date">
+  <time datetime="2021-02-27T14:44:53.000Z" itemprop="datePublished">2021-02-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/c-c/">c/c++</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      cpp different levels to understand move and rvalue
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Concepts about <code>move</code> <code>rvalue</code> and <code>forward</code> etc, in cpp, it seems important and ambiguous for the most of the people, we try to understand thoese concepts in different levels.</p>
+<span id="more"></span>
+
+<h3 id="if-we-can-take-the-addresses"><a href="#if-we-can-take-the-addresses" class="headerlink" title="if we can take the addresses"></a>if we can take the addresses</h3><p>Although there are lots of types such as <code>lvalue</code> <code>rvalue</code> <code>xvalue</code> <code>prvalues</code> etc, refer to <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/3601602/what-are-rvalues-lvalues-xvalues-glvalues-and-prvalues">this</a>, we start from the general lvalue and rvalue.</p>
+<p>Simply speaking, the value that we can take address is the lvalue (it is on the left side of the expression), the value that we can not take it’s address is an rvalue (it is on the right side of the expression). This article provides a <a target="_blank" rel="noopener" href="https://bajamircea.github.io/coding/cpp/2016/04/07/move-forward.html">good summary</a>, one principle is if <strong>we can we take its address</strong>, another principle is <strong>can the object be move from</strong>. This is the <a target="_blank" rel="noopener" href="https://www.stroustrup.com/terminology.pdf">detailed documentation</a>.</p>
+<p>How do we express that object in the parameter list of the fuction call? For the <code>lvalue</code>, we can use pointer to the original object or the reference like this <code>TypeName &amp;</code>. In particular, if X is any type, then <code>X&amp;&amp;</code> is called an rvalue reference to X. For better distinction, the ordinary reference <code>X&amp;</code> is now also called an lvalue reference.</p>
+<h3 id="Before-the-rvalue-reference"><a href="#Before-the-rvalue-reference" class="headerlink" title="Before the rvalue reference"></a>Before the rvalue reference</h3><p>lvalue and rvalue exists before the creation of rvalue reference, here are two typical examples:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">std::string name0 = &quot;rvalue&quot;;</span><br><span class="line">const std::string&amp; name = &quot;rvalue&quot;;</span><br></pre></td></tr></table></figure>
+<p>for the second line, if we use the <code>std::string&amp; name = &quot;rvalue&quot;</code>, there is error:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">non-const lvalue reference to type &#x27;std::string&#x27; (aka &#x27;basic_string&lt;char, char_traits&lt;char&gt;, allocator&lt;char&gt; &gt;&#x27;) cannot bind to a value of unrelated type</span><br><span class="line">      &#x27;const char [7]&#x27;</span><br><span class="line">  std::string&amp; name = &quot;rvalue&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>This example shows that the <code>const lvalue reference</code> can either reference to an lvalue or an rvalue without doing the deep copy. That is the whole point of references.</p>
+<p>Before the creation of <code>&amp;&amp;</code> notation , things can still go as it is. But one human nature is that, we may not always satisfy the current situation, and we want to do sth to optimize the current situation. So we might ask, what is the limitation of the <code>const lvalue reference</code>. It is obvious that with the limitaion of the const, we can not actually modify the contents of current object. In the previous exmaple, if we try to do:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">const std::string&amp; name = &quot;rvalue&quot;;</span><br><span class="line">name[1] = &#x27;a&#x27;;</span><br></pre></td></tr></table></figure>
+<p>we got this error for compiling:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cannot assign to return value because function &#x27;operator[]&#x27; returns a const value</span><br></pre></td></tr></table></figure>
+<p>so in this case, we need to copy an object anyway if we want to update the contents in it. This is not flexible in some situations, for example, if the original object is a temprary one, we copy copntent of this opject and then udpate the content in new object, this copy operation is unnecessary. If we just want to keep the inner contents of original objects and replace its old shell&#x2F;container (the old object), we need an new abstraction that can represent the inner things in the container. Just as the metaphore in this <a target="_blank" rel="noopener" href="https://hackernoon.com/one-shot-learning-of-c-r-value-and-move-27e5d6bcec3b">article</a> “when you sell your old property and move to a new house, you do not have to toss all the furniture”. That is the motivation use case of the rvalue reference and the move semantics.</p>
+<h3 id="basic-move-semantic"><a href="#basic-move-semantic" class="headerlink" title="basic move semantic"></a>basic move semantic</h3><p>The <code>std::move</code> function did not move anything, it just cast the varaible into the rvalue. Simply speaking by code, when there is a vector 1 and we want to get vector 2 from vector 1. Instead of using explicit copy, we can get the inner data of the vector 1, and cast it into an rvalue and assigne it to the vector 2. By this way, the vector 2 is responsible for the inner data. It looks that the inner data is moved from the vector 1 into the vector 2 externally, but actually, we did not copy anything, just change the ownership of the inner value. It might be convenint to consider the vector as an container and we move inner object back and forth logically.</p>
+<p>This is the sample code to show what we described:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line"></span><br><span class="line">void print(const std::vector&lt;int&gt;&amp; vec) &#123;</span><br><span class="line">  for (auto&amp;&amp; val : vec) &#123;</span><br><span class="line">    std::cout &lt;&lt; val &lt;&lt; &quot;, &quot;;</span><br><span class="line">  &#125;</span><br><span class="line">  std::cout &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line">int main() &#123;</span><br><span class="line">  // initialize vec1 with 1, 2, 3, 4 and vec2 as an empty vector</span><br><span class="line">  std::vector&lt;int&gt; vec1&#123;1, 2, 3, 4&#125;;</span><br><span class="line">  std::vector&lt;int&gt; vec2;</span><br><span class="line">  // The following line will print 1, 2, 3, 4</span><br><span class="line">  print(vec1);</span><br><span class="line">  // The following line will print a new line</span><br><span class="line">  // nothing here for the vec2</span><br><span class="line">  print(vec2);</span><br><span class="line">  // The vector vec2 is assigned with move assingment.</span><br><span class="line">  // This will &quot;steal&quot; the value of vec1 without copying it.</span><br><span class="line">  vec2 = std::move(vec1);</span><br><span class="line">  // Here the vec1 object is in an indeterminate state, but still valid.</span><br><span class="line">  // The object vec1 is not destroyed,</span><br><span class="line">  // but there&#x27;s is no guarantees about what it contains.</span><br><span class="line">  // The following line will print 1, 2, 3, 4</span><br><span class="line">  print(vec2);</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; &quot;vec1 size &quot; &lt;&lt; vec1.size() &lt;&lt; std::endl;</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">output</span><br><span class="line">1, 2, 3, 4, </span><br><span class="line"></span><br><span class="line">1, 2, 3, 4, </span><br><span class="line">vec1 size 0</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+
+<p>another small thing is the compiler optimization for the return value. We do not always need to consider the extra copy things and use the &amp;&amp; or move extensively, we only use it when it is necessary.</p>
+<p>for this sample code:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">struct Test &#123;</span><br><span class="line">  Test() &#123; std::cout &lt;&lt; &quot;construct&quot; &lt;&lt; std::endl; &#125;</span><br><span class="line">  double a = 0;</span><br><span class="line">  // destructor</span><br><span class="line">  ~Test() &#123; std::cout &lt;&lt; &quot;destroy a is &quot; &lt;&lt; this-&gt;a &lt;&lt; std::endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Test getTest() &#123;</span><br><span class="line">  Test t;</span><br><span class="line">  t.a = 123;</span><br><span class="line">  return t;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">  Test t = getTest();</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">output</span><br><span class="line">construct</span><br><span class="line">destroy a is 123</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+
+<p>the constructor is called only once, so we could make sure there is the optimization about the construction of the return value. This means that it is ok to return an struct and assing it to the new variable without worrying that this data structure is created twice.</p>
+<h3 id="copy-constructor-vs-the-move-constructor"><a href="#copy-constructor-vs-the-move-constructor" class="headerlink" title="copy constructor vs the move constructor"></a>copy constructor vs the move constructor</h3><p>Another situation that we use the rvalue extensively is the case for the move constructor. This <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/44738829/confusion-between-rvalue-references-and-const-lvalue-references-as-parameter">question</a> provides lots of insights. The move constructor is always adopted firstly compared with the copy constructor which uses the <code>const lvalue reference</code> as the parameter. As mentioned in this <a target="_blank" rel="noopener" href="https://hackernoon.com/one-shot-learning-of-c-r-value-and-move-27e5d6bcec3b">article</a>, copy constructor is always the second choice if we define a move constructor which uses rvalue as the parameter.</p>
+<p>this is a good example to show relationship between move operation, const lvaue reference and the rvalue reference</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line">#include &lt;string&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">class ResourceOwner &#123;</span><br><span class="line"> public:</span><br><span class="line">  ResourceOwner(const char res[]) &#123;</span><br><span class="line">    printf(&quot;default constructor %s\n&quot;, res);</span><br><span class="line">    theResource = new string(res);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // copy constructor</span><br><span class="line">  ResourceOwner(const ResourceOwner&amp; other) &#123;</span><br><span class="line">    printf(&quot;copy constructor without copy and swap based on %s\n&quot;,</span><br><span class="line">           other.theResource-&gt;c_str());</span><br><span class="line">    theResource = new string(other.theResource-&gt;c_str());</span><br><span class="line">  &#125;</span><br><span class="line">  // assign constructor</span><br><span class="line">  ResourceOwner&amp; operator=(const ResourceOwner&amp; other) &#123;</span><br><span class="line">    ResourceOwner tmp(other);</span><br><span class="line">    // swap the value a and b</span><br><span class="line">    // when the temp object is deleted outomatically</span><br><span class="line">    // its value is changed</span><br><span class="line">    swap(theResource, tmp.theResource);</span><br><span class="line"></span><br><span class="line">    printf(&quot;assignment constructor with copy and swap based on %s\n&quot;,</span><br><span class="line">           other.theResource-&gt;c_str());</span><br><span class="line">    printf(&quot;assingnment finish\n&quot;);</span><br><span class="line">    return *this;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ~ResourceOwner() &#123;</span><br><span class="line">    printf(&quot;destructor %s\n&quot;, theResource-&gt;c_str());</span><br><span class="line">    if (theResource) &#123;</span><br><span class="line">      delete theResource;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> private:</span><br><span class="line">  string* theResource;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class ResourceOwnerWithMove &#123;</span><br><span class="line"> public:</span><br><span class="line">  ResourceOwnerWithMove(const char res[]) &#123;</span><br><span class="line">    printf(&quot;default constructor %s\n&quot;, res);</span><br><span class="line">    theResource = new string(res);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // copy constructor</span><br><span class="line">  ResourceOwnerWithMove(const ResourceOwnerWithMove&amp; other) &#123;</span><br><span class="line">    printf(&quot;copy constructor without copy and swap based on %s\n&quot;,</span><br><span class="line">           other.theResource-&gt;c_str());</span><br><span class="line">    theResource = new string(other.theResource-&gt;c_str());</span><br><span class="line">  &#125;</span><br><span class="line">  // assign constructor</span><br><span class="line">  // use the copy and swap</span><br><span class="line">  ResourceOwnerWithMove&amp; operator=(const ResourceOwnerWithMove&amp; other) &#123;</span><br><span class="line">    ResourceOwnerWithMove tmp(other);</span><br><span class="line">    swap(theResource, tmp.theResource);</span><br><span class="line">    printf(&quot;assignment constructor based on %s\n&quot;, other.theResource-&gt;c_str());</span><br><span class="line">    return *this;</span><br><span class="line">  &#125;</span><br><span class="line">  // move assignment</span><br><span class="line">  ResourceOwnerWithMove&amp; operator=(ResourceOwnerWithMove&amp;&amp; other) &#123;</span><br><span class="line">    printf(&quot;move assignment constructor without copy and swap based on %s\n&quot;,</span><br><span class="line">           other.theResource-&gt;c_str());</span><br><span class="line">    // first implementation</span><br><span class="line">    //theResource = other.theResource;</span><br><span class="line">    //other.theResource = nullptr;</span><br><span class="line">    // second implementation</span><br><span class="line">    swap(theResource, other.theResource);</span><br><span class="line">    return *this;</span><br><span class="line">  &#125;</span><br><span class="line">  ~ResourceOwnerWithMove() &#123;</span><br><span class="line">    if (theResource) &#123;</span><br><span class="line">      printf(&quot;destructor %s\n&quot;, theResource-&gt;c_str());</span><br><span class="line">      delete theResource;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      printf(&quot;destructor with empty inner value\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> private:</span><br><span class="line">  string* theResource;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void testCopy() &#123;</span><br><span class="line">  printf(&quot;=====start testCopy()=====\n&quot;);</span><br><span class="line">  ResourceOwner res1(&quot;res1&quot;);</span><br><span class="line">  ResourceOwner res2 = res1;</span><br><span class="line">  printf(&quot;destructors for stack vars\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void testAssign() &#123;</span><br><span class="line">  printf(&quot;=====start testAssign()=====\n&quot;);</span><br><span class="line">  ResourceOwner res1(&quot;res1&quot;);</span><br><span class="line">  ResourceOwner res2(&quot;res2&quot;);</span><br><span class="line">  res2 = res1;</span><br><span class="line">  printf(&quot;destructors for stack vars\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void testRValue1() &#123;</span><br><span class="line">  printf(&quot;=====start testRValue1()=====\n&quot;);</span><br><span class="line">  ResourceOwner res2(&quot;res2&quot;);</span><br><span class="line">  res2 = ResourceOwner(&quot;res1&quot;);</span><br><span class="line">  printf(&quot;destructors for stack vars\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void testRValue2() &#123;</span><br><span class="line">  printf(&quot;=====start testRValue2()=====\n&quot;);</span><br><span class="line">  ResourceOwner res2(&quot;res2&quot;);</span><br><span class="line">  res2 = std::move(ResourceOwner(&quot;res1&quot;));</span><br><span class="line">  printf(&quot;destructors for stack vars\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void testRValue3() &#123;</span><br><span class="line">  printf(&quot;=====start testRValue3()=====\n&quot;);</span><br><span class="line">  ResourceOwnerWithMove res2(&quot;res2&quot;);</span><br><span class="line">  // transfer the ownership to the res2</span><br><span class="line">  res2 = std::move(ResourceOwnerWithMove(&quot;res1&quot;));</span><br><span class="line">  printf(&quot;destructors for stack vars\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">  testCopy();</span><br><span class="line">  testAssign();</span><br><span class="line">  testRValue1();</span><br><span class="line">  testRValue2();</span><br><span class="line">  testRValue3();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Let’s dive into the ouput one by one, for the <code>testCopy()</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">=====start testCopy()=====</span><br><span class="line">default constructor res1</span><br><span class="line">copy constructor without copy and swap based on res1</span><br><span class="line">destructors for stack vars</span><br><span class="line">destructor res1</span><br><span class="line">destructor res1</span><br></pre></td></tr></table></figure>
+<p>we create the res1 by default constructor and then use the copy constructor to create the res2, the inner value for these two instance is res1, and then two dectructors are called.</p>
+<p>For the <code>testAssign()</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">=====start testAssign()=====</span><br><span class="line">default constructor res1</span><br><span class="line">default constructor res2</span><br><span class="line">copy constructor without copy and swap based on res1</span><br><span class="line">assignment constructor with copy and swap based on res1</span><br><span class="line">destructor res2</span><br><span class="line">destructors for stack vars</span><br><span class="line">destructor res1</span><br><span class="line">destructor res1</span><br></pre></td></tr></table></figure>
+<p>For the first two line, two objects are created based on default constructor, then we execute <code>res1=res2</code>, here, one temp object is created for copy-and-swap based assignment implementation. So in the assignment function, we created a temporary object. Because of the swap operation, the value in the object is changed from the res1 into the res2, when the assignment function finish, the <code>destructor res2</code> is printed out to show that the temp object is destroyed. At last, when the test function finish, both the res1 and res2 object is destroyed, both of these two objects have the inner value <code>res1</code> in this case.</p>
+<p>For the <code>testRValue1()</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">=====start testRValue1()=====</span><br><span class="line">default constructor res2</span><br><span class="line">default constructor res1</span><br><span class="line">copy constructor without copy and swap based on res1</span><br><span class="line">assignment constructor with copy and swap based on res1</span><br><span class="line">assingnment finish</span><br><span class="line">destructor res2</span><br><span class="line">destructor res1</span><br><span class="line">destructors for stack vars</span><br><span class="line">destructor res1</span><br></pre></td></tr></table></figure>
+<p>There is a slightly difference about the destructor calling. Since the <code>ResourceOwner(&quot;res1&quot;);</code> is a temporary object, it is deleted after this line, so this is why there are two destructor log before the <code>destructors for stack vars</code>, one is from the destroying temporary object which is created in the assignment function, another is from the <code>ResourceOwner(&quot;res1&quot;)</code> in this line. At last, the destructor for res2 is called (it has the inner value <code>res1</code> becasue of the assingment operation).</p>
+<p>For the <code>testRValue2()</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">=====start testRValue2()=====</span><br><span class="line">default constructor res2</span><br><span class="line">default constructor res1</span><br><span class="line">copy constructor without copy and swap based on res1</span><br><span class="line">assignment constructor with copy and swap based on res1</span><br><span class="line">assingnment finish</span><br><span class="line">destructor res2</span><br><span class="line">destructor res1</span><br><span class="line">destructors for stack vars</span><br><span class="line">destructor res1</span><br></pre></td></tr></table></figure>
+
+<p>The printed results are same with the previous one, this aims to show that when we use the <code>std::move(ResourceOwner(&quot;res1&quot;))</code>, but we do not define the move assignment operator explicitly, the original assignment function which has the const lvalue parameter is still be called.</p>
+<p>For the <code>testRValue3()</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">=====start testRValue3()=====</span><br><span class="line">default constructor res2</span><br><span class="line">default constructor res1</span><br><span class="line">move assignment constructor without copy and swap based on res1</span><br><span class="line">destructor res2</span><br><span class="line">destructors for stack vars</span><br><span class="line">destructor res1</span><br></pre></td></tr></table></figure>
+<p>we update the original <code>ResourceOwner</code> class and created <code>ResourceOwnerWithMove</code> class. The only differnece is that we add a move assingment operator. If we use the <code>std::move(ResourceOwner(&quot;res1&quot;))</code>, this move assignment operator is called with first priority. Then since we use the swap in the move function, the value in the temporary operator is changed to the res2, which explains the <code>destructor res2</code> when it is deleted. Finally, the original instance (with res1 in it) is destroyed.</p>
+<p>However, we can achieve different version of the move assignment operator based on the flexibility of rvalue reference notation. Since we get rid of the const limitation in this case, so it is flexible to update the inner value. For example, we can update the move assignment operator:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ResourceOwnerWithMove&amp; operator=(ResourceOwnerWithMove&amp;&amp; other) &#123;</span><br><span class="line">  printf(&quot;move assignment constructor without copy and swap based on %s\n&quot;,</span><br><span class="line">         other.theResource-&gt;c_str());</span><br><span class="line">  theResource = other.theResource;</span><br><span class="line">  other.theResource = nullptr;</span><br><span class="line">  return *this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>In this way, the original pointer is set as null and we assign it to the pointer at the left side of the object. In this way, we avoid the copy of the inner object and just transfer the ownership of the inner value.</p>
+<h3 id="range-based-for-loop"><a href="#range-based-for-loop" class="headerlink" title="range based for loop"></a>range based for loop</h3><p>refer to this <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/13130708/what-is-the-advantage-of-using-forwarding-references-in-range-based-for-loops/13130795#13130795">question</a></p>
+<h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a target="_blank" rel="noopener" href="http://thbecker.net/articles/rvalue_references/section_03.html">http://thbecker.net/articles/rvalue_references/section_03.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903497075294216">https://juejin.cn/post/6844903497075294216</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/24828074/passing-rvalue-reference-to-const-lvalue-reference-paremeter">https://stackoverflow.com/questions/24828074/passing-rvalue-reference-to-const-lvalue-reference-paremeter</a></p>
+<p>move ways to implement the move constructor</p>
+<p><a target="_blank" rel="noopener" href="http://www.vollmann.ch/en/blog/implementing-move-assignment-variations-in-c++.html">http://www.vollmann.ch/en/blog/implementing-move-assignment-variations-in-c++.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/02/27/cpp-different-levels-to-understand-move-and-rvalue/" data-id="cm2a0xf4l006fdvjr07z4195v" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2021/03/09/Live-story/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Live Story
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/02/21/cpp-inheritance-tips/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">cpp inheritance tips</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#if-we-can-take-the-addresses"><span class="toc-number">1.</span> <span class="toc-text">if we can take the addresses</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Before-the-rvalue-reference"><span class="toc-number">2.</span> <span class="toc-text">Before the rvalue reference</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#basic-move-semantic"><span class="toc-number">3.</span> <span class="toc-text">basic move semantic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#copy-constructor-vs-the-move-constructor"><span class="toc-number">4.</span> <span class="toc-text">copy constructor vs the move constructor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#range-based-for-loop"><span class="toc-number">5.</span> <span class="toc-text">range based for loop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#references"><span class="toc-number">6.</span> <span class="toc-text">references</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

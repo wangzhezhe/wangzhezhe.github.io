@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Many faces for data format/representation for sci-vis | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Some tips regarding the common data format used for visualization.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Many faces for data format&#x2F;representation for sci-vis">
+<meta property="og:url" content="http://yoursite.com/2024/04/06/Many-faces-for-data-format-for-visualization/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Some tips regarding the common data format used for visualization.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-04-06T15:54:41.000Z">
+<meta property="article:modified_time" content="2024-04-28T01:32:34.997Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Many-faces-for-data-format-for-visualization" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2024/04/06/Many-faces-for-data-format-for-visualization/" class="article-date">
+  <time datetime="2024-04-06T15:54:41.000Z" itemprop="datePublished">2024-04-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Many faces for data format/representation for sci-vis
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Some tips regarding the common data format used for visualization.</p>
+<span id="more"></span>
+
+
+<h3 id="VTK-data"><a href="#VTK-data" class="headerlink" title="VTK data"></a>VTK data</h3><h3 id="VTK-m-data"><a href="#VTK-m-data" class="headerlink" title="VTK-m data"></a>VTK-m data</h3><h3 id="ADIOS"><a href="#ADIOS" class="headerlink" title="ADIOS"></a>ADIOS</h3><p><strong>setting python binding’s path</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export PYTHONPATH=/path/to/site-packages:$&#123;PYTHONPATH&#125; </span><br></pre></td></tr></table></figure>
+<p>remember to update this env before using python bindings for executing adios</p>
+<p><strong>bpls checking all variables</strong></p>
+<p>This example is output to check variable “VX” by time step, it print the element from position 0 to position 10 for each time step for this variable <code>-d</code> parameter is used to specify the variable.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ~/cworkspace/build_adios/bin/bpls /lustre/orion/csc143/proj-shared/gongq/frontier/dataset/bent_pipe.bp/ -d &quot;VX&quot; -s &quot;0&quot; -c &quot;10&quot; -t</span><br><span class="line">Step 0:</span><br><span class="line">  double   VX            &#123;235008000&#125;</span><br><span class="line">    slice (0:9)</span><br><span class="line">    (0)    0 0 0 0 0 0</span><br><span class="line">    (6)    0 0 0 0 </span><br><span class="line">Step 1:</span><br><span class="line">  double   VX    &#123;235008000&#125;</span><br><span class="line">    slice (0:9)</span><br><span class="line">    (0)    -1.00187 -1.00187 -1.00187 -1.00187 -1.00187 -1.00187</span><br><span class="line">    (6)    -1.00187 -1.00187 -1.00187 -1.00187 </span><br><span class="line">Step 2:</span><br><span class="line">  double   VX    &#123;235008000&#125;</span><br><span class="line">    slice (0:9)</span><br><span class="line">    (0)    -1.00281 -1.00281 -1.00281 -1.00281 -1.00281 -1.00281</span><br><span class="line">    (6)    -1.00281 -1.00281 -1.00281 -1.00281 </span><br></pre></td></tr></table></figure>
+
+<p>this is results for checking all variables’s min and max and all informations including the attribute and variable. For this case, there are 6 attributes and 6 variables. When read&#x2F;write the file, the attributes and variables are defined in different ways.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">zw241@login03:~/cworkspace/install_adios/bin$ ./bpls /lustre/orion/csc143/proj-shared/gongq/frontier/dataset/bent_pipe.bp/ -lav</span><br><span class="line">File info:</span><br><span class="line">  of variables:  6</span><br><span class="line">  of attributes: 6</span><br><span class="line">  statistics:    Min / Max </span><br><span class="line">  string   Fides_Cell_Type              attr   = &quot;hexahedron&quot;</span><br><span class="line">  string   Fides_Connectivity_Variable  attr   = &quot;connectivity&quot;</span><br><span class="line">  string   Fides_Coordinates_Variable   attr   = &quot;points&quot;</span><br><span class="line">  string   Fides_Data_Model             attr   = &quot;unstructured_single&quot;</span><br><span class="line">  string   Fides_Variable_Associations  attr   = &#123;&quot;points&quot;, &quot;points&quot;, &quot;points&quot;&#125;</span><br><span class="line">  string   Fides_Variable_List          attr   = &#123;&quot;VX&quot;, &quot;VY&quot;, &quot;VZ&quot;&#125;</span><br><span class="line">  double   VX                           3*&#123;235008000&#125; = -1.36295 / 0.720586</span><br><span class="line">  double   VY                           3*&#123;235008000&#125; = -0.653091 / 0.733072</span><br><span class="line">  double   VZ                           3*&#123;235008000&#125; = -0.103327 / 1.42956</span><br><span class="line">  int32_t  connectivity                 &#123;1880064000&#125; = 0 / 3268607</span><br><span class="line">  float    points                       &#123;235008000, 3&#125; = -20 / 2</span><br><span class="line">  int32_t  step                         3*scalar = 0 / 20</span><br></pre></td></tr></table></figure>
+<p><strong>code examples</strong></p>
+<p>here are some test files for readling and writting adios files and converting it to vtk data format:</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/vtk_example/adiosToVTK/adiosToRawCommon.cpp">https://github.com/wangzhezhe/5MCST/blob/master/vtk_example/adiosToVTK/adiosToRawCommon.cpp</a></p>
+<p>This is a <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/vtk_example/python/get_data_from_vtkassembly.py">python example</a> that uses adios python api to extract associated data.</p>
+<p><strong>data layout</strong></p>
+<p>Another important tip is the meaning for organizing the variable in adios, if the data layout is {d1,d2,d3}, <strong>it means that d3 is the dimention that changes the fastest one</strong> so if this data is 3d data, it is possible that d3 is the x dimention, then d2 is the y dimention and d1 is the z dimentions. All data is flattern into 1d array and stored in the disk or in memory.</p>
+<p><strong>Tips of compiling</strong></p>
+<p>On frontier, using default compiler to build adios, there are some errors to find the MPI after switch to the gcc.</p>
+<h3 id="HDF5"><a href="#HDF5" class="headerlink" title="HDF5"></a>HDF5</h3><h3 id="openPMD"><a href="#openPMD" class="headerlink" title="openPMD"></a>openPMD</h3><p>There are three types of backend, hdf5, adios and  json.</p>
+<h3 id="Foam-data"><a href="#Foam-data" class="headerlink" title="Foam data"></a>Foam data</h3><h3 id="raw-image-data"><a href="#raw-image-data" class="headerlink" title="raw image data"></a>raw image data</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2024/04/06/Many-faces-for-data-format-for-visualization/" data-id="cm2a0xf48002ldvjr7shza7l1" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2024/04/10/RL-tips/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          RL tips
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/03/31/All-aspects-of-optimization-techniques/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">All aspects of optimization techniques</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-data"><span class="toc-number">1.</span> <span class="toc-text">VTK data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-m-data"><span class="toc-number">2.</span> <span class="toc-text">VTK-m data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ADIOS"><span class="toc-number">3.</span> <span class="toc-text">ADIOS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HDF5"><span class="toc-number">4.</span> <span class="toc-text">HDF5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#openPMD"><span class="toc-number">5.</span> <span class="toc-text">openPMD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Foam-data"><span class="toc-number">6.</span> <span class="toc-text">Foam data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#raw-image-data"><span class="toc-number">7.</span> <span class="toc-text">raw image data</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

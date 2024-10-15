@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>SciVis R&amp;D Scope | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Try to list some techniques that I need to improve or continue pursue in the scope of scivis.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SciVis R&amp;D Scope">
+<meta property="og:url" content="http://yoursite.com/2023/11/11/SciVis-R-D-Scope/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Try to list some techniques that I need to improve or continue pursue in the scope of scivis.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-11-11T14:06:55.000Z">
+<meta property="article:modified_time" content="2023-11-14T01:13:04.802Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-SciVis-R-D-Scope" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/11/11/SciVis-R-D-Scope/" class="article-date">
+  <time datetime="2023-11-11T14:06:55.000Z" itemprop="datePublished">2023-11-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Visualization/">Visualization</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SciVis R&amp;D Scope
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Try to list some techniques that I need to improve or continue pursue in the scope of scivis.</p>
+<span id="more"></span>
+
+<p>最近又到了找工作的时候，没到这种时候就会总结一下之前工作的内容然后梳理一下自己已经掌握的和欠缺的，每次梳理都有一些新的想法。这一篇做一个记录，从scivis的角度来进行梳理，包括工程和研究的角度。</p>
+<p>从SciVis的角度讲，大致划分成一下几个角度：提取（Extraction），感知（Perception）交互（Flexibility）高速（High performance computing）智能（Autonomic&#x2F;Intelligent manner）。</p>
+<p><strong>提取</strong>这部分在算法层面上的内容比较多，主要就是关注于怎么提出或者计算一个新的可视化属性，然后让这个属性返回某种数据的特点。比较典型的就是marching cube，这个方向更偏向于纯粹算法的研究，关注的点是怎么提出一个新的算法。</p>
+<p>最熟悉的应该要属于<strong>高速</strong>的角度了，就是怎么用GPU实现一些可视化的算法，以及large scale sci vis常用的是VTK-m，还有会涉及到一些MPI，并行计算的知识。但就单单针对VTK-m这一个角度里面的内容就挺多的，自己目前能做的也就是仿照已有的代码添加一些filter，更深层次的内容还需要理解，比如如何从filter到backend的调用过程，以及如何更好第使用各种类型的arrayhandle。还有就是vtkmdiy的一些api的使用，如果再往深就是parallel for vis algorithm怎么利用基本的MPI的algorithm来实现的。Research的角度的话主要还是large scale vis，不过随着ECP ending 这个研究方向可能逐渐变弱，毕竟large scale的场景毕竟还是比较少的，需要的资源也比较多，发论文也不容易，复现起来也并不容易，所以比较有难度convince别人说这个strategy确实有效，或者容易缺乏一些key contribution point 大多是对已有的算法进行并行化的迁移，或者对本身已经可以并行运行的可视化算法进行优化。这一部分弄的好了的话还可以与ML infra 加速AI workload相结合，比如一些找工作的相关需要的<a target="_blank" rel="noopener" href="https://www.linkedin.com/jobs/view/3763229878/?refId=S2YvBT8ASJGRF92hZTWVdg==&trackingId=y+tBYr+1TTm4bopgAPHsEA==">要求</a>. 在商业公司中要求的是直接使用一些相关的library，而在research的domain中可能需要自己实现一些libraray，比如vtkm中的调用底层accelarator的例子。</p>
+<p><strong>交互</strong>的这个方向总感觉是vis比较实实在在的功能了，比如build 一个vis的 system 来分析数据，大概就是单节点就能实现，比较强调GUI，或者工作本地的GUI来和远程的文件系统上的内容进行交互。有点算是传统意义上的前端开发，比较典型的基于QT的开发，常用到的比如包括如何设置paraview插件。web方面经常会看到论文里的一些小demo，这一块就是D3.js，很少有需要从头开发的，大多是找一个现成的框架然后把已有的数据展现出来。可能vtk.js也需要再熟悉一下，毕竟如果没有什么用的话，kitware也不会将vtk用js重写一下。相关的WebGL与WebGPU的内容可能也需要了解一下，这些可能是通过web和加速器以及render方面相结合的比较好的点。这部分从research的角度上讲更偏向于工程，或者paper中的一个demo，后面的算法比较重要。</p>
+<p><strong>感知</strong>这个方向就是怎么将数据map成为图形元素，偏向于图形学的内容，如果仅仅是render的话，paraview 或者基于vtk的简单的render也可以，这部分更进一步是进行photorealistic render就是具备真是感受的渲染，比如用blender相关的技术和工作流，相关的数据格式，比如obj，texture这些，可能是自己需要提升的，比如一个数据，如果从宣传的角度讲，用blender做出来肯定是比普通的vtk render更加吸引人。从research的角度讲是比较typical的vis主题，就是考虑如何把一些新的数据用vis的方式表达出来比较关键。</p>
+<p><strong>智能</strong>这个方向主要是关注autonomics, adaptive 以及AI相关的技术如何作用于vis worklfow。AI相关的技术无疑是做research角度比较火的方向，但是在工程方面的实用性有待商榷，总之在做一个工作的时候心里要明确这个到底是research driven还是engineering driven。需要提升的点主要还是pytorch相关的AI技术，比如这个<a target="_blank" rel="noopener" href="https://stevenhan1991.github.io/assets/pdf/DL4SciVis.pdf">survey</a>里面介绍的内容，常见的一些手段，比如encode-decode, LSTM, transformer这些类型的AI model 的基本的应用。对于无监督学习的方面，reinforcement learning 以及相关的对于optimization的问题如何应用到vis workflow可能是一个需要在进一步提升的地方，总而言之，总感觉这一部分有一些噱头的成分，但是智能化大概是research相关的一个核心主题，research相关的工作需要长期主动地在这个方向上有所投入，毕竟新的内容学习起来需要费一些劲，需要尽快能有一个将相关内容和AI结合起来的project。最近有亮点的一个方面可能是生成式的Ai的技术，这个技术如何用在extraction的角度可能比较有研究的价值，就是如何用AI自动生成一些用于可视化的关键技术，比如marching cube, vector visualization相关的内容，比较典型的比如<a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content_cvpr_2018/html/Liao_Deep_Marching_Cubes_CVPR_2018_paper.html">这个</a>。</p>
+<p>还有一个是background about the data 虽然有各式各样的online data sets 可以用来使用，但是最根本还是要对data set的本身有一些了解，比如各式各样的simulation。简单的就是了解如何通过openfoam生成各式各样的data sets。总而言之要对某一类的科学模拟所产生的数据有比较深刻的insights才能走得更远。</p>
+<p>其余的就是计算机的基础方面的内容，比如coding ability 有时候是通过面试的一个基本保障。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>关于数据可视化方向的介绍<br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/305228844/answer/548837843">https://www.zhihu.com/question/305228844/answer/548837843</a></p>
+<p>相关期刊的介绍<br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/30932305/answer/2583666018">https://www.zhihu.com/question/30932305/answer/2583666018</a></p>
+<p>vis 导论的网上课程<br><a target="_blank" rel="noopener" href="https://www.icourse163.org/learn/ZJU-1206452826?tid=1450762609#/learn/content?type=detail&amp;id=1215889995&amp;cid=1221009700">https://www.icourse163.org/learn/ZJU-1206452826?tid=1450762609#/learn/content?type=detail&amp;id=1215889995&amp;cid=1221009700</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2023/11/11/SciVis-R-D-Scope/" data-id="cm2a0xf4d0044dvjrbxnpdcpn" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2023/11/16/Interview-preparation-list/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Interview preparation list
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/10/14/Thoughts-about-computing-history-musem-and-ECP/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Thoughts about computing history musem and ECP</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">1.</span> <span class="toc-text">参考</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

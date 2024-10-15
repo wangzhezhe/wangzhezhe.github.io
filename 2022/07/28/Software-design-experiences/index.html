@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Software design and code review experiences | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Some high level nots about software design and optimization. These contents can be the distinguish beween the junior software enginner and the senior soft ware engineer.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Software design and code review experiences">
+<meta property="og:url" content="http://yoursite.com/2022/07/28/Software-design-experiences/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Some high level nots about software design and optimization. These contents can be the distinguish beween the junior software enginner and the senior soft ware engineer.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-07-28T12:34:21.000Z">
+<meta property="article:modified_time" content="2023-04-01T01:45:41.718Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Software-design-experiences" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/07/28/Software-design-experiences/" class="article-date">
+  <time datetime="2022-07-28T12:34:21.000Z" itemprop="datePublished">2022-07-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/methodology/">methodology</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Software design and code review experiences
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Some high level nots about software design and optimization. These contents can be the distinguish beween the junior software enginner and the senior soft ware engineer.</p>
+<span id="more"></span>
+
+
+<h2 id="Code-review"><a href="#Code-review" class="headerlink" title="Code review"></a>Code review</h2><h3 id="Two-principles-for-writting-elegant-code"><a href="#Two-principles-for-writting-elegant-code" class="headerlink" title="Two principles for writting elegant code"></a>Two principles for writting elegant code</h3><p>There are lots of principles for writting the elegant code, we discuss two important cases in this part. </p>
+<blockquote>
+<p>The first one is “try to let compiler do more things”.</p>
+</blockquote>
+<blockquote>
+<p>The second one is “try to decrease the redoundant code”. </p>
+</blockquote>
+<p>These two principles are two guidance for code review process.</p>
+<p>One example I recent met is about the worklet abstraction class, originally we create each abstraction functor for each actual function call. But it turns out that we can use the function template to do things in an more elegant way. Or in more traditional way, we use a function pointer to in the worklets. However, the template parameter is more simple then using the function pointer.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;cmath&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">template &lt;float fun (float)&gt;</span><br><span class="line">struct LogFunWorklet</span><br><span class="line">&#123;</span><br><span class="line">    float operator()(float f) &#123;</span><br><span class="line">      return fun(f);</span><br><span class="line">    &#125;</span><br><span class="line">    //some value for computing the f</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    auto logWorklet = LogFunWorklet&lt;std::log&gt;&#123;&#125;;</span><br><span class="line">    std::cout &lt;&lt; logWorklet(10.0f) &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    auto log10Worklet = LogFunWorklet&lt;std::log10&gt;&#123;&#125;;</span><br><span class="line">    std::cout &lt;&lt; log10Worklet(10.0f) &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    auto log2Worklet = LogFunWorklet&lt;std::log2&gt;&#123;&#125;;</span><br><span class="line">    std::cout &lt;&lt; log2Worklet(10.0f) &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>One typical use case for second principle it to make the <code>if</code> or <code>switch</code> branch as dry as possible and let them in the minimal scope. It is a case by case situation. Ask yourself according to these two principles is helpful to improve the quality of the code.</p>
+<h3 id="const"><a href="#const" class="headerlink" title="const"></a>const</h3><p>The first chaptor of the efficient c++ discusses about the const. We do not dive into details here, just keep it in mind and try to use the const whenever it is necessary to do so.</p>
+<h3 id="Several-tools-for-processing-different-types"><a href="#Several-tools-for-processing-different-types" class="headerlink" title="Several tools for processing different types"></a>Several tools for processing different types</h3><p>It is common that the same logic is applied into different types of data. Typical tools regarding the scope of that code that need to be reused, these techniques include: template (both parameter and function), overload of the function (only overload the section that have differnet behaviours), abstract class (interface). Or there is a mixture way sometimes, such as using both template parameter and the function parameter to distinguish a specific behaviours. One recent example is that I need to write field into both vtkm data set and vtkm partition data set and they need to use different association type. So the template parameter type is the type of the data set and the parameter value is the value of the association.</p>
+<h2 id="Software-Design"><a href="#Software-Design" class="headerlink" title="Software Design"></a>Software Design</h2><h3 id="Elastic-leader-worker"><a href="#Elastic-leader-worker" class="headerlink" title="Elastic leader-worker"></a>Elastic leader-worker</h3><p>One project requires a elastic resource management capabilites, and I basically implement all these details from the scratch. There are no fancy ideas behind this but it takes me lot of time to do everything correctly. Some principles of doing related works might be good for future works, either in the cloud env or the HPC env.</p>
+<p>Background and depedencies. </p>
+<ul>
+<li><p>We need at least an RPC framework which can define the API conveniently. </p>
+</li>
+<li><p>We need some collectives based on the API, such as the barrier, bcast etc.</p>
+</li>
+<li><p>We need the controller acting as a component to add more process. For example, there is a script that can monitor the siganl file on pvfs and start new processes when the siganal file is detected.</p>
+</li>
+</ul>
+<p>The worker-leader identity. The leader process start firstly and runs for a long time. When there is a new process or node added into the service, it belongs to the worker identity, it sends its address to the leader process. When one worker process leaves the group, it send deregister API to the leader process and remove its address from the leader. </p>
+<p>How to design the sync operation in the leader, comparision between the expected and actually stored into the address manager. Maybe use a pending process to show how many processes are in pending status.</p>
+<p>Declarative management for the metadata, the metadata in the leader process is updated by two components. It is important to clear this point before designing the associated data structure. The first is the worker process, they add address or remove their address from the leader process. The second is the policy, they need to set the expected number of process to the metadata, if the expected data does not match with the actually registered data, it means the rescaling operation does not finish and we still at the sync operation.</p>
+<p>The sequence of process id, when there is new added or removed process, how to control their id</p>
+<p>Issues, there is a single node issue for the leader process. If the leader process faile, all the information regarding the view of the group may lost.</p>
+<h3 id="Reproduciable-and-using-the-script-based-managing"><a href="#Reproduciable-and-using-the-script-based-managing" class="headerlink" title="Reproduciable and using the script based managing"></a>Reproduciable and using the script based managing</h3><p>When submitting the work to the high level conference such as SC, the reproducibility is always an important aspect, anyway, the whole merit of the science is that the theory or algorithm that are reproduciable and solide.</p>
+<p>Pay attention to the reproducibility from the start of the project can make the project clean and easy to collabarate with others. How to manage or compress the complex configurations need experience. Just thinking about how spack works, when you correctly configure all details, just using one line command, the whole things can be installed properly. We do not need to write another spack but we can make our project and script run like a spack way. </p>
+<p>Fixing the platform is always the first step, we can design the specific installing scripts on each kind of platform, ubuntu, windows, macos and so on. This is also an important consideration to decouple the complex tasks.</p>
+<p>Using script to record what you have down is another imporant idea. You may execute several experiments with different parameters and configuration, create this dir, update this config, etc. Just using different scripts to take down all these details, then this means that your exp results can be reproducible and you easy to maintain. Altough it might be a little time consuming to set up all things correctly at the first time, you will save lots of time if this is an long term project.</p>
+<p>Just assuming there are new member joining your project. They can get familiar the exp and installing process quickly and clearly just by reading these scripts. The previous colza-experiments project for SC paper is a good example.</p>
+<p>Even for the daily using project, when you try to install the script from the scratch, just write the install.sh script at the same time, when you finish the installing, the install.sh script is also then installed ok, this could save you much time and energy. When you want to migrate your install scripts to other platform, you do not need waste time to reinstall all things from scratch, maybe you just need to update several lines for the previous code.</p>
+<h3 id="Trace-the-operation-based-on-configuration"><a href="#Trace-the-operation-based-on-configuration" class="headerlink" title="Trace the operation based on configuration"></a>Trace the operation based on configuration</h3><p>Typical example is like the paraview and the gmsh, there are two sets of interfaces, we can add filter by GUI or by the programmable interface such as the python code in paraview or the scripts in gmsh. After manually operation based on the GUI, we can then tranfer these operations to the script manner. This is how Paraview catalyst works. we make the operation persistent by this way to generate the configuration scripts and this scripts can be integrated in more autonomic or complicated pipelines. It is important to generate the scripts based on the manual operation.</p>
+<h3 id="How-to-let-software-talk-to-users"><a href="#How-to-let-software-talk-to-users" class="headerlink" title="How to let software talk to users"></a>How to let software talk to users</h3><p>The general type of software can be divided into two types, one is the library, this kind of software is designed to implement a specific operation and will be called by other software or library. </p>
+<p>The dedicated used for this kind of software is the developer. The language to talk to the user is (1) standard installing scripts (2) necessary examples (3) good API documentation.</p>
+<p>If you want other people to use it, you need to make sure that other people can use it easily (the importance of the standard installing scripts, the good practice is to use one line to intall whole software, and there are different install scripts for different platform) and correclty (the importance of example).</p>
+<p>Another type of the software is designed for the non-developer. For this case, the gui or frontend based on web browser is necessary things, the user only need to click specific button and then get the results they want. If you only know the frontend or backend, which is not good. The gui might be more important compared with the web based service if there is limited number of user, since there are some burdern to build a web based service (you need to rent a server with the public ip, and you also need proxy service), but you can run an application with gui when there is a device.</p>
+<h3 id="K8s-controller-and-declarative-management"><a href="#K8s-controller-and-declarative-management" class="headerlink" title="K8s controller and declarative management"></a>K8s controller and declarative management</h3><p>K8s controller and associated declarative management are always inspiring for design a controller and control the dyanmic behaviours of the system. We declare specific requriemnts in the configuration data base such as etcd, and then using controller continuous pulling that status, when the status change, we change the associated behavious registered into the controller. Enssentially, the controller is a kind of a trigger mechanism, we registeer thee condition and action into it, the controller helps us to achieve the specific triggering process based on specific events.</p>
+<p>Motiple controller working together can composing a large system with complex dynamic behavious in multiple aspects.</p>
+<h3 id="Designing-a-distributed-descriptive-statistics"><a href="#Designing-a-distributed-descriptive-statistics" class="headerlink" title="Designing a distributed descriptive statistics"></a>Designing a distributed descriptive statistics</h3><p>I have an interesting experience for working on a distrirbuted statistics filter. The first thing is the theoretical support, checking this file</p>
+<p><a target="_blank" rel="noopener" href="https://gitlab.kitware.com/vtk/vtk-m/-/blob/master/vtkm/worklet/DescriptiveStatistics.h">https://gitlab.kitware.com/vtk/vtk-m/-/blob/master/vtkm/worklet/DescriptiveStatistics.h</a></p>
+<p>Related papers can be found here (Numerically stable, single-pass, parallel statistics algorithms), parallel and single pass are important things.</p>
+<p>It descibes several operations from math perspective, these functions can be used to compute the specific statistics filter in an iterative way, which provides a good foundation to do the parallel computing. Then we just use the customized operator to compute all kinds of statistics. </p>
+<p>Then we need to consider different parallel computing model, the shared memory case and distributed memory cae. When all cases are considered properly, we can then say this filter runs ok for different data sets. </p>
+<p>Also pay attetion to the edge case such as when there is empty value or only 1 value, how we get these returned statistics.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2022/07/28/Software-design-experiences/" data-id="cm2a0xf4f004pdvjr142pdrci" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2022/08/06/Model-approach/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Model-approach
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/07/08/vtk-octtree/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Vtk-octtree</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Code-review"><span class="toc-number">1.</span> <span class="toc-text">Code review</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Two-principles-for-writting-elegant-code"><span class="toc-number">1.1.</span> <span class="toc-text">Two principles for writting elegant code</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#const"><span class="toc-number">1.2.</span> <span class="toc-text">const</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Several-tools-for-processing-different-types"><span class="toc-number">1.3.</span> <span class="toc-text">Several tools for processing different types</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Software-Design"><span class="toc-number">2.</span> <span class="toc-text">Software Design</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Elastic-leader-worker"><span class="toc-number">2.1.</span> <span class="toc-text">Elastic leader-worker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reproduciable-and-using-the-script-based-managing"><span class="toc-number">2.2.</span> <span class="toc-text">Reproduciable and using the script based managing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Trace-the-operation-based-on-configuration"><span class="toc-number">2.3.</span> <span class="toc-text">Trace the operation based on configuration</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-to-let-software-talk-to-users"><span class="toc-number">2.4.</span> <span class="toc-text">How to let software talk to users</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#K8s-controller-and-declarative-management"><span class="toc-number">2.5.</span> <span class="toc-text">K8s controller and declarative management</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Designing-a-distributed-descriptive-statistics"><span class="toc-number">2.6.</span> <span class="toc-text">Designing a distributed descriptive statistics</span></a></li></ol></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>golang routine using | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="首先介绍了golang中channel的基本语法以及基本的操作，之后从runtime源码的实现角度从更深的层次上对channel进行了理解，最后整理了在实际项目中所遇到的使用channel的几个实际的场景。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang routine using">
+<meta property="og:url" content="http://yoursite.com/2019/06/16/golang-routine-using/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="首先介绍了golang中channel的基本语法以及基本的操作，之后从runtime源码的实现角度从更深的层次上对channel进行了理解，最后整理了在实际项目中所遇到的使用channel的几个实际的场景。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-06-16T06:52:30.000Z">
+<meta property="article:modified_time" content="2019-06-16T19:05:58.000Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-golang-routine-using" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/16/golang-routine-using/" class="article-date">
+  <time datetime="2019-06-16T06:52:30.000Z" itemprop="datePublished">2019-06-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/golang/">golang</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      golang routine using
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>首先介绍了golang中channel的基本语法以及基本的操作，之后从runtime源码的实现角度从更深的层次上对channel进行了理解，最后整理了在实际项目中所遇到的使用channel的几个实际的场景。</p>
+<span id="more"></span>
+
+<h3 id="channel的基本使用语法"><a href="#channel的基本使用语法" class="headerlink" title="channel的基本使用语法"></a>channel的基本使用语法</h3><p>channel是go语言中的特殊的机制，既可以让这两个函数通过相互传递特定类型的值来进行通信，又可以同步两个并发执行的函数。事实上这也是channel的两个主要功能。</p>
+<p>按照通道在初始化时是否有缓冲值，又可以分为缓冲通道与非缓冲通道。通道初始化的时候需要使用make进行，比如make(chan int,10)声明一个缓冲空间为10个int的通道，直接make(chan int)就是声明一个非缓冲通道。（注意，在golang中内建函数make仅适合 slice map channel具体可以参考官方文档(<a target="_blank" rel="noopener" href="https://golang.org/pkg/builtin/#new)%EF%BC%89">https://golang.org/pkg/builtin/#new)）</a></p>
+<p><strong>channel的其他基本操作：</strong><br>直接采用内建函数close(strChan)就可以关闭通道,应该保证在安全的情况下进行关闭通道的操作；内建函数 len(strChan)可以查看通道中当前有的元素的数量；cap(strChan)可以查看通道的总的容量，总容量一旦初始化之后就不会再发生改变了；使用<code>&lt;- chanInstance</code> 可以将channel中的元素写出来返回一个指向该元素的引用，类似地使用 chanInstance &lt;- elem可以将对应类型的元素写入到channel中；注意<code>element , ok := &lt;-chann</code> 的这种语法， 如果通道被关闭则ok的值会变为false,element的值会变为该通道类型的零值；从通道中迭代取出元素的操作还可以使用 <code>for item:=range channelinstance &#123;&#125;</code>来进行操作，当通道已经被关闭或者没有值可以再接收的话，for循环会立即被结束。</p>
+<p><strong>注意几点</strong></p>
+<ul>
+<li>无论怎样都不应该在接收端关闭通道，因为无法判断发送端是否还有数据要发送，通道有一个很好的特性，就是发送端关闭通道后，接收端仍然可以正常接受已经存在通道中的数据。</li>
+<li>谁启的通道谁最后负责关，如果通道不关闭的话，等待队列（稍候具体介绍）中的gouroutine都没有被释放，可能会导致程序的deadlock。</li>
+</ul>
+<p><strong>关于select操作</strong><br>还需要再强调下select操作的特性，因为channel常常和select操作结合在一起使用：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select &#123;</span><br><span class="line">  case &lt;-t1:</span><br><span class="line">    ...</span><br><span class="line">    break</span><br><span class="line">  case &lt;-t2:</span><br><span class="line">    ...</span><br><span class="line">  default:</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在go语言中执行select语句的时候，会自动地自上而下地对各个case中的表达式进行判断求值，而且直到所有的求值操作都完成之后才会考虑选其中的某个case去执行。当发现第一个满足选择条件的case的时候，这个case中的语句就会被执行，其他的语句就会被忽略，当有多个case都满足情况的话，系统会根据一个伪随机算法决定哪个case会被执行。default是一个特殊的case，如果没有合适的case的话default中的语句就会被执行。如果select语句中没有加上default语句，那么如果此时没有case符合条件的话，当前goroutine就会一直阻塞在当前的这一条select语句上。因此default条件:对于select而言是必不可少的。</p>
+<p>通常select还会和for语句结合在一起来使用，因为单独的select操作只会被选择一次，比如在在某些情况下希望持续不断地使用select从通道中读出信息，此时就需要在for循环中潜逃一层select的操作，具体可以参考使用场景（2）中介绍的两种方法。</p>
+<h3 id="channel的底层实现"><a href="#channel的底层实现" class="headerlink" title="channel的底层实现"></a>channel的底层实现</h3><p>也算是看了一点golang runtime的源码，由于每个版本的实现都有所不同，罗列具体的源码反而没有太大的意义(况且自己也没有能力全都看明白)，这里主要是阐述关键的数据结构和实现思路。这里使用的代码版本是go1.6.2，这一篇的内容讲的比较好，是介绍1.2版本中的channel相关实现。</p>
+<p>channel的几个最主要的操作就是通过make创建，之后通过chann&lt;-将内容写入通道缓存以及通过&lt;-chann从通道中写出内容，如果写出的时候通道中已经没有缓存的数据，代码就会阻塞再当前的操作上，所谓阻塞，在代码的层面就相当于执行了类似lock的操作并且陷入了某个循环中，或者是说当前的线程被放入到的等待队列，状态由running变成了waiting不再接受cpu的调度。</p>
+<p>channel中的主要结构是一个循环的双向链表，在创建channel的时候，会根据channel中将要存储的元素的类型以及所提交的channel的缓存空间的大小来动态分配对应大小的内存空间。具体的实现代码可以参考runtime&#x2F;chan.go中的makechan函数。</p>
+<p>此外在channel的结构体中还有两个等待队列，即是recvq以及sendq，这两个队列中存储的是一个名为sudog的结构，这个结构是goroutine结构体的封装。recvq队列中存储的sudog表示等待通过该channel接收数据的goroutine实例,已经准备好接收数据但是发送方还没有准备好的gouroutine,存储的是所谓的正在等待的reader，sendq中存储的goroutine是已经发送了数据但是接收方还没有准备好的goroutine,存储的是所谓的正在等待的writer。当channel执行close操作的时候，recvq以及sendq队列中的元素都会被释放掉，状态又waiting变为ready。具体的代码可以参考runtime&#x2F;chan.go中的closechan函数。</p>
+<p>下面通过channel的行为来进一步说明通过channel收发信息时候的同步和异步的操作：比如申请了一个非缓冲通道，也就是说在申请的时候通道中缓冲区的大小为0。此时如果没有将对应的内容写入到channel直接希望从channel中写出内容，会发生什么？根据之前的分析，由于此通道是非缓冲的，send函数在执行writer操作的的时候发现还没有进行reader的读入操作，于是会将自己所在的goroutine的状态变成waiting放入到sendq中，之后等到指定的内容通过同一个channel的recieve操作读入，这个时候会从sendq的队列中取出刚才等待的goroutine然后把内容拷贝到其中，这样就完成了一次接受和发送的操作。反过来也是类似的，现向channel中发送信息，但是用于从channel中接收信息的goroutine没有准备好，同样是先把goroutine的状态变成waiting，直到接收的goroutine准备好之后，完成首发操作。虽然描述起来比较容易理解，但是代码实现上还是很复杂的，具体设计比较多的golang的协程相关的模型，这里不再详细讨论了，具体可以参考runtime&#x2F;chan.go中的chanrecv以及chansend函数。还需要补充一点。比如对于下面的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">	done := make(chan string, 1)</span><br><span class="line">	fmt.Println(&quot;before test&quot;)</span><br><span class="line">	//go func() &#123;</span><br><span class="line">	//	time.Sleep(time.Second * 10)</span><br><span class="line">	//&#125;()</span><br><span class="line">	ele, ok := &lt;-done</span><br><span class="line">	fmt.Println(ele, ok)</span><br><span class="line">	fmt.Println(&quot;test&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>没有写入直接写出，在执行的时候会发生deadlock（golang中检测deadlock的操作的running状态的内核线程数目变为0）。因为代码运行到<code>ele, ok := &lt;-done</code> 这一步，根据之前的分析，当前goroutine已经变成waiting了。接收方，发送方，channel，三个要素齐全之后，一次通信才能完成。将以上的代码改成如下形式：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">	done := make(chan string)</span><br><span class="line">	fmt.Println(&quot;before test&quot;)</span><br><span class="line">	go func() &#123;</span><br><span class="line">		time.Sleep(time.Second * 2)</span><br><span class="line">		done &lt;- &quot;test channel info&quot;</span><br><span class="line">	&#125;()</span><br><span class="line">	fmt.Println(&quot;sender preparation...&quot;)</span><br><span class="line">	ele, ok := &lt;-done</span><br><span class="line">	fmt.Println(ele, ok)</span><br><span class="line">	fmt.Println(&quot;test&quot;)</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">before test</span><br><span class="line">sender preparation...</span><br><span class="line">test channel info true</span><br><span class="line">test</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+<p>可以看到在sender preparation…执行完成之后，会等待2s，这2s的时候，main函数所在的goroutine实质由于执行到了<code>ele, ok := &lt;-done</code>语句而变成了waiting状态，此时正在运行的goroutine是go func()中新启动的这个goroutine，main函数所在的goroutiine已经在waiting。(这里有个疑问，根据注释time.Sleep执行的是pause goroutine，这个操作不会使得goroutine进入waiting状态吗？看起来此时当前的goroutine就是卡在当前这条语句的位置上，当前goroutine一直运行着并且一直占据着cpu)。2s的时间过后，channel中收到了sender发送来的信息，这个时候将receiver唤起，状态变成running，之后将sender中的信息返回出来，reciever被唤起之后执行完成chanrecv函数中剩余的代码，返回结果。</p>
+<p>以上的工作过程就是所谓的“channel的同步通信”的操作。进一步，如果channel中有一定的缓存空间，就可以使用“异步通信”的操作方式了，writer将数据write到缓存中，reader从缓存中读取数据，通信的行为不用等到两者同时就位，此时算是异步的的方式，比如向channel中发送了数据就可以得到了返回结果，但是此时接收者并没有接收到消息。</p>
+<p>从操作系统线程通信的角度来讲，channel的这种通信方式本质上是通过共享内存的方式实现的，介绍channel的时候各种资料上都会罗列这么一句话：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">“Don’t communicate by sharing memory, share memory by communicating”</span><br></pre></td></tr></table></figure>
+
+<p>除此之外还有CSP模型（Communication Sequential Processes），大致上就是说通信和内存共享的关系，在golang中共享内存是目的，通信是手段，大概是这么个意思，另外一种相对的模型是Actor模式，都是并发模型的实现模模型，自己也没有理解的特别深，这里列一些参考资源：用甘特图描述很清晰(<a target="_blank" rel="noopener" href="http://arild.github.io/csp-presentation/#11)%E5%B9%B6%E5%8F%91%E7%A8%8B%E5%BA%8F%E9%9C%80%E8%A6%81%E5%B7%B1%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%8C%E5%85%B6%E5%AE%9E%E6%9C%80%E5%90%8E%E8%AF%B4%E7%99%BD%E4%BA%86%E5%B0%B1%E6%98%AF%E4%B8%B4%E7%95%8C%E5%8C%BA%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%8C%E4%BB%A5%E5%8F%8A%E4%B8%8D%E5%90%8C%E5%B9%B6%E5%8F%91%E7%BA%BF%E7%A8%8B%E4%B9%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9F">http://arild.github.io/csp-presentation/#11)并发程序需要己解决的问题，其实最后说白了就是临界区的问题，以及不同并发线程之间通信的问题？</a></p>
+<h3 id="channel的几种使用场景"><a href="#channel的几种使用场景" class="headerlink" title="channel的几种使用场景"></a>channel的几种使用场景</h3><p>说到底最后还是要落实到代码上，以上的分析应该已经对channel有了相对透彻的了解，这部分通过代码来讨论一些channel的使用场景。</p>
+<h4 id="主进程等待goroutine运行结束"><a href="#主进程等待goroutine运行结束" class="headerlink" title="主进程等待goroutine运行结束"></a>主进程等待goroutine运行结束</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line">func main() &#123;</span><br><span class="line">	ch := make(chan int, 1)</span><br><span class="line">	sign := make(chan byte, 2)</span><br><span class="line">	go func() &#123;</span><br><span class="line">		for i := 0; i &lt; 5; i++ &#123;</span><br><span class="line">			ch &lt;- i</span><br><span class="line">			time.Sleep(1 * time.Second)</span><br><span class="line">		&#125;</span><br><span class="line">		close(ch)</span><br><span class="line">		fmt.Println(&quot;The channel is closed.&quot;)</span><br><span class="line">		sign &lt;- 0</span><br><span class="line">	&#125;()</span><br><span class="line">	go func() &#123;</span><br><span class="line">		//这个循环会一直尝试从ch中读取信息出来 即使ch已经被发送端关闭</span><br><span class="line">		//但还是可以读信息出来 最后当ok 为false的时候 说明已经没有数据从ch中读出</span><br><span class="line">		//跳出循环 注意这种判断方式</span><br><span class="line">		for &#123;</span><br><span class="line">			fmt.Printf(&quot;before extract channel len: %v ,&quot;, len(ch))</span><br><span class="line">			e, ok := &lt;-ch</span><br><span class="line">			fmt.Printf(&quot;channel value: %d if extract ok :(%v) after extraction channel len : %v channel cap : %v \n&quot;, e, ok, len(ch), cap(ch))</span><br><span class="line">			if !ok &#123;</span><br><span class="line">				break</span><br><span class="line">			&#125;</span><br><span class="line">			time.Sleep(2 * time.Second)</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println(&quot;Done.&quot;)</span><br><span class="line">		sign &lt;- 1</span><br><span class="line">	&#125;()</span><br><span class="line">	//要是不添加两次取值的操作的话 主进程就会马上结束 这里相当于是实现了一个</span><br><span class="line">	//同步的操作 等待两个go func都结束之后 再结束主进程 注意这种技巧</span><br><span class="line">	&lt;-sign</span><br><span class="line">	&lt;-sign</span><br><span class="line">&#125;</span><br><span class="line">/*output:</span><br><span class="line">before extract channel len: 1 ,channel value: 0 if extract ok :(true) after extraction channel len : 0 channel cap : 1</span><br><span class="line">before extract channel len: 1 ,channel value: 1 if extract ok :(true) after extraction channel len : 0 channel cap : 1</span><br><span class="line">before extract channel len: 1 ,channel value: 2 if extract ok :(true) after extraction channel len : 0 channel cap : 1</span><br><span class="line">before extract channel len: 1 ,channel value: 3 if extract ok :(true) after extraction channel len : 0 channel cap : 1</span><br><span class="line">The channel is closed.</span><br><span class="line">before extract channel len: 1 ,channel value: 4 if extract ok :(true) after extraction channel len : 0 channel cap : 1</span><br><span class="line">before extract channel len: 0 ,channel value: 0 if extract ok :(false) after extraction channel len : 0 channel cap : 1</span><br><span class="line">Done.</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+<p>可以看到在以上的程序中，要是没有最后的两个<code>&lt;-sign</code>操作，在另外的两个goroutine还没有运行结束的时候,main函数就运行结束了，程序也就退出了。</p>
+<p>注意，其实实现类似的操作在golang中比较好的一种方式是使用 sync.Waitgroup的相关操作：Wait blocks until the WaitGroup counter is zero，有点类似一个计数器一样，在创建goroutine的时候使用add操作添加记录的数目，goroutine执行完成之后就执行-1的操作，最后通通wait操作，等待所有的goroutine都执行完之后再向下执行主函数的操作。</p>
+<h4 id="goroutine调度以及携带参数"><a href="#goroutine调度以及携带参数" class="headerlink" title="goroutine调度以及携带参数"></a>goroutine调度以及携带参数</h4><p>这个和channel的使用关联不太大，主要是goroutine调度时候上下文的一些问题，现记录在这里。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;runtime&quot;</span><br><span class="line">)</span><br><span class="line">func main() &#123;</span><br><span class="line">	names := []string&#123;&quot;E&quot;, &quot;H&quot;, &quot;R&quot;, &quot;J&quot;, &quot;M&quot;&#125;</span><br><span class="line">	for _, name := range names &#123;</span><br><span class="line">		go func() &#123;</span><br><span class="line">			fmt.Printf(&quot;Hello , %s \n&quot;, name)</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125;</span><br><span class="line">	//要是不添加runtime的话 就不会有内容输出</span><br><span class="line">	//因为for循环执行速度太快了 直接循环结束跳出了最后的循环</span><br><span class="line">	//之后 for循环中生成的5个go func 会被分别进行调度</span><br><span class="line">	runtime.Gosched()</span><br><span class="line">&#125;</span><br><span class="line">/* output</span><br><span class="line">Hello , M </span><br><span class="line">Hello , M </span><br><span class="line">Hello , M </span><br><span class="line">Hello , M </span><br><span class="line">Hello , M</span><br><span class="line">*/</span><br><span class="line">根据代码可以看出，具体循环的时候for循环中的go func 的调度并不是按照想象的那样，一次循环一个go func ，不要对go func的执行时机做任何假设。</span><br></pre></td></tr></table></figure>
+<h4 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h4><p>一种思路是把runtime.Gosched()函数放在每次for循环结束的时候，这样每次for循环之后，都会被重新调度一次，可能会出现正确的结果，并不是每次都准确，比如go func的程序需要运行一段时间，在这段运行的时间之内，可能就已经循环了几个元素过去了。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;runtime&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line">func main() &#123;</span><br><span class="line">	names := []string&#123;&quot;E&quot;, &quot;H&quot;, &quot;R&quot;, &quot;J&quot;, &quot;M&quot;, &quot;N&quot;, &quot;O&quot;, &quot;P&quot;&#125;</span><br><span class="line">	for _, name := range names &#123;</span><br><span class="line">		go func() &#123;</span><br><span class="line">			time.Sleep(1000 * time.Nanosecond)</span><br><span class="line">			fmt.Printf(&quot;Hello , %s \n&quot;, name)</span><br><span class="line">		&#125;()</span><br><span class="line">		runtime.Gosched()</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">/* output:</span><br><span class="line">Hello , E</span><br><span class="line">Hello , J</span><br><span class="line">Hello , J</span><br><span class="line">Hello , P</span><br><span class="line">Hello , P</span><br><span class="line">Hello , P</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+
+<p>还有一种思路是采用传递参数的方式，就是给goroutine带上了参数，虽然goroutine已经脱离了main函数的控制，但是它已经带上了main函数给的烙印，相当于是某种解耦的感觉，for循环多次就不会影响打印的结果了，此时<code>go func(who string)&#123;...&#125;(name)</code> 这里的who string这部分内容相当于是形参，后面的括号中(name)相当于传递的是实参，比如下面代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;runtime&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line">func main() &#123;</span><br><span class="line">	names := []string&#123;&quot;E&quot;, &quot;H&quot;, &quot;R&quot;, &quot;J&quot;, &quot;M&quot;, &quot;N&quot;, &quot;O&quot;, &quot;P&quot;&#125;</span><br><span class="line">	for _, name := range names &#123;</span><br><span class="line">		go func(who string) &#123;</span><br><span class="line">			time.Sleep(1000 * time.Nanosecond)</span><br><span class="line">			fmt.Printf(&quot;Hello , %s \n&quot;, who)</span><br><span class="line">		&#125;(name)</span><br><span class="line">	&#125;</span><br><span class="line">	runtime.Gosched()</span><br><span class="line">&#125;</span><br><span class="line">/* output:</span><br><span class="line">Hello , E</span><br><span class="line">Hello , H</span><br><span class="line">Hello , R</span><br><span class="line">Hello , J</span><br><span class="line">Hello , M</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+<p>但是这个方法仍然很有问题，只能保证在函数执行时间很短的时候结果正常，而且不输出重复的内容，如果程序执行时间比较长的话，很有可能main函数会被提前结束，按顺序生成的多个goroutine在cpu那里会不会仍然按照顺序被调度执行？这个仍然不确定？有几个goroutine会不能被正常调度到并且执行，比如像上面的代码的输出样子，而且每次输出的结果也都是不确定的。</p>
+<p><strong>使用channel修改</strong></p>
+<p>再一细想，使用channel也是能实现以上意图的，毕竟channel的主要功能就是不同goroutine之间进行通信，记住这一点就ok了，比如可以继续改成如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">	names := []string&#123;&quot;E&quot;, &quot;H&quot;, &quot;R&quot;, &quot;J&quot;, &quot;M&quot;, &quot;N&quot;, &quot;O&quot;, &quot;P&quot;&#125;</span><br><span class="line">	chastr := make(chan string, 1)</span><br><span class="line">	done := make(chan struct&#123;&#125;)</span><br><span class="line">	go func() &#123;</span><br><span class="line">		for &#123;</span><br><span class="line">			item, ok := &lt;-chastr</span><br><span class="line">			fmt.Println(ok, item)</span><br><span class="line">			if !ok &#123;</span><br><span class="line">				break</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		done &lt;- struct&#123;&#125;&#123;&#125;</span><br><span class="line">	&#125;()</span><br><span class="line">	for _, name := range names &#123;</span><br><span class="line">		chastr &lt;- name</span><br><span class="line">	&#125;</span><br><span class="line">	close(chastr)</span><br><span class="line">	&lt;-done</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="定时等待"><a href="#定时等待" class="headerlink" title="定时等待"></a>定时等待</h4><p>编码的时候遇到这样一个场景，服务创建成功之后，需要等待ip被分配，ip被分配好之后，服务才正式部署成功，最后将所有的信息返回给前台，于是打算这样实现，在服务创建成功之后就不断循环，查询ip如果分配成功了就返回，如果超过了时间也返回失败。</p>
+<p>第一个例子中退出的方式采用的是标记的思路形式，每次循环结束的时候会检查一下标记看看是否退出，第二个采用的是特殊的语法，直接跳出最外层的循环，注意这种时间控制的实现，还是弄成一个defalt一个case比较好，由于case的调度可能有随机性，因此正常执行的内容放在default的部分，时间控制的那个channel放在某一个case当中。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line">func main() &#123;</span><br><span class="line">	sign := make(chan int)</span><br><span class="line">	chtemp := make(chan int, 5)</span><br><span class="line">	go func() &#123;</span><br><span class="line">		for i := 0; i &lt; 5; i++ &#123;</span><br><span class="line">			time.Sleep(time.Millisecond * 300)</span><br><span class="line">			chtemp &lt;- i</span><br><span class="line">		&#125;</span><br><span class="line">		close(chtemp)</span><br><span class="line">	&#125;()</span><br><span class="line">	var e int</span><br><span class="line">	ok := true</span><br><span class="line">	//new 一个新的channel返回 注意这里要提前声明好</span><br><span class="line">	t := time.After(time.Second)</span><br><span class="line">	go func() &#123;</span><br><span class="line">		for &#123;</span><br><span class="line">			select &#123;</span><br><span class="line">			case &lt;-t:</span><br><span class="line">				fmt.Println(&quot;time out&quot;)</span><br><span class="line">				ok = false</span><br><span class="line">				break</span><br><span class="line">				//注意这里是使用 = 而不是 :=</span><br><span class="line">			default:</span><br><span class="line">				e, ok = &lt;-chtemp</span><br><span class="line">				fmt.Printf(&quot;value : %v \n&quot;, e)</span><br><span class="line">				if !ok &#123;</span><br><span class="line">					break</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			if !ok &#123;</span><br><span class="line">				sign &lt;- 1</span><br><span class="line">				break</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line">	&lt;-sign</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//一个时间控制的channel</span><br><span class="line">//注意这个要在循环之外单独声明 否则每次都会分配一个新的 time.After的channel返回过来</span><br><span class="line">t := time.After(time.Second * 10)</span><br><span class="line">//注意这种跳出多层循环的操作方式 要是单层使用break的话 仅仅跳出的是 select 那一层的循环</span><br><span class="line">A:</span><br><span class="line">	for &#123;</span><br><span class="line">		select &#123;</span><br><span class="line">		//如果时间到了 就返回错误信息</span><br><span class="line">		case &lt;-t:</span><br><span class="line">			log.Println(&quot;time out to allocate ip&quot;)</span><br><span class="line">			//delete the se which deploy failed</span><br><span class="line">			a.Ctx.ResponseWriter.Header().Set(&quot;Content-Type&quot;, &quot;application/json&quot;)</span><br><span class="line">			http.Error(a.Ctx.ResponseWriter, `&#123;&quot;errorMessage&quot;:&quot;`+&quot;deploy error : time out&quot;+`&quot;&#125;`, 406)</span><br><span class="line">			break A</span><br><span class="line">		//如果时间没到 就是 t 还没有发回信息 select语句就默认跳转到default块中</span><br><span class="line">		//执行查找ip是否分配的操作</span><br><span class="line">		default:</span><br><span class="line">			//log.Println(&quot;logout:&quot;, &lt;-timeout)</span><br><span class="line">			sename := service.ObjectMeta.Labels[&quot;name&quot;]</span><br><span class="line">			podslist, err := a.Podip(sename)</span><br><span class="line">			if err != nil &#123;</span><br><span class="line">				log.Println(err.Error())</span><br><span class="line">				a.Ctx.ResponseWriter.Header().Set(&quot;Content-Type&quot;, &quot;application/json&quot;)</span><br><span class="line">				http.Error(a.Ctx.ResponseWriter, `&#123;&quot;errorMessage&quot;:&quot;`+err.Error()+`&quot;&#125;`, 406)</span><br><span class="line">				break A</span><br><span class="line">			&#125;</span><br><span class="line">			if len(podslist) == 0 &#123;</span><br><span class="line">				continue</span><br><span class="line">			&#125; else &#123;</span><br><span class="line">				log.Println(&quot;allocation ok ......&quot;)</span><br><span class="line">				a.Data[&quot;json&quot;] = detail</span><br><span class="line">				a.ServeJson()</span><br><span class="line">				break A</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="从资源池中获取信息"><a href="#从资源池中获取信息" class="headerlink" title="从资源池中获取信息"></a>从资源池中获取信息</h4><p>常常有这样一种场景，把某些信息从旧的资源池中取出来，经过一些加工处理，再放入新的资源池中，这个过程如果按传统的方式就是采用完全串行的方式效率会很低，粒度太粗了，具体的粒度可以细化以每次所取的单位资源为粒度。<br>比如以书上p339为例，有一个资源池存储这person的信息，将每个person从中取出来，之后进行一些处理，再存到新的资源池中，这里用oldarray以及newarray来模拟旧的和新的资源池：</p>
+<p>具体的代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line">//参考go 并发编程实战 p337</span><br><span class="line">import (</span><br><span class="line">	&quot;log&quot;</span><br><span class="line">	&quot;strconv&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line">type Person struct &#123;</span><br><span class="line">	name string</span><br><span class="line">	age  int</span><br><span class="line">	addr string</span><br><span class="line">&#125;</span><br><span class="line">var oldpersonarray = [5]Person&#123;&#125;</span><br><span class="line">var newpersonarray = [5]Person&#123;&#125;</span><br><span class="line">type PersonHandler interface &#123;</span><br><span class="line">	Batch(origs &lt;-chan Person) &lt;-chan Person</span><br><span class="line">	Handle(orig *Person)</span><br><span class="line">&#125;</span><br><span class="line">//struct 实现了personhandler 接口</span><br><span class="line">type PersonHandlerImpl struct&#123;&#125;</span><br><span class="line">//从origs接收信息 处理之后再返回给新的channel</span><br><span class="line">func (handler PersonHandlerImpl) Batch(origs &lt;-chan Person) &lt;-chan Person &#123;</span><br><span class="line">	dests := make(chan Person, 100)</span><br><span class="line">	go func() &#123;</span><br><span class="line">		for &#123;</span><br><span class="line">			p, ok := &lt;-origs</span><br><span class="line">			if !ok &#123;</span><br><span class="line">				close(dests)</span><br><span class="line">				break</span><br><span class="line">			&#125;</span><br><span class="line">			handler.Handle(&amp;p)</span><br><span class="line">			log.Printf(&quot;old value : %v\n&quot;, p)</span><br><span class="line">			//time.Sleep(time.Second)</span><br><span class="line">			dests &lt;- p</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line">	return dests</span><br><span class="line">&#125;</span><br><span class="line">//这里要使用引用传递</span><br><span class="line">func (handler PersonHandlerImpl) Handle(orig *Person) &#123;</span><br><span class="line">	orig.addr = &quot;new address&quot;</span><br><span class="line">&#125;</span><br><span class="line">func getPersonHandler() PersonHandler &#123;</span><br><span class="line">	return &amp;PersonHandlerImpl&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">//print the oldpersonarray into the chan&lt;-Person</span><br><span class="line">func fetchPerson(origs chan&lt;- Person) &#123;</span><br><span class="line">	for _, v := range oldpersonarray &#123;</span><br><span class="line">		//fmt.Printf(&quot;get the value : %v %v \n&quot;, k, v)</span><br><span class="line">		time.Sleep(time.Second)</span><br><span class="line">		origs &lt;- v</span><br><span class="line">	&#125;</span><br><span class="line">	close(origs)</span><br><span class="line">&#125;</span><br><span class="line">//fetch the value from the channel and store it into the newpersonarray</span><br><span class="line">func savePerson(dest &lt;-chan Person) &lt;-chan int &#123;</span><br><span class="line">	intChann := make(chan int)</span><br><span class="line">	go func() &#123;</span><br><span class="line">		index := 0</span><br><span class="line">		for &#123;</span><br><span class="line">			p, ok := &lt;-dest</span><br><span class="line">			if !ok &#123;</span><br><span class="line">				break</span><br><span class="line">			&#125;</span><br><span class="line">			//time.Sleep(time.Second)</span><br><span class="line">			log.Printf(&quot;new value transfer %v \n&quot;, p)</span><br><span class="line">			newpersonarray[index] = p</span><br><span class="line">			index++</span><br><span class="line">		&#125;</span><br><span class="line">		intChann &lt;- 1</span><br><span class="line">	&#125;()</span><br><span class="line">	return intChann</span><br><span class="line">&#125;</span><br><span class="line">func init() &#123;</span><br><span class="line">	//使用range的话是值传递 这里要给oldpersonarray赋值进来</span><br><span class="line">	tmplen := len(oldpersonarray)</span><br><span class="line">	for i := 0; i &lt; tmplen; i++ &#123;</span><br><span class="line">		oldpersonarray[i].addr = &quot;old address&quot;</span><br><span class="line">		oldpersonarray[i].age = i</span><br><span class="line">		oldpersonarray[i].name = strconv.Itoa(i)</span><br><span class="line">	&#125;</span><br><span class="line">	log.Printf(&quot;first print init value : %v\n&quot;, oldpersonarray)</span><br><span class="line">&#125;</span><br><span class="line">func main() &#123;</span><br><span class="line">	handeler := getPersonHandler()</span><br><span class="line">	origs := make(chan Person, 100)</span><br><span class="line">	dests := handeler.Batch(origs)</span><br><span class="line">	//go func() &#123; fetchPerson(origs) &#125;()</span><br><span class="line">	// 不加go func的话 要等这句执行完 才能执行下一句</span><br><span class="line">	// 则orgis信息都输出 完全关闭掉 这个时候 从dest接收信息的语句才开始执行</span><br><span class="line">	// 所以不会动态输出 这句加上go func的话 就会没隔 1s 动态输出</span><br><span class="line">	// 如果将fetchPerson 再往前面放一句 则old value也不会动态输出</span><br><span class="line">	fetchPerson(origs)</span><br><span class="line">	sign := savePerson(dests)</span><br><span class="line">	&lt;-sign</span><br><span class="line">	log.Printf(&quot;last print new value : %v \n&quot;, newpersonarray)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>整体的结构图如下(todo)：</p>
+<p><a target="_blank" rel="noopener" href="http://images0.cnblogs.com/blog2015/436068/201507/051718360606269.png">代码结构图 update</a><br>代码结构图</p>
+<p>代码基本分析:</p>
+<ul>
+<li>首先声明一个 PersonHandler 的接口，之后声明一个struct PersonHandlerImpl 将接口中的两个方法都实现了，init函数用于进行oldarray的初始化工作。注意为了减少出错，内部的函数在方声明的时候都是单向的channel。</li>
+<li>1，2 fetchperson从oldarray中区数据，并把数据存到origs channel中，注意最后取完数据到通道之后，要由发送方将channel关闭，否则可能造成deadlock。注意在main函数中，如果fech操作没有放到一个goroutine中来执行，就仍然是串行的，相当于是把数据都放入到channel中，另一端才开始取，没发挥出并发的优势。</li>
+<li>3，4 Batch函数将person信息从origs中取出来，进行处理后，同时传到dests中，最后将dests返回，注意这里不是全部传入之后才将dests返回，而是新启动一个goroutine执行传入操作，同时将dests返回，注意要主动关闭channel。</li>
+<li>5 savePerson操作接收一个&lt;-chann 之后从中接受person信息，将值写入到新的资源池中，最后全部写入结束之后，传一个sign channel给主进程，结束。</li>
+<li>总结，在需要动态输出信息的时候，goroutine往往是和channel结合在一起使用。最常见的用法是，一个goroutine负责向channel中写入数据，之后将channel返回，由其他进程取出信息。比如之前写过的一些websocket从前台接受信息，后台处理信息之后再动态返回给前台打出结果的模型，就和这个差不多，总之具体的异步执行流程要理清楚，都有哪些channel，负责传递的信息分别是什么。</li>
+</ul>
+<h3 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h3><p><a target="_blank" rel="noopener" href="http://shanks.leanote.com/post/%E6%B7%B1%E5%BA%A6%E5%89%96%E6%9E%90channel">http://shanks.leanote.com/post/%E6%B7%B1%E5%BA%A6%E5%89%96%E6%9E%90channel</a><br><a target="_blank" rel="noopener" href="http://skoo.me/go/2013/09/20/go-runtime-channel">http://skoo.me/go/2013/09/20/go-runtime-channel</a><br><a target="_blank" rel="noopener" href="http://skoo.me/go/2014/07/09/channel-timeout">http://skoo.me/go/2014/07/09/channel-timeout</a><br><a target="_blank" rel="noopener" href="http://www.cnblogs.com/hustcat/p/4003729.html">http://www.cnblogs.com/hustcat/p/4003729.html</a><br><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/36e246c6153d">http://www.jianshu.com/p/36e246c6153d</a><br><a target="_blank" rel="noopener" href="https://blog.altoros.com/golang-part-1-main-concepts-and-project-structure.html">https://blog.altoros.com/golang-part-1-main-concepts-and-project-structure.html</a><br>《GO语言学习笔记》</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/16/golang-routine-using/" data-id="cm2a0xf4p0085dvjr5mfr3h69" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/16/golang-import-cycle/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          golang import cycle
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/16/deep-in-golang-type-and-wrapper-function/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">deep in golang type and wrapper function</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#channel%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E8%AF%AD%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">channel的基本使用语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#channel%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">channel的底层实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#channel%E7%9A%84%E5%87%A0%E7%A7%8D%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">3.</span> <span class="toc-text">channel的几种使用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BB%E8%BF%9B%E7%A8%8B%E7%AD%89%E5%BE%85goroutine%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9D%9F"><span class="toc-number">3.1.</span> <span class="toc-text">主进程等待goroutine运行结束</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#goroutine%E8%B0%83%E5%BA%A6%E4%BB%A5%E5%8F%8A%E6%90%BA%E5%B8%A6%E5%8F%82%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">goroutine调度以及携带参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88"><span class="toc-number">3.3.</span> <span class="toc-text">优化方案</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E7%AD%89%E5%BE%85"><span class="toc-number">3.4.</span> <span class="toc-text">定时等待</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%8E%E8%B5%84%E6%BA%90%E6%B1%A0%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%BF%A1%E6%81%AF"><span class="toc-number">3.5.</span> <span class="toc-text">从资源池中获取信息</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="toc-number">4.</span> <span class="toc-text">参考资源</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Algorithm(3) stack and queue questions(By input data structure) | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="队列和栈相关的笔试面试题，栈和队列自然是基础中的基础了，罗列了一些基本的，总之不要着急，在纸上理清楚之后再去实现，实现起来反而是非常快的，有一些地方是不常用到，比如通过栈来比较大小，进行排序等等操作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Algorithm(3) stack and queue questions(By input data structure)">
+<meta property="og:url" content="http://yoursite.com/2019/06/13/algorithm-3-stack-and-queue/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="队列和栈相关的笔试面试题，栈和队列自然是基础中的基础了，罗列了一些基本的，总之不要着急，在纸上理清楚之后再去实现，实现起来反而是非常快的，有一些地方是不常用到，比如通过栈来比较大小，进行排序等等操作。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-06-13T13:13:34.000Z">
+<meta property="article:modified_time" content="2023-06-18T13:45:21.604Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-algorithm-3-stack-and-queue" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/13/algorithm-3-stack-and-queue/" class="article-date">
+  <time datetime="2019-06-13T13:13:34.000Z" itemprop="datePublished">2019-06-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Algorithm(3) stack and queue questions(By input data structure)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>队列和栈相关的笔试面试题，栈和队列自然是基础中的基础了，罗列了一些基本的，总之不要着急，在纸上理清楚之后再去实现，实现起来反而是非常快的，有一些地方是不常用到，比如通过栈来比较大小，进行排序等等操作。</p>
+<span id="more"></span>
+
+<h3 id="基本性质"><a href="#基本性质" class="headerlink" title="基本性质"></a>基本性质</h3><ul>
+<li>栈 先进后出 （弹夹） 支持 pop(弹出) push(压入) size</li>
+<li>队列 先进先出 pop 从队尾弹出 push 从队头压入</li>
+<li>双端队列 两端都可以进出队列</li>
+<li>优先级队列 根据元素的优先集值 决定元素的弹出顺序 （优先级队列实质上是一种堆结构）</li>
+<li>DFS以及BFS DFS实质上就是通过栈来实现的 元素入栈的顺序 实质上就是深度优先遍历的顺序（DFS 与NLR LNR LRN 并不是一个东西）宽度优先遍历实质上是通过队列来实现的（注意开始的时候 根节点进队列 然后根节点出队列 之后以此把根节点的子元素进队列 具体更细节的可以参考二叉树相关章节的那个整理）</li>
+<li><strong>平时所使用的递归函数，实质上使用了系统提供的系统函数栈，递归函数的处理过程可以看做是一个函数进栈出栈的过程</strong>，任何递归函数可以实现的功能，都可以用非递归的方式实现。</li>
+<li>在c++ 的题目中，常常用一个vector来模拟栈操作，注意看那个元素为栈顶，pop操作，相当于v.pop _back删除队尾的元素，push操作，相当于v.push _back，在队尾插入一个元素，top操作，相当于return v[len-1]，返回最后一个元素。</li>
+</ul>
+<h3 id="获取最小值的栈"><a href="#获取最小值的栈" class="headerlink" title="获取最小值的栈"></a>获取最小值的栈</h3><p>特殊功能的栈，在实现栈的基本功能的基础上，再实现返回栈中最小元素的操作getmin，要求，pop，push，getMin操作的时间复杂度都是O(1)。设计的栈类可使用现成的结构。</p>
+<ul>
+<li>思路，入栈的时候，用一个array，每次插入或者弹出一个元素的时候，进行排序。</li>
+<li>采用两个栈 栈一 用于正常操作 用于元素正常入栈出栈 栈二 保存每一步的最小值 主要是栈二的压入以及弹出的规则 核心思想 用stackmin的栈保存每一步的最小值</li>
+<li>方案一 压入的时候 如果当前元素比栈二的栈顶元素小 就压入栈 如果当前元素比栈二的栈顶元素大 则不压入栈 反之 则不入栈 注意，在弹出的时候 采用相反的操作 如果当前元素比栈顶（stack min 栈）元素大 则不弹出 反之 如果等于栈顶元素的话 则弹出栈二中的元素</li>
+<li>方案二在压入的时候 如果当前元素比栈顶元素大 则压入原先的栈顶的元素 可以做到在弹出的时候 同步弹出 不容易出错 就是会稍费一点点空间</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> //注意使用线程的stack的STL进行操作</span><br><span class="line"> </span><br><span class="line"> class Solution &#123;</span><br><span class="line">stack &lt;int&gt; stacka,stackmin;</span><br><span class="line">public:</span><br><span class="line">    void push(int value) &#123;</span><br><span class="line">        stacka.push(value);</span><br><span class="line">        //注意这里的空值判断</span><br><span class="line">        if (stackmin.empty()) stackmin.push(value);</span><br><span class="line">        int minvalue=stackmin.top();</span><br><span class="line">        if (minvalue&lt;=value)&#123;</span><br><span class="line">            stackmin.push(minvalue);</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            stackmin.push(value);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    void pop() &#123;</span><br><span class="line">        stacka.pop();</span><br><span class="line">        stackmin.pop();</span><br><span class="line">        return;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    int top() &#123;</span><br><span class="line">        return stacka.top();</span><br><span class="line">    &#125;</span><br><span class="line">    int min() &#123;</span><br><span class="line">        return stackmin.top();</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="用两个栈实现队列-支持（add-pull-peak）基本题目了"><a href="#用两个栈实现队列-支持（add-pull-peak）基本题目了" class="headerlink" title="用两个栈实现队列 支持（add pull peak）基本题目了"></a>用两个栈实现队列 支持（add pull peak）基本题目了</h3><ul>
+<li>队列特点 先进先出 栈特点 先进后出</li>
+<li>首先是栈的功能分类 一个栈作为push栈 另一个栈作为pop栈 栈一作为压入栈，在push数据的时候，仅仅往栈一中push，另一个栈做为弹出栈，在弹出数据的时候，仅仅从另一个栈中拿数据，即为stackpop。</li>
+<li>注意</li>
+</ul>
+<p>1.stackpush往stackpop中倒入数据的时候，必须一次性地把stackpush中的数据倒完。如果stackpop不为空，则stackpush是绝对不能向stackpop中倒入数据的，（注意原子性 比如stackpop不为空 即元素还没有完全倒入stackpush中 则不能再往stackpush中插入数据）</p>
+<p>2.每次从stackpop中弹出数据之后，还需要把stackpop中的数据再放回到stackpush中去，即是说，当stackpop中存在数据的时候，stack push 是绝对不能向其中倒入数据的。</p>
+<ul>
+<li>在具体实现中，倒数据的操作没有具体的限定，只要满足不违反上述的三条规则即可。</li>
+</ul>
+<p><strong>注意一下</strong>开始的时候，在push之前，会做一下清空stackPop的操作，在pop的最后部分，则没有做将Pop中的内容放回到stackPush中的操作，如果这样的话，有的case就过不去，具体原因还没有找到…总之将所有的stack互换的操作方在一个函数中进行会比较好。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class TwoStack &#123; </span><br><span class="line">    stack&lt;int&gt; stackPush,stackPop;</span><br><span class="line">public:  </span><br><span class="line">    void push(int temp)&#123;</span><br><span class="line">        stackPush.push(temp);</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    void pop()&#123;</span><br><span class="line">        int temp;</span><br><span class="line">        while(!stackPush.empty())&#123;</span><br><span class="line">            temp=stackPush.top();</span><br><span class="line">            stackPop.push(temp);</span><br><span class="line">            stackPush.pop();</span><br><span class="line">        &#125;</span><br><span class="line">       </span><br><span class="line">        stackPop.pop();</span><br><span class="line">        //关键的一段</span><br><span class="line">        //在pop完成之后 还要放回去</span><br><span class="line">        while(!stackPop.empty())&#123;</span><br><span class="line">            temp=stackPop.top();</span><br><span class="line">            stackPush.push(temp);</span><br><span class="line">            stackPop.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    int top()&#123;</span><br><span class="line">        int temp;</span><br><span class="line">        while(!stackPush.empty())&#123;</span><br><span class="line">            temp=stackPush.top();</span><br><span class="line">            stackPop.push(temp);</span><br><span class="line">            stackPush.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        return stackPop.top();</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    vector&lt;int&gt; twoStack(vector&lt;int&gt; ope, int n) &#123;</span><br><span class="line">        // write code here</span><br><span class="line">        int i;</span><br><span class="line">        int len=n;</span><br><span class="line">        int temp;</span><br><span class="line">        vector&lt;int&gt; answer;</span><br><span class="line">        for(i=0;i&lt;len;i++)&#123;</span><br><span class="line">            if (ope[i]!=0)&#123;</span><br><span class="line">                push(ope[i]);</span><br><span class="line">            &#125;</span><br><span class="line">            else&#123;</span><br><span class="line">                temp=top();</span><br><span class="line">                answer.push_back(temp);</span><br><span class="line">                pop();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        return answer;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="用两个队列实现一个栈"><a href="#用两个队列实现一个栈" class="headerlink" title="用两个队列实现一个栈"></a>用两个队列实现一个栈</h3><p>与上一个题目相似，这种题目的关键，是要确定好push以及pop的时候，具体都应该如何操作，比如两个栈空的时候应该怎样，一个栈空的时候应该怎样等等。</p>
+<h3 id="实现栈的逆序操作-要一点技巧-特别能体现递归的技巧"><a href="#实现栈的逆序操作-要一点技巧-特别能体现递归的技巧" class="headerlink" title="实现栈的逆序操作 要一点技巧 特别能体现递归的技巧"></a>实现栈的逆序操作 要一点技巧 特别能体现递归的技巧</h3><p>实现一个栈的逆序操作，但是只能用递归函数和这个栈本身的操作来实现，而不能申请额外的数据结构。实际上考察了两个操作。编写一个函数，这个函数的功能是移除栈底元素并且返回。</p>
+<ul>
+<li>考察递归函数的使用</li>
+<li>递归函数一 通过返回值 将栈底元素的返回值 一层一层向上抛 函数的功能 得到栈底元素 并且返回 最后将栈底元素删除 所谓的删除 就是得到之后 不再往栈中重新push了 就是一个get函数 注意 这里 删除栈底元素的目的是为了每次把得到的栈底元素放在整个栈的最上面</li>
+<li>递归函数二 实现整个栈元素的逆序的递归函数 把当前栈底元素删除并返回 继续递归 每次删除并且返回的栈底元素会被重新push到栈顶中 这样依次循环 完成整个逆序的操作 注意 在这个函数中 每递归一次就会删除一个当前栈底的元素</li>
+<li>注意区别 第几层函数返回 以及最后一层返回时候的操作</li>
+</ul>
+<p>下面这个图可以表示出递归操作的整个调用栈和操作流程的关系：</p>
+<p>TODO (7niu)</p>
+<p>&#x2F;&#x2F;这个递归的用法太精妙了。。。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class StackReverse &#123;</span><br><span class="line">public:</span><br><span class="line">    int get(stack&lt;int&gt; getstack)&#123;</span><br><span class="line">        int result=getstack.top();</span><br><span class="line">        getstack.pop();</span><br><span class="line">        </span><br><span class="line">        if (getstack.empty())&#123;</span><br><span class="line">            return result;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            int last=get(getsstack);</span><br><span class="line">            getstack.push(result);</span><br><span class="line">            return last;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    void reverse(stack&lt;int&gt; rstack)&#123;</span><br><span class="line">        if (rstack.empty())&#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        int i=get(rstack);</span><br><span class="line">        reverse(rstack);</span><br><span class="line">        rstack.push(i);   </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    vector&lt;int&gt; reverseStack(vector&lt;int&gt; A, int n) &#123;</span><br><span class="line">        // write code here</span><br><span class="line">        stack&lt;int&gt; s;</span><br><span class="line">        for(i=0;i&lt;n;i++)&#123;</span><br><span class="line">            s.push(A[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        reverse(s);</span><br><span class="line">        for(i=0;i&lt;n;i++)&#123;</span><br><span class="line">            int temp=s.top()</span><br><span class="line">            s.pop();</span><br><span class="line">            A[i]=temp;</span><br><span class="line">        &#125;</span><br><span class="line">        return A;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="利用一个额外的栈进行排序-小复杂"><a href="#利用一个额外的栈进行排序-小复杂" class="headerlink" title="利用一个额外的栈进行排序(小复杂)"></a>利用一个额外的栈进行排序(小复杂)</h3><p>栈中的元素类型为整形，想将该栈从顶到底按照从大到小的顺序排序，只许申请一个额外栈，除此之外可以申请新的变量，但不能申请额外的数据结构，如何完成排序操作?</p>
+<ul>
+<li>需要申请一个辅助栈help，当前元素为current，如果current&lt;&#x3D;help栈顶元素，则入栈，如果current&gt;help栈顶元素，将help中的元素弹回栈一，直到current&lt;help栈的栈顶元素，整个过程完毕后，current是从小到大排列的，之后再将help中的元素一次放回到栈一种即可。</li>
+</ul>
+<p><strong>注意 要熟悉用vector或者数组 来模拟入栈和出栈的过程</strong><br>用栈模拟的化，还是挺简单的，用数组模拟的话，一定要在开始的时候定义清楚，在开始的时候，栈顶指针存储在0号元素位置还是1号元素位置！！！要不然后面就搞晕了！！！<br><strong>提示 在每次push 或者pop操作的最后 都把当前栈的元素打印一遍出来 这样在调试的时候 容易减少错误</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">class TwoStacks</span><br><span class="line">&#123;</span><br><span class="line">    vector&lt;int&gt; help;</span><br><span class="line">    int top(vector&lt;int&gt; tempstack)</span><br><span class="line">    &#123;</span><br><span class="line">        return tempstack.back();</span><br><span class="line">    &#125;</span><br><span class="line">    void pop(vector&lt;int&gt; &amp;tempstack)</span><br><span class="line">    &#123;</span><br><span class="line">        tempstack.pop_back();</span><br><span class="line">        /*</span><br><span class="line">        printf(&quot;%s: &quot;,&quot;pop&quot;)；   </span><br><span class="line">        for(int i=0; i&lt;tempstack.size(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(&quot;%d &quot;,tempstack[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        putchar(&#x27;\n&#x27;);</span><br><span class="line">        */</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    void push(vector&lt;int&gt; &amp;tempstack, int value)</span><br><span class="line">    &#123;</span><br><span class="line">        tempstack.push_back(value);</span><br><span class="line">        /*</span><br><span class="line">        printf(&quot;%s: &quot;,&quot;push&quot;);</span><br><span class="line">        for(int i=0; i&lt;tempstack.size(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(&quot;%d &quot;,tempstack[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        putchar(&#x27;\n&#x27;);</span><br><span class="line">        */</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    bool stackempty(vector&lt;int&gt; tempstack)</span><br><span class="line">    &#123;</span><br><span class="line">        return tempstack.empty();</span><br><span class="line">    &#125;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; twoStacksSort(vector&lt;int&gt; numbers)</span><br><span class="line">    &#123;</span><br><span class="line">        // write code here</span><br><span class="line">        int len=numbers.size();</span><br><span class="line">        if (len==0)</span><br><span class="line">        &#123;</span><br><span class="line">            return numbers;</span><br><span class="line">        &#125;</span><br><span class="line">        int c;</span><br><span class="line">        int temp;</span><br><span class="line">        while(stackempty(numbers)==false)</span><br><span class="line">        &#123;</span><br><span class="line">            c=top(numbers);</span><br><span class="line">            pop(numbers);</span><br><span class="line">            if(stackempty(help))</span><br><span class="line">            &#123;</span><br><span class="line">                push(help,c);</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            temp=top(help);</span><br><span class="line">            if(c&gt;=temp)</span><br><span class="line">            &#123;</span><br><span class="line">                push(help,c);</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                while(stackempty(help)==false)</span><br><span class="line">                &#123;</span><br><span class="line">                    temp=top(help);</span><br><span class="line">                    pop(help);</span><br><span class="line">                    push(numbers,temp);</span><br><span class="line">                &#125;</span><br><span class="line">                push(help,c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //put the element in help back to numbers</span><br><span class="line">        return help;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    TwoStacks s;</span><br><span class="line">    vector&lt;int&gt; v;</span><br><span class="line">    vector&lt;int&gt; r;</span><br><span class="line">    int i=0;</span><br><span class="line">    int a[10]= &#123;2,3,4,8,6,7&#125;;</span><br><span class="line">    for (i=0; i&lt;5; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        v.push_back(a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    r=s.twoStacksSort(v);</span><br><span class="line">    int len=r.size();</span><br><span class="line">    for(i=0; i&lt;len; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        printf(&quot;%d &quot;,r[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="滑动窗口（难度较高）"><a href="#滑动窗口（难度较高）" class="headerlink" title="滑动窗口（难度较高）"></a>滑动窗口（难度较高）</h3><p>给定一个数组以及一个滑动窗口，窗口每次向右移动一个元素，每次返回窗口中的最大的元素。比如数组[4,3,5,4,3,3,6,7]窗口的长度w&#x3D;3，这样最后返回的结果就是[5,5,5,4,6,7]。</p>
+<ul>
+<li>普通解法的时间复杂度为O(n*w)，即是每次遍历w窗口中的元素，并且从中选出最大值，将最大值依次弹出。</li>
+<li>(较难的一个方法)最好的时间复杂度为O(N)可以利用双端队列实现窗口中最大值的更新。双端队列qmax&#x3D;{},双端队列存放着数组中的下标值。</li>
+<li>对数组进行遍历</li>
+<li>队列为空 插入arr[i]</li>
+<li>如果当前元素arr[i]&lt;d.back()把下标i插入到队列队尾。</li>
+<li>否则 一直从队尾弹出元素 直到arr[i]&gt;&#x3D;d.back()</li>
+<li>当遍历的位置超过窗口的宽度，如果d中第一个元素index值大于i-w，则d中的第一个元素就是最大的元素，将这个元素放入结果数组中，否则就将队头元素弹出，直到符合上述要求，这里也是一层循环。</li>
+</ul>
+<p><strong>注意 做这个题的收获点</strong></p>
+<ul>
+<li>第一步 形成思路 可以用文字描述</li>
+<li>第二部 在草稿纸上 把文字思路转换成代码表述 并且自己review（一定要习惯在纸上表述 事实证明 这个对思路的整理很有用的 可以减少一些弯路 因为你在电脑上直接实现 很容易陷入一个思路的混乱 全局观念不够 一次不能看到全部的代码 在纸上是帮助自己形成思路的过程 文字的表述和代码的表述有些gap 语言表述不可能很精确 转译的过程很见功力 比如这个题目用两个循环）</li>
+<li>第三部 把代码用实现出来 debug</li>
+<li>对于stack这类的题目 debug的时候 最好把每一个关键步骤之后的stack元素都输出来，这样对于一些细节，更容器发现问题。<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class SlideWindow</span><br><span class="line">&#123;</span><br><span class="line">    deque&lt;int&gt; d;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; slide(vector&lt;int&gt; arr, int n, int w)</span><br><span class="line">    &#123;</span><br><span class="line">        int i=0;</span><br><span class="line">        int current;</span><br><span class="line">        int cIndex;</span><br><span class="line">        int fIndex;</span><br><span class="line">        vector&lt;int&gt; answer;</span><br><span class="line">        for(i=0; i&lt;n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            while(1)</span><br><span class="line">            &#123;</span><br><span class="line">                if(d.empty())</span><br><span class="line">                &#123;</span><br><span class="line">                    d.push_back(i);</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">                cIndex=d.back();</span><br><span class="line">                current=arr[cIndex];</span><br><span class="line">                if(arr[i]&lt;current)</span><br><span class="line">                &#123;</span><br><span class="line">                    d.push_back(i);</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">                else</span><br><span class="line">                &#123;</span><br><span class="line">                    d.pop_back();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if ((i+1)&gt;=w)</span><br><span class="line">            &#123;</span><br><span class="line">                while(1)</span><br><span class="line">                &#123;</span><br><span class="line">                    fIndex=d.front();</span><br><span class="line">                    if((i-w)&lt;fIndex)</span><br><span class="line">                    &#123;</span><br><span class="line">                        answer.push_back(arr[fIndex]);</span><br><span class="line">                        break;</span><br><span class="line">                    &#125;</span><br><span class="line">                    d.pop_front();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return answer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="MaxTree-（比较发散的题目-本质上还是stack用于比较大小的应用）"><a href="#MaxTree-（比较发散的题目-本质上还是stack用于比较大小的应用）" class="headerlink" title="MaxTree （比较发散的题目 本质上还是stack用于比较大小的应用）"></a>MaxTree （比较发散的题目 本质上还是stack用于比较大小的应用）</h3>给定一个没有重复元素的数组arr，写出生成这个数组的MaxTree的函数，要求如果数组的长度为N，则时间复杂度为O(N)，额外空间复杂度为O(N)。MaxTree的概念如下：<br>1 MaxTree是一颗二叉树，数组的每一个值对应一个二叉树的节点。<br>2 包括MaxTree树在内且在其中的每一颗子树上，值最大的节点都是树的头。</li>
+</ul>
+<p>概念上来看，这里的maxtree有点类似于大根堆。题干上给出了具体的解法，单独上是降低了一些：</p>
+<p>对于一个没有重复元素的整数数组，请用其中元素构造一棵MaxTree，MaxTree定义为一棵二叉树，其中的节点与数组元素一一对应，同时对于MaxTree的每棵子树，它的根的元素值为子树的最大值。现有一建树方法，对于数组中的每个元素，其在树中的父亲为数组中它左边比它大的第一个数和右边比它大的第一个数中更小的一个。若两边都不存在比它大的数，那么它就是树根。请设计O(n)的算法实现这个方法，返回的数的结构是数组的形式，简化了一些难度。</p>
+<p>这里记录一下证明过程，论述下为什么这种方法是有效的，需要证明两点</p>
+<ul>
+<li>证明a: 按照该方法可以生成一个数而不是一个森林</li>
+<li>证明b: 生成的树是一颗二叉树而并非是多叉树<br>证明a：数组中所有的元素都不相同，按照上面的方法，每个元素会找到一个比它大的数作为父节点，这样一定会有一个最大的父节点做为整个树的最顶端的元素。</li>
+</ul>
+<p>证明b：采用反证的思路，要证明b实际上是证明，任何一个数在单独一侧的孩子的数量不超过1个假设数组的序列为 …A…a1..a2 并且A为父节点，a1与a2都是A的孩子，按照之前的规则，必然有A&gt;a1 A&gt;a2</p>
+<p>如果a1&lt;a2&lt;A 则按照上面的规则，a1的父节点绝对不可能是A，最起码是a2<br>如果a2&lt;a1&lt;A 同理，a2的父节点也不能是A，最起码是a1</p>
+<p>所以可以说明假设错误，假设中的这种情况是不存在的。</p>
+<p>下面是具体的思路：</p>
+<p>风格上与利用额外栈进行排序那个题目比较类似，都是结合栈的弹出，同时加上一些比较。</p>
+<p>注意在最后比较两组index数组然后输出的时候，弄清楚比的是实际的值，还是index，这个地方稍微有点绕。</p>
+<p>两次采用入栈比较的形式，得出两个index数组，之后遍历数组，找到较小元素的那个index。由于有时需要多次从数组中弹出元素，因此提前建立了一个map用于进行倒排索引，方便定位index。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;stack&gt;</span><br><span class="line">#include &lt;map&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">class MaxTree</span><br><span class="line">&#123;</span><br><span class="line">    int Index(map&lt;int,int&gt; m,int key)</span><br><span class="line">    &#123;</span><br><span class="line">        map&lt;int,int&gt;::iterator iter;</span><br><span class="line">        iter=m.find(key);</span><br><span class="line">        if (iter!=m.end())</span><br><span class="line">        &#123;</span><br><span class="line">            return iter-&gt;second;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            return -1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; buildMaxTree(vector&lt;int&gt; A, int n)</span><br><span class="line">    &#123;</span><br><span class="line">        map&lt;int,int&gt; m;</span><br><span class="line">        int i,j;</span><br><span class="line">        for(i=0; i&lt;n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            m[A[i]]=i;</span><br><span class="line">        &#125;</span><br><span class="line">        vector&lt;int&gt; vLeft;</span><br><span class="line">        vector&lt;int&gt; vRight;</span><br><span class="line">        stack&lt;int&gt; help;</span><br><span class="line">        vLeft.clear();</span><br><span class="line">        vRight.clear();</span><br><span class="line">        for(i=0; i&lt;n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            //add vLeft</span><br><span class="line">            while(true)</span><br><span class="line">            &#123;</span><br><span class="line">                if(vLeft.empty()||help.empty())</span><br><span class="line">                &#123;</span><br><span class="line">                    help.push(A[i]);</span><br><span class="line">                    //-2 represent null</span><br><span class="line">                    vLeft.push_back(-2);</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">                int fValue=help.top();</span><br><span class="line">                int cValue=A[i];</span><br><span class="line">                if (cValue&lt;fValue)</span><br><span class="line">                &#123;</span><br><span class="line">                    help.push(cValue);</span><br><span class="line">                    int index=Index(m,fValue);</span><br><span class="line">                    vLeft.push_back(index);</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">                else</span><br><span class="line">                &#123;</span><br><span class="line">                    help.pop();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //add vRight</span><br><span class="line">        while(help.empty()==false)&#123;</span><br><span class="line">                help.pop();</span><br><span class="line">        &#125;</span><br><span class="line">        for(i=n-1; i&gt;=0; i--)</span><br><span class="line">        &#123;</span><br><span class="line">            //add vLeft</span><br><span class="line">            while(true)</span><br><span class="line">            &#123;</span><br><span class="line">                if(vRight.empty()||help.empty())</span><br><span class="line">                &#123;</span><br><span class="line">                    help.push(A[i]);</span><br><span class="line">                    //-2 represent null</span><br><span class="line">                    vRight.push_back(-2);</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">                int fValue=help.top();</span><br><span class="line">                int cValue=A[i];</span><br><span class="line">                if (cValue&lt;fValue)</span><br><span class="line">                &#123;</span><br><span class="line">                    help.push(cValue);</span><br><span class="line">                    int index=Index(m,fValue);</span><br><span class="line">                    vRight.push_back(index);</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">                else</span><br><span class="line">                &#123;</span><br><span class="line">                    help.pop();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //debug</span><br><span class="line">        for(i=0;i&lt;n;i++)&#123;</span><br><span class="line">            printf(&quot;%d &quot;,vLeft[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        putchar(&#x27;\n&#x27;);</span><br><span class="line">        for(j=0;j&lt;n;j++)&#123;</span><br><span class="line">            printf(&quot;%d &quot;,vRight[j]);</span><br><span class="line">        &#125;</span><br><span class="line">        putchar(&#x27;\n&#x27;);</span><br><span class="line">        vector&lt;int&gt; answer;</span><br><span class="line">        int indexl;</span><br><span class="line">        int indexr;</span><br><span class="line">        int index;</span><br><span class="line">        for(i=0,j=n-1; i&lt;n,j&gt;=0; i++,j--)</span><br><span class="line">        &#123;</span><br><span class="line">            if(vLeft[i]==-2&amp;&amp;vRight[j]==-2)&#123;</span><br><span class="line">                    answer.push_back(-1);</span><br><span class="line">            &#125;</span><br><span class="line">            else if(vLeft[i]==-2&amp;&amp;vRight[j]!=-2)&#123;</span><br><span class="line">                answer.push_back(vRight[j]);</span><br><span class="line">            &#125;</span><br><span class="line">            else if(vLeft[i]!=-2&amp;&amp;vRight[j]==-2)&#123;</span><br><span class="line">                answer.push_back(vLeft[i]);</span><br><span class="line">            &#125;</span><br><span class="line">            else&#123;</span><br><span class="line">                indexl=vLeft[i];</span><br><span class="line">                indexr=vRight[j];</span><br><span class="line">                if(A[indexl]&lt;A[indexr])&#123;</span><br><span class="line">                    index=indexl;</span><br><span class="line">                &#125;else&#123;</span><br><span class="line">                    index=indexr;</span><br><span class="line">                &#125;</span><br><span class="line">                answer.push_back(index);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return answer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int a[10]= &#123;340,1387,2101,847,1660,733,36,528&#125;;</span><br><span class="line">    int i;</span><br><span class="line">    vector&lt;int&gt; v;</span><br><span class="line">    vector&lt;int&gt; answer;</span><br><span class="line">    for(i=0; i&lt;8; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        v.push_back(a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    MaxTree m;</span><br><span class="line">    answer=m.buildMaxTree(v,8);</span><br><span class="line">    for(i=0;i&lt;8;i++)&#123;</span><br><span class="line">        printf(&quot;%d &quot;,answer[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/13/algorithm-3-stack-and-queue/" data-id="cm2a0xf4h0051dvjrdh1h3v8m" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/13/algorithm-4-linked-list/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Algorithm(4) linked list(By input data structure)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/12/algorithm-2-sorting/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Algorithm(2) sorting(By solution)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%A7%E8%B4%A8"><span class="toc-number">1.</span> <span class="toc-text">基本性质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%9C%80%E5%B0%8F%E5%80%BC%E7%9A%84%E6%A0%88"><span class="toc-number">2.</span> <span class="toc-text">获取最小值的栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E4%B8%A4%E4%B8%AA%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97-%E6%94%AF%E6%8C%81%EF%BC%88add-pull-peak%EF%BC%89%E5%9F%BA%E6%9C%AC%E9%A2%98%E7%9B%AE%E4%BA%86"><span class="toc-number">3.</span> <span class="toc-text">用两个栈实现队列 支持（add pull peak）基本题目了</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E4%B8%A4%E4%B8%AA%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E6%A0%88"><span class="toc-number">4.</span> <span class="toc-text">用两个队列实现一个栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%A0%88%E7%9A%84%E9%80%86%E5%BA%8F%E6%93%8D%E4%BD%9C-%E8%A6%81%E4%B8%80%E7%82%B9%E6%8A%80%E5%B7%A7-%E7%89%B9%E5%88%AB%E8%83%BD%E4%BD%93%E7%8E%B0%E9%80%92%E5%BD%92%E7%9A%84%E6%8A%80%E5%B7%A7"><span class="toc-number">5.</span> <span class="toc-text">实现栈的逆序操作 要一点技巧 特别能体现递归的技巧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E4%B8%80%E4%B8%AA%E9%A2%9D%E5%A4%96%E7%9A%84%E6%A0%88%E8%BF%9B%E8%A1%8C%E6%8E%92%E5%BA%8F-%E5%B0%8F%E5%A4%8D%E6%9D%82"><span class="toc-number">6.</span> <span class="toc-text">利用一个额外的栈进行排序(小复杂)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%EF%BC%88%E9%9A%BE%E5%BA%A6%E8%BE%83%E9%AB%98%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">滑动窗口（难度较高）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MaxTree-%EF%BC%88%E6%AF%94%E8%BE%83%E5%8F%91%E6%95%A3%E7%9A%84%E9%A2%98%E7%9B%AE-%E6%9C%AC%E8%B4%A8%E4%B8%8A%E8%BF%98%E6%98%AFstack%E7%94%A8%E4%BA%8E%E6%AF%94%E8%BE%83%E5%A4%A7%E5%B0%8F%E7%9A%84%E5%BA%94%E7%94%A8%EF%BC%89"><span class="toc-number">8.</span> <span class="toc-text">MaxTree （比较发散的题目 本质上还是stack用于比较大小的应用）</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

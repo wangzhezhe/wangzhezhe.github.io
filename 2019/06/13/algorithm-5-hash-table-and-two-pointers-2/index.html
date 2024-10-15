@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Algorithm(5) Two pointers and hash table (Part B)(By solution) | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这一篇主要还是围绕 two pointer 相关的题目进行整理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Algorithm(5) Two pointers and hash table (Part B)(By solution)">
+<meta property="og:url" content="http://yoursite.com/2019/06/13/algorithm-5-hash-table-and-two-pointers-2/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="这一篇主要还是围绕 two pointer 相关的题目进行整理。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-06-13T13:15:03.000Z">
+<meta property="article:modified_time" content="2023-08-12T13:11:56.009Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-algorithm-5-hash-table-and-two-pointers-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/13/algorithm-5-hash-table-and-two-pointers-2/" class="article-date">
+  <time datetime="2019-06-13T13:15:03.000Z" itemprop="datePublished">2019-06-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Algorithm(5) Two pointers and hash table (Part B)(By solution)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>这一篇主要还是围绕 two pointer 相关的题目进行整理。</p>
+<span id="more"></span>
+
+<h3 id="Container-With-Most-Water"><a href="#Container-With-Most-Water" class="headerlink" title="Container With Most Water"></a>Container With Most Water</h3><p>Given n non-negative integers a1, a2, …, an, where each represents a point at coordinate (i, ai). n vertical lines are drawn such that the two endpoints of line i is at (i, ai) and (i, 0). Find two lines, which together with x-axis forms a container, such that the container contains the most water.</p>
+<p>Note: You may not slant the container.<br><strong>大致思路</strong><br>这个一开始容易把人蒙住，其实是一个蛮简单的问题。就是在数轴上有好多列，找两个列，要求和x轴组成的面积最大，这个两指针是从两边开始向中间靠拢，每次计算成绩之后再更新最大值，每次保留y轴上最大的那个列，剩下的那个,若v[i]&lt;v[j],i++否则j–。 大致就是，每次x轴长度总减1,那么y周肯定要保留更长的，来使得面积最大。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int maxArea(vector&lt;int&gt; &amp;height) &#123;</span><br><span class="line">		int len=height.size();</span><br><span class="line">		int l=0,r=len-1;</span><br><span class="line">		int max=0;</span><br><span class="line">		int tempv;</span><br><span class="line">		int temph;</span><br><span class="line">		int templ;</span><br><span class="line">		while(l&lt;r)&#123;</span><br><span class="line">			temph=height[l]&lt;height[r]?height[l]:height[r];</span><br><span class="line">			templ=r-l;</span><br><span class="line">			tempv=temph*templ;</span><br><span class="line">			if(tempv&gt;max)&#123;</span><br><span class="line">				max=tempv;</span><br><span class="line">			&#125;</span><br><span class="line">            //keep the bigger one</span><br><span class="line">			if(height[l]&lt;height[r])&#123;</span><br><span class="line">				l++;</span><br><span class="line">			</span><br><span class="line">			&#125;else&#123;</span><br><span class="line">				r--;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">        return max;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="Implement-strStr"><a href="#Implement-strStr" class="headerlink" title="Implement strStr()"></a>Implement strStr()</h3><p>Returns the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.</p>
+<p>这个题目在解决方式上应该属于两指针的类型，具体的问题背景属于string的类型。其实还是蛮引人深思的一个题目，就是在一个串中，找子串出现的位置。最好的方法当然是用现成的KMP算法了。可是除非背了模板，要不然能熟练写出来，还是要花很多工夫，提前要准备得很好。</p>
+<p>之后那种brute force 的方法，就是 两个指遍历，发现不行的时候就往后移动一个元素，再重新比较。有一个很长的用例，aa…a 以及 aa…b 总是超时，这个时候采用的策略是，当发现第一个元素相同的时候，直接比较最后一个元素，要是不match 直接跳过，有点取巧的感觉。也算是一种折衷吧。在实际项目中，可能并不会总是那么“理想”，比如缓存什么的，都是先挡掉一部分再说了。</p>
+<p>还有一个启发，就是所谓的“事前”异常处理，比如needle为 “” 的时候，直接返回0，比如len(haystack)&lt;len(needle)的时候，直接返回-1 ,要是无法看到没有通过的测试用例，说实话，自己是很难考虑到这些测试情况的，能看到没有通过的测试用例，感觉就还是蛮幸福的。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int strStr(string haystack, string needle) &#123;</span><br><span class="line">		int index_h=0;</span><br><span class="line">		int index_n=0;</span><br><span class="line">		int start=-1;</span><br><span class="line">		int len_h=haystack.size();</span><br><span class="line">		int len_n=needle.size();</span><br><span class="line">		if (needle.size()==0)&#123;</span><br><span class="line">			return 0;</span><br><span class="line">		&#125;</span><br><span class="line">		if (len_n&gt;len_h)&#123;</span><br><span class="line">			return -1;</span><br><span class="line">		&#125;</span><br><span class="line">		while(index_h&lt;len_h)&#123;</span><br><span class="line">		    // 剩余长度不够就跳过了</span><br><span class="line">			if (len_h-index_n+1&lt;len_n)&#123;</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">            if (haystack[index_h]==needle[0])&#123;</span><br><span class="line">             // 首先检查一下最后几个字符 要是不可以就直接跳过 比较取巧的方法</span><br><span class="line">				if (haystack[index_h+len_n-1]!=needle[len_n-1])&#123;</span><br><span class="line">						index_h++;</span><br><span class="line">						index_n=0;</span><br><span class="line">						start=-1;</span><br><span class="line">						continue;</span><br><span class="line">				&#125;</span><br><span class="line">				start=index_h;</span><br><span class="line">				while(index_n&lt;len_n)&#123;</span><br><span class="line">					if(haystack[index_h]==needle[index_n])&#123;</span><br><span class="line">						index_h++;</span><br><span class="line">						index_n++;</span><br><span class="line">						continue;</span><br><span class="line">					&#125;else&#123;</span><br><span class="line">						index_h=start+1;</span><br><span class="line">						index_n=0;</span><br><span class="line">						start=-1;</span><br><span class="line">						break;</span><br><span class="line">					&#125;		</span><br><span class="line">				&#125;	</span><br><span class="line">				if (start!=-1)&#123;</span><br><span class="line">					return start;</span><br><span class="line">				&#125;	</span><br><span class="line">			&#125;</span><br><span class="line">			else&#123;	</span><br><span class="line">				index_h++;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		return start;  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="Linked-List-Cycle"><a href="#Linked-List-Cycle" class="headerlink" title="Linked List Cycle"></a>Linked List Cycle</h3><p>Given a linked list, determine if it has a cycle in it.</p>
+<p>这个貌似是之前考研时候的真题了。思路上就是比较简单的，判断一个linkedlist是否有环，采用追赶的方式来进行，指针都是从头开始，一个指针每次往后跳一下，另一个指针每次往后跳两下。之后如果两个结点可以重合，说明就有环，否则没环，需要注意的是先前的一些判断条件：比如链表是否为空，以及只有一个结点的情况下怎么处理。第二个链表的指针往后跳的时候是否变为空，等等。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    bool hasCycle(ListNode *head) &#123;</span><br><span class="line">        ListNode *h1=head;</span><br><span class="line">        ListNode *h2=head;</span><br><span class="line">       bool cycle=false;</span><br><span class="line">        if (head==NULL)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        if (h1-&gt;next==h1)&#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        if (h1-&gt;next==NULL)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        while(h1!=NULL&amp;&amp;h2!=NULL)&#123;</span><br><span class="line">            h1=h1-&gt;next;</span><br><span class="line">            if(h2-&gt;next!=NULL)&#123;</span><br><span class="line">                h2=h2-&gt;next-&gt;next;</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">            if(h1==h2)&#123;</span><br><span class="line">                cycle=true;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return cycle;        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="Linked-List-Cycle-II"><a href="#Linked-List-Cycle-II" class="headerlink" title="Linked List Cycle II"></a>Linked List Cycle II</h3><p>Given a linked list, return the node where the cycle begins. If there is no cycle, return null.</p>
+<p>Note: Do not modify the linked list.</p>
+<p>Follow up:<br>Can you solve it without using extra space?</p>
+<p>其实这个题目挺好的，有一定的考察性，如果我出面试题的话，相比于上一个题目的话，会出这个，因为可以体现一定的区分度，虽然还是参考网上的答案的。虽然实现起来比较容易，首先按照上cycle问题的解法，一个指针一次跳一步，一个指针一次跳两步，若是有相遇，则让第一个指针回到起点的位置，但多少还是要绕几个弯：两个指针一起向后遍历，直到再次相遇的时候，这个节点就是循环开始的那个结点。</p>
+<p>比如以下面这个图为例</p>
+<p>TODO</p>
+<p>可以看到，整个listnode的长度为a+b，其中循环部分的长度为b，假设从start节点(即循环开始的节点)到meet节点(即两个指针相遇的节点)的长度d为c。假设两个指针分别都跳了t步，之后相遇。</p>
+<p>s1&#x3D;t&#x3D;a+nb+c</p>
+<p>s2&#x3D;2t&#x3D;a+mb+c</p>
+<p>则s2-s1&#x3D;t&#x3D;(m-n)b&#x3D;a+nb+c</p>
+<p>则 a&#x3D;(m-2n)b-c</p>
+<p>我们进行的第二步的操作的也是根据这个关系来的。两个指针的步长都会变为1，一起向后移动。对于左边部分，a的长度正好是从链表的开头到start节点的长度，（m-2n）b-c从meet节点开始往后算，正好是又循环了多圈之后再从meet节点往后退c的长度，正好也到了start节点的位置，之后两个指针就相遇了，这个节点也恰好是起始点。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    ListNode *detectCycle(ListNode *head) &#123;</span><br><span class="line">        ListNode *h1=head;</span><br><span class="line">        ListNode *h2=head;</span><br><span class="line">        bool cycle=false;</span><br><span class="line">        int flag=0;</span><br><span class="line">        if (head==NULL)&#123;</span><br><span class="line">            cycle = false;</span><br><span class="line">            flag=1;</span><br><span class="line">        &#125;</span><br><span class="line">        if (h1!=NULL&amp;&amp;h1-&gt;next==h1)&#123;</span><br><span class="line">            cycle =true;</span><br><span class="line">            flag=1;</span><br><span class="line">        &#125;</span><br><span class="line">        if (h1!=NULL&amp;&amp;h1-&gt;next==NULL)&#123;</span><br><span class="line">            cycle = false;</span><br><span class="line">            flag=1;</span><br><span class="line">        &#125;</span><br><span class="line">        while(h1!=NULL&amp;&amp;h2!=NULL&amp;&amp;flag==0)&#123;</span><br><span class="line">            h1=h1-&gt;next;</span><br><span class="line">            if(h2-&gt;next!=NULL)&#123;</span><br><span class="line">                h2=h2-&gt;next-&gt;next;</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">            if(h1==h2)&#123;</span><br><span class="line">                cycle=true;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;  </span><br><span class="line">        if(cycle==false)&#123;</span><br><span class="line">            return NULL; </span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            h1=head;</span><br><span class="line">            while(h1!=h2)&#123;</span><br><span class="line">                h1=h1-&gt;next;</span><br><span class="line">                h2=h2-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return h1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="Find-the-Duplicate-Number"><a href="#Find-the-Duplicate-Number" class="headerlink" title="Find the Duplicate Number"></a>Find the Duplicate Number</h3><p>Given an array nums containing n + 1 integers where each integer is between 1 and n (inclusive), prove that at least one duplicate number must exist. Assume that there is only one duplicate number, find the duplicate one.</p>
+<p>Note:<br>You must not modify the array (assume the array is read only).【说明不能对数组进行排序】</p>
+<p>You must use only constant, O(1) extra space.【说明不能采用时间换空间的方法 建立一个map 或者是新的数组 来记录是否这个元素被访问过】</p>
+<p>Your runtime complexity should be less than O(n2).【说明不能采用两层循环的那种遍历方式】</p>
+<p>There is only one duplicate number in the array, but it could be repeated more than once.【说明不能采用所有数字再相加 之后再减去 1+2+3+..+n 这种方式 因为可能某个数字重复出现多次】</p>
+<p>Credits:<br>Special thanks to @jianchao.li.fighter for adding this problem and creating all test cases.</p>
+<p>这个题目采用map的方式是直接可以过的，利用map的特性会很简单：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> class Solution &#123;</span><br><span class="line"> public:</span><br><span class="line">     int findDuplicate(vector&amp; nums) &#123;</span><br><span class="line">         if(nums.empty()) return 0; </span><br><span class="line">         map m;</span><br><span class="line">         for(int i = 0; i &lt; nums.size(); i++)&#123;</span><br><span class="line">             if(m.find(nums[i]) == m.end())</span><br><span class="line">                 m[nums[i]] = i;</span><br><span class="line">             else return nums[i];</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>但是显然这个不是考察的目的，看tag可以使用two pointer也可以使用binary search具体链接放在下面了。感觉比较好的一个值使用two pointer的方式，相当于是一种伪链表的表示方式，用下标表示当前的结点的id用其中的值表示所指向的下一个元素。由于有重复出现的元素，这个伪链表肯定是有环的，最后就转换成了上一个问题，寻找循环开始时候的那个节点。这个转换过程的思路还是挺好的。还有一个要注意的地方就是起始点的位置 因为空间是多了一个的 所以最后一个元素是不能指向自己的 所以从最后一个元素开始遍历链表 这样实现的时候会简单一些 不用处理第一个元素就指向的是本身的这种情况 因为实际上 又可能是多个链表的 比如 1 2 3 4 5 5 这种 每个元素都指向自己 有5个单独的链表组成 但是重复的那个元素肯定会出现在最后的节点所在的链表上面</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line"> public:</span><br><span class="line">     int findDuplicate(vector&amp; nums) &#123;</span><br><span class="line">         int low=nums.size()-1;</span><br><span class="line">         int fast=low;</span><br><span class="line">         //find the meet point attention to the start position</span><br><span class="line">         while(1)&#123;</span><br><span class="line">              low=nums[low]-1;</span><br><span class="line">              fast=nums[nums[fast]-1]-1;</span><br><span class="line">              if(low==fast)&#123;</span><br><span class="line">                  break;</span><br><span class="line">              &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         //low pointer back to the start position</span><br><span class="line">         low=nums.size()-1;</span><br><span class="line">         while(1)&#123;</span><br><span class="line">            low=nums[low]-1;</span><br><span class="line">            fast=nums[fast]-1;</span><br><span class="line">            if(low==fast)&#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         return low+1;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，虽然思路还是需要绕一些弯的，但实际上，代码量是很少的，就那么几行，可见提前准备好是有多重要，面试的时候要是这种题准备过，那就是分分钟出结果了。</p>
+<p><strong>参考：</strong></p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/u010232171/article/details/48832149">http://blog.csdn.net/u010232171/article/details/48832149</a><br><a target="_blank" rel="noopener" href="http://blog.csdn.net/u011860731/article/details/48825223">http://blog.csdn.net/u011860731/article/details/48825223</a><br>采用unorded_map??<br><a target="_blank" rel="noopener" href="http://www.bubuko.com/infodetail-1123239.html">http://www.bubuko.com/infodetail-1123239.html</a> 直接采用map也是ok的</p>
+<h3 id="Merge-Sorted-Array"><a href="#Merge-Sorted-Array" class="headerlink" title="Merge Sorted Array"></a>Merge Sorted Array</h3><p>这个应该是算比较基础一类题了，注意一些细节，这种题最好能够无错地写出，注意每次index的后移操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    void merge(vector&lt;int&gt;&amp; nums1, int m, vector&lt;int&gt;&amp; nums2, int n) &#123;</span><br><span class="line">		int p=0;</span><br><span class="line">		int q=0;</span><br><span class="line">		int count=0;</span><br><span class="line">		vector&lt;int&gt; result;</span><br><span class="line">		int len1=m;</span><br><span class="line">		int len2=n;</span><br><span class="line">		</span><br><span class="line">		while (p&lt;len1&amp;&amp;q&lt;len2)&#123;</span><br><span class="line">			if(nums1[p]&lt;nums2[q])&#123;</span><br><span class="line">				result.push_back(nums1[p]);</span><br><span class="line">					p++;</span><br><span class="line">				</span><br><span class="line">			&#125;else&#123;</span><br><span class="line">				result.push_back(nums2[q]);</span><br><span class="line">				q++;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		while(p&lt;len1)&#123;</span><br><span class="line">			result.push_back(nums1[p]);</span><br><span class="line">			p++;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		while(q&lt;len2)&#123;</span><br><span class="line">			result.push_back(nums2[q]);</span><br><span class="line">			q++;</span><br><span class="line">		&#125;</span><br><span class="line">		nums1=result;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Minimum-Size-Subarray-Sum"><a href="#Minimum-Size-Subarray-Sum" class="headerlink" title="Minimum Size Subarray Sum"></a>Minimum Size Subarray Sum</h3><p>Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s. If there isn’t one, return 0 instead.</p>
+<p>For example, given the array [2,3,1,2,4,3] and s &#x3D; 7,<br>the subarray [4,3] has the minimal length under the problem constraint.</p>
+<p>其实这个有了之前的Longest Substring Without Repeating Characters在这一篇的基础，就显得容易多了，同样是窗口滑动的思想，两个指针开始处于同一个位置，之后根据sum的不同分别向后移动，在移动的过程中，更新最小序列的长度，比较典型吧，由于都是正整数。</p>
+<ul>
+<li>sum &gt; s 的时候，想要值更小一点，就更新左边的指针</li>
+<li>sum &lt; s 的时候，想让值变得更大一点，就更新右边的指针</li>
+<li>需要注意的是：边界条件的判定，特别是输入数组为空的时候，否则直接让sum&#x3D;nums[l]就会可能发生运行时错误，还有再最后的时候，要是没有符合要求的结果，就返回0，这两点自己第一次都没有看出来，事实上这也是判断程序员是否有经验的一个重要方面，面试的时候现场写程序，可能就跪了，边界检查这种东西，真是要时刻牢牢记在心里，要是不提示输入示例的话，还真是不太容易看出来。。。<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int minSubArrayLen(int s, vector&lt;int&gt;&amp; nums) &#123;</span><br><span class="line">		int l=0,r=0;</span><br><span class="line">		int sum=0;</span><br><span class="line">		int len=nums.size();</span><br><span class="line">		int tempcount=1;</span><br><span class="line">		int maxcount=99999999;</span><br><span class="line">		if (len==0)&#123;</span><br><span class="line">		    return 0;</span><br><span class="line">		&#125;</span><br><span class="line">		sum=nums[l];</span><br><span class="line">		while(l&lt;=r&amp;&amp;r&lt;len)&#123;</span><br><span class="line">			if(sum&gt;=s)&#123;</span><br><span class="line">				if(maxcount&gt;tempcount)&#123;</span><br><span class="line">					maxcount=tempcount;</span><br><span class="line">				&#125;</span><br><span class="line">				sum=sum-nums[l];</span><br><span class="line">				l++;</span><br><span class="line">				tempcount=tempcount-1;</span><br><span class="line">				</span><br><span class="line">			&#125;else&#123;</span><br><span class="line">				r++;</span><br><span class="line">				sum=sum+nums[r];</span><br><span class="line">				tempcount++;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		if (l==0&amp;&amp;r==len)&#123;</span><br><span class="line">                maxcount=0;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		return maxcount;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/13/algorithm-5-hash-table-and-two-pointers-2/" data-id="cm2a0xf4h0053dvjr9hv99d0p" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/15/algorithm-6-two-numbers-sum-and-multiply/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Algorithm(6) two numbers sum and multiply(By solution)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/13/algorithm-4-linked-list/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Algorithm(4) linked list(By input data structure)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Container-With-Most-Water"><span class="toc-number">1.</span> <span class="toc-text">Container With Most Water</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Implement-strStr"><span class="toc-number">2.</span> <span class="toc-text">Implement strStr()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linked-List-Cycle"><span class="toc-number">3.</span> <span class="toc-text">Linked List Cycle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linked-List-Cycle-II"><span class="toc-number">4.</span> <span class="toc-text">Linked List Cycle II</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Find-the-Duplicate-Number"><span class="toc-number">5.</span> <span class="toc-text">Find the Duplicate Number</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Merge-Sorted-Array"><span class="toc-number">6.</span> <span class="toc-text">Merge Sorted Array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Minimum-Size-Subarray-Sum"><span class="toc-number">7.</span> <span class="toc-text">Minimum Size Subarray Sum</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

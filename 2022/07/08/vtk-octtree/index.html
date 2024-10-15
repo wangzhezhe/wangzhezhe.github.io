@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Vtk-octtree | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Some notes about oct tree. This is the online video">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vtk-octtree">
+<meta property="og:url" content="http://yoursite.com/2022/07/08/vtk-octtree/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Some notes about oct tree. This is the online video">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-07-08T12:56:32.000Z">
+<meta property="article:modified_time" content="2023-02-12T23:37:57.821Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-vtk-octtree" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/07/08/vtk-octtree/" class="article-date">
+  <time datetime="2022-07-08T12:56:32.000Z" itemprop="datePublished">2022-07-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Visualization/">Visualization</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Vtk-octtree
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Some notes about oct tree. This is the <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=i3aWZjvd_j0&t=703s">online video</a></p>
+<span id="more"></span>
+
+<h3 id="Basic-ideas-about-oct-tree"><a href="#Basic-ideas-about-oct-tree" class="headerlink" title="Basic ideas about oct tree"></a>Basic ideas about oct tree</h3><p><strong>The structure of the tree</strong></p>
+<p>The idea of the oct tree or quad tree is a spatial decomposition structure. We can decompose the spatial by a bisection manner and refine it as needed.</p>
+<p><strong>What does the node represent</strong></p>
+<p>The node of the structure represents the current bounding box. The coordinates of the bounding box is the basic element of the node. </p>
+<p><strong>Common operations</strong></p>
+<p>There are two set of refine principles, one is to refine based on space coordinates. Another is to refine it based on the actual variable value.</p>
+<p>With this structures, we can refine the data in an adaptive manner. For example, the mesh can be dense for the region we are interested. We can further refine the region if the specific condition is not satisfied.</p>
+<p>This condition can come from two aspects, one is the property of the physical space, for example, each node contains less than n points then stop the refinement. </p>
+<p>Another one is the property of the actual physical value. For example, we may only stop the refinement when the data variance is less than a specific value or threshold</p>
+<p><strong>The basic use scenarios of the oct tree</strong></p>
+<p>Refer to common uses sections of wiki page:</p>
+<p>Render more details in specific area</p>
+<p>Search the closest points</p>
+<p>Detect the relationship with the closest points (such as the collision detection)</p>
+<h3 id="Example-of-using-the-oct-tree-in-VTK"><a href="#Example-of-using-the-oct-tree-in-VTK" class="headerlink" title="Example of using the oct tree in VTK"></a>Example of using the oct tree in VTK</h3><p>current example</p>
+<p><a target="_blank" rel="noopener" href="https://kitware.github.io/vtk-examples/site/Cxx/#octree">https://kitware.github.io/vtk-examples/site/Cxx/#octree</a></p>
+<p>input a data set and output the octtree</p>
+<p>The associated code is at</p>
+<p>Particular nodes:</p>
+<p>VTK&#x2F;Common&#x2F;DataModel&#x2F;vtkOctreePointLocatorNode.cxx</p>
+<p>The associated tree structure:</p>
+<p>VTK&#x2F;Common&#x2F;DataModel&#x2F;vtkOctreePointLocator.cxx</p>
+<p>5MCST example, input a polydata and then output oct tree locator</p>
+<p>There are two kinds of boundry, the firs one is the spatial boundry (coordinates bounudry) for each dimentsion, the second one is the data boundry for each dimension.</p>
+<h3 id="Understanding-VTK-oct-tree-implementation"><a href="#Understanding-VTK-oct-tree-implementation" class="headerlink" title="Understanding VTK oct tree implementation"></a>Understanding VTK oct tree implementation</h3><p><strong>core structure of the oct tree</strong></p>
+<p>DivideRegion is a high level function, and there is recursive call based on this function. The main refinement operation is implemented based on this function.</p>
+<p>node structure and the tree structure</p>
+<p>condition to determin when to complete the refine operation is based on the level information or the number of points in the node or the MaximumPointsPerRegion (the default one is 100) DivideTest contains the condition to decide if to do the further refinement operation.</p>
+<p>Be careful about the index part, use three digit to represent it. The index start from 000 to the 111 For each dimention, it can either be 0 or 1, the number of digits equals to the numbers of the dimention. If is larger than middle position value, the index is 1 for that position, otherwise, the index is 0.</p>
+<p>In DivideRegion function, order array is a little bit tricky to understand.</p>
+<p>Originally, we set it by natural order, then during the index computation, we select out the points belonging to each sub space, these index are stored into a points list, then we reuse that order array, for each sub division, we try to assign it to corsponding segment of the ordering array. Then setting the start position of the order at different position based on the counter. Without this array, we can not know how many points belongs to the next level after the subdivision. We do not know the virtual nody contains how many points.</p>
+<h3 id="Difference-between-the-OCTree-and-HyperGridTree"><a href="#Difference-between-the-OCTree-and-HyperGridTree" class="headerlink" title="Difference between the OCTree and HyperGridTree"></a>Difference between the OCTree and HyperGridTree</h3><p>The octtree is like a kind of index based on the specific dataset. We can use the octtree as the locator to find the specific points. The original data is in a different structure and we build the oct tree overit. The HyberGridTree is different, its original data is stored in the tree format direactly.</p>
+<p>(TODO) amr data in the hdf5 format</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2022/07/08/vtk-octtree/" data-id="cm2a0xf5000apdvjrdig4397l" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2022/07/28/Software-design-experiences/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Software design and code review experiences
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/06/13/Cuda-programming-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Cuda programming (1)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Basic-ideas-about-oct-tree"><span class="toc-number">1.</span> <span class="toc-text">Basic ideas about oct tree</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Example-of-using-the-oct-tree-in-VTK"><span class="toc-number">2.</span> <span class="toc-text">Example of using the oct tree in VTK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Understanding-VTK-oct-tree-implementation"><span class="toc-number">3.</span> <span class="toc-text">Understanding VTK oct tree implementation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Difference-between-the-OCTree-and-HyperGridTree"><span class="toc-number">4.</span> <span class="toc-text">Difference between the OCTree and HyperGridTree</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

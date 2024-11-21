@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Multiple backend design | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Design of multiple backend">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Multiple backend design">
+<meta property="og:url" content="http://yoursite.com/2024/10/18/Multiple-backend-design/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Design of multiple backend">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-10-18T01:09:38.000Z">
+<meta property="article:modified_time" content="2024-10-18T01:10:31.805Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Multiple-backend-design" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2024/10/18/Multiple-backend-design/" class="article-date">
+  <time datetime="2024-10-18T01:09:38.000Z" itemprop="datePublished">2024-10-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Multiple backend design
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Design of multiple backend</p>
+<span id="more"></span>
+
+<p>The following answer is from chatgpt, need to refine</p>
+<p>在使用模板元编程时，如果要确保在没有 CUDA 支持的环境下不编译 CUDA 相关的代码，可以通过模板的特化和条件编译（如 <code>SFINAE</code> 或 <code>constexpr</code>）等技术来实现。这样做的关键是让编译器只选择与当前环境相兼容的代码路径，而不会去编译不支持的部分，比如 CUDA。</p>
+<p>以下是几种在没有 CUDA 支持的环境下确保 CUDA 代码不被编译的方法：</p>
+<h3 id="1-利用-SFINAE（Substitution-Failure-Is-Not-An-Error）"><a href="#1-利用-SFINAE（Substitution-Failure-Is-Not-An-Error）" class="headerlink" title="1. 利用 SFINAE（Substitution Failure Is Not An Error）"></a>1. <strong>利用 SFINAE（Substitution Failure Is Not An Error）</strong></h3><p>SFINAE 允许我们在编译期通过模板参数判断某些代码是否有效。如果不满足条件，则编译器不会尝试实例化该代码，从而避免编译 CUDA 代码。</p>
+<h4 id="实现思路："><a href="#实现思路：" class="headerlink" title="实现思路："></a>实现思路：</h4><p>我们可以通过 SFINAE 来启用或禁用 CUDA 相关的代码。假设我们使用编译期的特性来判断当前环境是否支持 CUDA。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义 CUDA 和其他后端的标签</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">CUDABackend</span> &#123;&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">NoCUDABackend</span> &#123;&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">OpenMPBackend</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 默认的通用函数，适用于没有 CUDA 支持的环境</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">typename</span> std::enable_if&lt;std::is_same&lt;T, NoCUDABackend&gt;::value&gt;::<span class="function">type</span></span><br><span class="line"><span class="function"><span class="title">launch_kernel</span><span class="params">(<span class="type">int</span>* data, <span class="type">int</span> size)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 处理没有 CUDA 的情况（例如用 CPU 或 OpenMP 运行）</span></span><br><span class="line">    <span class="meta">#<span class="keyword">pragma</span> omp parallel for</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">        data[i] *= <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CUDA 实现，只在有 CUDA 支持的环境下启用</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">typename</span> std::enable_if&lt;std::is_same&lt;T, CUDABackend&gt;::value&gt;::<span class="function">type</span></span><br><span class="line"><span class="function"><span class="title">launch_kernel</span><span class="params">(<span class="type">int</span>* data, <span class="type">int</span> size)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> blocks = (size + <span class="number">255</span>) / <span class="number">256</span>;</span><br><span class="line">    <span class="type">int</span> threads = <span class="number">256</span>;</span><br><span class="line">    <span class="comment">// CUDA 核心函数调用</span></span><br><span class="line">    cudaLaunchKernel&lt;&lt;&lt;blocks, threads&gt;&gt;&gt;(data, size);</span><br><span class="line">    <span class="built_in">cudaDeviceSynchronize</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>优点</strong>：通过 <code>std::enable_if</code>，在没有 CUDA 支持的环境下，编译器不会实例化 <code>CUDABackend</code> 相关的代码，因此 CUDA 代码不会被编译。</p>
+</li>
+<li><p><strong>使用</strong>：<br>可以根据用户编译时的条件选择不同的后端：</p>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">if</span> defined(USE_CUDA)</span></span><br><span class="line"><span class="keyword">using</span> Backend = CUDABackend;</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line"><span class="keyword">using</span> Backend = NoCUDABackend;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span>* data = <span class="keyword">new</span> <span class="type">int</span>[<span class="number">1000</span>];</span><br><span class="line">    <span class="type">int</span> size = <span class="number">1000</span>;</span><br><span class="line">    <span class="built_in">launch_kernel</span>&lt;Backend&gt;(data, size);</span><br><span class="line">    <span class="keyword">delete</span>[] data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这种情况下，如果没有定义 <code>USE_CUDA</code>，则 <code>launch_kernel</code> 的 <code>NoCUDABackend</code> 版本将被调用，而 CUDA 版本的代码不会被编译。</p>
+<h3 id="2-使用-C-20-Concepts"><a href="#2-使用-C-20-Concepts" class="headerlink" title="2. 使用 C++20 Concepts"></a>2. <strong>使用 C++20 Concepts</strong></h3><p>C++20 引入的 <code>Concepts</code> 可以在编译时对模板参数进行约束。这可以进一步简化 SFINAE 的代码。</p>
+<h4 id="实现方法："><a href="#实现方法：" class="headerlink" title="实现方法："></a>实现方法：</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;concepts&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个 concept 来判断是否为 CUDA 后端</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">concept</span> IsCUDA = std::is_same_v&lt;T, CUDABackend&gt;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 针对 CUDA 实现的代码，仅当类型满足 IsCUDA 时编译</span></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">requires</span> IsCUDA&lt;T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">launch_kernel</span><span class="params">(<span class="type">int</span>* data, <span class="type">int</span> size)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> blocks = (size + <span class="number">255</span>) / <span class="number">256</span>;</span><br><span class="line">    <span class="type">int</span> threads = <span class="number">256</span>;</span><br><span class="line">    cudaLaunchKernel&lt;&lt;&lt;blocks, threads&gt;&gt;&gt;(data, size);</span><br><span class="line">    <span class="built_in">cudaDeviceSynchronize</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 针对非 CUDA 的实现</span></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="title">requires</span> <span class="params">(!IsCUDA&lt;T&gt;)</span></span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">launch_kernel</span><span class="params">(<span class="type">int</span>* data, <span class="type">int</span> size)</span> </span>&#123;</span><br><span class="line">    <span class="meta">#<span class="keyword">pragma</span> omp parallel for</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">        data[i] *= <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>Concepts</code> 的方式可以简化模板元编程中的 <code>enable_if</code>，使代码更加简洁和易读。在编译时，编译器会根据 <code>Backend</code> 类型来选择合适的函数实现。</p>
+<h3 id="3-条件编译（Compile-Time-If-x2F-constexpr-if）"><a href="#3-条件编译（Compile-Time-If-x2F-constexpr-if）" class="headerlink" title="3. 条件编译（Compile-Time If &#x2F; constexpr if）"></a>3. <strong>条件编译（Compile-Time If &#x2F; <code>constexpr if</code>）</strong></h3><p>C++17 引入了 <code>constexpr if</code>，使得在编译期可以根据条件选择执行哪段代码，从而避免编译不支持的部分。</p>
+<h4 id="实现方法：-1"><a href="#实现方法：-1" class="headerlink" title="实现方法："></a>实现方法：</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">CUDABackend</span> &#123;&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">OpenMPBackend</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Backend&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">launch_kernel</span><span class="params">(<span class="type">int</span>* data, <span class="type">int</span> size)</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">if</span> <span class="title">constexpr</span> <span class="params">(std::is_same_v&lt;Backend, CUDABackend&gt;)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> blocks = (size + <span class="number">255</span>) / <span class="number">256</span>;</span><br><span class="line">        <span class="type">int</span> threads = <span class="number">256</span>;</span><br><span class="line">        <span class="comment">// CUDA 核心函数调用</span></span><br><span class="line">        cudaLaunchKernel&lt;&lt;&lt;blocks, threads&gt;&gt;&gt;(data, size);</span><br><span class="line">        <span class="built_in">cudaDeviceSynchronize</span>();</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> <span class="built_in">constexpr</span> (std::is_same_v&lt;Backend, OpenMPBackend&gt;) &#123;</span><br><span class="line">        <span class="comment">// OpenMP 实现</span></span><br><span class="line">        <span class="meta">#<span class="keyword">pragma</span> omp parallel for</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">            data[i] *= <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在使用 <code>constexpr if</code> 时，编译器只会实例化条件为 <code>true</code> 的代码分支。因此，即使在 CUDA 不可用的环境下，编译器也不会编译 CUDA 相关的代码。</p>
+<h3 id="4-使用构建系统控制编译（如-CMake）"><a href="#4-使用构建系统控制编译（如-CMake）" class="headerlink" title="4. 使用构建系统控制编译（如 CMake）"></a>4. <strong>使用构建系统控制编译（如 CMake）</strong></h3><p>除了通过代码层面的模板元编程和条件编译控制，构建系统也可以起到关键作用。在没有 CUDA 支持的系统上，构建系统应确保不会编译 CUDA 代码或链接 CUDA 库。</p>
+<h4 id="CMake-实现："><a href="#CMake-实现：" class="headerlink" title="CMake 实现："></a>CMake 实现：</h4><p>在 CMake 中可以通过条件设置编译选项：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.10</span>)</span><br><span class="line"><span class="keyword">project</span>(MultiBackendLibrary)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加选项来控制是否启用 CUDA</span></span><br><span class="line"><span class="keyword">option</span>(USE_CUDA <span class="string">&quot;Use CUDA Backend&quot;</span> <span class="keyword">OFF</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 根据 USE_CUDA 选项设置编译标志</span></span><br><span class="line"><span class="keyword">if</span>(USE_CUDA)</span><br><span class="line">    <span class="keyword">find_package</span>(CUDA REQUIRED)</span><br><span class="line">    <span class="keyword">add_definitions</span>(-DUSE_CUDA)</span><br><span class="line">    <span class="keyword">include_directories</span>(<span class="variable">$&#123;CUDA_INCLUDE_DIRS&#125;</span>)</span><br><span class="line">    <span class="keyword">link_libraries</span>(<span class="variable">$&#123;CUDA_LIBRARIES&#125;</span>)</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(main main.cpp)</span><br></pre></td></tr></table></figure>
+
+<p>在没有 CUDA 支持的系统上，可以通过以下方式配置编译：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cmake -DUSE_CUDA=OFF ..</span><br></pre></td></tr></table></figure>
+
+<p>这样，CMake 将自动排除 CUDA 相关的代码路径。</p>
+<h3 id="5-分离-CUDA-代码到独立的源文件"><a href="#5-分离-CUDA-代码到独立的源文件" class="headerlink" title="5. 分离 CUDA 代码到独立的源文件"></a>5. <strong>分离 CUDA 代码到独立的源文件</strong></h3><p>另一种避免 CUDA 代码被无关的编译环境处理的方法是将 CUDA 相关的代码放到单独的 <code>.cu</code> 文件中。这些文件只在 CUDA 可用时编译，而普通的 C++ 代码则不会受到影响。</p>
+<ul>
+<li><p><strong>示例：</strong><br>将 CUDA 代码写入一个 <code>.cu</code> 文件中：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// cuda_backend.cu</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function"><span class="type">void</span> <span class="title">launch_cuda_kernel</span><span class="params">(<span class="type">int</span>* data, <span class="type">int</span> size)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> blocks = (size + <span class="number">255</span>) / <span class="number">256</span>;</span><br><span class="line">    <span class="type">int</span> threads = <span class="number">256</span>;</span><br><span class="line">    cudaLaunchKernel&lt;&lt;&lt;blocks, threads&gt;&gt;&gt;(data, size);</span><br><span class="line">    <span class="built_in">cudaDeviceSynchronize</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在主程序中使用条件编译选择是否使用该函数：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> USE_CUDA</span></span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="type">void</span> <span class="title">launch_cuda_kernel</span><span class="params">(<span class="type">int</span>* data, <span class="type">int</span> size)</span></span>;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">launch_kernel</span><span class="params">(<span class="type">int</span>* data, <span class="type">int</span> size)</span> </span>&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> USE_CUDA</span></span><br><span class="line">    <span class="built_in">launch_cuda_kernel</span>(data, size);</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    <span class="meta">#<span class="keyword">pragma</span> omp parallel for</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">        data[i] *= <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>这种方式下，只有在 <code>USE_CUDA</code> 定义的情况下，CUDA 代码会被编译并链接。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在 C++ 中使用模板元编程和现代 C++ 特性（如 SFINAE、Concepts、<code>constexpr if</code>）可以在编译期动态选择后端并确保不编译不支持的代码。结合构建系统（如 CMake）进行条件编译和代码分离，可以有效避免在不支持 CUDA 的环境中编译 CUDA 代码。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2024/10/18/Multiple-backend-design/" data-id="cm2sawzvk00013mjrdhsd8dfg" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2024/11/21/opengl-tips/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          opengl_tips
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/10/17/LLM-tips/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">LLM tips</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%88%A9%E7%94%A8-SFINAE%EF%BC%88Substitution-Failure-Is-Not-An-Error%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">1. 利用 SFINAE（Substitution Failure Is Not An Error）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">实现思路：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8-C-20-Concepts"><span class="toc-number">2.</span> <span class="toc-text">2. 使用 C++20 Concepts</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-number">2.1.</span> <span class="toc-text">实现方法：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91%EF%BC%88Compile-Time-If-x2F-constexpr-if%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">3. 条件编译（Compile-Time If &#x2F; constexpr if）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95%EF%BC%9A-1"><span class="toc-number">3.1.</span> <span class="toc-text">实现方法：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BD%BF%E7%94%A8%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F%E6%8E%A7%E5%88%B6%E7%BC%96%E8%AF%91%EF%BC%88%E5%A6%82-CMake%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">4. 使用构建系统控制编译（如 CMake）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CMake-%E5%AE%9E%E7%8E%B0%EF%BC%9A"><span class="toc-number">4.1.</span> <span class="toc-text">CMake 实现：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%88%86%E7%A6%BB-CUDA-%E4%BB%A3%E7%A0%81%E5%88%B0%E7%8B%AC%E7%AB%8B%E7%9A%84%E6%BA%90%E6%96%87%E4%BB%B6"><span class="toc-number">5.</span> <span class="toc-text">5. 分离 CUDA 代码到独立的源文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      })
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      })
+    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

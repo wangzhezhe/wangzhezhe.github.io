@@ -13,7 +13,7 @@
 <meta property="og:description" content="Some tips about working on windows">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-07-27T01:58:59.000Z">
-<meta property="article:modified_time" content="2024-09-06T07:23:13.196Z">
+<meta property="article:modified_time" content="2024-10-30T14:39:45.087Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -139,6 +139,11 @@ ga('send', 'pageview');
 <p>If you want to watch a variable, just a find it and click the right button, then add watch, we can even watch the content pointed by pointer. Onw good thing is to watch the raw array, just add <code>,[numer of elements you want to watch]</code> then there is a new generated array, we can watch it easily.</p>
 <p><strong>Default dir</strong></p>
 <p>The default working dir is the build dir instead of Debug dir, just right click the  project you want to run, and then right click-&gt; open folder in file explorer.</p>
+<h3 id="CMake-and-install-on-windows"><a href="#CMake-and-install-on-windows" class="headerlink" title="CMake and install on windows"></a>CMake and install on windows</h3><p>On windows, we need to use cmake-gui + terminal to build and install project.</p>
+<p>If we just want to build, we usually use cmake gui to config and generate the build file, and then click open project to build the project in vs studio. However, this can only build the code in debug mode. If we want to build and install a file and let it to be used by another project, we need to open termial and use following cmake command</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cmake --build . --config Release </span><br></pre></td></tr></table></figure>
+
+<p>In this way, we can build things in a release mode.</p>
 <h3 id="Windows-office"><a href="#Windows-office" class="headerlink" title="Windows office"></a>Windows office</h3><p>表格合并</p>
 <p>引用与更新域</p>
 <h3 id="Other-thoughts"><a href="#Other-thoughts" class="headerlink" title="Other thoughts"></a>Other thoughts</h3><p>The bad thing about the gui related operation is that it is hard to reproduce things. That’s why we prefer to use the linux for development.</p>
@@ -246,7 +251,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Terminal"><span class="toc-number">1.</span> <span class="toc-text">Terminal</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cmake"><span class="toc-number">2.</span> <span class="toc-text">Cmake</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Visual-studio"><span class="toc-number">3.</span> <span class="toc-text">Visual studio</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows-office"><span class="toc-number">4.</span> <span class="toc-text">Windows office</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Other-thoughts"><span class="toc-number">5.</span> <span class="toc-text">Other thoughts</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mac%E5%9C%B0%E5%9D%80%E9%85%8D%E7%BD%AE"><span class="toc-number">6.</span> <span class="toc-text">Mac地址配置</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Terminal"><span class="toc-number">1.</span> <span class="toc-text">Terminal</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cmake"><span class="toc-number">2.</span> <span class="toc-text">Cmake</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Visual-studio"><span class="toc-number">3.</span> <span class="toc-text">Visual studio</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMake-and-install-on-windows"><span class="toc-number">4.</span> <span class="toc-text">CMake and install on windows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows-office"><span class="toc-number">5.</span> <span class="toc-text">Windows office</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Other-thoughts"><span class="toc-number">6.</span> <span class="toc-text">Other thoughts</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mac%E5%9C%B0%E5%9D%80%E9%85%8D%E7%BD%AE"><span class="toc-number">7.</span> <span class="toc-text">Mac地址配置</span></a></li></ol>
           </div>
       </div>
     </div>

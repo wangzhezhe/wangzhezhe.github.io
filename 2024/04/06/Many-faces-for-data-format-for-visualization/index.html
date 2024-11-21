@@ -13,7 +13,7 @@
 <meta property="og:description" content="Some tips regarding the common data format used for visualization.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-04-06T15:54:41.000Z">
-<meta property="article:modified_time" content="2024-04-28T01:32:34.997Z">
+<meta property="article:modified_time" content="2024-11-07T02:34:10.253Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -142,7 +142,13 @@ ga('send', 'pageview');
 <p>Another important tip is the meaning for organizing the variable in adios, if the data layout is {d1,d2,d3}, <strong>it means that d3 is the dimention that changes the fastest one</strong> so if this data is 3d data, it is possible that d3 is the x dimention, then d2 is the y dimention and d1 is the z dimentions. All data is flattern into 1d array and stored in the disk or in memory.</p>
 <p><strong>Tips of compiling</strong></p>
 <p>On frontier, using default compiler to build adios, there are some errors to find the MPI after switch to the gcc.</p>
-<h3 id="HDF5"><a href="#HDF5" class="headerlink" title="HDF5"></a>HDF5</h3><h3 id="openPMD"><a href="#openPMD" class="headerlink" title="openPMD"></a>openPMD</h3><p>There are three types of backend, hdf5, adios and  json.</p>
+<h3 id="HDF5-与-nc-data"><a href="#HDF5-与-nc-data" class="headerlink" title="HDF5 与 nc data"></a>HDF5 与 nc data</h3><p>nc data is used a lot in climate science</p>
+<p>The popular tool for showing nc data is Panoply</p>
+<p>典型的表示就是经度和纬度相结合组成的2d网格</p>
+<p>python的常用接口可以参考如下例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import netCDF4 as nc</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">import numpy as np </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">file_path = &#x27;xxx.nc&#x27;</span><br><span class="line">load the nc data</span><br><span class="line">ds = nc.Dataset(file_path)</span><br><span class="line"></span><br><span class="line"># general info of data set</span><br><span class="line">print(ds)</span><br><span class="line"></span><br><span class="line"># keys</span><br><span class="line">print(ds.variables.keys())</span><br><span class="line"></span><br><span class="line"># show information about specific var</span><br><span class="line">uu_var = ds.variables[&#x27;ww&#x27;][:]</span><br><span class="line"></span><br><span class="line"># replace the masked value created by netcdf4 to np.nan</span><br><span class="line"># for original maskConstant, the output value is &quot;--&quot;</span><br><span class="line">uu_var_filled = uu_var.filled(np.nan)</span><br><span class="line"></span><br><span class="line"># get results in one layer, in this dataset, the first dim is time, the second dim is depth or layer</span><br><span class="line">uu_var_filled = uu_var_filled[0][0][:]</span><br><span class="line"></span><br><span class="line"># print out the image by lat and lon</span><br><span class="line">plt.imshow(uu_var_filled, origin=&#x27;lower&#x27;)</span><br><span class="line"></span><br><span class="line"># save results</span><br><span class="line">plt.savefig(&quot;uu_data.png&quot;)</span><br></pre></td></tr></table></figure>
+<p>cpp的常用接口有</p>
+<h3 id="openPMD"><a href="#openPMD" class="headerlink" title="openPMD"></a>openPMD</h3><p>There are three types of backend, hdf5, adios and  json.</p>
 <h3 id="Foam-data"><a href="#Foam-data" class="headerlink" title="Foam data"></a>Foam data</h3><h3 id="raw-image-data"><a href="#raw-image-data" class="headerlink" title="raw image data"></a>raw image data</h3>
       
     </div>
@@ -246,7 +252,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-data"><span class="toc-number">1.</span> <span class="toc-text">VTK data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-m-data"><span class="toc-number">2.</span> <span class="toc-text">VTK-m data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ADIOS"><span class="toc-number">3.</span> <span class="toc-text">ADIOS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HDF5"><span class="toc-number">4.</span> <span class="toc-text">HDF5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#openPMD"><span class="toc-number">5.</span> <span class="toc-text">openPMD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Foam-data"><span class="toc-number">6.</span> <span class="toc-text">Foam data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#raw-image-data"><span class="toc-number">7.</span> <span class="toc-text">raw image data</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-data"><span class="toc-number">1.</span> <span class="toc-text">VTK data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-m-data"><span class="toc-number">2.</span> <span class="toc-text">VTK-m data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ADIOS"><span class="toc-number">3.</span> <span class="toc-text">ADIOS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HDF5-%E4%B8%8E-nc-data"><span class="toc-number">4.</span> <span class="toc-text">HDF5 与 nc data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#openPMD"><span class="toc-number">5.</span> <span class="toc-text">openPMD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Foam-data"><span class="toc-number">6.</span> <span class="toc-text">Foam data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#raw-image-data"><span class="toc-number">7.</span> <span class="toc-text">raw image data</span></a></li></ol>
           </div>
       </div>
     </div>

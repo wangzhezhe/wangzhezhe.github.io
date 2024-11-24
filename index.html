@@ -103,6 +103,10 @@ ga('send', 'pageview');
   <time datetime="2024-11-23T09:59:40.000Z" itemprop="datePublished">2024-11-23</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Visualization/">Visualization</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -119,23 +123,12 @@ ga('send', 'pageview');
     
     <div class="article-entry" itemprop="articleBody">
       
-        <!-- Table of Contents -->
+        <p>Some tips about the powerwall rendering and distributed rendering.</p>
         
-        <span id="more"></span>
-
-
-<h3 id="Some-background"><a href="#Some-background" class="headerlink" title="Some background"></a>Some background</h3><p>sort first, sort middle and sort last</p>
-<p>Here is an online answer about how to use VTK to do distributed rendering</p>
-<p><a target="_blank" rel="noopener" href="https://discourse.vtk.org/t/question-about-powerwall-rendering-based-on-vtk/14893/3">https://discourse.vtk.org/t/question-about-powerwall-rendering-based-on-vtk/14893/3</a></p>
-<p>In MPI env, we can use icet, which is sorted last approach.</p>
-<p>For IceT, there are two patterns, one is aggregate all rendered image to one process (alpha value of background color should be set as 0, and all image should have same size). Another is to distributed rendered ok image to all ranks using tile splitting.</p>
-<p>In one of our project, we use VTK render directly, each process start a vtk render, and we use controller program to control the camera position of each render, and we can implement the effect of powerwall by this way. The trick part is just how to handle IO in a simple way and what parameters need to be updated for the camera. We just shift the window center by specific value. Although it is easy to implement, this appraoch is not efficient enough since each node need to load same data actually.</p>
-<h3 id="Handle-IO"><a href="#Handle-IO" class="headerlink" title="Handle IO"></a>Handle IO</h3><p>One of our project use asyncio of python. It can handle the communication in an asyncrounous way, which is lightweighted and flexible to use in the use case scenarios. We do not need RPC librarys here, this library can help us to handle encode and decode of the data. </p>
-<h3 id="Compute-the-camara-movement"><a href="#Compute-the-camara-movement" class="headerlink" title="Compute the camara movement"></a>Compute the camara movement</h3><p><strong>compuginh the shift of x and y</strong></p>
-<p><strong>put the object at the center for camara wall</strong></p>
-<p>When the number of screen in one dimention is odd, such as 3. the middle is the center for specific display, such as 1 in x direction. the disply 0 should move -2 to left in view space (the bounds is from -1 to 1 in view space). But when the number of displays is an even number, such as 2, it is not convenient to compute, we need to add an offset firstly, for example, assuming middle one is 4&#x2F;2&#x3D;2 (actually it is not, the actual middle is at left side of display), we plus 1 firstly, so the dummy middle moves to the middle of display 2. Then we can use <code>(index-middle index)*(2)</code> to compute the shift value. By this way, all display can moves to the right position.</p>
-<p><strong>when the display is scaled, how to set the camara properly</strong>.</p>
-
+          <p class="article-more-link">
+            <a href="/2024/11/23/distributed-rendering/#more">继续阅读全文 »</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
@@ -621,7 +614,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title categories">分类</h3>
     <div class="widget" id="categories">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI-Math-NumericalAnalysis/">AI&Math&NumericalAnalysis</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/HPC/">HPC</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Visualization/">Visualization</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">algorithm</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c-c/">c/c++</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/compile/">compile</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/distributed-system/">distributed system</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/golang/">golang</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/methodology/">methodology</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/others/">others</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/parallel/">parallel</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/performance/">performance</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/pytorch/">pytorch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/story/">story</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/workflow/">workflow</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI-Math-NumericalAnalysis/">AI&Math&NumericalAnalysis</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/HPC/">HPC</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Visualization/">Visualization</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">algorithm</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/blog/">blog</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c-c/">c/c++</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/compile/">compile</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/distributed-system/">distributed system</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/golang/">golang</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/methodology/">methodology</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/others/">others</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/parallel/">parallel</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/performance/">performance</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/pytorch/">pytorch</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/story/">story</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/workflow/">workflow</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 

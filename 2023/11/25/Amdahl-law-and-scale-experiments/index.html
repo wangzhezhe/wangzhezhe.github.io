@@ -5,15 +5,15 @@
   
   <title>Amdahl law and scale experiments | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="不论是在论文的experiments的部分还是说各种parallel algorithm的性能分析部分， scale efficiency 始终是一个重要的property。Amdahl law is its fundations.">
+  <meta name="description" content="不论是在论文的experiments的部分还是说各种parallel algorithm的性能分析部分， scale efficiency 始终是一个重要的property。Amdahl law is its foundation.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Amdahl law and scale experiments">
 <meta property="og:url" content="http://yoursite.com/2023/11/25/Amdahl-law-and-scale-experiments/index.html">
 <meta property="og:site_name" content="AverageMind">
-<meta property="og:description" content="不论是在论文的experiments的部分还是说各种parallel algorithm的性能分析部分， scale efficiency 始终是一个重要的property。Amdahl law is its fundations.">
+<meta property="og:description" content="不论是在论文的experiments的部分还是说各种parallel algorithm的性能分析部分， scale efficiency 始终是一个重要的property。Amdahl law is its foundation.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-11-25T04:19:34.000Z">
-<meta property="article:modified_time" content="2025-01-19T08:23:37.462Z">
+<meta property="article:modified_time" content="2025-01-19T13:47:33.067Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -125,9 +125,8 @@ ga('send', 'pageview');
       
         <!-- Table of Contents -->
         
-        <p>不论是在论文的experiments的部分还是说各种parallel algorithm的性能分析部分， scale efficiency 始终是一个重要的property。Amdahl law is its fundations.</p>
+        <p>不论是在论文的experiments的部分还是说各种parallel algorithm的性能分析部分， scale efficiency 始终是一个重要的property。Amdahl law is its foundation.</p>
 <span id="more"></span>
-
 
 
 <h3 id="Weak-scaling"><a href="#Weak-scaling" class="headerlink" title="Weak scaling"></a>Weak scaling</h3><p>We increase the problem size proportionally to the number of processors so the work&#x2F;processor stays the same. For example, we assume the work&#x2F;processor is 50, which means every processor should process four tasks; when testing the scaling ability, you could choose the following combination of (threadnum, tasknum):(1,50),(2,100),(3,150),(4,200). The key idea behind the weak scale is (<strong>work&#x2F;process num is a constant value</strong>). The ideal line for the weak scaling line is a horizontal line.</p>
@@ -146,6 +145,8 @@ ga('send', 'pageview');
 <p>相对不易并行的算法</p>
 <p>流线可视化（Streamline Visualization）：需要频繁跨域通信，负载不平衡风险大，不同流场&#x2F;种子分布会导致大幅性能波动，因而整体并行效率通常偏低。数据集本身的不均衡性也会对结果又较大的影响。</p>
 <p>在实际项目中，不同算法的并行效率还会受到硬件（CPU&#x2F;GPU 计算能力、网络互联带宽与延迟、I&#x2F;O 子系统等）、软件栈（MPI、线程模型、调度策略）及数据分布情况的影响。要想在大规模并行环境下充分挖掘可视化算法的性能潜力，需要从负载均衡、通信模式、数据布局等多个方面进行针对性优化。</p>
+<p>这就使我想到了之前一个关于particle advection优化的例子，当时得到的一些实验结果是parallel number很大的时候 core time 还不如parallel number比较小的时候。这个结论从amdal law以及parallel efficiency的角度就很好解释了，到了core number增加到了一定的程度，speed up 不再随着core number的升高而升高了，所以core time就变得越来越大，这个情况下，即使再提升资源，也没有节省多少。</p>
+<p>所以parallel efficiency应该是一个动态的曲线，在particle advection这种算法的时候，横坐标是core number，纵坐标就是逐渐的再下减，如果用了我们的方法，这个下减的趋势被推迟，甚至是还保持一个很高的线，那就是好的方法，中间出现的gap就是被这个方法close的区域，如果有这样的一个图，应该将会是比较好的说明方法有效性的图。</p>
 <h3 id="Different-explanation-about-what-is-fixed-for-the-data-IO-service"><a href="#Different-explanation-about-what-is-fixed-for-the-data-IO-service" class="headerlink" title="Different explanation about what is fixed (for the data IO service)"></a>Different explanation about what is fixed (for the data IO service)</h3><p>When we increase the number of staging services proportionally with the amount of data.</p>
 <p>Yeah, that’s a kind of weak scaling, too, sort of, but since we don’t care about I&#x2F;O times, what really matters is the data size, so we should have had an amount of data proportional to the number of servers.</p>
 <h3 id="Meaning-behind-the-scale-experiments"><a href="#Meaning-behind-the-scale-experiments" class="headerlink" title="Meaning behind the scale experiments"></a>Meaning behind the scale experiments</h3><p>idea scale is a linear number; for example, when we process a number increase from 1 to 2, the task number we could solve increases from 100 to 200. But in real cases, there is overhead for increasing the threads; parallel threads will also increase the overhead for communication between threads.</p>

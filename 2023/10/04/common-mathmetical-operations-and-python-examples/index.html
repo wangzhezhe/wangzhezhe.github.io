@@ -13,7 +13,7 @@
 <meta property="og:description" content="Some tips about mathmetical operations and how are they implemented in python library such as numpy.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-10-04T08:09:48.000Z">
-<meta property="article:modified_time" content="2023-10-04T21:03:50.442Z">
+<meta property="article:modified_time" content="2024-12-22T09:43:39.174Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -178,19 +178,27 @@ ga('send', 'pageview');
 <p>input is a scalar, output is a vector</p>
 <p>gradient会作用在一个scalar field中，gradient操作会在每个点上都求出一个vector，这个vector方向就是scalar field中的值上升最快的方向</p>
 <p>具体计算的时候，每个scalar 由空间中的 x,y,z 的位置决定 (assume there is 3d) 这个scarlar value 实质上是空间上的每个点对应的值 v &#x3D; f (x,y,z) 之后这个函数对每个方向上的分量求偏导数然后每个方向上的分量组成一个vector，就是gradient of f。</p>
-<p>Gradient: grad f &#x3D; ∇ f</p>
-<p><strong>divergency</strong></p>
+<p>Gradient: grad f &#x3D; ∇f</p>
+<p>区别方向导数与梯度，比如平面上的一个点可以有很多方向导数，而梯度就是变化率最大的方向的导数。</p>
+<p><strong>divergency（散度）</strong></p>
 <p>input is vector and the output is a scalar<br>具体运算 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Divergence">https://en.wikipedia.org/wiki/Divergence</a></p>
-<p>divergency作用在一个vector field中，物理含义是vector field的发散程度<br>比如在二维空间中，想想一个点周围的极小的圆圈，在每个方向的变化量相加，得到的是总的变化量，也就是发散程度，可以表示为是向正方向变化(向外发散)还是向负方向变化(向内收缩)。</p>
-<p>Divergence: div v &#x3D; ∇ dot v (the v here is a vector)</p>
-<p><strong>curl</strong></p>
-<p>curl v &#x3D; ∇ cross dot v (the v here is a vector)</p>
-<p><strong>Laplacian</strong></p>
+<p>divergency作用在一个vector field中，物理含义是vector field的发散程度</p>
+<p>比如在二维空间中，想想一个点周围的极小的圆圈，在每个方向的变化量相加，得到的是总的变化量，也就是发散程度，可以表示为是向正方向变化(向外发散)还是向负方向变化(向内收缩)。</p>
+<p>Divergence: div v &#x3D; ∇·v (the v here is a vector)</p>
+<p>也可以理解成梯度算子和一个向量的内积，向量在各个方面的变化程度，比如向量是 V &#x3D; (Vx,Vy,Vz)，每个分量是一个表达式，那div (散度算子可以表达成下面的形式)</p>
+<p>$$<br>div \space \vec{v}  &#x3D;  ∇·\vec{v} &#x3D; (\frac{\partial}{\partial x},\frac{\partial}{\partial y},\frac{\partial}{\partial z})·(v_x,v_y,v_z)  &#x3D; \frac{\partial v_x}{\partial x} + \frac{\partial v_y}{\partial y}+\frac{\partial v_z}{\partial z}<br>$$</p>
+<p>虽然这里的点可以类比点积的形式，但是并不完全等同，点积是对每个分量进行相乘的操作，这里是对每个分量施加对应的偏微分的操作。从数学的角度上讲更多的是两个算子的组合，而并非是简单的相乘的操作。</p>
+<p><strong>Laplacian(拉普拉斯算子)</strong></p>
+<p>注意拉普拉斯算子与拉普拉斯变换是两个不同的事情。</p>
 <p>input is the scalar (function value, this value depends on the coordinates, namely the position in the space), the output value is a scalar.</p>
-<p>divergency of the gradient, It is usually denoted by the symbols ∇·∇, ∇2</p>
+<p>divergency of the gradient, It is usually denoted by the symbols ∇·∇, ∇^2.理解了散度，Laplace operator就更容易理解了，无非就是首先把一个scalar通过求gradient变成一个vector，然后再添加散度的操作，类似的，这里符号中间的点也仅仅是一个算子相互叠加的操作，而并不是单纯意义上的相乘。</p>
 <p>basically, it will combine the gradient and laplacian together. First step is caculating the gradient of the scalar to get a vector, second step is caclulating the divergency of the vector to get the scalar again.</p>
 <p>表示偏离平均值的程度，本质上是对空间标量的一种操作，先求该标量的梯度场，再求梯度场的散度。</p>
 <p>为什么求scalar field的gradient field的divergency是比较重要的，这个量可以描述field本身的一些properties，中文可以解释为某种驱动力或者势。比如这个例子(<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/26822364">https://www.zhihu.com/question/26822364</a>) 通过温度场来理解Laplacian，值如果为正表示发散，说明了热量从这个点流出，反之则是热量流入这个区域。</p>
+<p><strong>curl（旋度）</strong></p>
+<p>curl v &#x3D; ∇ cross dot v (the v here is a vector)</p>
+<p>梯度算子和一个向量的叉乘，根据叉乘的计算公式，可以表达成如下的形式。</p>
+<p>$$<br>curl \space \vec{v} &#x3D; (\frac{\partial}{\partial x},\frac{\partial}{\partial y},\frac{\partial}{\partial z}) \times (v_x,v_y,v_z) &#x3D;<br>\begin{vmatrix}<br>u_x &amp; u_y &amp; u_z \\ \frac{\partial}{\partial x} &amp; \frac{\partial}{\partial y} &amp; \frac{\partial}{\partial z} \\ v_x &amp; v_y &amp; v_z<br>\end{vmatrix}<br>&#x3D; (\frac{\partial v_z}{\partial y} - \frac{\partial v_y}{\partial z}   ,  \frac{\partial v_x}{\partial z} - \frac{\partial v_z}{\partial x}   ,<br>\frac{\partial v_y}{\partial x} - \frac{\partial v_x}{\partial y}  )<br>$$</p>
 <h3 id="Matrix-operation"><a href="#Matrix-operation" class="headerlink" title="Matrix operation"></a>Matrix operation</h3><p>More detailed conceptes regarding the linear alg (such as physical mearning of specific operaiton) can be found in the linear_alg_review.md blog</p>
 <h4 id="Determinant-of-matrix-absolute-value"><a href="#Determinant-of-matrix-absolute-value" class="headerlink" title="Determinant of matrix (absolute value)"></a>Determinant of matrix (absolute value)</h4><p>The determinant of matirx has a simple expression which is just a $|A|$ expression, namely adding the absolute operation around the matrix, the reuslt is a scalar value. </p>
 <h4 id="Matrix-norm"><a href="#Matrix-norm" class="headerlink" title="Matrix norm"></a>Matrix norm</h4><p>Matrix norm is in the format of $||A||_p$, the typical value of p is 1, 2 and positive infinity. When p is 1, it represents max column sum, when p is 2, it represents max row sum, when p is postive infinity, it represents the largest singular value of A (spectral norm).</p>
@@ -380,7 +388,7 @@ ga('send', 'pageview');
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      &copy; 2014 - 2025 zhe&nbsp;|&nbsp;
       主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">

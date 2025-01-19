@@ -13,7 +13,7 @@
 <meta property="og:description" content="Some notes about the proposal feedback. The direactor of the group reminds us that it is good to learn from the refused proposal, and I try to take some nots in this blog according to the feedback tha">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-10-30T01:44:08.000Z">
-<meta property="article:modified_time" content="2024-04-07T14:40:11.560Z">
+<meta property="article:modified_time" content="2024-12-19T14:50:55.598Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -135,6 +135,22 @@ ga('send', 'pageview');
 <p>下面是网上的关于可证伪性的一些论述：</p>
 <p>“不可证伪”其实就是那种“永远都不会错”的无赖逻辑。所以科学必须是可证伪的。注意，可证伪性并不等于已经证伪，也就是说，你不必真的去找黄色的树叶，也不必真的去找烧煤的恒星，“如果我能找到，那么你就错了”这就叫可证伪。</p>
 <p>波普尔把“可证伪性”作为衡量一个理论“科学性”的标准——可证伪性越强，科学性就越强，没有可证伪性，就没有科学性。</p>
+<h3 id="创新性的表述"><a href="#创新性的表述" class="headerlink" title="创新性的表述"></a>创新性的表述</h3><p>通常的创新性就是之前说的AMD，新的体系，方法，数据，场景等等，如果paper做出来了，contribution里面自然可以有很多的表述，比如性能，速度提升了多少，但是在写项目书的时候这些细节还没做出来，这些是一些类似的例子：</p>
+<p>基本的思路是：将创新点分段、分层说明，以增强逻辑性和说服力：</p>
+<p>背景描述：说明问题或现状。<br>创新性内容：突出你的核心方法或理论。<br>可能的影响：展望潜在成果和意义。</p>
+<p>因为不可能是你自己说是创新，就是创新了，一定要有理有据。创新方式的表述可能有很多种，但是以下几种应该是比较常见的：</p>
+<p><strong>提出了新的方法或者理论</strong></p>
+<p>提出基于XXX的YYY新理论（理论上的创新）<br>当前的YYY研究主要采用AAA方法，但其在处理ZZZ问题时效率低下。本项目拟提出一种基于XXX的新理论框架，旨在提升对ZZZ问题的描述能力。初步理论分析表明，该框架具有更高的鲁棒性和适应性。</p>
+<p>背景首先是说明针对的是什么什么问题，本问题提出了xxx方法框架，旨在提升xxx。初步的理论分析，该框架方法有xxx样的效果。</p>
+<p>这种可能是难度比较高的，很具有原创性的创新，比如美好心灵电影里的Nash提出的博弈论这种程度类型，可能就属于原创的理论，应该是一般人很难做到的程度了，特别是理工科。</p>
+<p>还有一种比如周志华老师提出的这种learnware学件的概念，有点类似于huggingface这种不同模型的组合，提出了一个大的概念之后，往往后续可以进行一系列的细致的探索，是一种很有开创性的工作。</p>
+<p>在理工科的场景下，后面两种可能是比较常用的类型：</p>
+<p><strong>某种技术应用在了其他的场景</strong></p>
+<p>开发针对XXX问题的YYY工具，比如：<br>现有工具多针对AAA场景，难以适应复杂的BBB环境。本项目计划开发一款针对XXX问题的专用工具，通过YYY技术实现数据处理效率的显著提升，填补BBB场景工具的空白。</p>
+<p>借鉴技术发展趋势 ，引用其他领域的技术趋势或新工具，表明这些技术在你的研究场景中具有潜在的创新应用价值。<br>示例：近年来，XXX技术在YYY领域展现出强大的潜力。然而，其在ZZZ场景中的应用尚未展开。本研究将首次尝试将XXX技术引入ZZZ领域，通过开发特定算法，实现对AAA问题的高效解决。</p>
+<p>常见的就是已有方法使用了新的硬件计算架构，已有方法使用到了新的数据或者新的应用场景下等等，总之要想办法能说明一个”新”字，不管是从哪个角度的新，总之这个事情需要是一定程度上别人没有做过的事情。</p>
+<p><strong>强调已有方法在已有应用基础上的改进</strong></p>
+<p>即使没有完成实验，可以重点描述你的方法设计与现有方法的不同之处，突出它的潜在优势。<br>示例：本研究拟设计一种基于XXX的改进型算法，通过优化YYY计算流程，有望在ZZZ问题上实现性能提升。同时，该方法的模块化设计为进一步扩展到AAA领域提供了可能。</p>
 <h3 id="If-the-hypothesis-can-be-assessed"><a href="#If-the-hypothesis-can-be-assessed" class="headerlink" title="If the hypothesis can be assessed"></a>If the hypothesis can be assessed</h3><p>One reason for refusal for our proposal is that it can not provide a solid evaluation approach. The reviewer said they don’t know how the thing we described can be assessed.</p>
 <p>Maybe the thing that can be assessed follows the same pattern, such as “sth can improve the accuracy&#x2F;save resource&#x2F;improve the speed in how much” If the hypothesis does not follow this pattern in CS domain, it might not the right thing or proper description for the problem. You could also say that the approach is helpful for doing sth or facilitate the other things, but it is important to try to move another step, answering how this is helpful in quantitatively is important to make it be assessable.</p>
 <p>However, it seems that in computer science or software engineering, the falsifiable is not that much relevent, see <a target="_blank" rel="noopener" href="https://www.quora.com/Why-isnt-the-concept-of-falsifiability-relevant-in-computer-science-as-it-is-in-other-sciences">this question</a>, I’m a little bit confused about it. Although some topics in cs is not fully relevent to the concept of falsifiable, at least, the clear metric about the assissibility and to show that the thing you work on is good, is critial section in proposal. (How to evaluate the presented approach, and how to refine the presented approach during the lifetime of the project)</p>
@@ -251,7 +267,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E8%AF%84%E5%AE%A1%E4%BA%BA%E7%9A%84%E8%A7%92%E5%BA%A6%E8%80%83%E8%99%91%E7%9A%84%E5%87%A0%E4%B8%AA%E5%AE%8F%E8%A7%82%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">从评审人的角度考虑的几个宏观问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Falsifiable-scientific-hypothesis"><span class="toc-number">2.</span> <span class="toc-text">Falsifiable scientific hypothesis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#If-the-hypothesis-can-be-assessed"><span class="toc-number">3.</span> <span class="toc-text">If the hypothesis can be assessed</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Scope-assumption-and-requirements"><span class="toc-number">4.</span> <span class="toc-text">Scope, assumption and requirements</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Two-aspects"><span class="toc-number">5.</span> <span class="toc-text">Two aspects</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Key-questions"><span class="toc-number">6.</span> <span class="toc-text">Key questions</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E8%AF%84%E5%AE%A1%E4%BA%BA%E7%9A%84%E8%A7%92%E5%BA%A6%E8%80%83%E8%99%91%E7%9A%84%E5%87%A0%E4%B8%AA%E5%AE%8F%E8%A7%82%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">从评审人的角度考虑的几个宏观问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Falsifiable-scientific-hypothesis"><span class="toc-number">2.</span> <span class="toc-text">Falsifiable scientific hypothesis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E6%96%B0%E6%80%A7%E7%9A%84%E8%A1%A8%E8%BF%B0"><span class="toc-number">3.</span> <span class="toc-text">创新性的表述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#If-the-hypothesis-can-be-assessed"><span class="toc-number">4.</span> <span class="toc-text">If the hypothesis can be assessed</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Scope-assumption-and-requirements"><span class="toc-number">5.</span> <span class="toc-text">Scope, assumption and requirements</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Two-aspects"><span class="toc-number">6.</span> <span class="toc-text">Two aspects</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Key-questions"><span class="toc-number">7.</span> <span class="toc-text">Key questions</span></a></li></ol>
           </div>
       </div>
     </div>
@@ -274,7 +290,7 @@ ga('send', 'pageview');
   
   <div class="outer">
     <div id="footer-left">
-      &copy; 2014 - 2024 zhe&nbsp;|&nbsp;
+      &copy; 2014 - 2025 zhe&nbsp;|&nbsp;
       主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
     </div>
      <div id="footer-right">

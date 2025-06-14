@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,19 +124,18 @@ ga('send', 'pageview');
         
         <p>主要介绍ssh的命令的相关实践以及典型的使用情况。</p>
 <span id="more"></span>
-
 <h3 id="证书与ssh"><a href="#证书与ssh" class="headerlink" title="证书与ssh"></a>证书与ssh</h3><p>关于证书，公钥，私钥的相关基本概念，可以参考之前的这篇(https原理以及服务端客户端通信的golang的本实现)。</p>
-<p>在本机上记录ssh配置信息的地方具体是在~&#x2F;.ssh&#x2F;config文件中，里面主要记录的是，对于登录不同的host时，应该使用具体哪个私钥文件，比如在文件中进行如下配置</p>
+<p>在本机上记录ssh配置信息的地方具体是在~/.ssh/config文件中，里面主要记录的是，对于登录不同的host时，应该使用具体哪个私钥文件，比如在文件中进行如下配置</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Host 01</span><br><span class="line">HostName 10.10.10.01</span><br><span class="line">User admin</span><br></pre></td></tr></table></figure>
 <p>之后在需要使用 ssh 01 或者 scp 或者使用其他需要用到 username@hostip 相关的命令的时候，就只需要使用01 来进行替代，这样就相当于是创建了快捷方式，确实方便了不少。</p>
 <p>比如这个配置文件：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Host coding.net git.coding.net</span><br><span class="line">  IdentityFile ~/.ssh/codingrsa</span><br><span class="line">Host github.com</span><br><span class="line">  IdentityFile ~/.ssh/git_rsa</span><br></pre></td></tr></table></figure>
 <p>就是说在与不同的主机服务进行ssh通信的时候，才用不同的私钥文件。在直接使用ssh命令的时候，可以通过-i参数来指定私钥文件的位置。</p>
 <p>对于常常需要登录的机器，当然没有必要每次输入用户名和密码，只需要采用rsa的加密认证方式，把自己的公钥发给对方服务器的指定的文件夹中，当然操作也很简单，先通过<code>ssh-keygen -t rsa</code> 来在本机上产生公钥和私钥，默认情况下是生成在<code>~/.ssh</code>目录之下，之后只需要 <code>ssh-copy-id -i</code> 公钥文件路经 host别名这样就可以将本机的公钥发送到远程的服务器上，之后再使用ssh操作就可以直接登录了，大大提升效率。</p>
-<p>再补充一个技巧就是hostname命令的使用，通常在多态机器上操作的时候，开了许多terminal用户名都是localhost很容器弄重复，可以登上去之后 <code>hostname </code>这样操作，之后退出terminal再登上去之后，就现实的是alias name了，比较直接。</p>
+<p>再补充一个技巧就是hostname命令的使用，通常在多态机器上操作的时候，开了许多terminal用户名都是localhost很容器弄重复，可以登上去之后 <code>hostname</code>这样操作，之后退出terminal再登上去之后，就现实的是alias name了，比较直接。</p>
 <h3 id="关于ssh隧道"><a href="#关于ssh隧道" class="headerlink" title="关于ssh隧道"></a>关于ssh隧道</h3><p>这里主要记录下-L参数的使用</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-L port:host:hostport</span><br></pre></td></tr></table></figure>
-<p>以上命令可以将本地机(客户机)的某个端口转发到远端指定机器的指定端口。工作原理是这样的, 本地机器上分配了一个 socket 侦听 port 端口, 一旦这个端口上有了连接, 该连接就经过安全通道转发出去, 同时远程主机和 host 的 hostport 端口建立连接， 可以在配置文件中指定端口的转发， 只有 root 才能转发特权端口，IPv6 地址用另一种格式说明: port&#x2F;host&#x2F;hostport</p>
+<p>以上命令可以将本地机(客户机)的某个端口转发到远端指定机器的指定端口。工作原理是这样的, 本地机器上分配了一个 socket 侦听 port 端口, 一旦这个端口上有了连接, 该连接就经过安全通道转发出去, 同时远程主机和 host 的 hostport 端口建立连接， 可以在配置文件中指定端口的转发， 只有 root 才能转发特权端口，IPv6 地址用另一种格式说明: port/host/hostport</p>
 <p>一些使用的场景：比如想要对服务端的数据进行修改操作，但是服务器只能通过ssh秘钥认证的方式连接上去，这个时候可以使用-l参数，比如</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -p 58513 -L 4306:serverip:3306 wangzhe_10_10_220_56@123.59.140.26</span><br></pre></td></tr></table></figure>
 <p>这个时候直接连接本地的4306端口，就可以连接到服务端的数据库了，然后可以在本地的数据库服务中进行调试。</p>
@@ -150,7 +146,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/25/ssh-tips/" data-id="cm2a0xf4w009xdvjrfyws54to" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/06/25/ssh-tips/" data-id="cmbw030iu00abj8jr1e8m9g22" class="article-share-link">分享</a>
       
       
       
@@ -333,28 +329,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>Some ideas regarding the workflow management.</p>
 <span id="more"></span>
-
 <p>It seems like the research direaction such as workflow is like a two edged sword, the easy things is that it is general, when you discuss the workflow, basically you can discuss all things. The bad thing is that, it is too general.</p>
 <p>当做了一点东西但是又不是很具体的时候就可以往workflow的方向上靠，从workflow的视角上来看，总能把你做的内容包含进去。</p>
 <p>但是从另一个角度来看，这样的工作内容似乎是很不具体，有那种划水的嫌疑，所以我自己总是自嘲，做workflow相关的research是处于research鄙视链的最低端。</p>
@@ -135,13 +131,13 @@ ga('send', 'pageview');
 <p>在phd阶段，也还是绕不开workflow的话题，知道的几个phd的thesis也都是在弄这个workflow相关topic，不管怎样反正能找到research的点还能毕业。有时候也常常会感觉能看的都被看过了，想到一个点仔细一找，总能发现类似的点，于是又要花一些心思再继续想想，看是否能再refine一下这个点，然后有所提升。比如最近想到的一个点觉得挺好，colleagues之间一聊，发现别人已经弄了一些基本的工作。看完别人做的内容，就是感觉自己想到的idea有一种呼之欲出的感觉，要是自己不弄，别人可能就马上发表相关的内容了，所以要赶紧弄，先抢占一个位置再说。</p>
 <p>从research的角度讲，你所关注的workflow是什么是一个要花大力气解释清楚的问题，比如在thesis可能需要要拿出一个chapter来着重讲关注的workflow是什么样子的。但是好的research肯定是要关注workflow的背景，但是又不能仅仅是关注workflow层面的contribution，还要透过workflow再找到一些更具体的点(深入到workflow中的某个application的层次上)，这样才能有比较足够的depth。</p>
 <p>最近和colleages的一些讨论常常能带来新的insights。其实就是分类的问题，大的domain是scientific workflow，之后具体细分的时候一定要首先问问看是关注哪种workflow，这样才好一起聊，粗略的一些包括：</p>
-<p>coupled workflow (multi-physics coupling)<br>post processing workflow<br>Sensor output processing<br>Instrument output processing<br>in situ workflow<br>ensemble workflow<br>Al&#x2F;ML trining workflow (AI surrogate)</p>
+<p>coupled workflow (multi-physics coupling)<br>post processing workflow<br>Sensor output processing<br>Instrument output processing<br>in situ workflow<br>ensemble workflow<br>Al/ML trining workflow (AI surrogate)</p>
 <p>慢慢的会出现一些新的类型的workflow，比如simulation和AI结合起来的workflow。自己的一个新的research问题，首先要看看是放在哪个workflow场景下，对这个类型的workflow有一个很宏观的了解，弄清数据在不同组件之间是怎么互相传输的，不同组件的依赖关系是什么，然后再深入挖掘下去，看看具体的research 的contribution是什么。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/09/24/workflow-scratch/" data-id="cm2a0xf5100avdvjrb2ryhxk5" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/09/24/workflow-scratch/" data-id="cmbw030ix00b9j8jr1esrd0t7" class="article-share-link">分享</a>
       
       
       
@@ -247,23 +243,23 @@ ga('send', 'pageview');
       <ul>
         
           <li>
-            <a href="/2024/11/23/distributed-rendering/">distributed rendering</a>
+            <a href="/2025/06/08/javascript-tips/">javascript-tips</a>
           </li>
         
           <li>
-            <a href="/2024/11/21/opengl-tips/">opengl_tips</a>
+            <a href="/2025/02/27/Package-management/">Package management tips</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/23/distributed-rendering/">Distributed rendering (WIP)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/21/graphics-opengl-tips/">Graphics and Opengl Tips</a>
           </li>
         
           <li>
             <a href="/2024/10/18/Multiple-backend-design/">Multiple backend design</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/17/LLM-tips/">LLM tips</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/13/Interesting-numbers-in-CS-and-Femi-estimation/">Interesting numbers in CS and Femi estimation (WIP)</a>
           </li>
         
       </ul>
@@ -342,28 +338,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

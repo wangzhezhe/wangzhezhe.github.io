@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>记录一些python中的基本语法知识点（主要是2.7版本的），总是忘记。</p>
 <span id="more"></span>
-
 <h3 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h3><p>布尔值可以用and、or和not运算。and运算是与运算。</p>
 <p>or运算是或运算</p>
 <p>not运算是非运算</p>
@@ -137,9 +133,7 @@ ga('send', 'pageview');
 <p>Python支持多种数据类型，在计算机内部，可以把任何数据都看成一个“对象”，而变量就是在程序中用来指向这些数据对象的，对变量赋值就是把数据和变量给关联起来。</p>
 <p>一般需要显示确定某个值的类型的时候就用强制转换，比如 float(a) str(a) 类似的方式，在使用numpy的时候可以显示地指定数据的类型，比如 <code>np.array([1, 2, 3], dtype=&#39;f&#39;)</code></p>
 <h3 id="编码-格式化输出"><a href="#编码-格式化输出" class="headerlink" title="编码 格式化输出"></a>编码 格式化输出</h3><p>在Python中，采用的格式化方式和C语言是一致的，用占位符%实现，%d整数<br>%f 浮点数 %s 字符串 %x 十六进制整数<br>使用print的时候，中间可以通过 % 来将指定的格式化字符串和实际的输出内容进行区分，实际的输出内容放在小括号中</p>
-<p>基本的形式如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; print(&quot;number: %d char: %c str: %s&quot;%(666,&#x27;c&#x27;,&quot;testOutput&quot;))</span><br><span class="line">number: 666 char: c str: testOutput</span><br></pre></td></tr></table></figure>
-
+<p>基本的形式如下：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; print(&quot;number: %d char: %c str: %s&quot;%(666,&#x27;c&#x27;,&quot;testOutput&quot;))</span><br><span class="line">number: 666 char: c str: testOutput</span><br></pre></td></tr></table></figure></p>
 <p>Python在后来添加了对Unicode的支持，以Unicode表示的字符串用u’…’表示</p>
 <h3 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h3><p>list采用中括号 python内置的一种数据类型是列表：list。list是一种有序的集合，可以随时添加和删除其中的元素</p>
 <p>tuple采用小括号 另一种有序列表叫元组：tuple。tuple和list非常类似，但是tuple一旦初始化就不能修改，只有1个元素的tuple定义时必须加一个逗号,，来消除歧义。</p>
@@ -164,11 +158,9 @@ ga('send', 'pageview');
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">init_list=[ [] for _ in range (k) ]</span><br></pre></td></tr></table></figure>
 <p>Be careful about the expression <code>[[]]*k</code>, in this case, every [] in the list will be the same, if we execute some operation such as append, all of them will append same value, this is not the result we want.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; a = [[]]*2</span><br><span class="line">&gt;&gt;&gt; print (a)</span><br><span class="line">[[], []]</span><br><span class="line">&gt;&gt;&gt; a[0].append(1)</span><br><span class="line">&gt;&gt;&gt; print (a)</span><br><span class="line">[[1], [1]]</span><br><span class="line">&gt;&gt;&gt; </span><br></pre></td></tr></table></figure>
-
-<h3 id="is-与-x3D-x3D-的区别-比较两个字符串的区别"><a href="#is-与-x3D-x3D-的区别-比较两个字符串的区别" class="headerlink" title="is 与 &#x3D;&#x3D; 的区别 比较两个字符串的区别"></a>is 与 &#x3D;&#x3D; 的区别 比较两个字符串的区别</h3><h3 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if &lt;条件判断1&gt;:</span><br><span class="line">    &lt;执行1&gt;</span><br><span class="line">elif &lt;条件判断2&gt;:</span><br><span class="line">    &lt;执行2&gt;</span><br><span class="line">elif &lt;条件判断3&gt;:</span><br><span class="line">    &lt;执行3&gt;</span><br><span class="line">else:</span><br><span class="line">    &lt;执行4&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="is-与-的区别-比较两个字符串的区别"><a href="#is-与-的区别-比较两个字符串的区别" class="headerlink" title="is 与 == 的区别 比较两个字符串的区别"></a>is 与 == 的区别 比较两个字符串的区别</h3><h3 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if &lt;条件判断1&gt;:</span><br><span class="line">    &lt;执行1&gt;</span><br><span class="line">elif &lt;条件判断2&gt;:</span><br><span class="line">    &lt;执行2&gt;</span><br><span class="line">elif &lt;条件判断3&gt;:</span><br><span class="line">    &lt;执行3&gt;</span><br><span class="line">else:</span><br><span class="line">    &lt;执行4&gt;</span><br></pre></td></tr></table></figure>
 <h3 id="循环方式"><a href="#循环方式" class="headerlink" title="循环方式"></a>循环方式</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">names = [&#x27;Michael&#x27;, &#x27;Bob&#x27;, &#x27;Tracy&#x27;]</span><br><span class="line">for name in names:</span><br><span class="line">    print name</span><br><span class="line"></span><br><span class="line">sum = 0</span><br><span class="line">n = 99</span><br><span class="line">while n &gt; 0:</span><br><span class="line">    sum = sum + n</span><br><span class="line">    n = n - 2</span><br><span class="line">print sum</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>如果同时需要返回index以及实际的值，就使用 <code>for index, v in enumarate(names)</code><br>如果需要遍历从0到n的数据的时候，除了在c&#x2F;c++中使用到的典型for loop，在python中常用的就是 <code>for v in range(0,n,1)</code></p>
+<p>如果同时需要返回index以及实际的值，就使用 <code>for index, v in enumarate(names)</code><br>如果需要遍历从0到n的数据的时候，除了在c/c++中使用到的典型for loop，在python中常用的就是 <code>for v in range(0,n,1)</code></p>
 <h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><h4 id="基本定义"><a href="#基本定义" class="headerlink" title="基本定义"></a>基本定义</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">def my_abs(x):</span><br><span class="line">    if x &gt;= 0:</span><br><span class="line">        return x</span><br><span class="line">    else:</span><br><span class="line">        return -x</span><br></pre></td></tr></table></figure>
 <p>python函数返回的是单一值，但是这个单一值是一个tuple。函数可以同时返回多个值，但其实就是一个tuple</p>
 <h4 id="默认参数"><a href="#默认参数" class="headerlink" title="默认参数"></a>默认参数</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">def power(x, n=2):</span><br><span class="line">    s = 1</span><br><span class="line">    while n &gt; 0:</span><br><span class="line">        n = n - 1</span><br><span class="line">        s = s * x</span><br><span class="line">    return s</span><br></pre></td></tr></table></figure>
@@ -187,7 +179,6 @@ ga('send', 'pageview');
 <li>装饰器通过@的语法生效</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 定义一个可以打印日志的decorator</span><br><span class="line">def log(func):</span><br><span class="line">    # 这里的wrapper可以接受任何的参数</span><br><span class="line">    def wrapper(*args, **kw):</span><br><span class="line">        print &#x27;call %s():&#x27; % func.__name__</span><br><span class="line">        return func(*args, **kw)</span><br><span class="line">    return wrapper</span><br><span class="line">    </span><br><span class="line"># 在now函数前 放置装饰器 相当于now=log(now)</span><br><span class="line"># now 函数被log装饰器所装饰 返回的now是一个新的now</span><br><span class="line"># 相当于在正常的now被调用之前，又加上了一层通用的逻辑，比如这个例子里的func name</span><br><span class="line">@log</span><br><span class="line">def now():</span><br><span class="line">    print &#x27;2013-12-25&#x27;</span><br></pre></td></tr></table></figure>
-
 <h3 id="python-mysql"><a href="#python-mysql" class="headerlink" title="python mysql"></a>python mysql</h3><p>python-mysql 常见操作</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 导入MySQL驱动:</span><br><span class="line">&gt;&gt;&gt; import mysql.connector</span><br><span class="line"># 注意把password设为你的root口令:</span><br><span class="line">&gt;&gt;&gt; conn = mysql.connector.connect(user=&#x27;root&#x27;, password=&#x27;password&#x27;, database=&#x27;test&#x27;, use_unicode=True)</span><br><span class="line">&gt;&gt;&gt; cursor = conn.cursor()</span><br><span class="line"># 创建user表:</span><br><span class="line">&gt;&gt;&gt; cursor.execute(&#x27;create table user (id varchar(20) primary key, name varchar(20))&#x27;)</span><br><span class="line"># 插入一行记录，注意MySQL的占位符是%s:</span><br><span class="line">&gt;&gt;&gt; cursor.execute(&#x27;insert into user (id, name) values (%s, %s)&#x27;, [&#x27;1&#x27;, &#x27;Michael&#x27;])</span><br><span class="line">&gt;&gt;&gt; cursor.rowcount</span><br><span class="line">1</span><br><span class="line"># 提交事务:</span><br><span class="line">&gt;&gt;&gt; conn.commit()</span><br><span class="line">&gt;&gt;&gt; cursor.close()</span><br><span class="line"># 运行查询:</span><br><span class="line">&gt;&gt;&gt; cursor = conn.cursor()</span><br><span class="line">&gt;&gt;&gt; cursor.execute(&#x27;select * from user where id = %s&#x27;, (&#x27;1&#x27;,))</span><br><span class="line">&gt;&gt;&gt; values = cursor.fetchall()</span><br><span class="line">&gt;&gt;&gt; values</span><br><span class="line">[(u&#x27;1&#x27;, u&#x27;Michael&#x27;)]</span><br><span class="line"># 关闭Cursor和Connection:</span><br><span class="line">&gt;&gt;&gt; cursor.close()</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; conn.close()</span><br></pre></td></tr></table></figure>
 <h3 id="ORM"><a href="#ORM" class="headerlink" title="ORM"></a>ORM</h3><p>相当于在程序中把db中的数据结构实现一下，常用到的工具就是sqlalchemy。</p>
@@ -209,21 +200,17 @@ ga('send', 'pageview');
 <ul>
 <li>metaclass属性 定义一个类的时候，如果其中存在metaclass这个属性，ython会在内存中通过metaclass创建一个名字为类名的类对象，如果不存在，继续向上找，从父类中寻找 metaclass属性 一直到最上层，如果没有找到，就用内建的type来创建类对象。</li>
 </ul>
-<h3 id="lamda-表达式"><a href="#lamda-表达式" class="headerlink" title="lamda 表达式"></a>lamda 表达式</h3><p>在项目中看到了一个很fancy的表达：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">files = map(lambda f:os.path.normpath(os.path.join(f, &#x27;etc&#x27;, &#x27;sstack&#x27;, &#x27;sstack.yml.dev&#x27;)), sys.path)</span><br></pre></td></tr></table></figure>
-<p>首先看下map函数，这个有点类似于mapreduce中的map函数。<br>map(function, iterable, …)<br>map函数的功能就是将第一个参数所定义的函数施加到后面的一系列成员中去。有一点是要注意的iterable中的每个成员，会自动的被认为是function函数的形参，传入到函数中<br>在上面的操作中，sys.path返回的是当前python环境下的查找路径，具体来源可以参考这个。</p>
-<p>上面的例子可以这样来解释，首先定义一个lambda表达式，表达式的形参为f，lambda函数的功能是把 &#x2F;etc&#x2F;sstack&#x2F;sstack.yml.dev 的路径加入进来。</p>
-<p>expression&#x3D;lambda f:os.path.normpath(os.path.join(f, ‘etc’, ‘sstack’, ‘sstack.yml.dev’))·</p>
+<h3 id="lamda-表达式"><a href="#lamda-表达式" class="headerlink" title="lamda 表达式"></a>lamda 表达式</h3><p>在项目中看到了一个很fancy的表达：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">files = map(lambda f:os.path.normpath(os.path.join(f, &#x27;etc&#x27;, &#x27;sstack&#x27;, &#x27;sstack.yml.dev&#x27;)), sys.path)</span><br></pre></td></tr></table></figure><br>首先看下map函数，这个有点类似于mapreduce中的map函数。<br>map(function, iterable, …)<br>map函数的功能就是将第一个参数所定义的函数施加到后面的一系列成员中去。有一点是要注意的iterable中的每个成员，会自动的被认为是function函数的形参，传入到函数中<br>在上面的操作中，sys.path返回的是当前python环境下的查找路径，具体来源可以参考这个。</p>
+<p>上面的例子可以这样来解释，首先定义一个lambda表达式，表达式的形参为f，lambda函数的功能是把 /etc/sstack/sstack.yml.dev 的路径加入进来。</p>
+<p>expression=lambda f:os.path.normpath(os.path.join(f, ‘etc’, ‘sstack’, ‘sstack.yml.dev’))·</p>
 <p>之后使用map函数，将后面的每个item中的元素当成形参，传入到lamda函数中，执行对应的操作，之后返回经过处理之后的list：</p>
-<p>files &#x3D; map(expression, sys.path)</p>
+<p>files = map(expression, sys.path)</p>
 <h3 id="python-内置函数"><a href="#python-内置函数" class="headerlink" title="python 内置函数"></a>python 内置函数</h3><p><strong>getattr</strong><br>这个函数多少有点java中反射的意思，Getattr用于返回一个对象属性，或者方法，根据属性的名称，返回对象的值，如果name是对象的属性的名称，则返回对应的属性的值。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class A:</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.a = &#x27;a&#x27;</span><br><span class="line">    def method(self):</span><br><span class="line">        print &quot;method print&quot;</span><br><span class="line">a = A()</span><br><span class="line">print &quot;output 1: &quot;</span><br><span class="line"># instance a contains the element &#x27;a&#x27; print a</span><br><span class="line">print getattr(a, &#x27;a&#x27;, &#x27;default&#x27;)</span><br><span class="line"># instance a do not contain the element &#x27;b&#x27; print default</span><br><span class="line">print &quot;output 2: &quot;</span><br><span class="line">print getattr(a, &#x27;b&#x27;, &#x27;default&#x27;)</span><br><span class="line"># instance a contain the function &#x27;method&#x27; return the address of function</span><br><span class="line">print &quot;output 3: &quot;</span><br><span class="line">print getattr(a, &#x27;method&#x27;, &#x27;default&#x27;)</span><br><span class="line"># instance a contain the function &#x27;method&#x27; return that function to value</span><br><span class="line"># use value() to invoke the function and print it</span><br><span class="line">print &quot;output 4:&quot;</span><br><span class="line">value=getattr(a, &#x27;method&#x27;, &#x27;default&#x27;)</span><br><span class="line">value()</span><br><span class="line">&quot;&quot;&quot;&quot;</span><br><span class="line">output:</span><br><span class="line">output 1: </span><br><span class="line">a</span><br><span class="line">output 2: </span><br><span class="line">default</span><br><span class="line">output 3: </span><br><span class="line">&lt;bound method A.method of &lt;__main__.A instance at 0x7f9bcf896a70&gt;&gt;</span><br><span class="line">output 4:</span><br><span class="line">method print</span><br><span class="line">&quot;&quot;&quot;</span><br></pre></td></tr></table></figure>
-
 <h3 id="File-operation"><a href="#File-operation" class="headerlink" title="File operation"></a>File operation</h3><p>load a file and check the key ward in each line of the file, remember to use the line strip operation.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">fo=open(file_name, &quot;r&quot;)</span><br><span class="line">for line in fo:</span><br><span class="line">	line_strip=line.strip()</span><br><span class="line">	if specific_str in line_strip:</span><br><span class="line">		# do sth here, such as split the line</span><br><span class="line">fo.close()</span><br></pre></td></tr></table></figure>
 <p>write file into the specific dir</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">f = open(file_name,&#x27;w&#x27;)</span><br><span class="line"># do sth to create the str for writting</span><br><span class="line">f.write(str+&quot;\n&quot;)</span><br><span class="line">f.close() </span><br></pre></td></tr></table></figure>
-
 <h3 id="Python-无限长度int"><a href="#Python-无限长度int" class="headerlink" title="Python 无限长度int"></a>Python 无限长度int</h3><p>在做一些算法题目的时候需要根据输入数据的长度来进行特殊的操作，比如加减乘除之类的，python在处理这些问题的时候方便多了，因为它自动进行了无限长度的int的优化。所以会自动将输入的数字转变为科学计数法的形式，方便计算。</p>
 <h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p>learn python step by step 的比较好的tutorial</p>
 <p><a target="_blank" rel="noopener" href="https://intermediate-and-advanced-software-carpentry.readthedocs.io/en/latest/day2.html">https://intermediate-and-advanced-software-carpentry.readthedocs.io/en/latest/day2.html</a></p>
@@ -231,7 +218,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/python-grammar-tips/" data-id="cm2a0xf4u009bdvjreiakardv" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/python-grammar-tips/" data-id="cmbw030is009kj8jr6z5de40e" class="article-share-link">分享</a>
       
       
       
@@ -330,7 +317,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">基本类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81-%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA"><span class="toc-number">2.</span> <span class="toc-text">编码 格式化输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">基本结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Elist%E7%9A%84%E5%B8%B8%E8%A7%81%E6%93%8D%E4%BD%9C"><span class="toc-number">4.</span> <span class="toc-text">关于list的常见操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#is-%E4%B8%8E-x3D-x3D-%E7%9A%84%E5%8C%BA%E5%88%AB-%E6%AF%94%E8%BE%83%E4%B8%A4%E4%B8%AA%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">5.</span> <span class="toc-text">is 与 &#x3D;&#x3D; 的区别 比较两个字符串的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD"><span class="toc-number">6.</span> <span class="toc-text">条件判断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E6%96%B9%E5%BC%8F"><span class="toc-number">7.</span> <span class="toc-text">循环方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-number">8.</span> <span class="toc-text">函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%AE%9A%E4%B9%89"><span class="toc-number">8.1.</span> <span class="toc-text">基本定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0"><span class="toc-number">8.2.</span> <span class="toc-text">默认参数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python-%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-number">9.</span> <span class="toc-text">python 装饰器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python-mysql"><span class="toc-number">10.</span> <span class="toc-text">python mysql</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ORM"><span class="toc-number">11.</span> <span class="toc-text">ORM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python%E7%9A%84%E7%BB%A7%E6%89%BF"><span class="toc-number">12.</span> <span class="toc-text">python的继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python-class"><span class="toc-number">13.</span> <span class="toc-text">python class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python%E5%85%83%E7%B1%BB%EF%BC%88metaclass%EF%BC%89"><span class="toc-number">14.</span> <span class="toc-text">Python元类（metaclass）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lamda-%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">15.</span> <span class="toc-text">lamda 表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python-%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0"><span class="toc-number">16.</span> <span class="toc-text">python 内置函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#File-operation"><span class="toc-number">17.</span> <span class="toc-text">File operation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python-%E6%97%A0%E9%99%90%E9%95%BF%E5%BA%A6int"><span class="toc-number">18.</span> <span class="toc-text">Python 无限长度int</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#reference"><span class="toc-number">19.</span> <span class="toc-text">reference</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">基本类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81-%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA"><span class="toc-number">2.</span> <span class="toc-text">编码 格式化输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">基本结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Elist%E7%9A%84%E5%B8%B8%E8%A7%81%E6%93%8D%E4%BD%9C"><span class="toc-number">4.</span> <span class="toc-text">关于list的常见操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#is-%E4%B8%8E-%E7%9A%84%E5%8C%BA%E5%88%AB-%E6%AF%94%E8%BE%83%E4%B8%A4%E4%B8%AA%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">5.</span> <span class="toc-text">is 与 &#x3D;&#x3D; 的区别 比较两个字符串的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD"><span class="toc-number">6.</span> <span class="toc-text">条件判断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E6%96%B9%E5%BC%8F"><span class="toc-number">7.</span> <span class="toc-text">循环方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-number">8.</span> <span class="toc-text">函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%AE%9A%E4%B9%89"><span class="toc-number">8.1.</span> <span class="toc-text">基本定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0"><span class="toc-number">8.2.</span> <span class="toc-text">默认参数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python-%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-number">9.</span> <span class="toc-text">python 装饰器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python-mysql"><span class="toc-number">10.</span> <span class="toc-text">python mysql</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ORM"><span class="toc-number">11.</span> <span class="toc-text">ORM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python%E7%9A%84%E7%BB%A7%E6%89%BF"><span class="toc-number">12.</span> <span class="toc-text">python的继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python-class"><span class="toc-number">13.</span> <span class="toc-text">python class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python%E5%85%83%E7%B1%BB%EF%BC%88metaclass%EF%BC%89"><span class="toc-number">14.</span> <span class="toc-text">Python元类（metaclass）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lamda-%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">15.</span> <span class="toc-text">lamda 表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#python-%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0"><span class="toc-number">16.</span> <span class="toc-text">python 内置函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#File-operation"><span class="toc-number">17.</span> <span class="toc-text">File operation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python-%E6%97%A0%E9%99%90%E9%95%BF%E5%BA%A6int"><span class="toc-number">18.</span> <span class="toc-text">Python 无限长度int</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#reference"><span class="toc-number">19.</span> <span class="toc-text">reference</span></a></li></ol>
           </div>
       </div>
     </div>
@@ -414,28 +401,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

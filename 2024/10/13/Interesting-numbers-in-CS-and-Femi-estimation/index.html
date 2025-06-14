@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -129,14 +126,13 @@ ga('send', 'pageview');
 <p>人是万物的尺度。对这些数字最好有个概念，就知道能处理的问题的量级是多少了，在书写项目书，指定相关指标的时候就能比较合理的进行估计。有了这些估计，我们可以用费曼估计法去快速推算一些比较复杂的问题。然后还能更好地理解计算机设备直接的unbalance的特性。</p>
 <p>很多时候我们仅仅需要的是快速的量级的估计而不是精确的数字，这些问题都属于Feimi 估计的思路，比如最经典的某个城市大概有多少钢琴调音师等等。</p>
 <span id="more"></span>
-
 <p>最近发现，项目书或者指标层面，对于数据的把握变得比较关键，写指标的时候通常想让这个指标可以量化，没有这些指标的概念，一些关键任务的项目书都没法去写了，从paper的角度上看，关键指标的提升更是paper的core contribution.</p>
-<h3 id="Computing"><a href="#Computing" class="headerlink" title="Computing"></a>Computing</h3><h3 id="Memory-access"><a href="#Memory-access" class="headerlink" title="Memory access"></a>Memory access</h3><p>CPU cache read&#x2F;write access. 不同的CPU和不同的Cache当然速度不同，这里有一张表格 <a target="_blank" rel="noopener" href="https://www.quora.com/How-fast-can-the-L1-cache-of-a-CPU-reach">https://www.quora.com/How-fast-can-the-L1-cache-of-a-CPU-reach</a> L1 大概是2000GB&#x2F;s的样子。L3大概是 200GB&#x2F;s的样子，L3相比较RAM大概又有100倍的差距了。</p>
-<p>RAM (Random access memory) read&#x2F;write speed. RAM using a little bit different metric, it is called MHZ rating (how many times per second your RAM can access its memory). nowadays, this value is usually from 2400Mhz to 4400Mhz, which is 10 times faster than SSD I&#x2F;O speed. 就是说1s大概能access 2400M  到 4400M 次，每次修改1B的数据的话，就是2400MB-4400MB左右。</p>
-<p>SSD 通常所说的固态硬盘，read&#x2F;write speed 200MB&#x2F;s to 550MB&#x2F;s。</p>
-<p>HDD (hard disk) 通常所说的细节硬盘 read&#x2F;write speed, from 80MB&#x2F;s to 160MB&#x2F;s</p>
+<h3 id="Computing"><a href="#Computing" class="headerlink" title="Computing"></a>Computing</h3><h3 id="Memory-access"><a href="#Memory-access" class="headerlink" title="Memory access"></a>Memory access</h3><p>CPU cache read/write access. 不同的CPU和不同的Cache当然速度不同，这里有一张表格 <a target="_blank" rel="noopener" href="https://www.quora.com/How-fast-can-the-L1-cache-of-a-CPU-reach">https://www.quora.com/How-fast-can-the-L1-cache-of-a-CPU-reach</a> L1 大概是2000GB/s的样子。L3大概是 200GB/s的样子，L3相比较RAM大概又有100倍的差距了。</p>
+<p>RAM (Random access memory) read/write speed. RAM using a little bit different metric, it is called MHZ rating (how many times per second your RAM can access its memory). nowadays, this value is usually from 2400Mhz to 4400Mhz, which is 10 times faster than SSD I/O speed. 就是说1s大概能access 2400M  到 4400M 次，每次修改1B的数据的话，就是2400MB-4400MB左右。</p>
+<p>SSD 通常所说的固态硬盘，read/write speed 200MB/s to 550MB/s。</p>
+<p>HDD (hard disk) 通常所说的细节硬盘 read/write speed, from 80MB/s to 160MB/s</p>
 <p>If we assume one picture taken by phone is around 2MB, SSD can transfer at least 100 photos per second and HDD can only transfer 40 photos. </p>
-<p>从所花费的instruction time来看，disk I&#x2F;O takes 5-10 ms, which is millions of instruction time (1000,000) Flash storage takes 10-100us, NVM may take 1us, which is still around 2000-3000 instruction times. 通常的3GHz的CPU, 1s 可以执行 <code>3*10^9</code> 个指令，一个instruction time 大概是<code>0.003us</code></p>
+<p>从所花费的instruction time来看，disk I/O takes 5-10 ms, which is millions of instruction time (1000,000) Flash storage takes 10-100us, NVM may take 1us, which is still around 2000-3000 instruction times. 通常的3GHz的CPU, 1s 可以执行 <code>3*10^9</code> 个指令，一个instruction time 大概是<code>0.003us</code></p>
 <h3 id="Memory-size"><a href="#Memory-size" class="headerlink" title="Memory size"></a>Memory size</h3><h3 id="Networking"><a href="#Networking" class="headerlink" title="Networking"></a>Networking</h3><p>从所花费的指令时间来看，在datacenter中，round-trip message 可以话费10-50us, 相当于n0,000的指令时间。wide area round trip 时间可能更长，要花费到10-100ms的时间。<br>(A philosophy of software design)</p>
 <h3 id="并行计算"><a href="#并行计算" class="headerlink" title="并行计算"></a>并行计算</h3><p>大模型训练通常是万卡的级别，一个node 4-8张GPU的话，就是1250到2500个节点的数据中心的规模。一个机柜上下两层 （比如就像通常的衣柜那么大）通常可以放128 node (比如Frontier)，那这个数据空间所需要的地方至少是10-20个机柜所占用的空间。</p>
 <p>并行可视化的服务比较大的规模(比如VTK-m论文中所描述的) 最大在37,000个AMD GPU上进行了验证(2023年)，这可能是目前这个小领域最大的规模了。换成节点的话大概是9400多个节点，这就是目前的state of the art的级别。</p>
@@ -151,7 +147,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2024/10/13/Interesting-numbers-in-CS-and-Femi-estimation/" data-id="cm2a0xf46001ydvjr6mo24wj3" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2024/10/13/Interesting-numbers-in-CS-and-Femi-estimation/" data-id="cmbw030i4001wj8jr9t2rh8ps" class="article-share-link">分享</a>
       
       
       
@@ -334,28 +330,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

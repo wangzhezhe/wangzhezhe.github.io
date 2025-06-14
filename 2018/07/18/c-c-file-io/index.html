@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -125,9 +122,8 @@ ga('send', 'pageview');
       
         <!-- Table of Contents -->
         
-        <p>关于c&#x2F;c++的文件IO整理</p>
+        <p>关于c/c++的文件IO整理</p>
 <span id="more"></span>
-
 <h3 id="FILE-create-and-write"><a href="#FILE-create-and-write" class="headerlink" title="FILE create and write"></a>FILE create and write</h3><p><strong>c style</strong></p>
 <p>using file descriptor direactly, open, write, close function work together to finish the file operation. Attention that for the file permission part, don’t forget the 0 before 644.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//using file descriptor</span><br><span class="line"></span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;fcntl.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;string&gt;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int fileNumber;</span><br><span class="line">    //If the specified file does not exist, it may optionally (if O_CREAT is specified in flags) be created by open().</span><br><span class="line">    fileNumber = open(&quot;./test2.txt&quot;,  O_CREAT | O_WRONLY, 0644);</span><br><span class="line">    if (fileNumber &lt; 0)</span><br><span class="line">    &#123;</span><br><span class="line">        printf(&quot;Can’t read file using file fn %d\n&quot;, fileNumber);</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;</span><br><span class="line">    //ssize_t write(int fildes, const void *buf, size_t nbytes);</span><br><span class="line">    char str[100] = &quot;Writing using File Number\n&quot;;</span><br><span class="line">    int len = strlen(str);</span><br><span class="line">    write(fileNumber, &quot;Writing using File Number\n&quot;, len);</span><br><span class="line">    close(fileNumber);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -138,10 +134,9 @@ ga('send', 'pageview');
 <p>compared with open and write, it is much simple to use fopen and fprintf direactly. for the mode of openning file , refer this (<a target="_blank" rel="noopener" href="https://www.tutorialspoint.com/cprogramming/c_file_io.htm">https://www.tutorialspoint.com/cprogramming/c_file_io.htm</a>)</p>
 <p><strong>c++ style</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//using fstream</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;fstream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main () &#123;</span><br><span class="line">  ofstream myfile;</span><br><span class="line">  //open a file, if file doesn&#x27;t exist, create the file</span><br><span class="line">  //open is a function of class ofstream</span><br><span class="line">  myfile.open (&quot;example.txt&quot;);</span><br><span class="line">  myfile &lt;&lt; &quot;Writing this to a file234.\n&quot;;</span><br><span class="line">  myfile.close();</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//http://www.cplusplus.com/doc/tutorial/files/</span><br></pre></td></tr></table></figure>
-
 <h3 id="FILE-load"><a href="#FILE-load" class="headerlink" title="FILE load"></a>FILE load</h3><p>read the content of the file into the program, the load operation could be diveided into several types by the granularity, load by specific bytes, load line by line, and load the total files at once.</p>
 <p>one important issue is data over flow during file reading.</p>
-<p>the first step is always using fopen to return the File pointer. Similar to open&#x2F;read&#x2F;write(system call for unix), we could use fopen, fread, fwrite(library with the internal buffer for c language). I think open&#x2F;read&#x2F;write are much low level for practical using, in real use case, I prefer to use fopen, fread, fwrite.</p>
+<p>the first step is always using fopen to return the File pointer. Similar to open/read/write(system call for unix), we could use fopen, fread, fwrite(library with the internal buffer for c language). I think open/read/write are much low level for practical using, in real use case, I prefer to use fopen, fread, fwrite.</p>
 <ul>
 <li>for fread, the input could be controled by number of bytes, </li>
 <li>for fgets, the content could be loaded by every line automatically, it will finish reading till the endle or <code>\n</code>.</li>
@@ -162,8 +157,7 @@ if (ifs.fail())
 
 string content((std::istreambuf_iterator&lt;char&gt;(ifs)),
                (std::istreambuf_iterator&lt;char&gt;()));
-</code></pre>
-<p>&#96;&#96;&#96;</p>
+</code></pre><p>```</p>
 <h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p><a target="_blank" rel="noopener" href="https://courses.cs.washington.edu/courses/cse373/99au/assignments/fileIO.html">https://courses.cs.washington.edu/courses/cse373/99au/assignments/fileIO.html</a></p>
 <p>fopen mode </p>
 <p><a target="_blank" rel="noopener" href="https://www.tutorialspoint.com/cprogramming/c_file_io.htm">https://www.tutorialspoint.com/cprogramming/c_file_io.htm</a></p>
@@ -171,7 +165,7 @@ string content((std::istreambuf_iterator&lt;char&gt;(ifs)),
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/07/18/c-c-file-io/" data-id="cm2a0xf4j005tdvjr9lix352k" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/07/18/c-c-file-io/" data-id="cmbw030ij006ej8jrbk9baqwi" class="article-share-link">分享</a>
       
       
       
@@ -354,28 +348,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>Some tips about resource allocation scenarios.</p>
 <span id="more"></span>
-
 <p>When we do the experiments, instead of showing the number of processes, it is also necessary to show how many cores for each proesses. Instead of using the single number, using the <code>A*B</code> form, where A represents the number of processes and B represents how many physical cores is assigned to this process.</p>
 <p>Taking the summit node as an exmaple.</p>
 <p>Case 1<br>1 MPI task (process) use 1 core, the program does not support parallel.</p>
@@ -140,7 +136,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/11/06/Typical-core-allocation-plan/" data-id="cm2a0xf4f004ldvjrcvea4q2y" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/11/06/Typical-core-allocation-plan/" data-id="cmbw030if0052j8jrap3v1g27" class="article-share-link">分享</a>
       
       
       
@@ -246,23 +242,23 @@ ga('send', 'pageview');
       <ul>
         
           <li>
-            <a href="/2024/11/23/distributed-rendering/">distributed rendering</a>
+            <a href="/2025/06/08/javascript-tips/">javascript-tips</a>
           </li>
         
           <li>
-            <a href="/2024/11/21/opengl-tips/">opengl_tips</a>
+            <a href="/2025/02/27/Package-management/">Package management tips</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/23/distributed-rendering/">Distributed rendering (WIP)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/21/graphics-opengl-tips/">Graphics and Opengl Tips</a>
           </li>
         
           <li>
             <a href="/2024/10/18/Multiple-backend-design/">Multiple backend design</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/17/LLM-tips/">LLM tips</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/13/Interesting-numbers-in-CS-and-Femi-estimation/">Interesting numbers in CS and Femi estimation (WIP)</a>
           </li>
         
       </ul>
@@ -341,28 +337,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

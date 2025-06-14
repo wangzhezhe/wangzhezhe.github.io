@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>由于go语言中没有class所以struct是编程中最常用的结构，可惜的是，自己对struct的某些知识掌握的并不好，比如结构体的嵌套以及空结构体等等，项目中难免捉襟见肘，这里梳理一下。</p>
 <span id="more"></span>
-
 <h3 id="基本内容"><a href="#基本内容" class="headerlink" title="基本内容"></a>基本内容</h3><p>从面向对象的角度来看，struct中的字段代表了类型的属性，而与这个struct相关联的方法，或者说是这个struct实现了的方法，可以看成是针对这些属性的操作。</p>
 <p>比如与java来比较，在java中，通常是声明一个class，或者继承已有的类，之后再在这个class中声明一些方法来对属性进行操作，以此来体现面向对象的特性，以及与之相关的继承和多态。</p>
 <p>所谓结构是骨干，接口是灵魂的程序设计理念，在struct+interface的模式下，体现的是很清楚了。</p>
@@ -164,17 +160,12 @@ ga('send', 'pageview');
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">“fmt”</span><br><span class="line">“unsafe”</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type Userb struct&#123;&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">var x [10000000]struct&#123;&#125;</span><br><span class="line">var s = make([]struct&#123;&#125;, 100)</span><br><span class="line">fmt.Println(unsafe.Sizeof(x))</span><br><span class="line">fmt.Println(len(s))</span><br><span class="line">fmt.Println(len(x))</span><br><span class="line">fmt.Println(unsafe.Sizeof(s))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/ output</span><br><span class="line">0</span><br><span class="line">100</span><br><span class="line">10000000</span><br><span class="line">24 /</span><br><span class="line"></span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
 <p>可以看到，直接声明的struct{}数组，没有占用任何的空间，但是用make生成的，占了额外的24byte(应该是一些元信息)，但是它们的len的显示结果，都是正常的长度。<br>具体的使用上，一方面，空结构体可以作为方法的接受者，比如那种工具类的函数，不需要具体的字段，类似：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">type Tool struct&#123;&#125;</span><br><span class="line">func (s Tool) toola() &#123;…&#125;</span><br><span class="line">func (s Tool) toolb() &#123;…&#125;</span><br><span class="line">func (s *Tool) toolc() &#123;…&#125;</span><br><span class="line">…</span><br></pre></td></tr></table></figure>
-
 <p>另外一种是在channel传递信号的时候，应为空结构体不占用内存，信号本身只起到一个通知的含义，这样使得程序更精简（不过感觉用int bool byte这种 在可读性上会好一点）。<br>还要注意的一点是初始化的操作，比如下面的例子：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">“fmt”</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type User struct &#123;</span><br><span class="line">Name string</span><br><span class="line">Age int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">s := User&#123;Name: “abc”, Age: 18&#125;</span><br><span class="line">b := User&#123;&#125;</span><br><span class="line">fmt.Println(s)</span><br><span class="line">fmt.Println(b)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>在b实例生成的时候，直接用User{}这种方式，让其中的值为默认值，这里的User是我们提前定义的struct{Name string Age int}类型。<br>那么对于空结构体来说，以默认初始化的方式生成一个实例的表述就是<code>struct&#123;&#125;&#123;&#125;</code>这样的表述，就是一个空结构体以默认的方式生成的实例。</p>
-<h3 id="struct嵌套时候的初始化"><a href="#struct嵌套时候的初始化" class="headerlink" title="struct嵌套时候的初始化"></a>struct嵌套时候的初始化</h3><p>比如</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">type Packetdetail struct &#123;</span><br><span class="line">Requestdetail string</span><br><span class="line">Responddetail string</span><br><span class="line">&#125;</span><br><span class="line">type HttpTransaction struct &#123;</span><br><span class="line">//insert struct</span><br><span class="line">Packetdetail</span><br><span class="line">Srcip string</span><br><span class="line">Srcport string</span><br><span class="line">Destip string</span><br><span class="line">Destport string</span><br><span class="line">Timesend time.Time</span><br><span class="line">Timereceive time.Time</span><br><span class="line">Respondtime float64</span><br><span class="line">//only application layer info</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<h3 id="struct嵌套时候的初始化"><a href="#struct嵌套时候的初始化" class="headerlink" title="struct嵌套时候的初始化"></a>struct嵌套时候的初始化</h3><p>比如<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">type Packetdetail struct &#123;</span><br><span class="line">Requestdetail string</span><br><span class="line">Responddetail string</span><br><span class="line">&#125;</span><br><span class="line">type HttpTransaction struct &#123;</span><br><span class="line">//insert struct</span><br><span class="line">Packetdetail</span><br><span class="line">Srcip string</span><br><span class="line">Srcport string</span><br><span class="line">Destip string</span><br><span class="line">Destport string</span><br><span class="line">Timesend time.Time</span><br><span class="line">Timereceive time.Time</span><br><span class="line">Respondtime float64</span><br><span class="line">//only application layer info</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>之后初始化的时候，这样操作：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">httpinstance := &amp;metrics.HttpTransaction&#123;</span><br><span class="line">    Srcip:       &quot;8082&quot;,</span><br><span class="line">    Srcport:     &quot;8080&quot;,</span><br><span class="line">    Destip:      &quot;8081&quot;,</span><br><span class="line">    Respondtime: 0.123456,</span><br><span class="line">    Packetdetail: metrics.Packetdetail&#123;Requestdetail: &quot;a&quot;, Responddetail: &quot;b&quot;&#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>注意嵌套部分的赋值操作，可以参考<a target="_blank" rel="noopener" href="http://www.zhihu.com/question/22746100">这个</a>。</p>
 <h3 id="关于struct字段之后的tag"><a href="#关于struct字段之后的tag" class="headerlink" title="关于struct字段之后的tag"></a>关于struct字段之后的tag</h3><p>关于struct 中tag的用法 具体就是在struct中的每个元素的后面用反引号` `加上一个串<br>具体的用法：</p>
 <p>1、作为tag 标签 参看学习go语言76页 通过反射可以捕获到tag标签当中的内容 t.Elem().Field(0).Tag</p>
@@ -191,7 +182,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/15/golang-struct-using-tips/" data-id="cm2a0xf4p0083dvjr182hhtcr" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/15/golang-struct-using-tips/" data-id="cmbw030ip008cj8jr3fnuevnj" class="article-share-link">分享</a>
       
       
       
@@ -374,28 +365,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

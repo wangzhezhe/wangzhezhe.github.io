@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -123,16 +120,13 @@ ga('send', 'pageview');
         
         <p>Some tips regarding the common data format used for visualization.</p>
 <span id="more"></span>
-
-
 <h3 id="VTK-data"><a href="#VTK-data" class="headerlink" title="VTK data"></a>VTK data</h3><h3 id="VTK-m-data"><a href="#VTK-m-data" class="headerlink" title="VTK-m data"></a>VTK-m data</h3><h3 id="ADIOS"><a href="#ADIOS" class="headerlink" title="ADIOS"></a>ADIOS</h3><p><strong>setting python binding’s path</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export PYTHONPATH=/path/to/site-packages:$&#123;PYTHONPATH&#125; </span><br></pre></td></tr></table></figure>
 <p>remember to update this env before using python bindings for executing adios</p>
 <p><strong>bpls checking all variables</strong></p>
 <p>This example is output to check variable “VX” by time step, it print the element from position 0 to position 10 for each time step for this variable <code>-d</code> parameter is used to specify the variable.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ ~/cworkspace/build_adios/bin/bpls /lustre/orion/csc143/proj-shared/gongq/frontier/dataset/bent_pipe.bp/ -d &quot;VX&quot; -s &quot;0&quot; -c &quot;10&quot; -t</span><br><span class="line">Step 0:</span><br><span class="line">  double   VX            &#123;235008000&#125;</span><br><span class="line">    slice (0:9)</span><br><span class="line">    (0)    0 0 0 0 0 0</span><br><span class="line">    (6)    0 0 0 0 </span><br><span class="line">Step 1:</span><br><span class="line">  double   VX    &#123;235008000&#125;</span><br><span class="line">    slice (0:9)</span><br><span class="line">    (0)    -1.00187 -1.00187 -1.00187 -1.00187 -1.00187 -1.00187</span><br><span class="line">    (6)    -1.00187 -1.00187 -1.00187 -1.00187 </span><br><span class="line">Step 2:</span><br><span class="line">  double   VX    &#123;235008000&#125;</span><br><span class="line">    slice (0:9)</span><br><span class="line">    (0)    -1.00281 -1.00281 -1.00281 -1.00281 -1.00281 -1.00281</span><br><span class="line">    (6)    -1.00281 -1.00281 -1.00281 -1.00281 </span><br></pre></td></tr></table></figure>
-
-<p>this is results for checking all variables’s min and max and all informations including the attribute and variable. For this case, there are 6 attributes and 6 variables. When read&#x2F;write the file, the attributes and variables are defined in different ways.</p>
+<p>this is results for checking all variables’s min and max and all informations including the attribute and variable. For this case, there are 6 attributes and 6 variables. When read/write the file, the attributes and variables are defined in different ways.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">zw241@login03:~/cworkspace/install_adios/bin$ ./bpls /lustre/orion/csc143/proj-shared/gongq/frontier/dataset/bent_pipe.bp/ -lav</span><br><span class="line">File info:</span><br><span class="line">  of variables:  6</span><br><span class="line">  of attributes: 6</span><br><span class="line">  statistics:    Min / Max </span><br><span class="line">  string   Fides_Cell_Type              attr   = &quot;hexahedron&quot;</span><br><span class="line">  string   Fides_Connectivity_Variable  attr   = &quot;connectivity&quot;</span><br><span class="line">  string   Fides_Coordinates_Variable   attr   = &quot;points&quot;</span><br><span class="line">  string   Fides_Data_Model             attr   = &quot;unstructured_single&quot;</span><br><span class="line">  string   Fides_Variable_Associations  attr   = &#123;&quot;points&quot;, &quot;points&quot;, &quot;points&quot;&#125;</span><br><span class="line">  string   Fides_Variable_List          attr   = &#123;&quot;VX&quot;, &quot;VY&quot;, &quot;VZ&quot;&#125;</span><br><span class="line">  double   VX                           3*&#123;235008000&#125; = -1.36295 / 0.720586</span><br><span class="line">  double   VY                           3*&#123;235008000&#125; = -0.653091 / 0.733072</span><br><span class="line">  double   VZ                           3*&#123;235008000&#125; = -0.103327 / 1.42956</span><br><span class="line">  int32_t  connectivity                 &#123;1880064000&#125; = 0 / 3268607</span><br><span class="line">  float    points                       &#123;235008000, 3&#125; = -20 / 2</span><br><span class="line">  int32_t  step                         3*scalar = 0 / 20</span><br></pre></td></tr></table></figure>
 <p><strong>code examples</strong></p>
 <p>here are some test files for readling and writting adios files and converting it to vtk data format:</p>
@@ -153,7 +147,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2024/04/06/Many-faces-for-data-format-for-visualization/" data-id="cm2a0xf48002ldvjr7shza7l1" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2024/04/06/Many-faces-for-data-format-for-visualization/" data-id="cmbw030i8002rj8jr1az774eo" class="article-share-link">分享</a>
       
       
       
@@ -336,28 +330,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

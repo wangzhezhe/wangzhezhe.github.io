@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>This article mainly compares several differences between the HPC(High performance computing) and CloudComputing. This is the script for online <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=MH0ovAN2iDk">video</a>.</p>
 <span id="more"></span>
-
 <p>You may heard the CloudComputing and HPC (High performance computing) here and there</p>
 <p>Do you curious about the differences between these two techniques?</p>
 <p>After several years elementary works in both of these two areas, the answer about this question is becoming clear.</p>
@@ -138,7 +134,7 @@ ga('send', 'pageview');
 <h3 id="Machines-and-their-Maintainer"><a href="#Machines-and-their-Maintainer" class="headerlink" title="Machines and their Maintainer"></a>Machines and their Maintainer</h3><p>CloudComputing:</p>
 <p>The cloud computing service is mainly provided by commercial companies.</p>
 <p>The left side figure shows the main cloud computing service providers</p>
-<p>you may know names of these companies very well, such as Amazon, Microsoft and Google,  etc &#x2F;ɪt ˈsetərə&#x2F;</p>
+<p>you may know names of these companies very well, such as Amazon, Microsoft and Google,  etc /ɪt ˈsetərə/</p>
 <p><a target="_blank" rel="noopener" href="https://cloud.google.com/gartner-cloud-infrastructure-as-a-service">https://cloud.google.com/gartner-cloud-infrastructure-as-a-service</a></p>
 <p>HPC</p>
 <p>In contrast, the right figure shows the main provider of the HPC system in USA. We mainly list the main national laboratories under the DOE (department of the energy). These institutions are well known for people with the backgound of the scientific computing. These government funded institutions are main force for building the HPC system and play important role in history. For example, the oak ridge and Los Alamos national lab are two sites involved in Manhattan Project.</p>
@@ -146,7 +142,7 @@ ga('send', 'pageview');
 <p>Cloud Computing</p>
 <p>They ususlly do not show the details such as the performance metrics of their cluster, instead, they are more care about the types of services.</p>
 <p>The machine with different configurations are created to users as their requirments based on virtulaization techniques. Their physical machine pool is also heterogeneous which is different compared with the HPC which is configered by homogeneous machines in general.</p>
-<p>The left figure shows the featured products of the google clould service. In addition to the virtual machine, they also provide versatil &#x2F;ˈvɜːrsətl&#x2F; data management and processing capabilities.</p>
+<p>The left figure shows the featured products of the google clould service. In addition to the virtual machine, they also provide versatil /ˈvɜːrsətl/ data management and processing capabilities.</p>
 <p>HPC:</p>
 <p>There is a rank list called top500 list that compares the performance of differnet HPC system in different aspects according to various Testing program. This is just like the olympic game in the HPC world, this rank changes a lot every year.</p>
 <p>as shown in the right figure, it lists the current rank.</p>
@@ -168,10 +164,10 @@ ga('send', 'pageview');
 <p>the scientic projects that uses summit</p>
 <p><a target="_blank" rel="noopener" href="https://www.olcf.ornl.gov/leadership-science/">https://www.olcf.ornl.gov/leadership-science/</a></p>
 <p>The right figure shows some key projects running on summit supercomputer,<br>you could see that the main areas are biology, physicals, fusion or nuclear science or earth science etc. The styles of project are quite different compared with the CloudComputing illustrated by the figure at the left side.</p>
-<p>In summary the core value of the CloudComputing is to serve the customer’s business, differnet softwares are built in order to server this goal. For exmaple, we need the data base to store and index the user information, the smart analytics to process the data as needed, and the backend with accositated security service to support the website.<br>The main value of the HPC is to server the domain science, the typical projects includes the scientific simulation, data visulization and analytics and associated I&#x2F;O or high speed networking service to transfer the data between different stages of the workflow.</p>
+<p>In summary the core value of the CloudComputing is to serve the customer’s business, differnet softwares are built in order to server this goal. For exmaple, we need the data base to store and index the user information, the smart analytics to process the data as needed, and the backend with accositated security service to support the website.<br>The main value of the HPC is to server the domain science, the typical projects includes the scientific simulation, data visulization and analytics and associated I/O or high speed networking service to transfer the data between different stages of the workflow.</p>
 <h3 id="How-to-access-it-from-user’s-perspective"><a href="#How-to-access-it-from-user’s-perspective" class="headerlink" title="How to access it from user’s perspective"></a>How to access it from user’s perspective</h3><p>Cloud Computing:</p>
 <p>When we disucss the Cloud Computing Service, they are divided into different layers in particular.</p>
-<p>The first layer is called IaaS, namely the infrastructure as a service, the cloud provider will assign a virtulized computing node to the user in this case. when you rent some nodes in the IaaS level, these nodes belong to you totally, and the node might be virtulized node. you have the root permission to your computing nodes, and you can configure it (debug it) as needed. The cloud provider only provide you the computing&#x2F;netowrking&#x2F;storage resource as you needed. You need to pay more money if you want to get a more powerful node. </p>
+<p>The first layer is called IaaS, namely the infrastructure as a service, the cloud provider will assign a virtulized computing node to the user in this case. when you rent some nodes in the IaaS level, these nodes belong to you totally, and the node might be virtulized node. you have the root permission to your computing nodes, and you can configure it (debug it) as needed. The cloud provider only provide you the computing/netowrking/storage resource as you needed. You need to pay more money if you want to get a more powerful node. </p>
 <p>The second layer called the PaaS, namely the platform as a service. In this layer, the user just need to provide the configuration file that describes how to run their executable files, and the platform is in charge of the resource scheduling and high avalability of the program.</p>
 <p>The next layer is called the SaaS, namely the software as a service, In this case, the user just need to call the API to interact with the service provided by the cloud computing provider such as the storage service or data monitor service.</p>
 <p>HPC:</p>
@@ -179,7 +175,7 @@ ga('send', 'pageview');
 <p>For example, if you check the summit node, it is really luxury and powerful<br><a target="_blank" rel="noopener" href="https://docs.olcf.ornl.gov/systems/summit_user_guide.html#summit-user-guide">https://docs.olcf.ornl.gov/systems/summit_user_guide.html#summit-user-guide</a></p>
 <p>more parameters on this page<br><a target="_blank" rel="noopener" href="https://www.olcf.ornl.gov/summit/">https://www.olcf.ornl.gov/summit/</a></p>
 <p>The core time is related with your project. When the pi start a project, the core time is usually fixed. When one project finish, you can not access the HPC resource anymore. That’s why researchers always need to write proposal and apply for new project. Only by this way, they can get the avalible computing reosurce and funding from the governmnet.</p>
-<p>Different with the 7 time 24 high avalaibilty for the Cloud Computing service, most HPC have the periodical &#x2F;ˌpɪriˈɑːdɪkl&#x2F; mainataince, you could not access the HPC system when it is offline, I think it is definately a good reason to take some rests some times.</p>
+<p>Different with the 7 time 24 high avalaibilty for the Cloud Computing service, most HPC have the periodical /ˌpɪriˈɑːdɪkl/ mainataince, you could not access the HPC system when it is offline, I think it is definately a good reason to take some rests some times.</p>
 <h3 id="Software-stacks"><a href="#Software-stacks" class="headerlink" title="Software stacks"></a>Software stacks</h3><p>Let’s go through some typical softwares used for these two areas quickly</p>
 <p>CloudComputing:</p>
 <p>IAAS OpenStack, KVM, virtulization<br>PAAS Kubernates, container, docker<br>SAAS More versatile customized cloud service. such as labmda service.</p>
@@ -187,7 +183,7 @@ ga('send', 'pageview');
 <p>The Cloud Computing may need all kinds of data base softwares and big data service such as Spark, or backend services that provide the RPC call. Java, python, golang is also popular in this area.</p>
 <p>HPC</p>
 <p>Slurm,all user access longin node, and share same computation pool,<br>module, to configure the environment<br>spack to insall the packges</p>
-<p>The simulation may use MPI and RDMA a lot, C&#x2F;C++ fortran are the mainstream language in this area.</p>
+<p>The simulation may use MPI and RDMA a lot, C/C++ fortran are the mainstream language in this area.</p>
 <p>In summary, the Cloud Computing Service and HPC share the same genes but have different souls. They are buit based on GPU and CPU but server for differnet users and projects.</p>
 <h3 id="Other-Requrments"><a href="#Other-Requrments" class="headerlink" title="Other Requrments"></a>Other Requrments</h3><p>HPC:<br>powerful computing, user may access tounsands of cores in short period of time</p>
 <p>latest HPC computing node is configured with GPU for every node, which is luxury for comercial company</p>
@@ -200,10 +196,10 @@ ga('send', 'pageview');
 <maybe use a table to show these differences>
 
 <h3 id="Types-of-HPC-or-Cloud"><a href="#Types-of-HPC-or-Cloud" class="headerlink" title="Types of HPC or Cloud"></a>Types of HPC or Cloud</h3><p>在一个报告上听到的内容，报告中大致将HPC和Cloud结合起来，把算力服务分成4个市场，还是有一定的启发的。</p>
-<p>尖端超算，计算，访存，I&#x2F;O都非常好，需要运行一些重要的模拟项目，比如国家超级计算中心。使用者为顶尖的研究机构，高端的超算从业人员，执行攻坚型科研任务。需要用到万核以上的应用。这类的超算其实是会经常发生故障的，比如llama 3训练过程中几个小时就会中断一次。</p>
+<p>尖端超算，计算，访存，I/O都非常好，需要运行一些重要的模拟项目，比如国家超级计算中心。使用者为顶尖的研究机构，高端的超算从业人员，执行攻坚型科研任务。需要用到万核以上的应用。这类的超算其实是会经常发生故障的，比如llama 3训练过程中几个小时就会中断一次。</p>
 <p>通用超算，万核以下的应用，绝大多数是千核以下的应用，自主建设的中小微超算系统。比如超级云计算中心。</p>
 <p>智能超算，以GPU算力为主，单卡到万卡的应用，算力投资大，自建较少，主要使用租用的智算算力资源，解决大模型训练需求的超算中心模式，和解决推力等需求的云计算模式，应用运行特征分析，比如通常的智算中心。</p>
-<p>业务超算，单核到几千核的应用。行业实际的业务，关注服务和性价比，需要实现完整的业务上云，需要保证业务的稳定性与可靠性，需要保证业务的各个环节能够快速、高效、动态实现，通常的特性包括弹性、高性能、高稳定性、高可靠性、高可维护性等等。通常就是公有云&#x2F;超算云+专业的少算服务商。</p>
+<p>业务超算，单核到几千核的应用。行业实际的业务，关注服务和性价比，需要实现完整的业务上云，需要保证业务的稳定性与可靠性，需要保证业务的各个环节能够快速、高效、动态实现，通常的特性包括弹性、高性能、高稳定性、高可靠性、高可维护性等等。通常就是公有云/超算云+专业的少算服务商。</p>
 <h3 id="Other-references"><a href="#Other-references" class="headerlink" title="Other references"></a>Other references</h3><p>EC2 type<br><a target="_blank" rel="noopener" href="https://aws.amazon.com/ec2/physicalcores/">https://aws.amazon.com/ec2/physicalcores/</a></p>
 <p>Google solutions<br><a target="_blank" rel="noopener" href="https://cloud.google.com/compute#section-9">https://cloud.google.com/compute#section-9</a></p>
 <p>Google products<br><a target="_blank" rel="noopener" href="https://cloud.google.com/products">https://cloud.google.com/products</a></p>
@@ -211,7 +207,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/06/27/HPC-vs-CloudComputing/" data-id="cm2a0xf44001kdvjr6t8xa4ic" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2021/06/27/HPC-vs-CloudComputing/" data-id="cmbw030i3001mj8jrglfracyp" class="article-share-link">分享</a>
       
       
       
@@ -394,28 +390,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

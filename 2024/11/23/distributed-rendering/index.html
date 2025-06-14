@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>distributed rendering | AverageMind</title>
+  <title>Distributed rendering (WIP) | AverageMind</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Some tips about the powerwall rendering and distributed rendering.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="distributed rendering">
+<meta property="og:title" content="Distributed rendering (WIP)">
 <meta property="og:url" content="http://yoursite.com/2024/11/23/distributed-rendering/index.html">
 <meta property="og:site_name" content="AverageMind">
 <meta property="og:description" content="Some tips about the powerwall rendering and distributed rendering.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-11-23T09:59:40.000Z">
-<meta property="article:modified_time" content="2025-01-19T12:26:33.716Z">
+<meta property="article:modified_time" content="2025-02-27T15:17:27.851Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -115,7 +112,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      distributed rendering
+      Distributed rendering (WIP)
     </h1>
   
 
@@ -127,8 +124,6 @@ ga('send', 'pageview');
         
         <p>Some tips about the powerwall rendering and distributed rendering.</p>
 <span id="more"></span>
-
-
 <h3 id="Some-background"><a href="#Some-background" class="headerlink" title="Some background"></a>Some background</h3><p>sort first, sort middle and sort last</p>
 <p>Here is an online answer about how to use VTK to do distributed rendering</p>
 <p><a target="_blank" rel="noopener" href="https://discourse.vtk.org/t/question-about-powerwall-rendering-based-on-vtk/14893/3">https://discourse.vtk.org/t/question-about-powerwall-rendering-based-on-vtk/14893/3</a></p>
@@ -138,7 +133,7 @@ ga('send', 'pageview');
 <h3 id="Handle-IO"><a href="#Handle-IO" class="headerlink" title="Handle IO"></a>Handle IO</h3><p>One of our project use asyncio of python. It can handle the communication in an asyncrounous way, which is lightweighted and flexible to use in the use case scenarios. We do not need RPC librarys here, this library can help us to handle encode and decode of the data. </p>
 <h3 id="Compute-the-camara-movement"><a href="#Compute-the-camara-movement" class="headerlink" title="Compute the camara movement"></a>Compute the camara movement</h3><p><strong>compuginh the shift of x and y</strong></p>
 <p><strong>put the object at the center for camara wall</strong></p>
-<p>When the number of screen in one dimention is odd, such as 3. the middle is the center for specific display, such as 1 in x direction. the disply 0 should move -2 to left in view space (the bounds is from -1 to 1 in view space). But when the number of displays is an even number, such as 2, it is not convenient to compute, we need to add an offset firstly, for example, assuming middle one is 4&#x2F;2&#x3D;2 (actually it is not, the actual middle is at left side of display), we plus 1 firstly, so the dummy middle moves to the middle of display 2. Then we can use <code>(index-middle index)*(2)</code> to compute the shift value. By this way, all display can moves to the right position.</p>
+<p>When the number of screen in one dimention is odd, such as 3. the middle is the center for specific display, such as 1 in x direction. the disply 0 should move -2 to left in view space (the bounds is from -1 to 1 in view space). But when the number of displays is an even number, such as 2, it is not convenient to compute, we need to add an offset firstly, for example, assuming middle one is 4/2=2 (actually it is not, the actual middle is at left side of display), we plus 1 firstly, so the dummy middle moves to the middle of display 2. Then we can use <code>(index-middle index)*(2)</code> to compute the shift value. By this way, all display can moves to the right position.</p>
 <p><strong>when the display is scaled, how to set the camara properly</strong>.</p>
 <h3 id="Performance-issue"><a href="#Performance-issue" class="headerlink" title="Performance issue"></a>Performance issue</h3><p>There is a tradeoff between data scale and rendering time; when the data set is extremely large, we can not send results to the render server and put data sets into the memory of a single machine; we need to render things in a distributed way. Maybe a practical approach is to use the low-resolution data to find the look-up angle of the camera and use high-resolution results (namely all data sets) when we want to capture the image from a specific angle, this operation may take longer time and need more computing resources, we even need to submit a job to do render things in this way.</p>
 <h3 id="Use-MPI-or-not"><a href="#Use-MPI-or-not" class="headerlink" title="Use MPI or not"></a>Use MPI or not</h3><p>If MPI is installed on node of each rendering cluster, there is existing solution based on icet</p>
@@ -149,11 +144,14 @@ ga('send', 'pageview');
 <p>These are some references </p>
 <p><a target="_blank" rel="noopener" href="https://zh.userful.com/blog/new-video-multi-window-the-latest-feature-in-the-userful-video-wall-controller-how-it-works">https://zh.userful.com/blog/new-video-multi-window-the-latest-feature-in-the-userful-video-wall-controller-how-it-works</a></p>
 <p>在大型指挥中心或者展览现场，显然这种通用式的，硬件层面上的tile wall 才是更实际更通用的选择。在淘宝上搜索多屏拼接控制器，可以找到好多相关的选择，显然这种通过硬件层面的拼接相比与vtk层面的tile wall是更有效的。</p>
+<h3 id="拼接屏幕的设置"><a href="#拼接屏幕的设置" class="headerlink" title="拼接屏幕的设置"></a>拼接屏幕的设置</h3><p>如果是异形的屏幕，画布如何控制，如果不是等比例扩展，那画面可能被拉伸，如何是等比例扩展，那可能正好覆盖不好整个物理屏幕。</p>
+<p>可以尝试那种ghost region，这样留出一些白边，然后补成为整数的那种，就像通常的padding的操作。如果不能整除，那每个部分处理的数目就加上1。</p>
+<p>实际需要考虑显卡的输出配置，比如一般输出的时候1920*1080就是16:9的设置，这样的显卡可能最好能支持的就是3840:2160，也就是占用4块儿1920:1080的屏幕，要是再大了就不是点对点的情况，就容易失真了。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2024/11/23/distributed-rendering/" data-id="cm3vi6x500000v3jrgm6ebsdd" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2024/11/23/distributed-rendering/" data-id="cmbw030im007fj8jrcfjhavil" class="article-share-link">分享</a>
       
       
       
@@ -207,10 +205,19 @@ ga('send', 'pageview');
     
 <nav id="article-nav">
   
+    <a href="/2025/02/27/Package-management/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Package management tips
+        
+      </div>
+    </a>
   
-    <a href="/2024/11/21/opengl-tips/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2024/11/21/graphics-opengl-tips/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">opengl_tips</div>
+      <div class="article-nav-title">Graphics and Opengl Tips</div>
     </a>
   
 </nav>
@@ -243,7 +250,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-background"><span class="toc-number">1.</span> <span class="toc-text">Some background</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Handle-IO"><span class="toc-number">2.</span> <span class="toc-text">Handle IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Compute-the-camara-movement"><span class="toc-number">3.</span> <span class="toc-text">Compute the camara movement</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Performance-issue"><span class="toc-number">4.</span> <span class="toc-text">Performance issue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Use-MPI-or-not"><span class="toc-number">5.</span> <span class="toc-text">Use MPI or not</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-background"><span class="toc-number">1.</span> <span class="toc-text">Some background</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Handle-IO"><span class="toc-number">2.</span> <span class="toc-text">Handle IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Compute-the-camara-movement"><span class="toc-number">3.</span> <span class="toc-text">Compute the camara movement</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Performance-issue"><span class="toc-number">4.</span> <span class="toc-text">Performance issue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Use-MPI-or-not"><span class="toc-number">5.</span> <span class="toc-text">Use MPI or not</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%BC%E6%8E%A5%E5%B1%8F%E5%B9%95%E7%9A%84%E8%AE%BE%E7%BD%AE"><span class="toc-number">6.</span> <span class="toc-text">拼接屏幕的设置</span></a></li></ol>
           </div>
       </div>
     </div>
@@ -327,28 +334,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

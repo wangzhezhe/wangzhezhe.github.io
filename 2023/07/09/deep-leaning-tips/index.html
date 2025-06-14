@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,13 +124,12 @@ ga('send', 'pageview');
         
         <p>Some notes about the deep learning related knowledge.</p>
 <span id="more"></span>
-
 <p>There is a strong feeling that if you do not learn and use learning things actively, you will be eliminated quickly, failed to apply fundings and hard to find a good job.</p>
 <p>instead of considering why I need to learn this and how it can be used into my own work, a practical attitude might be to learn it firstly.</p>
-<p>The main index are this series of youtube <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=YCzL96nL7j0&list=PLblh5JKOoLUIxGDQs4LFFD--41Vzf-ME1&index=16">video</a></p>
+<p>The main index are this series of youtube <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=YCzL96nL7j0&amp;list=PLblh5JKOoLUIxGDQs4LFFD--41Vzf-ME1&amp;index=16">video</a></p>
 <h3 id="Things-need-to-consider-before-using-NN"><a href="#Things-need-to-consider-before-using-NN" class="headerlink" title="Things need to consider before using NN"></a>Things need to consider before using NN</h3><p>1 There are large amount of the data set, the NN model is data hungary</p>
 <p>2 The mechanism is complicated, it is hard to figure out things by just analysing the problem. If all situation of the problem is clear, we can use other simpler model to solve the problem</p>
-<p>3 Do not waste a lot of time in figureing out details of the pytorch api (there are multiple ways to do similar things), but we should at least understand the typical API. the important thing is to formulate the problem, considering input&#x2F;output, networking structures. </p>
+<p>3 Do not waste a lot of time in figureing out details of the pytorch api (there are multiple ways to do similar things), but we should at least understand the typical API. the important thing is to formulate the problem, considering input/output, networking structures. </p>
 <h3 id="Types-of-the-problem"><a href="#Types-of-the-problem" class="headerlink" title="Types of the problem"></a>Types of the problem</h3><p>Classification problem (if the new target is a cat or a dog) and the regression problem (What is the house price for a new situation).</p>
 <p><strong>Regression using dl</strong></p>
 <p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=vyX2_XRHO9g">https://www.youtube.com/watch?v=vyX2_XRHO9g</a></p>
@@ -145,20 +141,45 @@ ga('send', 'pageview');
 <h3 id="Linear-transformation-and-non-linear-transformation"><a href="#Linear-transformation-and-non-linear-transformation" class="headerlink" title="Linear transformation and non-linear transformation"></a>Linear transformation and non-linear transformation</h3><p>In the linear algebra, we use a lot about the matrix operation, they can be viewed as the scale and translation transformation of the base vectors (linear <a target="_blank" rel="noopener" href="https://www.andreinc.net/2021/01/20/eigenvalues-and-eigenvectors-explained#linear-transformations">transformation</a>). However, in the deep learning field, there are a lot of non-linear transformation, so there are more various operations and associated functions, such as ReLU. This might be help to do some complex pattern recognition. </p>
 <h3 id="Typical-NN"><a href="#Typical-NN" class="headerlink" title="Typical NN"></a>Typical NN</h3><p>This blog provide a good representation with different colors (<a target="_blank" rel="noopener" href="https://www.jeremyjordan.me/intro-to-neural-networks/">https://www.jeremyjordan.me/intro-to-neural-networks/</a>).</p>
 <p>We do not go through the most basic concepts about neuro networks, just put a simple form of mathmetical expression here. Assuming there are 4 input and 3 output, it is ensiensially a matrix operation. The transformation matrix should be 3 by 4. The row index represents this weigt belongs to which output, the colum index match with the input value. It represents how the input values are contributes to each output.</p>
-<p>$$<br>\begin{pmatrix}<br>w_{11} &amp; w_{12} &amp; w_{13} &amp; w_{14} \\w_{21} &amp; w_{22} &amp; w_{23} &amp; w_{24} \\w_{31} &amp; w_{32} &amp; w_{33} &amp; w_{34}<br>\end{pmatrix}<br>\begin{pmatrix}<br>x_{1} \\x_{2} \\x_{3} \\x_{4}<br>\end{pmatrix}<br>+<br>\begin{pmatrix}<br>b_{1} \\b_{2} \\b_{3}<br>\end{pmatrix}<br>&#x3D;<br>\begin{pmatrix}<br>z_{1} \\z_{2} \\z_{3}<br>\end{pmatrix}<br>,<br>\begin{pmatrix}<br>w_{11} &amp; w_{12} &amp; w_{13} &amp; w_{14} \\w_{21} &amp; w_{22} &amp; w_{23} &amp; w_{24} \\w_{31} &amp; w_{32} &amp; w_{33} &amp; w_{34}<br>\end{pmatrix}<br>&#x3D;<br>\begin{pmatrix}<br>w_{1}^T \\w_{2}^T \\w_{3}^T<br>\end{pmatrix}<br>$$</p>
-<p>The vector b represents the bias, and the value in the weight matrix represents the weight value. This is the most foundation operation. If there are multiple hidden layer, we just use z vector as the input to execute similar matrix multiplication and add new bias vector.</p>
-<p>Another important operation is the activation function, it is a function that applied to each value in the vector. For example, in the previous example, after we go through the first layer, then we can apply the activavtion function to the elements in vector, the typical one is ReLU function. So each value in the z vector becomes ReLU(z) after this layer. ReLU function is a kind of activation function. (For example, relu(x) &#x3D; max (0,x), its an nonlinear transformation, when input larger than threshold, return input, otherwise, return zero)</p>
-<p>The output layer usually generate one decision. The ArgMax or SoftMax is applied to a vector to interpret the results. Both the input and output for ArgMax and SoftMax is a vector. This is a good video to visualize the SoftMax results (<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=ytbYRIN0N4g">https://www.youtube.com/watch?v=ytbYRIN0N4g</a>)(this video is really cool and there are a lot of visual results for math things) the idea is to transfer the output into the probability values.</p>
+<script type="math/tex; mode=display">
+\begin{pmatrix}
+w_{11} & w_{12} & w_{13} & w_{14} \\\w_{21} & w_{22} & w_{23} & w_{24} \\\w_{31} & w_{32} & w_{33} & w_{34}
+\end{pmatrix}
+\begin{pmatrix}
+x_{1} \\\x_{2} \\\x_{3} \\\x_{4} 
+\end{pmatrix}
++
+\begin{pmatrix}
+b_{1} \\\b_{2} \\\b_{3}  
+\end{pmatrix}
+=
+\begin{pmatrix}
+z_{1} \\\z_{2} \\\z_{3}  
+\end{pmatrix}
+,
+\begin{pmatrix}
+w_{11} & w_{12} & w_{13} & w_{14} \\\w_{21} & w_{22} & w_{23} & w_{24} \\\w_{31} & w_{32} & w_{33} & w_{34}
+\end{pmatrix}
+=
+\begin{pmatrix}
+w_{1}^T \\\w_{2}^T \\\w_{3}^T 
+\end{pmatrix}</script><p>The vector b represents the bias, and the value in the weight matrix represents the weight value. This is the most foundation operation. If there are multiple hidden layer, we just use z vector as the input to execute similar matrix multiplication and add new bias vector.</p>
+<p>Another important operation is the activation function, it is a function that applied to each value in the vector. For example, in the previous example, after we go through the first layer, then we can apply the activavtion function to the elements in vector, the typical one is ReLU function. So each value in the z vector becomes ReLU(z) after this layer. ReLU function is a kind of activation function. (For example, relu(x) = max (0,x), its an nonlinear transformation, when input larger than threshold, return input, otherwise, return zero)</p>
+<p>The output layer usually generate one decision. The ArgMax or SoftMax is applied to a vector to interpret the results. Both the input and output for ArgMax and SoftMax is a vector. This is a good video to visualize the SoftMax results (<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=ytbYRIN0N4g)(this">https://www.youtube.com/watch?v=ytbYRIN0N4g)(this</a> video is really cool and there are a lot of visual results for math things) the idea is to transfer the output into the probability values.</p>
 <p>When saying the typical NN graph, it might be helpful to understand it from mathematical’s perspective. It is important to consider what are input and output for each operator.</p>
 <h4 id="Gradient-descent-appraoch"><a href="#Gradient-descent-appraoch" class="headerlink" title="Gradient descent appraoch"></a>Gradient descent appraoch</h4><p>The core motivation for the gradient descent is to transfer the learning problem into an optimization problem. There are all kinds of online tutorials regarding the gradient descent approach, the idea is that we find the minimal value of a function by iteratively way. Figuring out the details of the gradient descent is helpful to understand backward propagation.</p>
 <p>(1) list the function we need to optimize, what is input and what it output<br>(2) compute the gradient of the input, which can be a vector with multiple values<br>(3) set the first start point of input, set the learning rate, and compute the next input value of the input<br>(4) using new input to compute the output value and if the output value start to converge (the difference is less than a threshold) or the we get to the maximal iteration numner, then stop the iteration, otherwise, we continue to do the iteration. </p>
 <h4 id="Backward-propagation"><a href="#Backward-propagation" class="headerlink" title="Backward propagation"></a>Backward propagation</h4><p>It is straightforward to undersdanding how we map the input to output with known weight matrix in each layer. Basically, using the input to compute the output (forward propagation). In actual example, we need to compute or train the weight matrix by knowning input and output, this requires the loss function and back proporgation. Simply speaking, the loss function is just the <strong>error between the predicted resuts and the acutal results</strong></p>
 <p>A loss function can be used to define the difference between the acurate value and the predicted value. Typical loss are MSR, mean squared error. The cross entropy is another type of common loss function for classification task. No matter what form of loss function we used, we can  measure the difference bewteen the predicted value and the acurate value. The goal is to minimize this loss function.</p>
 <p>Further more, we want to minimize this error or loss function. The general appraoch to do this minimization is typical gradient descent approach.</p>
-<p>This <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=khUVIZ3MON8&t=321s">video</a> is inspiring, which provides a really good explanation about the backward propagation. This <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=khUVIZ3MON8">video</a> provides a one input one weight case for backward propagation. Assuming the NN is simple and there is one layer one input <code>x</code>(known parameter), the output is $\hat{y}$, the accurate value is <code>y</code>(known parameter). The loss function is simple:<br>$$<br>L &#x3D; (\widehat y -y)^2 &#x3D; (w \cdot x-y)^2<br>$$<br>We want to find the gradient of the loss function towards the w, which is the unknown parameter. Based on the chain rule and gradient descent appraoch listed above, we first compute out the gradient equation:</p>
-<p>$$<br>\nabla L(w) &#x3D; \frac {\partial L}{\partial w} &#x3D; \frac{\partial L}{\partial \widehat{y}} \cdot \frac{\partial \widehat{y}}{\partial w} &#x3D; 2(\widehat{y}-y) \cdot x &#x3D; 2x(w \cdot  x - y)<br>$$<br>Then assume the initial value of the w is $w^0$ we try to get the w value for the next iteration based on the learning rate <code>r</code>:</p>
-<p>$$<br>w^1 &#x3D; w^0 - r \cdot \nabla L(w^0) &#x3D; w^0 - r \cdot 2x\cdot(w^0 \cdot  x - y)<br>$$<br>Then we can get a new predicted value $\widehat{y}^1 &#x3D; w^1 \cdot  x$ and new value of loss function value $L^1 &#x3D; (\widehat{y}^1-y)^2$ When the difference between $L^i$ and $L^{(i-1)}$ is less than a threshold or we get to the maximal iteration number, we can say that we find a good w value.</p>
-<p>This is probably the simplest case for backward proporgation, we can either extend the number of layer or the number of input&#x2F;output at each layer to make the equation become more compicated, but ideas are same.</p>
+<p>This <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=khUVIZ3MON8&amp;t=321s">video</a> is inspiring, which provides a really good explanation about the backward propagation. This <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=khUVIZ3MON8">video</a> provides a one input one weight case for backward propagation. Assuming the NN is simple and there is one layer one input <code>x</code>(known parameter), the output is $\hat{y}$, the accurate value is <code>y</code>(known parameter). The loss function is simple:</p>
+<script type="math/tex; mode=display">
+L = (\widehat y -y)^2 = (w \cdot x-y)^2</script><p>We want to find the gradient of the loss function towards the w, which is the unknown parameter. Based on the chain rule and gradient descent appraoch listed above, we first compute out the gradient equation:</p>
+<script type="math/tex; mode=display">
+\nabla L(w) = \frac {\partial L}{\partial w} = \frac{\partial L}{\partial \widehat{y}} \cdot \frac{\partial \widehat{y}}{\partial w} = 2(\widehat{y}-y) \cdot x = 2x(w \cdot  x - y)</script><p>Then assume the initial value of the w is $w^0$ we try to get the w value for the next iteration based on the learning rate <code>r</code>:</p>
+<script type="math/tex; mode=display">
+w^1 = w^0 - r \cdot \nabla L(w^0) = w^0 - r \cdot 2x\cdot(w^0 \cdot  x - y)</script><p>Then we can get a new predicted value $\widehat{y}^1 = w^1 \cdot  x$ and new value of loss function value $L^1 = (\widehat{y}^1-y)^2$ When the difference between $L^i$ and $L^{(i-1)}$ is less than a threshold or we get to the maximal iteration number, we can say that we find a good w value.</p>
+<p>This is probably the simplest case for backward proporgation, we can either extend the number of layer or the number of input/output at each layer to make the equation become more compicated, but ideas are same.</p>
 <p>Even for the gradient descent approach, it is the most basic optimizer, there are all kinds of optimizer <a target="_blank" rel="noopener" href="https://www.analyticsvidhya.com/blog/2021/10/a-comprehensive-guide-on-deep-learning-optimizers/">options</a> when solving deep learning related approaches.</p>
 <p>This <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=-zI1bldB8to">video</a> provides a good example from scratch about the backward propagation. </p>
 <h4 id="The-defination-about-epoch-and-batch"><a href="#The-defination-about-epoch-and-batch" class="headerlink" title="The defination about epoch and batch"></a>The defination about epoch and batch</h4><p>Be careful about the concept of epoch: Assuming we have 2 data samples. We use sample 1 to do forward propagation, get predicted results, using gradient decent and chain rule to do the backward propagation and update waits. Then we send sample 2’s data into the updated waites and do the forward propagation and backward propagation again. We finish one epoch after all of these operations (we executed forward propagration and backward propagation for all data samples). We need many epoch to train a good neural network. According to this <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=K20lVDVjPn4">vedio</a>, in summary, the one forward pass and one backward pass for <strong>all the traning sample</strong> is called one epoch.</p>
@@ -167,8 +188,26 @@ ga('send', 'pageview');
 <h4 id="Using-dynamic-programming-to-find-the-gradient"><a href="#Using-dynamic-programming-to-find-the-gradient" class="headerlink" title="Using dynamic programming to find the gradient"></a>Using dynamic programming to find the gradient</h4><p>There is m to n relationship between the input and output in real NN, and there are even multiple layers. When we compute the gradient, we might need to compute the Jacobbian matrix, look at this <a target="_blank" rel="noopener" href="https://www.cs.toronto.edu/~rgrosse/courses/csc321_2018/slides/lec10.pdf">slides</a> to get more detailed info. The general idea is really similar to way of thinking problems through dynamic programming way, we want to compute $\frac {\partial L_i}{\partial w_j}$ we know which related nodes contribute to this value in the previous layer, and we can build a graph to show this, and we can compute associated value at the first layer easily.</p>
 <h4 id="Activation-function"><a href="#Activation-function" class="headerlink" title="Activation function"></a>Activation function</h4><p>Typical activation function is ReLU, which introduce some non-linear property to the network and make it to process more complicated question. The non-linear property of active function does not mean there is no derivative of it. We can still compute the derivative of it in the process of backpropagation, checking <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/42042561/relu-derivative-in-backpropagation">this question</a>.</p>
 <h4 id="An-simple-pytorch-exmaple"><a href="#An-simple-pytorch-exmaple" class="headerlink" title="An simple pytorch exmaple"></a>An simple pytorch exmaple</h4><p>It is easier to look at associated simple python code after figureing out these details.</p>
-<p>Let’s look at the example shown in <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=FHdlXe1bSe4&list=PLblh5JKOoLUIxGDQs4LFFD--41Vzf-ME1&index=21">this video</a> </p>
-<p>Before using pytorch to program it, it is good to try to express it clearly mathmatically. we use $w1$ and $w2$ to express two layers. For the first layer there is:<br>$$<br>\begin{pmatrix}<br>W1_{00} \\W1_{10}<br>\end{pmatrix}<br>\cdot I<br>+<br>\begin{pmatrix}<br>b1_{0} \\b1_{1}<br>\end{pmatrix}<br>&#x3D;<br>\begin{pmatrix}<br>Z1_0 \\Z1_1<br>\end{pmatrix}<br>$$<br>the first subscript represent the index of the output, there is one input value so there is one column for the matrix. Then there is a ReLU function for output and the output, it can be described as<br>$$<br>(W2_{00},W2_{01}) \cdot<br>\begin{pmatrix}<br>ReLu(Z1_{0}) \\ ReLu(Z1_{1})<br>\end{pmatrix} &#x3D; Z2<br>$$<br>which get the final output.</p>
+<p>Let’s look at the example shown in <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=FHdlXe1bSe4&amp;list=PLblh5JKOoLUIxGDQs4LFFD--41Vzf-ME1&amp;index=21">this video</a> </p>
+<p>Before using pytorch to program it, it is good to try to express it clearly mathmatically. we use $w1$ and $w2$ to express two layers. For the first layer there is:</p>
+<script type="math/tex; mode=display">
+\begin{pmatrix}
+W1_{00} \\\W1_{10}
+\end{pmatrix}
+\cdot I 
++
+\begin{pmatrix}
+b1_{0} \\\b1_{1}
+\end{pmatrix}
+= 
+\begin{pmatrix}  
+Z1_0 \\\Z1_1
+\end{pmatrix}</script><p>the first subscript represent the index of the output, there is one input value so there is one column for the matrix. Then there is a ReLU function for output and the output, it can be described as</p>
+<script type="math/tex; mode=display">
+(W2_{00},W2_{01}) \cdot
+\begin{pmatrix}
+ReLu(Z1_{0}) \\\ ReLu(Z1_{1})
+\end{pmatrix} = Z2</script><p>which get the final output.</p>
 <p>After figureing out these details, it is easy to understand associated pytorch example.</p>
 <p>Associated code example can be founud <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/NN/BasicNN.py">here</a>, what we need to do is to provide a forward function, and the pytorch library will help us to execute the backward function and the traning function automatically. Becareful about the properties of the function such as <code>requires_gradient=True</code> (the parameter that needs to be optimized)</p>
 <p>Several standard model for deep learning program in pytorch: 1 data loader 2 description of network 3 loss function 4 optimizer 5 train (descripbe the high level of whole process)</p>
@@ -185,9 +224,9 @@ ga('send', 'pageview');
 <p>1d convolution operation with 2d convolution operation</p>
 <p>Coming back to the CNN, there are multiple ways to applying the kernel to the original input data<br>There are some realted terms: if we apply the kernel start from each value of the original matrix and there is overlapping between the region area covered by each kernel, the output result is <strong>Feature map</strong>. </p>
 <p>Otherwise, if there is no overlapping for the areas covered by each kernel, and the kernel is just selecting the element that has a best output value, this approach is called <strong>max pooling</strong> if the filter is just to do the average operation of the selected area in the featuer map, this operation is called <strong>average pooling</strong>.</p>
-<p>Ensentially, the pooling strategy is used to decrease the size of the feature map (otherwise, there are too many parameters), it is just a fancy term for downsamping or lossy compression. When using the kernel size for pooling as the <code>2*2</code>, the result is the 1&#x2F;4 of origianl size. </p>
+<p>Ensentially, the pooling strategy is used to decrease the size of the feature map (otherwise, there are too many parameters), it is just a fancy term for downsamping or lossy compression. When using the kernel size for pooling as the <code>2*2</code>, the result is the 1/4 of origianl size. </p>
 <p>The number of kernel does not change the size of the image, it just changes the number of ouput channles. The number of pooling operation changes the size of the figure, for the <code>2*2</code> pooling kernel with stride equals 2, the size of the image becomes half of the original image. For example, in vgg, if the input size of the figure is 224, there are five pooling operation, the final image size connected to the fully connected layer is <code>224/(2^5) = 7</code></p>
-<p>This <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=HGwBXDKFk9I&list=PLblh5JKOoLUIxGDQs4LFFD--41Vzf-ME1&index=14">video</a> provides an exmaple that is easy to understand about the CNN.</p>
+<p>This <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=HGwBXDKFk9I&amp;list=PLblh5JKOoLUIxGDQs4LFFD--41Vzf-ME1&amp;index=14">video</a> provides an exmaple that is easy to understand about the CNN.</p>
 <p><strong>how to use the torch nn module</strong></p>
 <p>Looking at this vedio<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=n8Mey4o8gLc">https://www.youtube.com/watch?v=n8Mey4o8gLc</a></p>
 <p>one input matrix, one output</p>
@@ -213,7 +252,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/07/09/deep-leaning-tips/" data-id="cm2a0xf4n0076dvjr9hkq9kxe" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/07/09/deep-leaning-tips/" data-id="cmbw030im007cj8jrfxww8zv9" class="article-share-link">分享</a>
       
       
       
@@ -396,28 +435,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

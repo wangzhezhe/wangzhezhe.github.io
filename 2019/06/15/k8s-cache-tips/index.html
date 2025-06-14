@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>在程序中经常需要用到内存缓存，说简单一点就是一个map。这里以k8s中的canche为例看看好的缓存机制是如何设计的以及有哪些需要注意的地方，以后在程序中遇到类似的缓存相关的问题就可以直接拿过来使用。这部分的介绍不需要对k8s的背景知识有任何的了解，但是了解了缓存机制之后再看一些相关的组件比如kube-controller，多少会更有一些更加全局的认识对于k8s自身业务代码的深入理解也会有所帮助，甚至可以按照自己的业务逻辑和场景实现一个定制的controller。</p>
 <span id="more"></span>
-
 <p>采用的分析k8s的代码版本是v1.6.2，所分析的文件位于<code>.vendor/k8s.io/client-go/tools/cache</code>，其实具体功能上都是比较好理解的，关键是对于一些细节部分的把握。</p>
 <h3 id="threadSafetyStore"><a href="#threadSafetyStore" class="headerlink" title="threadSafetyStore"></a>threadSafetyStore</h3><p>顾名思义，这个store就是实现了一个线程安全的strore，直接使用这个store中提供的Add,Update,Delete方法操纵对象，就不需要再自己考虑各种加锁的问题了。</p>
 <p>再分析具体实现之前，先简单看下测试文件store_test.go，看下这个cache是如何使用的，threadSafetyStore没有直接暴露出来，它和一个keyFunc组合起来被封装在cache结构体中。</p>
@@ -151,7 +147,7 @@ ga('send', 'pageview');
 </ul>
 <p>这里采用的基本结构是map+queue，相比于上一种simplecache，这里增加了queue用于存储index，每次进出cache的元素都是从index中进行检索而不是直接从map中进行检索。具体的回调函数的实现通过sync.condition变量进行，这里有一个实际的例子。</p>
 <p>补充sync.condition的使用，在只用了broadcaster的方法之后，会依次向所有执行了condition.wait的goroutine发广播，（这些goroutine本质上是阻塞在condition.Wati所在的位置）将它们启动起来。sync.condition.Wait会将当前的goroutine挂起，知道执行了sync.condition.Broadcast方法之后，所有的相关的被挂起的goroutine就会重新被调度。</p>
-<p>具体的FIFO的代码仍然参考的k8s中的实现，基本的CRUD就不再赘述，直接参考这里(<a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/BLG/blob/develop/Components/cache/fifo.go)%E7%9A%84%E6%BA%90%E7%A0%81%EF%BC%8C%E8%BF%99%E9%87%8C%E4%B8%BB%E8%A6%81%E5%88%86%E6%9E%90%E4%B8%8B%E5%9B%9E%E8%B0%83%E6%93%8D%E4%BD%9C%E7%9A%84%E5%AE%9E%E7%8E%B0%E3%80%82">https://github.com/wangzhezhe/BLG/blob/develop/Components/cache/fifo.go)的源码，这里主要分析下回调操作的实现。</a></p>
+<p>具体的FIFO的代码仍然参考的k8s中的实现，基本的CRUD就不再赘述，直接参考这里(<a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/BLG/blob/develop/Components/cache/fifo.go)的源码，这里主要分析下回调操作的实现。">https://github.com/wangzhezhe/BLG/blob/develop/Components/cache/fifo.go)的源码，这里主要分析下回调操作的实现。</a></p>
 <p>注意pop方法的使用，这个也是唯一多增加的地方，其实就是把queue的头元素拿出来，唯一不容易理解的地方就是sync.condition的使用</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func (f *FIFO) Pop(process PopProcessFunc) (interface&#123;&#125;, error) &#123;</span><br><span class="line">	f.lock.Lock()</span><br><span class="line">	defer f.lock.Unlock()</span><br><span class="line">	for &#123;</span><br><span class="line">		for len(f.queue) == 0 &#123;</span><br><span class="line">			// When the queue is empty, invocation of Pop() is blocked until new item is enqueued.</span><br><span class="line">			// When Close() is called, the f.closed is set and the condition is broadcasted.</span><br><span class="line">			// Which causes this loop to continue and return from the Pop().</span><br><span class="line">			if f.IsClosed() &#123;</span><br><span class="line">				return nil, FIFOClosedError</span><br><span class="line">			&#125;</span><br><span class="line">			f.cond.Wait()</span><br><span class="line">		&#125;</span><br><span class="line">		id := f.queue[0]</span><br><span class="line">		f.queue = f.queue[1:]</span><br><span class="line">		if f.initialPopulationCount &gt; 0 &#123;</span><br><span class="line">			f.initialPopulationCount--</span><br><span class="line">		&#125;</span><br><span class="line">		item, ok := f.items[id]</span><br><span class="line">		if !ok &#123;</span><br><span class="line">			// Item may have been deleted subsequently.</span><br><span class="line">			continue</span><br><span class="line">		&#125;</span><br><span class="line">		delete(f.items, id)</span><br><span class="line">		err := process(item)</span><br><span class="line">		if e, ok := err.(ErrRequeue); ok &#123;</span><br><span class="line">			f.addIfNotPresent(id, item)</span><br><span class="line">			err = e.Err</span><br><span class="line">		&#125;</span><br><span class="line">		return item, err</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可以看到，在队列中没有元素的时候，就执行f.cond.Wait()方法，将这个goroutine一直挂起，直到新的元素加入了队列中使得条件符合，比如ADD了一个元素进入队列，这个时候就通过cond.Broadcast方法通知所有被cond.Wait挂起的goroutine，最后从队列中取出第一个元素然后执行传入进来的process函数。整个过程被放在一个大的for循环中，以上的逻辑一直中复执行，<strong>还有一点要注意的是，每次Pop的逻辑执行完成之后都要将被处理过的元素从当前的队列中删除，相当于说是当前的元素已经被处理过了，可以从队列中移出了</strong>，由于存储的key值仅仅是string类型，这里的queue只需要通过[]string来模拟即可。</p>
@@ -176,7 +172,7 @@ ga('send', 'pageview');
 <p>其中的obj.TypeMeta就是每个api对象的元信息，具体包括 Kind 以及 APIVersion信息，他实现了上面所说的ObjectKind接口也就是说实现了SetGroupVersionKind以及GroupVersionKind这两个方法。</p>
 <p>watch 功能主要是通过暴露出来的watch interface来体现：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">type Interface interface &#123;</span><br><span class="line">        //停止watch操作</span><br><span class="line">	Stop()</span><br><span class="line">        //返回一个chanel用于接受所有的event，这里的events值的就是watch到的events</span><br><span class="line">	ResultChan() &lt;-chan Event</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对于watch来说，具体的实现并不像是list那么简单，起真正的底层实现通过interface接口暴露出来。具体的实现细节是在 apimachinery&#x2F;pkg&#x2F;watch 中描述，具体来看下watch机制,具体源文件在<code>/apimachinery/pkg/watch</code>中：</p>
+<p>对于watch来说，具体的实现并不像是list那么简单，起真正的底层实现通过interface接口暴露出来。具体的实现细节是在 apimachinery/pkg/watch 中描述，具体来看下watch机制,具体源文件在<code>/apimachinery/pkg/watch</code>中：</p>
 <p>默认的watch的事件类型包括<code>&quot;ADDED&quot; &quot;MODIFIED&quot; &quot;DELETED&quot; &quot;ERROR&quot;</code>几种。默认的用于消息传递的event结构体：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">type Event struct &#123;</span><br><span class="line">	Type EventType</span><br><span class="line">	// Object is:</span><br><span class="line">	//  * If Type is Added or Modified: the new state of the object.</span><br><span class="line">	//  * If Type is Deleted: the state of the object immediately before deletion.</span><br><span class="line">	//  * If Type is Error: *api.Status is recommended; other types may make sense</span><br><span class="line">	//    depending on context.</span><br><span class="line">	Object runtime.Object</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>newEmptyWatch函数的功能就是创建一个channel，channel中具体的元素为Event：</p>
@@ -186,13 +182,10 @@ ga('send', 'pageview');
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">type Broadcaster struct &#123;</span><br><span class="line">        //这个lock主要控制对于watchers的map的读写操作</span><br><span class="line">	lock sync.Mutex</span><br><span class="line">        //这个watchers存储broadcasterwatcher相当于是notification的下游的各种watchers</span><br><span class="line">	watchers     map[int64]*broadcasterWatcher</span><br><span class="line">	//记录新的即将注册进来的broadcasterWatcher的id</span><br><span class="line">        nextWatcher  int64</span><br><span class="line">        //每次新加入或者减少一个watcher，就在waitgroup中进行相对应的操作</span><br><span class="line">	distributing sync.WaitGroup</span><br><span class="line">        //记录最上游的事件来源</span><br><span class="line">	incoming chan Event</span><br><span class="line">	// 生成一个新的broadcasterwatcher的时候 其中的缓冲channel的长度</span><br><span class="line">	watchQueueLength int</span><br><span class="line">        //控制watchers如何对notification做反应 </span><br><span class="line">        //如果为0 如果某个watcher满了 incoming会阻塞在这里 直到下游的watcher channel变得可以接受新的元素为止</span><br><span class="line">        //如果为1 当某个watcher满了 incoming会跳过当前的watcher 直接将信息传递给下一个watcher 这样chanel满的那个watcher就会丢失一条Event信息</span><br><span class="line">	fullChannelBehavior FullChannelBehavior</span><br><span class="line">&#125;</span><br><span class="line">//每一个broadcasterWatcher都用来处理一个单一的watcher行为</span><br><span class="line">type broadcasterWatcher struct &#123;</span><br><span class="line">        //按照之前的对于基本watch的介绍 result以及stopped chanel是基本的watcher元素</span><br><span class="line">	result  chan Event</span><br><span class="line">	stopped chan struct&#123;&#125;</span><br><span class="line">        //sync.Once控制函数只被调用一次</span><br><span class="line">	stop    sync.Once</span><br><span class="line">        //id用来记录这个broadcasterWatcher的身份标记</span><br><span class="line">	id      int64</span><br><span class="line">        //这里是所反向引用的操作 记录这个broadcasterWatcher上游的Broadcaster</span><br><span class="line">	m       *Broadcaster</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在实际的系统中应该结合场景，比较细致地考虑watchQueueLength以及fullChannelBehavior，在NewBroadcaster操作的时候，这两个也是关键的输入参数。NewBroadcaster操作的时候会将waitgroup中的数字+1,这个loop标记的是有几个Broadcaster正在处于loop的状态，然开始loop循环：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func NewBroadcaster(queueLength int, fullChannelBehavior FullChannelBehavior) *Broadcaster &#123;</span><br><span class="line">	m := &amp;Broadcaster&#123;</span><br><span class="line">		watchers:            map[int64]*broadcasterWatcher&#123;&#125;,</span><br><span class="line">		incoming:            make(chan Event, incomingQueueLength),</span><br><span class="line">		watchQueueLength:    queueLength,</span><br><span class="line">		fullChannelBehavior: fullChannelBehavior,</span><br><span class="line">	&#125;</span><br><span class="line">	m.distributing.Add(1)</span><br><span class="line">	go m.loop()</span><br><span class="line">	return m</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>loop的主要内容就是for循环，从incoming的channel中检测传过来的Event再将Event distribute到注册进来的watcher中，这部分可以说是Broadcaster的核心逻辑了：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func (m *Broadcaster) loop() &#123;</span><br><span class="line">	// Deliberately not catching crashes here. Yes, bring down the process if there&#x27;s a</span><br><span class="line">	// bug in watch.Broadcaster.</span><br><span class="line">	for &#123;</span><br><span class="line">		event, ok := &lt;-m.incoming</span><br><span class="line">		if !ok &#123;</span><br><span class="line">			break</span><br><span class="line">		&#125;</span><br><span class="line">		if event.Type == internalRunFunctionMarker &#123;</span><br><span class="line">			event.Object.(functionFakeRuntimeObject)()</span><br><span class="line">			continue</span><br><span class="line">		&#125;</span><br><span class="line">		m.distribute(event)</span><br><span class="line">	&#125;</span><br><span class="line">	m.closeAll()</span><br><span class="line">	m.distributing.Done()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>有一点要注意，放在Event中的内容有可能是正常的起到通知作用的消息，也可能是functionFakeRuntimeObject封装成的Event：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func (obj functionFakeRuntimeObject) GetObjectKind() schema.ObjectKind &#123;</span><br><span class="line">	return schema.EmptyObjectKind</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这里要注意functionFakeRuntimeObject所执行的function具体来说是一个创建并注册Event的操作（具体在后面的Wacher部分介绍）这样操作的原因是确保注册watcher的时间和Event的发布是有序进行的，也就是说watcher在注册了之后确保可以接收到后面的Event，需要确保一个watcher创建并且注册好之后才能distribute新的Event,所以执行distribute操作之前，必须要确保创建并注册watcher的操作全部完成，这里实现的比较巧妙，需要好好体会以下。</p>
 <p>再来看下distribute操作的实现：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func (m *Broadcaster) distribute(event Event) &#123;</span><br><span class="line">	m.lock.Lock()</span><br><span class="line">	defer m.lock.Unlock()</span><br><span class="line">	if m.fullChannelBehavior == DropIfChannelFull &#123;</span><br><span class="line">		for _, w := range m.watchers &#123;</span><br><span class="line">			select &#123;</span><br><span class="line">			case w.result &lt;- event:</span><br><span class="line">			case &lt;-w.stopped:</span><br><span class="line">			default: // Don&#x27;t block if the event can&#x27;t be queued.</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		for _, w := range m.watchers &#123;</span><br><span class="line">			select &#123;</span><br><span class="line">			case w.result &lt;- event:</span><br><span class="line">			case &lt;-w.stopped:</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -211,14 +204,12 @@ ga('send', 'pageview');
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func (r *Reflector) Run() &#123;</span><br><span class="line">	glog.V(3).Infof(&quot;Starting reflector %v (%s) from %s&quot;, r.expectedType, r.resyncPeriod, r.name)</span><br><span class="line">	go wait.Until(func() &#123;</span><br><span class="line">		if err := r.ListAndWatch(wait.NeverStop); err != nil &#123;</span><br><span class="line">			utilruntime.HandleError(err)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;, r.period, wait.NeverStop)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>wait.Until是k8s实现的一些中间操作，用于再r.period时间周期内执行传如的func,这里的func主要的操作就是ListAndWatch。主要的逻辑就是这个ListAndWatch操作，这个函数比较长，这里仅仅列下函数中的主要逻辑：</p>
 <ul>
-<li><p>采用options :&#x3D; metav1.ListOptions{ResourceVersion: “0”}通过r.listerWatcher.List列出当前的所有对象，具体参考ResourceVersion的注释，之后从list中提取出resourceversion并更新reflector实例中的相关参数。之后启动一个goroutine负责select各种停止的channel。</p>
-</li>
+<li>采用options := metav1.ListOptions{ResourceVersion: “0”}通过r.listerWatcher.List列出当前的所有对象，具体参考ResourceVersion的注释，之后从list中提取出resourceversion并更新reflector实例中的相关参数。之后启动一个goroutine负责select各种停止的channel。</li>
 <li><p>在一个循环中执行watch操作，对可能得到的error进行各种处理，然后通过watchHandler函数对得到的watch channel进行处理。<br>具体来看下watchHandler的逻辑，它主要做了两个事情：</p>
 </li>
 <li><p>判断watch的返回channel中接受到的object的类型是不是期望的类型，以及相关的错误处理，之后得到最新的resourceversion。然后分别判断Event的类型，是ADD，Modified，或是Delete,之后分别对不同的操作进行响应，在相关联的底层store中ADD,Modified或者Delete相对应的Object。 （watch 操作时候用于消息通知的Event结构体中就只有两个部分,EventType以及runtime.Object）</p>
 </li>
-<li><p>更新resourceVersion并且做一些错误处理，比如watch channel异常关闭。<br>才用reflector+deltaStore可以实现一旦store中的信息变化就执行指定函数的操作。</p>
-</li>
+<li>更新resourceVersion并且做一些错误处理，比如watch channel异常关闭。<br>才用reflector+deltaStore可以实现一旦store中的信息变化就执行指定函数的操作。</li>
 </ul>
 <h3 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h3><p>controller类型的cache首先抽象出了一个config用于初始化必要的信息,注释中对于每个参数的解释已经非常清晰了：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// Config contains all the settings for a Controller.</span><br><span class="line">type Config struct &#123;</span><br><span class="line">	// The queue for your objects; either a FIFO or</span><br><span class="line">	// a DeltaFIFO. Your Process() function should accept</span><br><span class="line">	// the output of this Queue&#x27;s Pop() method.</span><br><span class="line">	Queue</span><br><span class="line">	// Something that can list and watch your objects.</span><br><span class="line">	ListerWatcher</span><br><span class="line">	// Something that can process your objects.</span><br><span class="line">	Process ProcessFunc</span><br><span class="line">	// The type of your objects.</span><br><span class="line">	ObjectType runtime.Object</span><br><span class="line">	// Reprocess everything at least this often.</span><br><span class="line">	// Note that if it takes longer for you to clear the queue than this</span><br><span class="line">	// period, you will end up processing items in the order determined</span><br><span class="line">	// by FIFO.Replace(). Currently, this is random. If this is a</span><br><span class="line">	// problem, we can change that replacement policy to append new</span><br><span class="line">	// things to the end of the queue instead of replacing the entire</span><br><span class="line">	// queue.</span><br><span class="line">	FullResyncPeriod time.Duration</span><br><span class="line">	// ShouldResync, if specified, is invoked when the controller&#x27;s reflector determines the next</span><br><span class="line">	// periodic sync should occur. If this returns true, it means the reflector should proceed with</span><br><span class="line">	// the resync.</span><br><span class="line">	ShouldResync ShouldResyncFunc</span><br><span class="line">	// If true, when Process() returns an error, re-enqueue the object.</span><br><span class="line">	// TODO: add interface to let you inject a delay/backoff or drop</span><br><span class="line">	//       the object completely if desired. Pass the object in</span><br><span class="line">	//       question to this interface as a parameter.</span><br><span class="line">	RetryOnError bool</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -245,7 +236,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/15/k8s-cache-tips/" data-id="cm2a0xf4r008hdvjred028o7g" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/15/k8s-cache-tips/" data-id="cmbw030ip008mj8jr4oph025f" class="article-share-link">分享</a>
       
       
       
@@ -428,28 +419,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

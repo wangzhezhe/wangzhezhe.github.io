@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,8 +124,6 @@ ga('send', 'pageview');
         
         <p>some tips about the cpp type cast</p>
 <span id="more"></span>
-
-
 <p>the blog about the static cast and the dynamic cast, refer to the vtksafedowncast, add some experiments, when to use the dynamc_cast<br><a target="_blank" rel="noopener" href="https://discourse.vtk.org/t/should-we-replace-safedowncast-with-dynamic-cast/669">https://discourse.vtk.org/t/should-we-replace-safedowncast-with-dynamic-cast/669</a><br>some tricky part about the void pointer and how it is used<br><a target="_blank" rel="noopener" href="https://www.learncpp.com/cpp-tutorial/613-void-pointers/">https://www.learncpp.com/cpp-tutorial/613-void-pointers/</a></p>
 <p>To some extend of you cpp programming journey, you need to start to consider the things about the data type or class type. The general thought is that you may want to make your code more general, and use one code snippet to do multiple things. It might be more clear to start with a concrete case. let’s say we want to program a data management class that index the data block, the key of the map is the data block id, how to design the value of the data block ? Let’s say the block can be really variant, it can be different length of memory types etc, how will you design it? let’s discuss several design considerations here.</p>
 <h3 id="void-pointer-and-the-meta-info"><a href="#void-pointer-and-the-meta-info" class="headerlink" title="void pointer and the meta info"></a>void pointer and the meta info</h3><p>Conceptually, the void pointer can represent any data type, in this case, we could use a <code>void*</code> to hold the address of any data type, but the question is that it is too flexible, how do we know what is the actual data type here? If there is a struct that conains <code>void*</code> it must requires the metadata part that stores the type of element type and the number of element. In this case, we will know what is the actual data type and their length hold by the void poiter. But this may not a good design, since it is error prone, and we basically did not apply any restriction to the data type (in the real program, the type is always limited, since we can not provide a program that can do anything). As illustrated <a target="_blank" rel="noopener" href="https://www.learncpp.com/cpp-tutorial/void-pointers/">in this article</a>, do not use the void pointer unless it is really necessary.</p>
@@ -150,7 +145,6 @@ ga('send', 'pageview');
 <p>For example, the put and get operation of the file based data object need to handle the file io but the memory based data object just need to get the data from the data structure in memory, this can be quite flexible with the interface and then different concrete object implementation just need to implement the interface.</p>
 <p>We not dive into details of the polymorphism here. The <strong>dynamic_cast</strong> is necessary to be mentioned here, we tend to use the parent class (interface) instance to point to the child class. But one thing is that to make sure the parent class is actually hold a pointer to the child class, the good thing about the <code>dynamic_cast</code> is the runtime checking. </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;time.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">// this class can not be initialized with the =0</span><br><span class="line">class Parent &#123;</span><br><span class="line"> public:</span><br><span class="line">  std::string parent;</span><br><span class="line">  virtual void func() = 0;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class Child : public Parent &#123;</span><br><span class="line"> public:</span><br><span class="line">  void func() &#123; std::cout &lt;&lt; &quot;child call func&quot; &lt;&lt; std::endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class Child2 &#123;</span><br><span class="line"> public:</span><br><span class="line">  Child2();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">  Child c;</span><br><span class="line">  Parent* p = &amp;c;</span><br><span class="line">  Child* cptr = dynamic_cast&lt;Child*&gt;(p);</span><br><span class="line">  if (cptr == nullptr) &#123;</span><br><span class="line">    throw std::runtime_error(&quot;failed to transfer&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  cptr-&gt;func();</span><br><span class="line">  Child2* c2 = dynamic_cast&lt;Child2*&gt;(p);</span><br><span class="line">  if (c2 == nullptr) &#123;</span><br><span class="line">    throw std::runtime_error(&quot;failed to transfer into Child2&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>In this simple example, we could see that the return value is nullptr if we try to cast the parent into another unrelated calss. Basically, the dyamic cast only suitable for down cast, and sidecast, check <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/language/dynamic_cast">here</a> to get more detailed information.</p>
 <h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a target="_blank" rel="noopener" href="https://www.learncpp.com/cpp-tutorial/void-pointers/">https://www.learncpp.com/cpp-tutorial/void-pointers/</a></p>
 <p><a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/language/dynamic_cast">https://en.cppreference.com/w/cpp/language/dynamic_cast</a></p>
@@ -161,7 +155,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/01/10/cppTypeTips/" data-id="cm2a0xf4l006pdvjraqo6hu03" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2021/01/10/cppTypeTips/" data-id="cmbw030il0070j8jr1ds73cs5" class="article-share-link">分享</a>
       
       
       
@@ -344,28 +338,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,14 +124,13 @@ ga('send', 'pageview');
         
         <p>forward declaration and the friend class about the cpp.</p>
 <span id="more"></span>
-
 <p>c++ forward declaration and friend function</p>
 <h3 id="forward-declaration"><a href="#forward-declaration" class="headerlink" title="forward declaration"></a>forward declaration</h3><p>For the implementation, if two class has the hierarchy relationship, such as A will call the B and B may hold the pointer to the A, in this case, it is suitable to use the forward declaration when defining the class B.</p>
 <p>Another solution for this part is to extract the public part used by A and B, then both A and B will refer to C, but the C does not need to hold the references to the A and B directly. Before using the forward declaration, it is important to consider if you could adjust the functions in classes and split another class to satisfy a clearer hierarchical relationship.</p>
 <p>If we did not use the object-oriented programing, we may want to register separate functions to the program, in this case, we can use the forward declaration if the self-defined functions want to access other class instances defined in the system.</p>
 <p>This <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/4757565/what-are-forward-declarations-in-c/4757718#4757718">answer</a> provides a very good explanation and examples. I just list some points that need to pay attention to.</p>
 <p>When we try to eliminate reference cyle and use the forward declaration, check the .h file and avoid the cycle of reference here.   Then you could include the .h file (where the parent class is defined) of the parent class at the .cpp file (not the .h file) of the child class to make the forward declaration works. It is ok to forward declare the parent class at the .h file of the child class.</p>
-<h3 id="friend-class"><a href="#friend-class" class="headerlink" title="friend class"></a>friend class</h3><p>Sometimes I declare all elements in the class as the public items. In this case, I do not need to use a friend class. It is not a good thing to do.  Sometimes I use more struct than the class to avoid the private member. I know it is not recommended. If you follow the rule of declaring the class and set the public&#x2F;private members wisely, it might be necessary to declare a friend class sometimes to let dedicated class to access the private member of the current class. <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/friend-class-function-cpp/">Here</a> are some examples.</p>
+<h3 id="friend-class"><a href="#friend-class" class="headerlink" title="friend class"></a>friend class</h3><p>Sometimes I declare all elements in the class as the public items. In this case, I do not need to use a friend class. It is not a good thing to do.  Sometimes I use more struct than the class to avoid the private member. I know it is not recommended. If you follow the rule of declaring the class and set the public/private members wisely, it might be necessary to declare a friend class sometimes to let dedicated class to access the private member of the current class. <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/friend-class-function-cpp/">Here</a> are some examples.</p>
 <h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/what-are-forward-declarations-in-c/">https://www.geeksforgeeks.org/what-are-forward-declarations-in-c/</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/friend-class-function-cpp/">https://www.geeksforgeeks.org/friend-class-function-cpp/</a></p>
 <p>forward declaration</p>
@@ -146,7 +142,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/28/cpp-forward-declaration/" data-id="cm2a0xf4l006hdvjr33fh2jy3" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/05/28/cpp-forward-declaration/" data-id="cmbw030ik006qj8jr8fvm12pz" class="article-share-link">分享</a>
       
       
       
@@ -329,28 +325,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

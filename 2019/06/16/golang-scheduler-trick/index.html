@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -125,9 +122,7 @@ ga('send', 'pageview');
       
         <!-- Table of Contents -->
         
-        <p>一个常见的golang的调度的trap，主要的在使用for循环中生成新的goroutine的时候全局变量或者是局部变量的问题。</p>
-<span id="more"></span>
-
+        <p>一个常见的golang的调度的trap，主要的在使用for循环中生成新的goroutine的时候全局变量或者是局部变量的问题。<br><span id="more"></span></p>
 <h3 id="一个常见的调度trap"><a href="#一个常见的调度trap" class="headerlink" title="一个常见的调度trap"></a>一个常见的调度trap</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">	array := []string&#123;&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;, &quot;f&quot;, &quot;g&quot;, &quot;h&quot;, &quot;i&quot;&#125;</span><br><span class="line">	var i = 0</span><br><span class="line">	for index, item := range array &#123;</span><br><span class="line">		go func() &#123;</span><br><span class="line">			fmt.Println(&quot;index:&quot;, index, &quot;item:&quot;, item)</span><br><span class="line">			i++</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125;</span><br><span class="line">	time.Sleep(time.Second * 1)</span><br><span class="line">	fmt.Println(&quot;------------------&quot;)</span><br><span class="line">//output:</span><br><span class="line">------------------</span><br><span class="line">index: 8 item: i</span><br><span class="line">index: 8 item: i</span><br><span class="line">index: 8 item: i</span><br><span class="line">index: 8 item: i</span><br><span class="line">index: 8 item: i</span><br><span class="line">index: 8 item: i</span><br><span class="line">index: 8 item: i</span><br><span class="line">index: 8 item: i</span><br><span class="line">index: 8 item: i</span><br><span class="line">------------------</span><br></pre></td></tr></table></figure>
 <p>可以看到输出的结果都是8和i。似乎与我们的初衷不符，最初的意图是index与item每次为1,a;2,b;3,c;….这样，然后每次输出对应的结果。但显然，实际程序的执行流程并非是想我们所想的那样，关键是要明白，go func中的index与item分别表示的是什么，这里的go func每个index与item是共享的，并不是局部的，由于for循环的执行是很快的，每次循环启动一个go routine，在for循环结束之后（此时index与item的值分别变成了8与e），但是这个时候第一个启动的go routine可能还没有开始执行，由于它们是共享变量的，之后所有输出的index与item都是8与e于是出现了上面的效果。</p>
 <p>关键问题是将全局的值变成局部的值，即是在每次go routine启动的时候有一个参数声明，比如每次在go routine启动的时候，传进来一个当时这个go routine 被调度到时候的index值，之后这个go routine再被调度到的时候，就能打印出当时的那个值，这样才是这个程序的真正意图，将之前的程序稍微修改下：</p>
@@ -144,7 +139,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/golang-scheduler-trick/" data-id="cm2a0xf4p007vdvjr14u771ku" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/golang-scheduler-trick/" data-id="cmbw030io0086j8jr3o1r5xg9" class="article-share-link">分享</a>
       
       
       
@@ -327,28 +322,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

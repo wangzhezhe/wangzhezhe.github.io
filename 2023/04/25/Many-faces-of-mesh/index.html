@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -130,20 +127,19 @@ ga('send', 'pageview');
 <p>This blog take some notes about tips of processing the mesh of the scientific data set.</p>
 <p>Commonly used mesh can be founud in <a target="_blank" rel="noopener" href="https://examples.vtk.org/site/VTKBook/05Chapter5/#56-types-of-datasets">vtk document</a> and <a target="_blank" rel="noopener" href="https://vtk.org/Wiki/VTK/Tutorials/3DDataTypes#Image_Data">wiki page</a> or vtkm documents about <a target="_blank" rel="noopener" href="https://vtk-m.readthedocs.io/en/latest/dataset.html#cell-sets">cell set</a>.</p>
 <span id="more"></span>
-
 <h3 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h3><p>Generally speaking, the mesh and raw scalar or vector data compose the scientific data set. The VTK data structure is de facto standard. We do not write everything again here in details. The VTK’s online text book has a good explanation about it. VTK-m’s user guide provides another good explanaionts about it.</p>
 <h3 id="Image-data"><a href="#Image-data" class="headerlink" title="Image data"></a>Image data</h3><p>Image data might be most commonly used one.</p>
 <p>Image data in vtk is the parent of the structured grid. Just use the structured grid when trying to load specific data.</p>
 <p>When initilizing the image data, three necessary things are origin, dims, and the spacing. We do not need to further setting the extends if we have already set the origin, dims and the spacing.</p>
 <p>Their file suffix can also be different, image data always use the .vti and the structured point just use the .vtk suffix</p>
 <p>One different between image data and structured grid is about the extends. According to the online documents, the data extent of the Structured point match with the update extent but for the image data, it can be smaller(still not sure about the meaning for this). Maybe it means that the image data can include the data with blanking in it (another subclass of vtk image data), so the actual extents in the data might be smaller than the extents we specified by crop operation.</p>
-<p>Here is an tutorial about the <a target="_blank" rel="noopener" href="https://vtk.org/Wiki/VTK/Tutorials/Extents">extent</a>, it just represents the start and end position&#x2F;pixles of the image.</p>
+<p>Here is an tutorial about the <a target="_blank" rel="noopener" href="https://vtk.org/Wiki/VTK/Tutorials/Extents">extent</a>, it just represents the start and end position/pixles of the image.</p>
 <h3 id="Explicit-grid"><a href="#Explicit-grid" class="headerlink" title="Explicit grid"></a>Explicit grid</h3><p>In paraview filter, there is a clean to grid filter, the goal of this filter is to trafer grid to a explicit representation. The output is the unstructured grid in this case with full connectiveity information. However, it will take much more space compared with the grid that has an inexplicit representation. For example, the inexplicit bounding box for structured grid only need to store the boundry information, but the explicit mesh need to store all informtaion for that mesh.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/04/25/Many-faces-of-mesh/" data-id="cm2a0xf4a002zdvjr2hwzbflg" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/04/25/Many-faces-of-mesh/" data-id="cmbw030i9002zj8jr3zsneeo8" class="article-share-link">分享</a>
       
       
       
@@ -326,28 +322,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

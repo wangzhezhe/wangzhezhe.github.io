@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>Typical notataion about the algorithm complexity and some thoughts</p>
 <span id="more"></span>
-
 <p>when consider a specific optimization, it might makes sense if it decrease the upper bound, otherwise, the optimization in the constant item maybe meaningless. When considering the optimization for a system, it might makes sense if you consider it from the complexity aspects.</p>
 <h3 id="big-theta-notation"><a href="#big-theta-notation" class="headerlink" title="big theta notation"></a>big theta notation</h3><p>When we use big-Θ notation, we’re saying that we have an asymptotically tight bound on the running time. “Asymptotically” because it matters for only large values of nnn. “Tight bound” because we’ve nailed the running time to within a constant factor above and below.</p>
 <h3 id="big-O-notation"><a href="#big-O-notation" class="headerlink" title="big O notation"></a>big O notation</h3><p>big-omega, asymptotic upper bound, It would be convenient to have a form of asymptotic notation that means “the running time grows at most this much, but it could grow more slowly.” We use “big-O” notation for just such occasions.</p>
@@ -142,7 +138,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/22/algorithm-bigo-notation-md/" data-id="cm2a0xf4h0057dvjrhqt7fird" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/09/22/algorithm-bigo-notation-md/" data-id="cmbw030ig005ej8jr6r2max17" class="article-share-link">分享</a>
       
       
       
@@ -325,28 +321,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

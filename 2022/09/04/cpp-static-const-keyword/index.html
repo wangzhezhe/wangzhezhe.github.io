@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,17 +124,14 @@ ga('send', 'pageview');
         
         <p>Some notes about the static keyword. Its basic semantics, and concepts regarding declaration, defiantion and initilization. And also how the header only library use the static keyword.</p>
 <span id="more"></span>
-
 <h3 id="Within-one-translation-unit-static"><a href="#Within-one-translation-unit-static" class="headerlink" title="Within one translation unit (static)"></a>Within one translation unit (static)</h3><p>In the “Complete C++ tips &amp; secrets for professionals” The keyword static belongs to the type of <strong>storage class specifiers</strong>, it describes three semantics for using the static, before diving to details, let’s go through some basic concepts:</p>
 <p>Translation unit: refer to <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1106149/what-is-a-translation-unit-in-c">this</a>. Generally speaking, it is the file that can be compiled into the object file (such as .c or .cpp file). Which is the basic compiling unit of the cpp.</p>
 <p>The fundamental idea to explain the static is that: the static in cpp means that the variabled is initilized once before the program starts (not the runtime), and is not destroyed every time its scope is exited, once the variable is defined, that memory storage associated with that variable just stay there.</p>
 <p>Be careful about the term “initilized once”.</p>
 <p>Here are some <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/23345554/what-distinguishes-the-declaration-the-definition-and-the-initialization-of-a-v">explanations</a> ideas about the declaration (signature), defination (contains the body of function or class) and initilization (declaraion + assignment). The defination can be written in the same line with the initilization. Consider following two exmaples:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//Case 1</span><br><span class="line">    for (int i = 0; i &lt; 10; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        static std::string filename = &quot;test&quot; + std::to_string(i); </span><br><span class="line">        //the above line contains defination, declaration and initilization in one line, we try to redefine it each time</span><br><span class="line">        //it will not be redefined, and the memory space is always same for that variable</span><br><span class="line">        std::cout &lt;&lt; &quot;index &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; filename &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
 <p>and </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//Case 2</span><br><span class="line">    static std::string filename; </span><br><span class="line">    //the above line contains both defination and declaration </span><br><span class="line">    for (int i = 0; i &lt; 10; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        filename = &quot;test&quot; + std::to_string(i);</span><br><span class="line">        std::cout &lt;&lt; &quot;index &quot; &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; filename &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
 <p>The case 1 does not work as expected and all results are test0, since at the second time, the initlization operation will not be executed. At the case 2, the value of the static variable still can not be changed. The resutls works as expected. <strong>Attention, the static varaible does not say that its value can not be changed or reassigned, it just say that <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/43109439/how-does-a-static-variable-not-get-reassigned-when-inside-the-function">it can not be redefined</a></strong>.</p>
 <p>According to this <a target="_blank" rel="noopener" href="https://www.learncpp.com/cpp-tutorial/variable-assignment-and-initialization/">blog</a> this initilization is actually the combination of one declaration and one assignment. For static keyword, the memory space is fixed after the declaration of a variable, then after the assignment operation, the value is fixed. If you redefine that variable, the memory space is still there. This is different with the const keyword, the const keyword just limit the accessibility.</p>
 <h3 id="Const-member-function"><a href="#Const-member-function" class="headerlink" title="Const member function"></a>Const member function</h3><p>When labeling a function as the const function, it means that this function is a “read-only” function that doesn’t modify the object for which it’s called, <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/cpp/cpp/const-cpp?view=msvc-160#const-member-functions">refer to this</a>.</p>
@@ -146,15 +140,12 @@ ga('send', 'pageview');
 <p>One trick is that if the parameter is a reference to a variable, and it is not labeled as a const parameter, we can not assign a rvalue to it. The detailed reason can be found <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/18565167/non-const-lvalue-references">here</a>. Namely, a temporary can not bind to a non-const reference. This is because that modifying a temporary is meaningless, its scope is short, it is destroyed after the expression. </p>
 <h3 id="Different-between-const-and-static"><a href="#Different-between-const-and-static" class="headerlink" title="Different between const and static"></a>Different between const and static</h3><p>It might good to discuss a little bit about the difference between the const and static here. The good way to understand these two keyword is to consider its opposite word. For const, its opposite word is no-const. So the value of const variable can not be changed, or it can not be reassigned. Or we can assume it is read-only variable. But it can be redefined, which is different with the static keyword.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int main() &#123;</span><br><span class="line">    for(int i=0;i&lt;2;i++)&#123;</span><br><span class="line">        const int a = i;</span><br><span class="line">        std::cout &lt;&lt; a &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; &quot;------&quot; &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; 2; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        static int b = i; </span><br><span class="line">        //the above line contains defination, declaration and initilization in one line, we try to redefine it each time</span><br><span class="line">        std::cout &lt;&lt; &quot;index &quot; &lt;&lt; b &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//output</span><br><span class="line">0</span><br><span class="line">1</span><br><span class="line">------</span><br><span class="line">index 0</span><br><span class="line">index 0</span><br></pre></td></tr></table></figure>
-
 <p>In the above example, the value of static variable does not change if we try to redefine it. If we try to change the value of const variable, such as reassign another value to a, there is error <code>error: assignment of read-only variable &#39;a&#39;</code>.</p>
 <h3 id="Across-multiple-translation-units-static"><a href="#Across-multiple-translation-units-static" class="headerlink" title="Across multiple translation units (static)"></a>Across multiple translation units (static)</h3><p>I have an incorrect understanding previously: the “static variable can not change its value”. This understanding may come from the following use case, which uses the static varibale across the translation uint <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/16079235/static-variable-cpp-do-not-want-to-change">like this</a>:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//main.cpp</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &quot;test.hpp&quot;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; a &lt;&lt; std::endl;</span><br><span class="line">    change(10);</span><br><span class="line">    std::cout &lt;&lt; a &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//test.hpp</span><br><span class="line">static int a; </span><br><span class="line">void change(int);</span><br><span class="line"></span><br><span class="line">//test.cpp</span><br><span class="line">#include &quot;./test.hpp&quot;</span><br><span class="line"></span><br><span class="line">void change(int v)&#123;</span><br><span class="line">    a=v;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>The important thing is that there are two tranlation unit (main.cpp and file.cpp), these two unit have the different version of the static variable. Although one of them (the one in the file.cpp) is changed by the function, the one in the main.cpp is still not modified.</p>
 <p>It’s interesting that it is actually a bad practice to define the variable in the .h file, if we remove the static keyword, we get the compiling error such as:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">duplicate symbol &#x27;_a&#x27; in:</span><br><span class="line">    /var/folders/qy/xfjhf6951m5cq40nnrlyt30h0000gn/T/main-adcb06.o</span><br><span class="line">    /var/folders/qy/xfjhf6951m5cq40nnrlyt30h0000gn/T/test-6cb44b.o</span><br></pre></td></tr></table></figure>
-
 <p>The static keyword just hidden this issue! (The static is also unnecessary here) </p>
 <p>The good practice is using the declaration in the .h file, such as <code>extern int a</code> and put the actuall defination and initilization at the .cpp file, which can avoid the multiple symbol compiling issue.</p>
 <h3 id="Header-only-libraries-and-global-variable"><a href="#Header-only-libraries-and-global-variable" class="headerlink" title="Header only libraries and global variable"></a>Header only libraries and global variable</h3><p>This is a <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/51612866/global-variables-in-header-only-library">good question</a>. In some situations, we want to build the header only library without including the .cpp file as the separate translation units. By this way, we do not need extra compiling process for building the library that we need. This is common for the utility function such as the timer and the logging.</p>
@@ -171,7 +162,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/09/04/cpp-static-const-keyword/" data-id="cm2a0xf4m006rdvjraev51zb5" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/09/04/cpp-static-const-keyword/" data-id="cmbw030ik006uj8jrhvvihcat" class="article-share-link">分享</a>
       
       
       
@@ -354,28 +345,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Package management tips | AverageMind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Some tips about package management.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Package management tips">
+<meta property="og:url" content="http://yoursite.com/2025/02/27/Package-management/index.html">
+<meta property="og:site_name" content="AverageMind">
+<meta property="og:description" content="Some tips about package management.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2025-02-27T15:20:21.000Z">
+<meta property="article:modified_time" content="2025-03-02T15:05:55.364Z">
+<meta property="article:author" content="zhe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="AverageMind" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-165927341-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+<!-- Google adds -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5642436380582343"
+     crossorigin="anonymous">
+</script>
+<!-- End Google adds -->
+
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+    <div id="header-inner" class="inner">
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      
+    </div>
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">AverageMind</a>
+      </h1>
+      
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Package-management" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2025/02/27/Package-management/" class="article-date">
+  <time datetime="2025-02-27T15:20:21.000Z" itemprop="datePublished">2025-02-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Package management tips
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- Table of Contents -->
+        
+        <p>Some tips about package management.</p>
+<span id="more"></span>
+<p>There are two key point that push you to improve the devopts capability. The first is start to build software without the root capabilities on supercomputer. The second is to build softwares on a machine without network connection.</p>
+<h3 id="preparation"><a href="#preparation" class="headerlink" title="preparation"></a>preparation</h3><p>最理想的环境是在测试环境装一个和部署环境一模一样的虚拟机，或者是真实的节点，这样就能在测试环境中反复演练发现的问题，然后到了真实环境下及时没有网络，也能一下把所有的内容给部署起来。</p>
+<p>注意安装虚拟环境的时候，下载对应的节点的时候，需要留意一下对应的节点是x86的架构还是arm的架构，如何是arm的结构，就必须找一个arm的机器，来安装虚拟机，比如mac的UVM，通过qume来模拟不同的架构的硬件。如果自己的机器是一个x86的windows的话，就不太好直接安装arm的操作系统的镜像了。</p>
+<h3 id="yum-and-apt-get"><a href="#yum-and-apt-get" class="headerlink" title="yum and apt-get"></a>yum and apt-get</h3><p>一个无网的机器，安装MPI，能不能在一个网的环境把MPI build好然后直接把binary拷过去，是否存在依赖问题。直接copy也最好是copy完整的安装目录，就是同时包含bin lib share的这个目录</p>
+<p><strong>chcecking cache place</strong><br>/etc/yum.conf 可以设置是否缓存了pkg</p>
+<p><strong>download the depedencies</strong></p>
+<p>注意一下 apt (apt 是 apt-get的升级版) 与 dpkg 的区别，apt在安装的时候帮忙检测了依赖，但是dpkg不检测，就是安装，如何安装完成之后配置时发现依赖不work，这个时候就会报一些错误。</p>
+<p>如果在有网的环境直接apt install … 这个时候会自动把所有的相关的包装好，如果想把这些包同时下载下来的话，目前我的操作流程是这样的：机器A和机器B是同样的OS，机器B不能联网，在机器A上首先 apt install <package name> 这时会通过联网的repo检测出所有的依赖包。或者可以通过apt-cache depends <package name>查看到所有的依赖。之后通过apt-get download <pckage name> 就可以把每个依赖包都下载下来。之后把这些包使用U盘copy到另外的机器上，然后采用<code>dpkg -i *.deb</code> 或者是 <code>apt install ./*.deb</code> 从而安装全部的内容。</p>
+<p>注意删除的时候 使用 apt purge <packagenam> 才会删除所有的依赖。</p>
+<p>在yum的环境下时，yum 是基于rpm进行的管理，方法上与上述的类似，下载的是rpm的包，然后在手动在另外一个机器上安装rpm的包。</p>
+<p><strong>transfer rpm to dep</strong></p>
+<p><strong>单独安装于系统安装的区别</strong></p>
+<p>单独安装是推荐的，可以用 module 加载</p>
+<p>一般目录是</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ 某个自定义的目录</span><br><span class="line">bin lib share</span><br></pre></td></tr></table></figure>
+<p>系统安装时候bin用的是/usr/bin，share可能用途的是/opt/share，然后lib是/usr/lib，都是系统级的，不方便管理。</p>
+<h3 id="vcpkg"><a href="#vcpkg" class="headerlink" title="vcpkg"></a>vcpkg</h3><h3 id="spack"><a href="#spack" class="headerlink" title="spack"></a>spack</h3><h3 id="homebrew"><a href="#homebrew" class="headerlink" title="homebrew"></a>homebrew</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2025/02/27/Package-management/" data-id="cmbw030ib003hj8jr5grveqi0" class="article-share-link">分享</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+  <div id="random_posts">
+    <h2>推荐文章</h2>
+    <div class="random_posts_ul">
+      <script>
+          var random_count =4
+          var site = {BASE_URI:'/'};
+          function load_random_posts(obj) {
+              var arr=site.posts;
+              if (!obj) return;
+              // var count = $(obj).attr('data-count') || 6;
+              for (var i, tmp, n = arr.length; n; i = Math.floor(Math.random() * n), tmp = arr[--n], arr[n] = arr[i], arr[i] = tmp);
+              arr = arr.slice(0, random_count);
+              var html = '<ul>';
+            
+              for(var j=0;j<arr.length;j++){
+                var item=arr[j];
+                html += '<li><strong>' + 
+                item.date + ':&nbsp;&nbsp;<a href="' + (site.BASE_URI+item.uri) + '">' + 
+                (item.title || item.uri) + '</a></strong>';
+                if(item.excerpt){
+                  html +='<div class="post-excerpt">'+item.excerpt+'</div>';
+                }
+                html +='</li>';
+                
+              }
+              $(obj).html(html + '</ul>');
+          }
+          $('.random_posts_ul').each(function () {
+              var c = this;
+              if (!site.posts || !site.posts.length){
+                  $.getJSON(site.BASE_URI + 'js/posts.js',function(json){site.posts = json;load_random_posts(c)});
+              } 
+               else{
+                load_random_posts(c);
+              }
+          });
+      </script>
+    </div>
+  </div>
+
+    
+<nav id="article-nav">
+  
+    <a href="/2025/06/08/javascript-tips/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          javascript-tips
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/11/23/distributed-rendering/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Distributed rendering (WIP)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+ 
+     
+  <div class="comments" id="comments">
+    
+     
+       
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+       
+      
+      
+  </div>
+ 
+  
+
+</section>
+           
+    <aside id="sidebar">
+  
+    
+    <div class="widget-wrap">
+    
+      <div class="widget" id="toc-widget-fixed">
+      
+        <strong class="toc-title">文章目录</strong>
+        <div class="toc-widget-list">
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#preparation"><span class="toc-number">1.</span> <span class="toc-text">preparation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#yum-and-apt-get"><span class="toc-number">2.</span> <span class="toc-text">yum and apt-get</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vcpkg"><span class="toc-number">3.</span> <span class="toc-text">vcpkg</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#spack"><span class="toc-number">4.</span> <span class="toc-text">spack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#homebrew"><span class="toc-number">5.</span> <span class="toc-text">homebrew</span></a></li></ol>
+          </div>
+      </div>
+    </div>
+
+  
+    
+
+  
+    
+  
+    
+  
+    
+
+  
+</aside>
+
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-left">
+      &copy; 2014 - 2025 zhe&nbsp;|&nbsp;
+      主题 <a href="https://github.com/giscafer/hexo-theme-cafe/" target="_blank">Cafe</a>
+    </div>
+     <div id="footer-right">
+      联系方式&nbsp;|&nbsp;godenwangzhe@gmail.com
+    </div>
+  </div>
+</footer>
+ 
+<script src="/jquery/jquery.min.js"></script>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    <img class="back-to-top-btn" src="/images/fly-to-top.png"/>
+<script>
+// Elevator script included on the page, already.
+window.onload = function() {
+  var elevator = new Elevator({
+    selector:'.back-to-top-btn',
+    element: document.querySelector('.back-to-top-btn'),
+    duration: 1000 // milliseconds
+  });
+}
+</script>
+      
+
+  
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "e2fb4051c49842688ce669e634bc983f",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+    
+
+  
+
+
+
+
+
+
+
+<!-- author:forvoid begin -->
+<!-- author:forvoid begin -->
+
+<!-- author:forvoid end -->
+
+<!-- author:forvoid end -->
+
+
+
+
+ 
+<script src="/js/is.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/elevator.js"></script>
+
+  </div>
+</body>
+</html>

@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,21 +124,20 @@ ga('send', 'pageview');
         
         <p>Necessary concepts to undersand for the flow visualization (the techinques used for the CFD analysis).</p>
 <span id="more"></span>
-
 <h3 id="About-the-CFD"><a href="#About-the-CFD" class="headerlink" title="About the CFD"></a>About the CFD</h3><p>Its hard to avoid discussing about the vector visualization without talking about the CFD simulation. Common flow includes the smoke and the water flow.</p>
 <h3 id="Basic-concepts"><a href="#Basic-concepts" class="headerlink" title="Basic concepts"></a>Basic concepts</h3><p><strong>Pathline</strong> is easist thing to understand, we look at a particular particle, and draw its path during the progress of the fluid system (there is multiple steps of the flow fluid simulation data). The trajectory or path for the given fluid element</p>
 <p><strong>Sreakline</strong> are a set of fluid elements that pass through a fixed point in space. Attention, these are a set of partiles. We can image it by this way, assuming all the fluid particles are white color, any fluid particles go though the position (x,y,z) will become red color at any time during the progress of the system, then these all red particles compose the streakline. It seems that all these particles in streakline comes from or goes through the same place. The easiest thing to understand it is that you pull a cup of colored ink through a fixed point of a water channel, then that shaped curve is called the streakline. The streakline main include many different fluid elements.</p>
 <p><strong>Streamline</strong> are lines that are tangent to the velocity field for each fluid particles in the flow. This is essentially an mathmetical idea which differs from previous two, we can not observe them direactly by putting particles in the flow space. Assuming we take a snapshot of the fluid space, all vectors are fixed at this time, then we do the intergration along the tanget of the vector field. Namely, the tnstantaneous tangent of vector field for the fixed time</p>
 <p><strong>Timeline</strong> Intuitively, imagine that we place several small balls into a water flow, and allow the balls to follow the flow. At a certain time step, the path that connects all the balls is a timeline.</p>
 <p>For steady flows, streamline streaklines and pathlines are identical.</p>
-<p>For unsteady flow, they differ a lot, the best video to show related results is this <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=nuQyKGuXJOs&list=PL0EC6527BE871ABA3&index=5&t=851s">one</a>, start from 9:00. They use the instantaneous streakline to describe it, which show current positions of all particles that path through the entry in different time. particle i enter in time step i, at the time step k, we connect all the particles enter from the entry to makeup the streakline. </p>
+<p>For unsteady flow, they differ a lot, the best video to show related results is this <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=nuQyKGuXJOs&amp;list=PL0EC6527BE871ABA3&amp;index=5&amp;t=851s">one</a>, start from 9:00. They use the instantaneous streakline to describe it, which show current positions of all particles that path through the entry in different time. particle i enter in time step i, at the time step k, we connect all the particles enter from the entry to makeup the streakline. </p>
 <p>The above concepts are from the fluid dynamics, these are foundemental concepts for the fluid visualization.</p>
 <p>There are more concepts in streamline visualization, such as particle trajectory, particle advecation, streamsurface, trajectory and intergration curve etc.</p>
 <p><strong>particle advection as a basic unit</strong></p>
 <p>From the aspect of the CS, in order to compute the streamline or pathline, the unit of work for <strong>particle advection</strong> is an <strong>advection step</strong>, which is the displacement of a particle for a short distance from one location to a nearby one. An <a target="_blank" rel="noopener" href="https://cdux.cs.uoregon.edu/pubs/ChildsHiPC.pdf">integral curve</a> is the total path a particle travels along, and it is formed by the sequence of advection steps from the seed location to the terminal location (just the integration operation). For example, when computing the pathline, we need to do the integration at each step across different steps. For the streamline, we use the data generated by same step, still need to do the integration.</p>
 <p>Be careful about how many step which need to be used for different techniques. For example, the streamline only need data generated by one step, the pathline need to use the data generated by multiple steps (multiple simulation cycles).</p>
 <p><strong>FTLE</strong></p>
-<p>This <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=lveOu7jLNh0">video</a> provides a detailed explanation about FTLE, that name may make this things a little bit hard to understand, but actually, it is just some anaytics based on pathline. This field is used to measure how neigobor particles strech with the progression of the flow (so it also need several steps). It uses jacobbian matrix and associated eigen values&#x2F;vectors to do this analysis. But I’m still not really sure about their relationships with the stable and unstable manifolds (how it can be used to distinguish these regions). The FTLE can be used to trace the LCS (the ridge of the FTLE component). It can also tell you where the flow is most sensitive to the perturbation.</p>
+<p>This <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=lveOu7jLNh0">video</a> provides a detailed explanation about FTLE, that name may make this things a little bit hard to understand, but actually, it is just some anaytics based on pathline. This field is used to measure how neigobor particles strech with the progression of the flow (so it also need several steps). It uses jacobbian matrix and associated eigen values/vectors to do this analysis. But I’m still not really sure about their relationships with the stable and unstable manifolds (how it can be used to distinguish these regions). The FTLE can be used to trace the LCS (the ridge of the FTLE component). It can also tell you where the flow is most sensitive to the perturbation.</p>
 <p>Be careful about different use case scenarios of these different filter. For example, the pathline and FTLE (FTLE is based on pathline) need data generated by multiple steps. But the streamline can be used to process the data generated by one step. The particle advection is the common building block or computaiton unit for processing all these units descirbed above.</p>
 <p>Be careful about the eigen value, it is the eigen value for the Cauchy Green tensor.</p>
 <p><strong>Q creterion</strong></p>
@@ -169,7 +165,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/10/30/Many-faces-of-flow-visualization/" data-id="cm2a0xf48002ndvjrgfnvaa0w" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/10/30/Many-faces-of-flow-visualization/" data-id="cmbw030i9002xj8jr976abrer" class="article-share-link">分享</a>
       
       
       
@@ -352,28 +348,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>Some basic concepts about rendering pipeline and graphics. The main contents come from the <a target="_blank" rel="noopener" href="https://kitware.github.io/vtk-examples/site/VTKBook/03Chapter3/">VTK text book</a>.</p>
 <span id="more"></span>
-
 <h2 id="Math-foundations"><a href="#Math-foundations" class="headerlink" title="Math foundations"></a>Math foundations</h2><p>Vector space</p>
 <h2 id="Basic-concepts"><a href="#Basic-concepts" class="headerlink" title="Basic concepts"></a>Basic concepts</h2><p>During the programing for rendering sth, it is easy to get confused if we lack the knowledge about the meaning of the terms used by computer graphics, such as actor, scence, mapper, canvas, views. etc.</p>
 <p>This sentences shows the relationship between the graphics and visulization “Computer graphics is the foundation of data visualization. Practically speaking, visualization is the process that transforms data into a set of graphics primitives.”</p>
@@ -141,7 +137,7 @@ ga('send', 'pageview');
 <p>The operation before the mapper belongs to the data pipeline, the output of the data pipeline is set to the mapper, which map the data into the graphics operation,  the operation after the mapper belongs to the graphics pipeline. The actor contains the mapper. The vtkRenderer object handles the actor, light and camera. The vtkRenderWindow object can contains multiple renderers. Then the renderWindowInteractor help to process the interactive operations such as handling the mouse and the keyboard events. It can transfer these events from user to the graphics primitives such as change the view of the camera.</p>
 <h3 id="VTK-m-rendering-pipeline"><a href="#VTK-m-rendering-pipeline" class="headerlink" title="VTK-m rendering pipeline"></a>VTK-m rendering pipeline</h3><p>Concrete example in VTK-m rendering process.</p>
 <p>a view is a unit that collects all the structure needed to perform the rendering. The scene contains a actor (same with vtk). Canvas is a unit that represent the image space that is the target of the rendering. Mappers are similar with the vtk. </p>
-<h3 id="Alpine-x2F-ascent-example"><a href="#Alpine-x2F-ascent-example" class="headerlink" title="Alpine&#x2F;ascent example"></a>Alpine&#x2F;ascent example</h3><p>Another example is the rendering process for <a target="_blank" rel="noopener" href="https://ascent.readthedocs.io/en/latest/Actions/Scenes.html#scenes">ascent project</a></p>
+<h3 id="Alpine-ascent-example"><a href="#Alpine-ascent-example" class="headerlink" title="Alpine/ascent example"></a>Alpine/ascent example</h3><p>Another example is the rendering process for <a target="_blank" rel="noopener" href="https://ascent.readthedocs.io/en/latest/Actions/Scenes.html#scenes">ascent project</a></p>
 <p>According to their document, the basic concepts is <code>Scenes</code>, which contains all necessary information, then there is <code>Plots</code> which basically defines the more details data pipeline such as what kind of vis type (mesh volume etc.). One co-existing concepts is <code>Render</code> here, which defines the graphics primitives, such as image size and camera angle etc. They use another different visuzliation pipline, which is different with the vtk-m, their library is called the rover (<a target="_blank" rel="noopener" href="https://github.com/LLNL/rover">https://github.com/LLNL/rover</a>)</p>
 <h2 id="Rendering-algorithm-and-library"><a href="#Rendering-algorithm-and-library" class="headerlink" title="Rendering algorithm and library"></a>Rendering algorithm and library</h2><p>Although the opengl is adopted as the foundation for most of the rendering pipeline, their upper layer can be different.</p>
 <p>We mainly take some nots for the rending things used in the scientific visulization.</p>
@@ -152,7 +148,7 @@ ga('send', 'pageview');
 <p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=01YSK5gIEYQ&amp;list=PL_w_qWAQZtAZhtzPI5pkAtcUVgmzdAP8g&amp;index=1">https://www.youtube.com/watch?v=01YSK5gIEYQ&amp;list=PL_w_qWAQZtAZhtzPI5pkAtcUVgmzdAP8g&amp;index=1</a></p>
 <p>good references about the opengl camera position</p>
 <p><a target="_blank" rel="noopener" href="https://learnopengl.com/Getting-started/Camera">https://learnopengl.com/Getting-started/Camera</a></p>
-<h3 id="Some-notes-about-the-references"><a href="#Some-notes-about-the-references" class="headerlink" title="Some notes about the references"></a>Some notes about the references</h3><p>ep1<br>vector spaces，frames<br>This expression can save some energy, it just express a coordinates vector as a point p in space<br>the relationship between vector and points, p1+t(p2-p1) any points along the line between p1 and p2, (1-t)p1+tP2, affine combination. Vector + Points-&gt; Affine space.<br>P in a trangle p1,p2,p3, how to express the P.  P &#x3D; alpa1 P1+alpha2 P2+alpha3 P3 (a1+a2+a3&#x3D;1) Barycentric coordinate system</p>
+<h3 id="Some-notes-about-the-references"><a href="#Some-notes-about-the-references" class="headerlink" title="Some notes about the references"></a>Some notes about the references</h3><p>ep1<br>vector spaces，frames<br>This expression can save some energy, it just express a coordinates vector as a point p in space<br>the relationship between vector and points, p1+t(p2-p1) any points along the line between p1 and p2, (1-t)p1+tP2, affine combination. Vector + Points-&gt; Affine space.<br>P in a trangle p1,p2,p3, how to express the P.  P = alpa1 P1+alpha2 P2+alpha3 P3 (a1+a2+a3=1) Barycentric coordinate system</p>
 <p>45:42, get the matrix form from the affine operation, (1,t,t^2,t^3)^T M (p1,p2,p3,p4)</p>
 <p>ep2<br>the function for a random curve?how to generate curve?<br>Chaikin’s Algorithm (recursive subdivision), subdivision curve<br>get several points on the curve line, get control points, tangent, use the cross point as new control points, </p>
 <p>ep3</p>
@@ -176,7 +172,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/04/24/GraphicsBasics/" data-id="cm2a0xf44001fdvjrfyie6rwg" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/04/24/GraphicsBasics/" data-id="cmbw030i3001hj8jrakkn7ww1" class="article-share-link">分享</a>
       
       
       
@@ -275,7 +271,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Math-foundations"><span class="toc-number">1.</span> <span class="toc-text">Math foundations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Basic-concepts"><span class="toc-number">2.</span> <span class="toc-text">Basic concepts</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-rendering-pipeline"><span class="toc-number">2.1.</span> <span class="toc-text">VTK rendering pipeline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-m-rendering-pipeline"><span class="toc-number">2.2.</span> <span class="toc-text">VTK-m rendering pipeline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Alpine-x2F-ascent-example"><span class="toc-number">2.3.</span> <span class="toc-text">Alpine&#x2F;ascent example</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rendering-algorithm-and-library"><span class="toc-number">3.</span> <span class="toc-text">Rendering algorithm and library</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Parallel-Rendering-Algorithm"><span class="toc-number">3.1.</span> <span class="toc-text">Parallel Rendering Algorithm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Library"><span class="toc-number">3.2.</span> <span class="toc-text">Library</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#References"><span class="toc-number">3.3.</span> <span class="toc-text">References</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-notes-about-the-references"><span class="toc-number">3.4.</span> <span class="toc-text">Some notes about the references</span></a></li></ol></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Math-foundations"><span class="toc-number">1.</span> <span class="toc-text">Math foundations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Basic-concepts"><span class="toc-number">2.</span> <span class="toc-text">Basic concepts</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-rendering-pipeline"><span class="toc-number">2.1.</span> <span class="toc-text">VTK rendering pipeline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VTK-m-rendering-pipeline"><span class="toc-number">2.2.</span> <span class="toc-text">VTK-m rendering pipeline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Alpine-ascent-example"><span class="toc-number">2.3.</span> <span class="toc-text">Alpine&#x2F;ascent example</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rendering-algorithm-and-library"><span class="toc-number">3.</span> <span class="toc-text">Rendering algorithm and library</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Parallel-Rendering-Algorithm"><span class="toc-number">3.1.</span> <span class="toc-text">Parallel Rendering Algorithm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Library"><span class="toc-number">3.2.</span> <span class="toc-text">Library</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#References"><span class="toc-number">3.3.</span> <span class="toc-text">References</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-notes-about-the-references"><span class="toc-number">3.4.</span> <span class="toc-text">Some notes about the references</span></a></li></ol></li></ol>
           </div>
       </div>
     </div>
@@ -359,28 +355,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>parallel programming with mpi notes, even though the book was issued 20 years ago, some materials are still inspiring for me and explain the knolwdge clearly. For every points, they gave out the limitation which is really good way to explain the knoledge clearly.</p>
 <span id="more"></span>
-
 <h3 id="Background-Knowledge"><a href="#Background-Knowledge" class="headerlink" title="Background Knowledge"></a>Background Knowledge</h3><h4 id="hardware-issue"><a href="#hardware-issue" class="headerlink" title="hardware issue:"></a>hardware issue:</h4><p>basic classification for parallel computing<br>Flynn’s Taxonomy, SISD,SIMD,</p>
 <p>von Neumann model and bottleneck<br>the bottle neck is the latency between the memory and the cpu. One stategy is cache in different level, the other is pipeline.</p>
 <p><strong>Pipline archetecture</strong></p>
@@ -167,17 +163,15 @@ ga('send', 'pageview');
 <p>if you want to run mpi on multiple server, refer to this, mainly depdends on the NFS and passwordless ssh and adding coresponding parameters for mpirun command(it is better to use same impementation of MPI, the common one is openmpi and mpich2). For the strategy of the schedule of MPI, please refer to this.</p>
 <p>This is the most simple case for message sending and recieving:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line">#include &lt;mpi.h&gt;</span><br><span class="line">main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line">    int p_rank;</span><br><span class="line">    int p_num;</span><br><span class="line">    int source;</span><br><span class="line">    int dest;</span><br><span class="line">    int tag = 0;</span><br><span class="line">    char message[100];</span><br><span class="line">    char process_name[100];</span><br><span class="line">    int name_len;</span><br><span class="line">    MPI_Status status;</span><br><span class="line">    //MPI_Init(&amp;argc, &amp;argv);</span><br><span class="line">    MPI_Init(NULL, NULL);</span><br><span class="line">    MPI_Comm_rank(MPI_COMM_WORLD, &amp;p_rank);</span><br><span class="line">    MPI_Comm_size(MPI_COMM_WORLD, &amp;p_num);</span><br><span class="line">    if (p_rank != 0)</span><br><span class="line">    &#123;</span><br><span class="line">        //create message</span><br><span class="line">        sprintf(message, &quot;Greetings from the process %d&quot;, p_rank);</span><br><span class="line">        dest = 0;</span><br><span class="line">        MPI_Send(message, strlen(message) + 1, MPI_CHAR, dest, tag, MPI_COMM_WORLD);</span><br><span class="line">        MPI_Get_processor_name(process_name, &amp;name_len);</span><br><span class="line">        printf(&quot;%s send message\n&quot;, process_name);</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123; //if the process with rank 0</span><br><span class="line">        for (source = 1; source &lt; p_num; source++)</span><br><span class="line">        &#123;</span><br><span class="line">            MPI_Get_processor_name(process_name, &amp;name_len);</span><br><span class="line">            tag=source-1;</span><br><span class="line">            MPI_Recv(message, 100, MPI_CHAR, source, tag , MPI_COMM_WORLD, &amp;status);</span><br><span class="line">            printf(&quot;process id %d in processor %s get message : %s\n&quot;, p_rank, process_name, message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //shut down</span><br><span class="line">    MPI_Finalize();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>This code is typical SPMD model, the tricky thing is that your should clear that your program will be excuted on different processor and support different data.</p>
 <p>The typicl mode of MPI programming start from the MPI_Init(NULL, NULL); and end with the MPI_Finalize(); the two parameters could be the pointer to the parameter for main function like this MPI_Init(&amp;argc, &amp;argv).</p>
 <p>MPI_INIT means no function could be excuted before the INIT function and the MPI_Finalize means no MPI function could be called after this.</p>
 <p><code>MPI_COMM_WORLD</code>, <code>Comm_rank</code></p>
 <p><code>MPI_COMM_WORLD</code> could also be called the communicator, which represent the collection of the process that could send message between each other, the Comm_rank represent the index of the process in this communicator. function MPI_Comm_rank and MPI_Comm_size could be used to get the rank(index) of current process in specific communicator and the last one is used to get the number of process in specific communitator. The default global communicator is the MPI_COMM_WORLD. Basically, the comm_rank represent a unique identity between sending and recieving. For the recieving function and sending function, the src and dst endpoint is also represent by this rank parameter.</p>
 <p>tag</p>
-<p>tag is more fine grained partition between specific client and server end. Because the communication could be divided into several types and we hope each type could be seperated by another one, like only the recieve call with tag &#x3D; 0 could recieve the message sent by the client with the message sending for tag &#x3D; 0. Basically, the communicator, rank, and the tag are the abstraction of the message sending and recieving entity in different levels.</p>
-<p>if the tag for send and recieve is not equal, the recieve will hang there, this use case is similar to the blocking communication, the recieve end is ready to recieve the message with tag &#x3D; 1 but the send client send the message with the tag &#x3D; 0 , so they could not recieve the info. For the following cases, only the MPI recieve with the tag&#x3D;0 could recieve the message:</p>
+<p>tag is more fine grained partition between specific client and server end. Because the communication could be divided into several types and we hope each type could be seperated by another one, like only the recieve call with tag = 0 could recieve the message sent by the client with the message sending for tag = 0. Basically, the communicator, rank, and the tag are the abstraction of the message sending and recieving entity in different levels.</p>
+<p>if the tag for send and recieve is not equal, the recieve will hang there, this use case is similar to the blocking communication, the recieve end is ready to recieve the message with tag = 1 but the send client send the message with the tag = 0 , so they could not recieve the info. For the following cases, only the MPI recieve with the tag=0 could recieve the message:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">    if (p_rank != 0)</span><br><span class="line">    &#123;</span><br><span class="line">        //create message</span><br><span class="line">        sprintf(message, &quot;Greetings from the process %d&quot;, p_rank);</span><br><span class="line">        dest = 0;</span><br><span class="line">        MPI_Send(message, strlen(message) + 1, MPI_CHAR, dest, tag, MPI_COMM_WORLD);</span><br><span class="line">        MPI_Get_processor_name(process_name, &amp;name_len);</span><br><span class="line">        printf(&quot;%s send message\n&quot;, process_name);</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123; //if the process with rank 0</span><br><span class="line">        for (source = 1; source &lt; p_num; source++)</span><br><span class="line">        &#123;</span><br><span class="line">            MPI_Get_processor_name(process_name, &amp;name_len);</span><br><span class="line">            tag=source-1;</span><br><span class="line">            MPI_Recv(message, 100, MPI_CHAR, source, tag , MPI_COMM_WORLD, &amp;status);</span><br><span class="line">            printf(&quot;process id %d in processor %s get message : %s\n&quot;, p_rank, process_name, message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">//output</span><br><span class="line">...</span><br><span class="line">e1c087 send message</span><br><span class="line">e1c086 send message</span><br><span class="line">e1c087 send message</span><br><span class="line">e1c086 send message</span><br><span class="line">e1c086 send message</span><br><span class="line">process id 0 in processor e1c085 get message : Greetings from the process 1</span><br><span class="line">//hang there forever</span><br></pre></td></tr></table></figure>
-
 <p><strong>sending parameters</strong></p>
 <p>The element type (the length of the element in memory) and the length of the element should be assigned when sending and recieving.</p>
 <p>There are two wildcard at recieve end for source and tag, for the following program, we use wildcard to get all the message with all the tag no matter sent from which client.</p>
@@ -200,7 +194,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/mpi-basic/" data-id="cm2a0xf4s008udvjrgtn6bg1j" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/mpi-basic/" data-id="cmbw030ir0094j8jrgxuf6txx" class="article-share-link">分享</a>
       
       
       
@@ -383,28 +377,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

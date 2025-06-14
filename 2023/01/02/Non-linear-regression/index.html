@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,10 +124,9 @@ ga('send', 'pageview');
         
         <p>Some tips about how to use the linear or non-linear regression approach in python.</p>
 <span id="more"></span>
-
 <h3 id="Mathematical-background"><a href="#Mathematical-background" class="headerlink" title="Mathematical background"></a>Mathematical background</h3><p>For these kind of algorithm, we do not need to know all details about the math background since we mainly library provided by others instead of implementing it from the scratch.</p>
 <p>This <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=8evmj2L-iCY">video</a> provides some detailed background about how this works. The main idea is to come up with a expression about residual and then a matrix vector multiplication question. The metrix is jacobian matrix, the vector is the change of the parameters used that defines the non-linear curve.</p>
-<h3 id="python-program"><a href="#python-program" class="headerlink" title="python program"></a>python program</h3><p>The scipy provids a good abstraction about the linear&#x2F;nonlinear least squares fitting this is an example:</p>
+<h3 id="python-program"><a href="#python-program" class="headerlink" title="python program"></a>python program</h3><p>The scipy provids a good abstraction about the linear/nonlinear least squares fitting this is an example:</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/python_scipy/least-square.py">https://github.com/wangzhezhe/5MCST/blob/master/python_scipy/least-square.py</a></p>
 <p>In this example, we assume the x is the resource of a particular algorithm and the y is the execution time of that algorithm, we try to come up with a fitting function that describe how the execution time changes with different resources. For this simple case, the <code>least_squares</code> interface only need two parameters, the first one is a function that we provided to describe the residual (for each input parameters, we return its error compared with the actual data), the second one is the initial guess of the function. For the model function, it also requires two parameters, the first one is the list of variables used in the function, such as the theta in this case, the second one is the x.</p>
 <p>In summary, we need three function <code>rr_model</code> that describe the fitting curve we provided, <code>rr_fun</code> use the <code>rr_model</code> and actual data to return the error. <code>least_squares</code> use the <code>rr_fun</code> and initial guess to return the predicted results. Then we use the predicted parameters and the the <code>rr_model</code> to compute the predicted results, we can compare the predicted results with the actual data to evaluate the error of the model prediction.</p>
@@ -150,7 +146,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/01/02/Non-linear-regression/" data-id="cm2a0xf4a0039dvjr9cco3a20" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/01/02/Non-linear-regression/" data-id="cmbw030ia003fj8jrho0ohy2f" class="article-share-link">分享</a>
       
       
       
@@ -333,28 +329,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

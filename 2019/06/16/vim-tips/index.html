@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,22 +124,21 @@ ga('send', 'pageview');
         
         <p>由于许多场合下需要直接在server上进行debug的操作，公司又没有一套成熟的日志搜集系统，自然又用起了vim，这里记录一些常常使用到的vim的快捷操作。</p>
 <span id="more"></span>
-
 <p>记录下那些用于生存的基本命令，特别是在日志检索的时候</p>
 <p>1<br>:[行号]<br>跳到文件的某一行</p>
-<p>1<br>&#x2F;[关键字]<br>从文件的开始向后搜索关键字</p>
+<p>1<br>/[关键字]<br>从文件的开始向后搜索关键字</p>
 <p>1<br>:1?[关键字]<br>从文件的最末尾向上搜索关键字（其中1表示文件的第一行 ?表示反向搜索）</p>
 <p>进入搜索模式的时候，n表示下一个搜索到的关键字，N表示上一个搜索到的关键字</p>
 <p>1<br>$ (shift + 4)<br>可以跳转到行尾</p>
 <p>1<br>:set num<br>在vim文件中展现出行号，这种行号信息更便于错误信息的定位，阅读起来更清晰。</p>
-<p>1<br>:set hlt<br>比如通过&#x2F;<keyword>检索到了某个关键字，之后时候通过:set hlt操作可以将这个关键字的字段都变成高亮，这样方便问题的检索。</p>
+<p>1<br>:set hlt<br>比如通过/<keyword>检索到了某个关键字，之后时候通过:set hlt操作可以将这个关键字的字段都变成高亮，这样方便问题的检索。</p>
 <p>复制粘贴</p>
 <p>ubuntu自带的vim是不支持从vim文件中复制粘贴到文件外部的，如果需要实现这个功能，需要安装vim-gnome。<br>vim中的复制粘贴都是再本vim文件内部之间进行复制粘贴<br>今天遇到的问题是直接在vim中进行查看，有一行文件很长，显示不全，想把它拷贝出来通过一些编辑工具查看。<br>最后是通过grep文件中的关键内容将对应的行显示在屏幕上，这样就通过terminal向上翻页将内容copy出来了。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/vim-tips/" data-id="cm2a0xf4x00addvjr2n7gb85s" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/vim-tips/" data-id="cmbw030iw00avj8jrg7kzfm15" class="article-share-link">分享</a>
       
       
       
@@ -248,23 +244,23 @@ ga('send', 'pageview');
       <ul>
         
           <li>
-            <a href="/2024/11/23/distributed-rendering/">distributed rendering</a>
+            <a href="/2025/06/08/javascript-tips/">javascript-tips</a>
           </li>
         
           <li>
-            <a href="/2024/11/21/opengl-tips/">opengl_tips</a>
+            <a href="/2025/02/27/Package-management/">Package management tips</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/23/distributed-rendering/">Distributed rendering (WIP)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/21/graphics-opengl-tips/">Graphics and Opengl Tips</a>
           </li>
         
           <li>
             <a href="/2024/10/18/Multiple-backend-design/">Multiple backend design</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/17/LLM-tips/">LLM tips</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/13/Interesting-numbers-in-CS-and-Femi-estimation/">Interesting numbers in CS and Femi estimation (WIP)</a>
           </li>
         
       </ul>
@@ -343,28 +339,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>Some notes about the proposal feedback. The direactor of the group reminds us that it is good to learn from the refused proposal, and I try to take some nots in this blog according to the feedback that is refused, and try to list some key points here.</p>
 <span id="more"></span>
-
 <h3 id="从评审人的角度考虑的几个宏观问题"><a href="#从评审人的角度考虑的几个宏观问题" class="headerlink" title="从评审人的角度考虑的几个宏观问题"></a>从评审人的角度考虑的几个宏观问题</h3><p>1 整个大的学科领域，是否值得资助研究，是否还是比较热的研究大方向。<br>2 小的细分领域，是否值得资助研究，有新的研究价值。<br>3 细分领域，有没有别人在做。没有的话就好说，有的话 ，你的特色是什么，跟别人不同的点。<br>4 你有没有能力按照所说的内容做出来。<br>5 怎么衡量你做出来的这个内容的效果。</p>
 <p>如果这几个问题都能回答的比较好，或者超过平均的水平，这个proposal中的概率就比较大，前两个问题千万不要有硬伤，因为这个是比较客观的因素，如果入手点就选错了，后面再费劲也很难有好的结果。</p>
 <h3 id="Falsifiable-scientific-hypothesis"><a href="#Falsifiable-scientific-hypothesis" class="headerlink" title="Falsifiable scientific hypothesis"></a>Falsifiable scientific hypothesis</h3><p>One question to answer in the proposal feedback is about the flasifiable hypothesis, if the proposal contanis the 可证伪的假说，and if this thing is valuable.</p>
@@ -152,7 +148,7 @@ ga('send', 'pageview');
 <p><strong>强调已有方法在已有应用基础上的改进</strong></p>
 <p>即使没有完成实验，可以重点描述你的方法设计与现有方法的不同之处，突出它的潜在优势。<br>示例：本研究拟设计一种基于XXX的改进型算法，通过优化YYY计算流程，有望在ZZZ问题上实现性能提升。同时，该方法的模块化设计为进一步扩展到AAA领域提供了可能。</p>
 <h3 id="If-the-hypothesis-can-be-assessed"><a href="#If-the-hypothesis-can-be-assessed" class="headerlink" title="If the hypothesis can be assessed"></a>If the hypothesis can be assessed</h3><p>One reason for refusal for our proposal is that it can not provide a solid evaluation approach. The reviewer said they don’t know how the thing we described can be assessed.</p>
-<p>Maybe the thing that can be assessed follows the same pattern, such as “sth can improve the accuracy&#x2F;save resource&#x2F;improve the speed in how much” If the hypothesis does not follow this pattern in CS domain, it might not the right thing or proper description for the problem. You could also say that the approach is helpful for doing sth or facilitate the other things, but it is important to try to move another step, answering how this is helpful in quantitatively is important to make it be assessable.</p>
+<p>Maybe the thing that can be assessed follows the same pattern, such as “sth can improve the accuracy/save resource/improve the speed in how much” If the hypothesis does not follow this pattern in CS domain, it might not the right thing or proper description for the problem. You could also say that the approach is helpful for doing sth or facilitate the other things, but it is important to try to move another step, answering how this is helpful in quantitatively is important to make it be assessable.</p>
 <p>However, it seems that in computer science or software engineering, the falsifiable is not that much relevent, see <a target="_blank" rel="noopener" href="https://www.quora.com/Why-isnt-the-concept-of-falsifiability-relevant-in-computer-science-as-it-is-in-other-sciences">this question</a>, I’m a little bit confused about it. Although some topics in cs is not fully relevent to the concept of falsifiable, at least, the clear metric about the assissibility and to show that the thing you work on is good, is critial section in proposal. (How to evaluate the presented approach, and how to refine the presented approach during the lifetime of the project)</p>
 <p>Clearly, if you could not show to the reviewer if your things is good or not good, the reviewer will have no ideas and will give a refusal at last. Without this evaluation (or some prototype for the proof of concept), you can not show if the method or approach is doable.</p>
 <p>Otherwise, reviewer might provide some senteces like:</p>
@@ -161,14 +157,14 @@ ga('send', 'pageview');
 <h3 id="Scope-assumption-and-requirements"><a href="#Scope-assumption-and-requirements" class="headerlink" title="Scope, assumption and requirements"></a>Scope, assumption and requirements</h3><h3 id="Two-aspects"><a href="#Two-aspects" class="headerlink" title="Two aspects"></a>Two aspects</h3><p>One aspect is to evaluate if your institution have enough ability to conduct this research, such as do you have enough device, background in related field and people to do that. Another is the quality of the proposal (the points mentioned above), the proposal will be approved when both of these two aspects are good. </p>
 <h3 id="Key-questions"><a href="#Key-questions" class="headerlink" title="Key questions"></a>Key questions</h3><p>It might be easier to evaluate a proposal compared with wrting a proposal from scratch. I recently know some rules about evaluating the proposal, which is called <strong>Heilmeier’s Catechism</strong> there are all kinds of online resources about it, this is one <a target="_blank" rel="noopener" href="https://www.darpa.mil/work-with-us/heilmeier-catechism">official version</a>. I put it here. When writing a proposal, just assume you are a reviewer and asking yourself about these questions back and forth. Just use these questions as a template to write the proposal or paper.</p>
 <p>The first three are basically the necessary question for writting a paper.</p>
-<p>What are trying to do can be used to convey ideas to someone in leadership position quickly. Typical way is three sentences template, 背措效, backgound, method, effects (such as how much speed or resource cost is improved&#x2F;saved).</p>
+<p>What are trying to do can be used to convey ideas to someone in leadership position quickly. Typical way is three sentences template, 背措效, backgound, method, effects (such as how much speed or resource cost is improved/saved).</p>
 <p>Second and third are usually related. The limitation of current works is the new things for your approach. The typical new aspect in cs comes from using new architecture, using new data, using existing approch in a new scenarios,  and new method. The new is not the goal, the goal is to make things(targeted metric) better.</p>
 <p>the subsequent ones are hard to answer, it is the question that are really important and motivate you from the pure research to the research that can make out sth useful, or deliver sth useful. Who cares and what difference will it make is really important.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/10/30/Proposal-taolu/" data-id="cm2a0xf4b003idvjrb4o85jlm" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/10/30/Proposal-taolu/" data-id="cmbw030ib003qj8jr4hyx3rq2" class="article-share-link">分享</a>
       
       
       
@@ -351,28 +347,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

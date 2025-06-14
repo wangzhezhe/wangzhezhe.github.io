@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -128,7 +125,6 @@ ga('send', 'pageview');
         <p>Some ideas about using the advanced API for MPI, such as prob, non-blocking call etc.</p>
 <p>All kinds of basic operations and API can be found in <a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/">MPI tutorials</a>.</p>
 <span id="more"></span>
-
 <h3 id="More-details-of-MPI-send"><a href="#More-details-of-MPI-send" class="headerlink" title="More details of MPI send"></a>More details of MPI send</h3><p>The MPI send is actually a wrapper for different types of MPI send operation. The key thing here is to consider (1) whether the cache is used in MPI send. (2) when send operation returns, wether the messages are recieved at the reciving end.</p>
 <p>According to this <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/17582900/difference-between-mpi-send-and-mpi-ssend">blog</a> and communication mode of MPI standard, when the ssend is used, it can guarantee that the send returns after the recv is posted (recv api is called). For buffered case, even if matching recv API is not called, the send API can returns quickly.</p>
 <h3 id="Prob-and-get-count"><a href="#Prob-and-get-count" class="headerlink" title="Prob and get count"></a>Prob and get count</h3><p>The <code>MPI_Prob</code> is similar to the operation of getting the meta data, these meta data are stored into the MPI status. This <a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/dynamic-receiving-with-mpi-probe-and-mpi-status/">blog</a> provides a really good and straightforwrd explanation about the prob and the associated get count operation after the prob. The main idea is that we can allocated space dynamically based on the results of the prob instead of using the fixed amount of memory. This provides a lot of flexibility for mpi recv call. The simple implementation just use the same buffer size for sending and reciving.</p>
@@ -138,14 +134,13 @@ ga('send', 'pageview');
 <p><a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/parallelBLK/blob/master/MPI/send_rcv.c">https://github.com/wangzhezhe/parallelBLK/blob/master/MPI/send_rcv.c</a> </p>
 <p>关于linux层面的block, non-block, sync, async comm在<a target="_blank" rel="noopener" href="https://wangzhezhe.github.io/2020/04/23/block-nonblock-sync-nonasync/">这个文章</a>中做了一些记录。</p>
 <p>Let’s see how to update it into the isend and irecv version.</p>
-<p>The basic version is to use isend&#x2F;irecv and wait, the wait MPI is used to wait for the completion of specific request handle. After the irecv operation, we could do other things and put the wait operation at last. If the data transfer operation is completed, the wait returns.</p>
-<p>More advanced version is the wait some&#x2F;any for exampe <a target="_blank" rel="noopener" href="http://mpi.deino.net/mpi_functions/MPI_Waitsome.html">here</a> explains the waitsome. This is used for the case where there are multiple requests, instead of waiting for the completion of all the request in the list. It seems that the waitsome provides a fine granularity control of how to process the recieved request. Once the request can be processed, such as the completion of the sending opertaion, we can move to the subsequent operations.</p>
+<p>The basic version is to use isend/irecv and wait, the wait MPI is used to wait for the completion of specific request handle. After the irecv operation, we could do other things and put the wait operation at last. If the data transfer operation is completed, the wait returns.</p>
+<p>More advanced version is the wait some/any for exampe <a target="_blank" rel="noopener" href="http://mpi.deino.net/mpi_functions/MPI_Waitsome.html">here</a> explains the waitsome. This is used for the case where there are multiple requests, instead of waiting for the completion of all the request in the list. It seems that the waitsome provides a fine granularity control of how to process the recieved request. Once the request can be processed, such as the completion of the sending opertaion, we can move to the subsequent operations.</p>
 <h3 id="MPI-Wait-and-MPI-Test"><a href="#MPI-Wait-and-MPI-Test" class="headerlink" title="MPI_Wait and MPI_Test"></a><code>MPI_Wait</code> and <code>MPI_Test</code></h3><p><code>MPI_Test</code> seems like the non-blocking version fo the <code>MPI_Wait</code>, instead of waiting here, we can use a while loop and call the <code>MPI_Test</code> in that while loop, if the message is recieved successfully, we process the message, otherwise, we can do some other computaion tasks. This <a target="_blank" rel="noopener" href="https://mpi.deino.net/mpi_functions/MPI_Test.html">exmaple</a> shows some ideas.</p>
 <p>Similarly, there are <code>MPI_TestSome</code> and <code>MPI_WaitSome</code>, for the <code>MPI_TestSome</code> it will look at all associated requests, if some of them are satisfied, then it will return associated number of completed requests. for <code>MPI_WaitSome</code>, it will block here and wait for the coming of the new requests. It will return at least one of the requests complete.</p>
 <h3 id="Desgin-for-an-actual-usecase"><a href="#Desgin-for-an-actual-usecase" class="headerlink" title="Desgin for an actual usecase"></a>Desgin for an actual usecase</h3><p>There are several ways to desgine isend and irecv pattern. Let’s adding several assumptions:</p>
-<p>Assuming one MPI packet is used in one MPI isend&#x2F;irecv message. And each rank can be both the sender or reciever, communication pattern is clear. (such as 0 send to 1, 1 send to 2 … n-1 send to 0). Assuming the size of the message (length of the message) is known beforehand. Assuming using the isend for sending and common recv for recieving.</p>
+<p>Assuming one MPI packet is used in one MPI isend/irecv message. And each rank can be both the sender or reciever, communication pattern is clear. (such as 0 send to 1, 1 send to 2 … n-1 send to 0). Assuming the size of the message (length of the message) is known beforehand. Assuming using the isend for sending and common recv for recieving.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Compute for current iteration</span><br><span class="line">MPI_Send</span><br><span class="line">MPI_Recv (any source)</span><br><span class="line">CheckRequests to make sure requests are ready to be consumed</span><br></pre></td></tr></table></figure>
-
 <p>There is one design for processing the case with unknown size of message. Using fixed number of recievers and number of buffersize. When sending message, break it into several packets with fixed length. When recv, just iterate these fixed number of irecv. If all work are done, just cancel the extra irecv. If one reciever recieve a packet, then post another reciever (mpi irecv call) after it compelets packet processing. The goal is to make sure the total number if irecv is fixed. When recieving the termination message, then cancel all avalible irecv call.</p>
 <p>This pattern can be further improved by using <code>iprobe/recv</code>, the example can be found <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/zhe.wang/vtk-m/-/blob/vtkm_trace/vtkm/filter/flow/internal/Messenger.cxx?ref_type=heads#L360">here</a> which used for particle advection. The assumption is same with previous one. When sending message, it can sends both the actual data and meta data, they are sent by <code>isend</code>. When reciving the data, there are two while loop, the outlayer loop contains the computation call, communication call, and metadata update call. From the outlayer while loop, it can detect if there are avalible work. The inner layer is in communication, if the <code>blockAndWait</code> flag is true, it goes to the <code>Probe</code> call, which means there are no avalible work, and current process need to wait for new work coming. Once the message is recieved, it then process it, the message can be either the meta data or the actual data. Then it sets the <code>blockAndWait</code> flag as false, the process goes to the <code>IProbe</code> call, which can recieve the data from any source. If nothing comes here, the sending process will send the termination message, it will exist the inner while loop. Then it goes to the outer while loop, if there are still avalible works, the <code>blockAndWait</code> flag is set as true, and code comes into the <code>Probe</code> again. Aotherwise, it just exist the outer loop. When the <code>IProbe</code> or <code>Probe</code> returns true, it just use the common recv to recieve the message.</p>
 <p>Anyway, there are two key things for this design, the first one is the inserted loop, the second thing is the probe with any source.</p>
@@ -155,7 +150,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/12/25/MPI-async/" data-id="cm2a0xf470024dvjr2lce7s5c" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/12/25/MPI-async/" data-id="cmbw030i6002bj8jr58996yq0" class="article-share-link">分享</a>
       
       
       
@@ -338,28 +333,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

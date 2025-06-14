@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,19 +124,14 @@ ga('send', 'pageview');
         
         <p>Some high level nots about software design and optimization. These contents can be the distinguish beween the junior software enginner and the senior soft ware engineer.</p>
 <span id="more"></span>
-
-
 <h2 id="Code-review"><a href="#Code-review" class="headerlink" title="Code review"></a>Code review</h2><h3 id="Two-principles-for-writting-elegant-code"><a href="#Two-principles-for-writting-elegant-code" class="headerlink" title="Two principles for writting elegant code"></a>Two principles for writting elegant code</h3><p>There are lots of principles for writting the elegant code, we discuss two important cases in this part. </p>
 <blockquote>
 <p>The first one is “try to let compiler do more things”.</p>
-</blockquote>
-<blockquote>
 <p>The second one is “try to decrease the redoundant code”. </p>
 </blockquote>
 <p>These two principles are two guidance for code review process.</p>
 <p>One example I recent met is about the worklet abstraction class, originally we create each abstraction functor for each actual function call. But it turns out that we can use the function template to do things in an more elegant way. Or in more traditional way, we use a function pointer to in the worklets. However, the template parameter is more simple then using the function pointer.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;cmath&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">template &lt;float fun (float)&gt;</span><br><span class="line">struct LogFunWorklet</span><br><span class="line">&#123;</span><br><span class="line">    float operator()(float f) &#123;</span><br><span class="line">      return fun(f);</span><br><span class="line">    &#125;</span><br><span class="line">    //some value for computing the f</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    auto logWorklet = LogFunWorklet&lt;std::log&gt;&#123;&#125;;</span><br><span class="line">    std::cout &lt;&lt; logWorklet(10.0f) &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    auto log10Worklet = LogFunWorklet&lt;std::log10&gt;&#123;&#125;;</span><br><span class="line">    std::cout &lt;&lt; log10Worklet(10.0f) &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    auto log2Worklet = LogFunWorklet&lt;std::log2&gt;&#123;&#125;;</span><br><span class="line">    std::cout &lt;&lt; log2Worklet(10.0f) &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>One typical use case for second principle it to make the <code>if</code> or <code>switch</code> branch as dry as possible and let them in the minimal scope. It is a case by case situation. Ask yourself according to these two principles is helpful to improve the quality of the code.</p>
 <h3 id="const"><a href="#const" class="headerlink" title="const"></a>const</h3><p>The first chaptor of the efficient c++ discusses about the const. We do not dive into details here, just keep it in mind and try to use the const whenever it is necessary to do so.</p>
 <h3 id="Several-tools-for-processing-different-types"><a href="#Several-tools-for-processing-different-types" class="headerlink" title="Several tools for processing different types"></a>Several tools for processing different types</h3><p>It is common that the same logic is applied into different types of data. Typical tools regarding the scope of that code that need to be reused, these techniques include: template (both parameter and function), overload of the function (only overload the section that have differnet behaviours), abstract class (interface). Or there is a mixture way sometimes, such as using both template parameter and the function parameter to distinguish a specific behaviours. One recent example is that I need to write field into both vtkm data set and vtkm partition data set and they need to use different association type. So the template parameter type is the type of the data set and the parameter value is the value of the association.</p>
@@ -181,7 +173,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/07/28/Software-design-experiences/" data-id="cm2a0xf4f004pdvjr142pdrci" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/07/28/Software-design-experiences/" data-id="cmbw030ie004lj8jr43y929xs" class="article-share-link">分享</a>
       
       
       
@@ -364,28 +356,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

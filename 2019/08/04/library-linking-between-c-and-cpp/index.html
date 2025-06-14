@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>关于c c++ libraries互相linking的问题。</p>
 <span id="more"></span>
-
 <h3 id="undefined-reference"><a href="#undefined-reference" class="headerlink" title="undefined reference"></a>undefined reference</h3><p>有几次在link libraries的时候会出现 undefined reference 的问题，明明已经把.so文件放到了命令后面，但还是有问题。除了网上找的到的常见原因，还有一个比较容易忽略的就是name mangling的问题。比如使用<code>nm</code>命令进行查看，注意调用方和被调用方都需要查看一下。对于 <code>nm</code> command，还可以使用<code>-C</code> 参数来查看没有name mangling时候的signature. Using the <code>-D</code> parameter can only show the dynamic symbol. More informaion can be shown by <code>man nm</code> operation.  </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-bash-4.2$ nm CMakeFiles/main.dir/main.cpp.o</span><br><span class="line">0000000000000000 T main</span><br><span class="line">                 U _Z3foov</span><br></pre></td></tr></table></figure>
 <p>这个是<code>main</code>生成的.o文件中的symbol</p>
@@ -137,7 +133,6 @@ ga('send', 'pageview');
 <p>具体使用CMake的时候，由于它会根据后缀自动选择，因此最好显示地指定compiler或者使用的语言。在一些完全用c写的library中，通常会加上如下的预编译命令来规避这个问题。</p>
 <p>比如在.h 文件中进行如下定义</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#ifdef __cplusplus</span><br><span class="line">extern &quot;C&quot; &#123;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">//the content of the .h file</span><br><span class="line"></span><br><span class="line">#ifdef __cplusplus</span><br><span class="line">&#125;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
-
 <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/3789340/combining-c-and-c-how-does-ifdef-cplusplus-work">这个例子</a>说的内容比较详细，由于主要影响的是link阶段而不是compile阶段，因此在.h文件中加上相关的操作即可。</p>
 <h3 id="引用多个-h文件"><a href="#引用多个-h文件" class="headerlink" title="引用多个.h文件"></a>引用多个.h文件</h3><p>本质上来说，这里的.h 相当于一个adaptor，cpp 文件本身会include这个.h 文件，调用方的.c文件在link相对应的cpp部分的时候(实际上具体执行link的是编译之后的.so文件)，就会通过这个adaptor来找到对应的cpp部分。如果.h 文件中又include了多个其他的.h文件，这个时候其他的.h文件内也要使用extern c的操作。注意不要将include的声明放在extern的block中。</p>
 <h3 id="命名不规范引起的冲突"><a href="#命名不规范引起的冲突" class="headerlink" title="命名不规范引起的冲突"></a>命名不规范引起的冲突</h3><p>有一次遇到类似<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/5155621/cant-compile-c-project-macro-max-passed-3-arguments-but-takes-just-2">这个帖子</a>中说的问题。</p>
@@ -149,7 +144,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/04/library-linking-between-c-and-cpp/" data-id="cm2a0xf4q008ddvjr99eq8h45" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/08/04/library-linking-between-c-and-cpp/" data-id="cmbw030iq008uj8jrcba21cjv" class="article-share-link">分享</a>
       
       
       
@@ -332,28 +327,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

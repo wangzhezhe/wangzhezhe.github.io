@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,33 +124,29 @@ ga('send', 'pageview');
         
         <p>刚开始programming的时候也不会考虑multithread之类的概念。只是顺序写出来就好，逐渐涉及到一些performance的问题时，好多情况需要了解清楚thread到底是被如何管理的，就是所谓的thread model，这里谈谈自己的体会。</p>
 <span id="more"></span>
-
 <h3 id="Thread-Pool"><a href="#Thread-Pool" class="headerlink" title="Thread Pool"></a>Thread Pool</h3><p>C++的simple thread pool <a target="_blank" rel="noopener" href="https://github.com/progschj/ThreadPool">https://github.com/progschj/ThreadPool</a><br>虽然程序简单，但是有很多的star，主要是方便定制方便集成。</p>
 <p>使用thread pool的场景</p>
 <ul>
 <li>server端的程序，过来一个request就从thread pool中取一个thread进行操作，然后返回结果。如果不使用thread pool的话，在很短的时间内有很多的request发送到server端，这个时候server会在很短的时间内启动很多的thread，这个时候cpu会频繁地进行threads之间的context switch导致实际的处理request的能力变低</li>
-<li>thread 本身的逻辑比较复杂，没法用openmp那种不同的数据同样的code来执行。</li>
+<li>thread 本身的逻辑比较复杂，没法用openmp那种不同的数据同样的code来执行。 </li>
 </ul>
 <h3 id="Openmp"><a href="#Openmp" class="headerlink" title="Openmp"></a>Openmp</h3><p>typical的使用场景是single node case 下for loop的优化，更多的是用于计算类的优化，比如reduction，sum之类的操作。</p>
 <h3 id="MPI"><a href="#MPI" class="headerlink" title="MPI"></a>MPI</h3><p>使用MPI最开始还是用于计算的任务，multiple node下的计算任务。虽然有很多的node，但是在大规模thread的环境下，这些node对于程序来看并没有什么本质的区别。code本身还是SIMD的样子，通过不同的rankid来对每个process进行标记。MPI使用的实际是multi-process，具体的通信也是multi-process之间进行通信。</p>
 <p>run one rank on one node:</p>
 <p><strong>using mpi to control this</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mpirun --map-by node -np 4</span><br></pre></td></tr></table></figure>
-
 <p><strong>using srun to control this</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">srun -n 4 -N 4</span><br></pre></td></tr></table></figure>
-
-
 <h3 id="MPI-thread-pool"><a href="#MPI-thread-pool" class="headerlink" title="MPI + thread pool"></a>MPI + thread pool</h3><p>参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/41411019/what-is-the-advantage-if-any-of-mpi-threads-parallelization-vs-mpi-only">这个</a></p>
 <p>MPI更suitable的场景是，使用multiple core on different nodes and let them do similar task to get the results which better for parallel.</p>
 <p>遇到过一个in-memory的data base的项目，这个项目是MPI程序，每一个MPI process是一个独立的可以接受请求的服务，对于接受请求的服务来说，按理说一个node上启动一个就够了，因为这个program是管理memory资源的，一个program上只需要一个就能access到这个node上所有的memory资源，但另外一个问题是，这个服务没有很好用的rpc库，每个rpc都是一个单独地process，没法实现那种一个request过来，启动一个thread进行处理的操作。但是单独一个MPI process 在一个node上处理request的效率又很低，于是就每个NODE上启动4-5个MPI process，然后说这样可以提升一些request的处理能力。但这种操作相当于是把原来一个node上的完整的memory划分成了4-5份，然后每个node管理一份，很鸡肋。</p>
 <p>这里感觉在archetecture的时候就没有考虑清楚，首先对于scalability，如果这是一个computing的项目，比如说是simulation或者是某个algorithm这种计算型很重的任务，scalability就是使用更多的core之后看时间会不会减少。</p>
 <p>如果说这个项目是一个data base的项目，scalability应该是使用了很多的node之后，处理request的时间怎么样，然后throughput怎样。因为这里care的是memory资源而不是cpu core。</p>
 <p>除非是那种每个process相似度很高的任务，可以直接不考虑communication或者data load 直接处理。对于更多的项目是comutation与network or IO 型的任务互相混合的。比如读一点数据处理一些任务，这个时候读数据是IO操作，处理任务是computation操作，比较好的是使用 MPI+cuda 或者 MPI+openmp 这里MPI的作用是保证每个node上启动一个program进行IO操作，因为MPI process提供了ID，进行distributed的管理也比较方便，比如服务发现啊，或者sharding，partition之类的操作。然后openmp或者thread pool进行 on node 的multithread 操作。</p>
-<p>如果是很整齐的并行处理比如一个for loop那种，使用openmp&#x2F;cuda这种模型比较直接，如果是网络的那种，有可能request多，有可能request少，使用thread pool比较实际。</p>
+<p>如果是很整齐的并行处理比如一个for loop那种，使用openmp/cuda这种模型比较直接，如果是网络的那种，有可能request多，有可能request少，使用thread pool比较实际。</p>
 <p>总之是不同的工具适用于不同的情况。那种hybrid更像是hierachy的管理，group manager之间负责数据的通信和loading，group内部负责并行计算（一个节点上的thread）。而纯粹的MPI相当于是扁平化的跨节点的thread pool 只有core的概念没有节点的概念。</p>
 <p>如果是单纯的server然后每个node上run一个，甚至不需要使用MPI，比如可以将ip写在parallel file system上，然后client把这些ip都存起来。或者在cloud的环境下就通过third party的工具比如etcd或者redis进行服务注册或者发现。</p>
-<p>mpi的一个好处就是可以对thread进行id的分配，这样进行data partision之后hash计算也比较容易，这似乎是这个场景下唯一的好处了，因为通信的话显然用现有的rpc库比较实际。或者另外一种solution是把所有的ip注册在master process上（比如id&#x3D;0）client从这个ip&#x3D;0的node上进行服务发现，这本质上与使用third party的工具是一样的。</p>
+<p>mpi的一个好处就是可以对thread进行id的分配，这样进行data partision之后hash计算也比较容易，这似乎是这个场景下唯一的好处了，因为通信的话显然用现有的rpc库比较实际。或者另外一种solution是把所有的ip注册在master process上（比如id=0）client从这个ip=0的node上进行服务发现，这本质上与使用third party的工具是一样的。</p>
 <p>想想要是不用mpi或者third party的工具仅仅用parallel file system 还真不容易实现，因为要给没给server一个id，使用third party的话，先注册的就是id小的，然后可以自增，就是所谓的sorted key 使用MPI的化，本身就是自带了id。</p>
 <h3 id="TBB"><a href="#TBB" class="headerlink" title="TBB"></a>TBB</h3><p>task based parallelism</p>
 <p><a target="_blank" rel="noopener" href="https://www.fz-juelich.de/ias/jsc/EN/Expertise/Workshops/Conferences/CSAM-2015/Programme/lecture7a_gonnet-pdf.pdf?__blob=publicationFile">https://www.fz-juelich.de/ias/jsc/EN/Expertise/Workshops/Conferences/CSAM-2015/Programme/lecture7a_gonnet-pdf.pdf?__blob=publicationFile</a></p>
@@ -178,7 +171,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/04/Manage-your-threads/" data-id="cm2a0xf47002cdvjrg45q6lij" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/07/04/Manage-your-threads/" data-id="cmbw030i7002kj8jr7f3idu0m" class="article-share-link">分享</a>
       
       
       
@@ -361,28 +354,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

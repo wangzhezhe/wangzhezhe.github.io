@@ -13,7 +13,7 @@
 <meta property="og:description" content="整理一些所谓的做research些的套路，做research时候需要遵循的一些方法，以及how to come up with new research idea。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-08-22T10:52:44.000Z">
-<meta property="article:modified_time" content="2025-01-17T16:29:11.380Z">
+<meta property="article:modified_time" content="2025-02-09T10:03:53.525Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,28 +124,28 @@ ga('send', 'pageview');
         
         <p>整理一些所谓的做research些的套路，做research时候需要遵循的一些方法，以及how to come up with new research idea。</p>
 <span id="more"></span>
-
 <p>其实所谓的套路就是所谓的科学的思维方法，凭经验和感觉在scentific的方面可能不是很适用，最起码是在完善idea的过程中，需要用到科学的思维方法。</p>
 <h3 id="功能性需求与非功能性需求"><a href="#功能性需求与非功能性需求" class="headerlink" title="功能性需求与非功能性需求"></a>功能性需求与非功能性需求</h3><p>尽管research相关的思路，套路有很多，其中比较重要的一个指导原则就是完成“非功能性需求往往就是体现先进性和创新性的地方”。所以把这个原则列在其他原则的最前面。所谓的新的方法，新的技术以及新的手段，最后归根结底都是落实在非功能性或者是性能指标的层面上。不论是写项目书或者是整理论文，这都是一条很重要的指导原则。所谓非功能指标，更具体的来说就是性能指标，关键是如何才能进行evaluataion。</p>
 <h3 id="Really-high-level-thoughts-AMDS-and-novelty"><a href="#Really-high-level-thoughts-AMDS-and-novelty" class="headerlink" title="Really high level thoughts (AMDS and novelty)"></a>Really high level thoughts (AMDS and novelty)</h3><p>There are some high level methodology is always useful for developing new ideas in the software level of computer science. Always try to ask your self these three things. These three aspects are also the place where the novelty comes from.</p>
 <ul>
 <li><p>New architecture. Asking what are current new architecture or device,  and then apply your software into that new domain. From the parallel computing to the GPU accelarator then to the mixed precision features, this Golden Rule is always the case. If your approach does not interact with the low level device primitives direactly, at least try to use associated libraries. For example, you work on software A and software B use the new architecture, you could try to integrate your software with the software B. Even if looking at the <strong>issue caused by the new architecture or emerging architecture</strong> is also useful, the common one is that we have large gap between the computing and the IO speed on exscale machine, so we try to do data reduction or refactor. These assumptions (targeted platform) are really important from the research perspective. These assumptions can show if your method make sense, for example, the solution for softwared working on exscale machine more care about the scale and asosciated communication problem. However, if you only work on the small cluster, these communication issue does not matter, and you more care about other things such as fully utilization of the accelarator.</p>
 </li>
-<li><p>New methods. For example, the AI or deep learning methd is the new method. You could try to consider if the field you work on can be abstracted&#x2F;reorganized into some kind of AI problem, and if it is possible to use the AI things to solve your problem and if there are more benifits or overhead to use these new method to achieve the same goal. If there are solutions to overcode these overhead, then there the new paper is coming. </p>
+<li><p>New methods. For example, the AI or deep learning methd is the new method. You could try to consider if the field you work on can be abstracted/reorganized into some kind of AI problem, and if it is possible to use the AI things to solve your problem and if there are more benifits or overhead to use these new method to achieve the same goal. If there are solutions to overcode these overhead, then there the new paper is coming. </p>
 </li>
-<li><p>New dataset&#x2F;observation&#x2F;information. New data set or new information can always give you new inspiration to develop the new method to facilitate the existing approach. The idea is simple, if you look at the development of biology. You have the microscope，you know sth new, you have the electron microscope, you get some new knowledge, you Frozen electron microscope, you got sth new. The new data (or find granularity data) can drive you to develop new model or new simulation method, which drive the development of science. In the software development, new performance data can provide the chance to help you to train the new model and make better decision to improve the speed and convenience of the algorithm. in AI domain, If you properly use the information that other people did not use, you can improve the accuracy or better prediction of the model. That is really straightforward. For softwared development or autonomic computing, if you use the information&#x2F;metadata that other people did not use, you can get better decision restuls. So always try to ask your self, what information is not been used now in your targeted research domain, and what information can be further measured here.</p>
+<li><p>New dataset/observation/information. New data set or new information can always give you new inspiration to develop the new method to facilitate the existing approach. The idea is simple, if you look at the development of biology. You have the microscope，you know sth new, you have the electron microscope, you get some new knowledge, you Frozen electron microscope, you got sth new. The new data (or find granularity data) can drive you to develop new model or new simulation method, which drive the development of science. In the software development, new performance data can provide the chance to help you to train the new model and make better decision to improve the speed and convenience of the algorithm. in AI domain, If you properly use the information that other people did not use, you can improve the accuracy or better prediction of the model. That is really straightforward. For softwared development or autonomic computing, if you use the information/metadata that other people did not use, you can get better decision restuls. So always try to ask your self, what information is not been used now in your targeted research domain, and what information can be further measured here.</p>
 </li>
 <li><p>New scope or scenario. For example, the idea in operation system can be used in a large system, such as cache, pipeline optimization. Moreover, mutex mechanism and the race condition can be used in thread level, process level. There are also other design patterns, such as reader and writer pattern, event driven pattern, etc. Sometimes, the method exists for a long time. But when you use it to process a problem in another new domain, it can become a research novelty, and this can be viewed as a new method in this new domain. For system related research, borrowing idea from operating system is common strategy. For algorithm releated research, such as scheduler related things, borrowing ideas from the algorithm research is typical strategies. Such as graph algorithm and all kinds of algorithm for solving NP hard problem, statistical problem, maching learning reltaed things etc. These things might not new for algorithm research but it becomes novel if you use this algorithm into a new domain and generate some good results.</p>
 </li>
 </ul>
 <p>Actually, the S dimension is most common strategy we usually come up with. For example, we use a particlular theory from the ML or statistics to solve a scheduler problem in distributed system or parallel computing, then improve its execution time or resource efficiency. This is commonly called the A+B+C type of pattern to do the research work.</p>
 <p>这里提到的AMDS就是实际paper里面具体有亮点的地方，如果把paper比喻成cooking，这些地方就是加入的一些巧妙的构思。比如一个paper，如果在A方面用到了GPU 或者 large scale cluster，在M用到的dl的一些最新基础，在D上用到的是实际的应用的数据，在S上又是一个比较又意义的场景 (比如切实地用计算机的方法赋能了其他的某个领域或者解决了其他的某个领域的一个实际的问题)，或者哪怕是常见的场景，那这样的论文在基本的方法 evaluation 比较solid的情况下，被录用的概率，亮点都是比较高的。</p>
-<p>另一个常用的思考方式是从”问题&#x2F;场景&#x2F;数据”，以及”解决方法&#x2F;手段” 两个角度来考虑这个问题。一个paper更像是一个产品，而不是一个具体的零件(知识点)，实际上是由好多细分的部分组合在一起的。</p>
+<p>另一个常用的思考方式是从”问题/场景/数据”，以及”解决方法/手段” 两个角度来考虑这个问题。一个paper更像是一个产品，而不是一个具体的零件(知识点)，实际上是由好多细分的部分组合在一起的。</p>
 <p><strong>老问题，老方法</strong>，这个角度的research内容可能不太能发出来paper，但这是一个good start point。查看新或者老的区别是看这个内容是否在以前的paper中出现过。如果reader说，通过这个论文我没有学习到新的知识，那很大程度上这个论文就是属于这个类别。实在不行了就是做一个evaluation，测试不同的参数情况下这个问题的方法的情况。比如自己最初的一篇关于in situ的文章，就是evaluate不同的参数对这个results的影响，最后也没有发出去。</p>
 <p><strong>老场景，新问题，老方法</strong>，从老场景中提炼出来新的问题，或者从已经发的paper中提炼出新的问题，可能是迈向research的第一步。这可能是老的场景中比较细分的一个情况，比如in situ workflow的背景下的各种细化的load balance的问题，或者是elastic in situ的问题，都属于这一类，虽然in situ 和 elastic 都是比较老的场景或问题，但是它们结合起来就属于一个novelty。总而言之，稍稍改变已有问题的assumption或者添加额外的requriements就能使其变成一个新的问题。</p>
 <p><strong>新场景，老问题</strong>。这个可能是上手比较容易的一类，比如做可视化的研究，遇到了covid的时候，做一个covid的数据，遇到了quantum computing的时候，做一个quantum computing的数据，这些都算是novelty，因为是新的场景，稍稍弄一下就能有比较好的contribution，不一定要提出新的方法，可能就是把已有的方法迁移到这个上面解决了一个新的场景中的问题，就比较好了。对于worflow这种就是in situ和其他的场景结合起来，比如AI相关的任务用到in situ workflow里也是新的使用场景。</p>
-<p><strong>老问题，新方法&#x2F;新手段</strong>。这个比较难一些，本质上就是一个performance的提升，比如particle advection load balance是一个老的问题，最近看到的<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/abstract/document/9706326?casa_token=ppx54YN66CkAAAAA:2dFm_4PByncgGZMaymxb7Kdsc5EM_S5k_o2vz4dcUCvQXwe3rkXD7MuzIy83odbPJ-lpbB1yZw">一篇</a>使用RL的方法对起进行优化就是属于这个类别，把其他领域比较新的方法应用到本领域，就通常能变成一个新的方法，是一个good novelty。如果单纯的使用新的硬件可能一个比较常见的套路，比如使用新的加速器来加速这个问题，单纯adapt to accelarator这样还不是很够，如果能再说明一下，针对这种硬件加速器和对应的算法有什么额外的优化，可能才是比较好的contribution。</p>
+<p><strong>老问题，新方法/新手段</strong>。这个比较难一些，本质上就是一个performance的提升，比如particle advection load balance是一个老的问题，最近看到的<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/abstract/document/9706326?casa_token=ppx54YN66CkAAAAA:2dFm_4PByncgGZMaymxb7Kdsc5EM_S5k_o2vz4dcUCvQXwe3rkXD7MuzIy83odbPJ-lpbB1yZw">一篇</a>使用RL的方法对起进行优化就是属于这个类别，把其他领域比较新的方法应用到本领域，就通常能变成一个新的方法，是一个good novelty。如果单纯的使用新的硬件可能一个比较常见的套路，比如使用新的加速器来加速这个问题，单纯adapt to accelarator这样还不是很够，如果能再说明一下，针对这种硬件加速器和对应的算法有什么额外的优化，可能才是比较好的contribution。</p>
 <p>新问题，新方法，这就是比较好的一类了，在场景和方法上都有novelty，应该是比较好的一种research的contribution，一些顶会的论文应该都属于这一类。</p>
+<p>最近的一些感触就是考虑这些所谓的“新”的来源的问题，从隐喻的角度上讲就是加入原来是一个3个砖块组成的积木，现在由于新的技术，思路，需求的发展，想把它变成6个砖块的积木，那原来三个砖块儿构成的体系就不够用了，砖块儿与砖块儿之间就会出现好多gap，那么如何弥补这些gap呢？这就是新的思路和创新点出现的地方了。所以尝试用发展的思路看某一个学科的发展就能找到一些新的gap，所谓发展的思路大概是来源于方法和手段的创新，比如传统经典学科由于计算技术的发展，AI技术的发展，出现了好多新的手段，这个时候gap就出现了，所谓的跨领域结合，可以理解成新的技术或研究手段加入到已有的学科体系之中时创造出的gap。</p>
 <h3 id="General-metrics"><a href="#General-metrics" class="headerlink" title="General metrics"></a>General metrics</h3><p>Novelties described above come from the motivation to improve metrics. Common metrics include accuracy or error, execution time (makespan), resource cost (core time), scalability, data size (compression retio). The thinking principles described above mainly aim to improve metrics descirbed here.</p>
 <h3 id="Stories-of-the-paper-rejects"><a href="#Stories-of-the-paper-rejects" class="headerlink" title="Stories of the paper rejects"></a>Stories of the paper rejects</h3><p>Although there are different rules about judging paper in different conferences, there are several general principles.</p>
 <p>Novelty, this come from the AMDS rules and associated metrics described above.</p>
@@ -174,7 +171,7 @@ ga('send', 'pageview');
 </li>
 <li><p>Implementation and improvement. Implement sth is the stratight forward way to give you the idea about some details. But it is dangerous to implement sth without the goal or motivation. Your goal is always to make sth faster, more accurate, save more space, utilize resource in more efficient way, more flexible or adaptive in particular scenarios etc. sth like this. With these motivation in mind, you might find “unusual suspects” during the implementaiton. Some times, the idea is impeded by the implementation perspectives, for example, you may want to try sth that runs on distributed nodes with GPU but you may not access to the GPU resources. The habit of implemeation aims to identify that if your idea is feasible, and what are underlying obstacles, if we can overcome them based on the current constraints. </p>
 </li>
-<li><p>Ask your self questions or discuss with others to let other people ask your questions. When you go through your paper, try to be rigourous to your self and assume you are a reviewer. Then you try to answer these questions. By doing things like this, you may come up with new ideas and get better ideas or a whole picture for your work.</p>
+<li><p>Ask your self questions or discuss with others to let other people ask your questions. When you go through your paper, try to be rigourous to your self and assume you are a reviewer. Then you try to answer these questions. By doing things like this, you may come up with new ideas and get better ideas or a whole picture for your work. </p>
 </li>
 </ul>
 <p>the idea is always start from a small and unclear motif, then when you doing it, more things comes out, and the whole picture is getting clear. </p>
@@ -223,7 +220,7 @@ ga('send', 'pageview');
 <p>从research perspective讲的话，optimize的部分算是真正有research taste或者research value的部分。如果抛开后面一部分的optimization的工作，直接说前面的，一方面很难说这个是只有你做了的，别人没做的，因为大部分工作都是有一两个相似的work，这时候你就要说，你这个做的在哪里哪里要比别人的好，或者别人哪里哪里没有做，对于algorithm这是比较好弄的，可对于framework类的工作，这似乎并不太好说明，于是从research的角度来讲，比较convincing的taolu就是尽量找到一个新的场景，然后在这个新的场景下做一个完成对应事情和优化对应事情的工作。否则就容易被质疑motivation，相比较起来也不太容易表述。</p>
 <p>另一个就是思考motivation的角度，如果暂时没有什么好的thinking，就尝试回答，如果没有这个work，那当前的work会有什么disadvantages，通常就是哪些时间被浪费掉了，这样也是一个常见的套路，如果能把这些说清楚，就能找到一个比较make sense的baseline然后contribution自然也比较容易说明清楚。</p>
 <h3 id="Writting-good-conclusion"><a href="#Writting-good-conclusion" class="headerlink" title="Writting good conclusion"></a>Writting good conclusion</h3><p>I am still try to figure out how to write a good conclusion, instead of try to summarizing the whole paper in general, such as we present the approach, implement it and show the evaluation, it is better to present sth more detail, here are some good strategies. 1&gt; what approach is presented in this work 2&gt; This approach can do what 3&gt; how this approach do this 4&gt; what are the good results from the evaluation results, such as showing this and this is effective in which and which conditions. By answering these questions, we may get 4 to 5 sentences, then after adding the future works, we can write a really dense conclusion by this style. (Towards autonomic data management for staging-based coupled scientific workflows) the conclusion of this work can be a good example.</p>
-<h3 id="When-stuck-at-a-problem"><a href="#When-stuck-at-a-problem" class="headerlink" title="When stuck at a problem"></a>When stuck at a problem</h3><p>It is easy to stuck at a problem or technical&#x2F;implementation plans without progressing for a long time. In this situation, you may need to set one step back to see if you are working at the correct direaction. There are multiple reason, maybe you did not look at a right problem, or maybe you consider the problem in a wrong direaction. There are several suggestions can be used in general:</p>
+<h3 id="When-stuck-at-a-problem"><a href="#When-stuck-at-a-problem" class="headerlink" title="When stuck at a problem"></a>When stuck at a problem</h3><p>It is easy to stuck at a problem or technical/implementation plans without progressing for a long time. In this situation, you may need to set one step back to see if you are working at the correct direaction. There are multiple reason, maybe you did not look at a right problem, or maybe you consider the problem in a wrong direaction. There are several suggestions can be used in general:</p>
 <ul>
 <li><p>Decrease from high dimention to the low dimention. Sometimes, the high dimention data may make you more confused and you may not figure out what you are trying to do in the high dimension settings.</p>
 </li>
@@ -231,7 +228,7 @@ ga('send', 'pageview');
 </li>
 <li><p>From the real data to come back to the synthetic data with the knonw pattern. Real data set may be a mixture of multiple patterns, you may need to solve every specific pattern then move to the complicated pattern.</p>
 </li>
-<li><p>Reducing the large data set to the small data set with that cause the problem. This is helpful especially for debuging. When the data is complicated or there is large scale, it is hard for us to figure out what happened there, start from the small data set is always a good practice for debug.</p>
+<li><p>Reducing the large data set to the small data set with that cause the problem. This is helpful especially for debuging. When the data is complicated or there is large scale, it is hard for us to figure out what happened there, start from the small data set is always a good practice for debug.   </p>
 </li>
 </ul>
 <h3 id="凝练科学问题"><a href="#凝练科学问题" class="headerlink" title="凝练科学问题"></a>凝练科学问题</h3><p>参考 editing taolu</p>
@@ -239,7 +236,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/22/Research_taolu/" data-id="cm2a0xf4d0040dvjrcoij7yxz" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/08/22/Research_taolu/" data-id="cmbw030id004dj8jr01mf56qj" class="article-share-link">分享</a>
       
       
       
@@ -422,28 +419,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

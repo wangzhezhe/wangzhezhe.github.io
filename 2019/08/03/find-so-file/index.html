@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>find .so file after installing</p>
 <span id="more"></span>
-
 <h3 id="关于rpath"><a href="#关于rpath" class="headerlink" title="关于rpath"></a>关于rpath</h3><p>rpath就是在运行的的时候告诉os要从哪里来找.so文件的路径（这个认为是由linker来负责的），<a target="_blank" rel="noopener" href="https://gitlab.kitware.com/cmake/community/wikis/doc/cmake/RPATH-handling">这个</a>对于找.so文件的顺序解释的比较清楚。</p>
 <p>比较万能的做法就是设置<code>LD_LIBRARY_PATH</code>，但是这种方法不是很好的一种。具体可以参考blog中linux分类下的crutial env 那一篇。</p>
 <p>在使用cmake的时候，特别是install时候，cmake默认的操作是clear the rpath，这个时候常遇到的问题就是在install的目录下，binary file找不到.so文件。具体的解决方法可以参考<a target="_blank" rel="noopener" href="https://gitlab.kitware.com/cmake/community/wikis/doc/cmake/RPATH-handling">这里</a>，简单的操作就是使用这个命令</p>
@@ -137,12 +133,12 @@ ga('send', 'pageview');
 <p>cmake rpath<br><a target="_blank" rel="noopener" href="https://gitlab.kitware.com/cmake/community/wikis/doc/cmake/RPATH-handling">https://gitlab.kitware.com/cmake/community/wikis/doc/cmake/RPATH-handling</a></p>
 <p>for default settings. the rpath will be cleared for installing</p>
 <p><a target="_blank" rel="noopener" href="https://cliutils.gitlab.io/modern-cmake/chapters/install/exporting.html">https://cliutils.gitlab.io/modern-cmake/chapters/install/exporting.html</a></p>
-<p>There are three ways to access a project from another project: subdirectory, exported build directories, and installing. </p>
+<p>There are three ways to access a project from another project: subdirectory, exported build directories, and installing. </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/03/find-so-file/" data-id="cm2a0xf4n007edvjrgv3s0zbl" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/08/03/find-so-file/" data-id="cmbw030in007lj8jr01gifyov" class="article-share-link">分享</a>
       
       
       
@@ -325,28 +321,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

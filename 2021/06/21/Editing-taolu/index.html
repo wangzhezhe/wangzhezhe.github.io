@@ -13,7 +13,7 @@
 <meta property="og:description" content="Some tips about the paper editing. 一些自己在editing的时候容易犯的小错误。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-06-21T15:29:40.000Z">
-<meta property="article:modified_time" content="2025-01-19T07:12:35.634Z">
+<meta property="article:modified_time" content="2025-02-07T13:29:39.377Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>Some tips about the paper editing. 一些自己在editing的时候容易犯的小错误。</p>
 <span id="more"></span>
-
 <p>有的时候换位思考，如果自己作为reviewer或者给别人提供一些guidance的时候，有没有那种confidence就确定这个事情应该是如何而不应该是如何。是不是能讲清楚一些事情，最基本的就是editing时候的一些常见错误了，这里记录一下，希望遇到类似的问题能够达到讲得清楚的效果。</p>
 <h3 id="Recent-notes-about-the-paper-rejected-reasons"><a href="#Recent-notes-about-the-paper-rejected-reasons" class="headerlink" title="Recent notes about the paper rejected reasons"></a>Recent notes about the paper rejected reasons</h3><p>Hope this section does not be replaced frequently. I try to consider it from two aspects, make it get to the basic level (borderline) firstly, 避免硬伤 (the reason that can be rejected directly), then trying to make the work more fancy or novel (pursue better performance etc.)</p>
 <p>From reviewer’s perspective, they just quickly looks at these red flag, if they find one red flag, they have confidence to give a reject to the paper, then it will save their energy to read paper in detail. It is really hard for other people to understand the paper one hundrerd percent in limited time. It is not the reviewer’s job, it is the authord responsibility to make sure the approach is correct.</p>
@@ -150,10 +146,9 @@ ga('send', 'pageview');
 <p>A实验过程复杂，涉及多种实验变量。利用基于试验过程中产生的B（包括C、D），研究E实验过程的全流程可视化技术；<strong>研究</strong>数字试验三维场景重建、从而对实验过程进行多视角、多模式可视化交互；<strong>研究</strong>基于光线追踪的真实感渲染技术再现复杂体的分离过程，实现试验过程的全角度可观察；<strong>研究</strong>…;通过可视化技术对实验结果进行复现将有助于科学家分析实验过程，探索关键变量，有助于研究人员优化试验设计与试验流程。</p>
 <p>如果放在项目申请书中，阐述具体技术路线的时候，就需要加上更多的连接词，让内容更连贯，用各种动词把技术路线中的连线给表达出来</p>
 <p><strong>基于</strong>试验A模型及试验过程中产生的B数据集，研究C实验过程的关键流程可视化技术，<strong>解析</strong>D、E、F等数据，<strong>通过</strong>数字三维场景重建技术，模拟G和H的动态立体场景，<strong>采用</strong>多视角、多模式可视化交互布局优化技术，<strong>实现</strong>对试验过程的关键流程的全角度可观察，<strong>结合</strong>基于xx渲染技术，细致地再现I，<strong>形成</strong>J试验的可视化系统，对K试验验证提供有效<strong>支撑</strong>。</p>
-<p><strong>研究内容与技术路线的区别</strong>就有点像是论文中method&#x2F;approach部分与implementaion的部分一样，研究内容要突显出大的逻辑，整个的workflow，具体要做什么，每个字部分之间的关联等等。技术路线要有<strong>技术细节</strong>，就是具体实现的过程，用了什么技术，基于什么什么样的方法等等。</p>
+<p><strong>研究内容与技术路线的区别</strong>就有点像是论文中method/approach部分与implementaion的部分一样，研究内容要突显出大的逻辑，整个的workflow，具体要做什么，每个字部分之间的关联等等。技术路线要有<strong>技术细节</strong>，就是具体实现的过程，用了什么技术，基于什么什么样的方法等等。</p>
 <p>还有一种项目书的书写是要写实验内容与实验方案，这里的实验内容有点类似于上面的研究内容和技术路线的综合形式。实验方案有点类似于论文中的evaluation或者experiments的部分。这是gpt给出的答案，感觉可以按照论文中的风格，写上数据，平台，然后具体的实验的设计方案等等。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">定义：</span><br><span class="line">实验方案描述的是验证项目实现效果的方式和步骤，主要集中在测试、评估和数据分析方面。</span><br><span class="line"></span><br><span class="line">侧重描述：</span><br><span class="line">实验目标：验证项目中的某些功能、性能、效果或理论假设。</span><br><span class="line">实验设计：包括实验的变量、对照组、测试条件和测试标准。</span><br><span class="line">数据采集与处理：数据来源、采集方式和处理方法。</span><br><span class="line">验证指标：明确用来评价结果的定量或定性指标，例如准确率、运行速度、资源消耗等。</span><br><span class="line">实验环境：硬件配置、软件版本、运行条件等。</span><br><span class="line">分析方法：实验数据的统计分析或评估方法。</span><br><span class="line">实验结果预期：预期可以得出的结论或验证的假设。</span><br></pre></td></tr></table></figure>
-
 <p>其他常常用到表示逻辑关系的词或者政策类的词还包括，构建，面向，政策类的词包括：新形势，科研范式变革，支撑抢占xxx，支撑xxx任务等等。</p>
 <p><strong>科学问题的凝练</strong></p>
 <p>这一篇讲了一个<a target="_blank" rel="noopener" href="https://image.sciencenet.cn/olddata/kexue.com.cn/upload/blog/file/2009/2/20092681046325890.pdf">科学问题凝练</a>的具体例子。标题是“从自然科学基金项目申请看科学问题的凝练”。这里所谓的凝练本质上并不是说把题目变得更加抽象，我感觉反而是说如何变得更聚焦，更具体，然后在语言表述上信息量更大。从分类上来看，限定范围的凝练会让申请材料更有优势。</p>
@@ -168,9 +163,10 @@ ga('send', 'pageview');
 <p><strong>项目书的评判</strong></p>
 <p>项目书和paper还是不太一样，paper可能更看重你做了什么东西出来，要求一些solid 的 contribution，而项目书可能是侧重于你未来将要做什么东西出来，相关的计划是否make sense等等。比如最近的一个项目书没有被采纳的原因是“研究意义及重要性、研究基础、课题计划、机时需求及预期成果，每一项都不太突出。”从这个评语也能看到侧重的内容。所以在写的时候每一部分要仔细想一想，这一部分描述的和别人比较是不是能比较突出。比如重要性，最起码得把这个研究“至关重要”，这个含义突出出来，从国家以及国民经济，社会发展的角度上来考虑，意义上总是可以升华的，不要写的太保守。</p>
 <h3 id="投标书书写tips"><a href="#投标书书写tips" class="headerlink" title="投标书书写tips"></a>投标书书写tips</h3><h3 id="择优材料书写tips"><a href="#择优材料书写tips" class="headerlink" title="择优材料书写tips"></a>择优材料书写tips</h3><p>最近有幸学习了单位里的一个老师的择优材料书写，当然根本上还是做出的内容，表述方式是锦上添花的方面，大致列一下相关的提纲，具体如下，可以用作以后的参考：</p>
-<p>个人总述段落关键信息<br>申请人发表论文xx，其中ccfA xx, 专利 xx 草案 xx , 围绕上述工作，重点研发计划xx，科研项目xx，承担经费xx，企业落地 xx，合作项目xx，获得xx 奖，具体代表性科研项目如下 ：</p>
+<p>个人总述段落关键信息</p>
+<p>申请人发表论文xx，其中ccfA xx, 专利 xx 草案 xx , 围绕上述工作，重点研发计划xx，科研项目xx，承担经费xx，企业落地 xx，合作项目xx，获得xx 奖，具体代表性科研项目如下 ：</p>
 <p>代表性项目1 （每个项目两段，第一段具体介绍细节，第二段介绍这个项目的成果）</p>
-<p>第一段：<br>(背景) … 然而… 有…关键挑战。申请人针对上述问题….利用…算法，实现…效果，性能…<br>第二段：<br>基于以上成果，发表CCF A… 申请了… 项目，发表了…论文</p>
+<p>第一段：<br>(背景大致介绍) … 然而… 有…关键挑战。申请人针对上述问题….利用…算法，实现…效果，性能…<br>第二段：<br>基于以上成果，发表CCF A… 申请了…项目，发表了…论文</p>
 <p>代表性项目2 。。。</p>
 <p>代表性项目3。。。</p>
 <h3 id="中文类型的材料其他tips"><a href="#中文类型的材料其他tips" class="headerlink" title="中文类型的材料其他tips"></a>中文类型的材料其他tips</h3><p>一个句子中最好仅使用一个“的”</p>
@@ -186,7 +182,6 @@ ga('send', 'pageview');
 <p>集合的名字或者是抽象的名词前面也不用加上the 这可能还与受众有关，具体可以参考这个关于<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/31864290">share knowledge</a>的解释，如果大家心知肚明的概念或者学科名词或者是事物 The table,The char,The room,The tiger，就像公理一样的，就用the，如果是一个新的概念要不断去具体解释就不用the,算是一个抽象的概念。</p>
 <p><a target="_blank" rel="noopener" href="https://www.bbc.co.uk/worldservice/learningenglish/radio/specials/1113_gramchallenge30/">这里</a>还介绍了几种不使用article的情况，有些在论文写作中不怎么能用得到，但是也应该注意一下，直接引用过来:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. to talk about plural and uncountable nouns or when talking about things in general:</span><br><span class="line"></span><br><span class="line">I&#x27;m terrified of heights</span><br><span class="line">I&#x27;m into drum and bass.</span><br><span class="line">I hate cheese.</span><br><span class="line"></span><br><span class="line">2. before countries, towns, streets, languages and single mountains:</span><br><span class="line"></span><br><span class="line">I&#x27;m from China.               </span><br><span class="line">I&#x27;ve climbed Mount Everest. </span><br><span class="line">She speaks French.</span><br><span class="line"></span><br><span class="line">3. Before some places and with some forms of transport:</span><br><span class="line"></span><br><span class="line">I live at home with my parents.</span><br><span class="line">I came here by car.           </span><br><span class="line">He goes to work by bus.</span><br><span class="line"></span><br><span class="line">4. In exclamations with what + uncountable noun:</span><br><span class="line"></span><br><span class="line">What beautiful weather!</span><br><span class="line">What loud music!</span><br><span class="line">What disgusting food!</span><br></pre></td></tr></table></figure>
-
 <p>比较有针对性地要特别注意的地方就是 plural and uncontable nouns. 和当前的research topic比较相关的一个就是 in situ processing。这里的 processing 属于uncountable nouns 而且是general形式，就不需要再前面使用the。</p>
 <p>这个<a target="_blank" rel="noopener" href="https://owl.purdue.edu/owl/general_writing/grammar/count_and_noncount_nouns/count_noncount_nouns_with_articles_adjectives.html">资料</a> 说了一些不可数名词和可数名字的复数使用定冠词和不定冠词的情况。可数名词复数在表示一个特定的group的时候也需要用the，如果是general的case就不需要用the。</p>
 <p>剩下的情况就是按照用 the 与 用 a 来二分，这个总容易分清楚，如果是前面已经提到的第二次提到，就用the，如果是第一次提到也没有特指的就用a，可以是any of it 当然是单数的情况. 最高级这些就用the，还有The country where I born 这种后面有限定的情况也用the. </p>
@@ -275,13 +270,12 @@ ga('send', 'pageview');
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>This is a really good one for Chinese students</p>
 <p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1011.5973.pdf">https://arxiv.org/pdf/1011.5973.pdf</a></p>
 <p>Some writting style references</p>
-<p><a target="_blank" rel="noopener" href="https://www.computer.org/publications/author-resources/peer-review/magazines#writing">https://www.computer.org/publications/author-resources/peer-review/magazines#writing</a>
- </p>
+<p><a target="_blank" rel="noopener" href="https://www.computer.org/publications/author-resources/peer-review/magazines#writing">https://www.computer.org/publications/author-resources/peer-review/magazines#writing</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/06/21/Editing-taolu/" data-id="cm2a0xf430017dvjrcp3nfsvm" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2021/06/21/Editing-taolu/" data-id="cmbw030i3001fj8jr7h45c4yi" class="article-share-link">分享</a>
       
       
       
@@ -464,28 +458,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

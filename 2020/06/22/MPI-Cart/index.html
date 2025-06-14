@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>This article aims to introduce how to use the MPI and the cartition grid to solve a Poisson equation.</p>
 <span id="more"></span>
-
 <p>Introduce the MPI cartision tools to show how to solve some real world problem such as numerical equations. We discusse the MPI cart firstly, then we will show how to use it to solve 2D possion equation and 3d laplasian equation from the scratch. </p>
 <p>this is the basic scripts about using MPI cartisian tool to solve the possion equations, and the related videos are listed as follows:</p>
 <p>generate the grid mesh by MPI Cartesian<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=R9qoLC95SzU">https://www.youtube.com/watch?v=R9qoLC95SzU</a></p>
@@ -136,17 +132,16 @@ ga('send', 'pageview');
 <p>solving the Poisson equation by parallel program (one cell for one process)<br><a target="_blank" rel="noopener" href="https://youtu.be/EnNoj0WKteM">https://youtu.be/EnNoj0WKteM</a></p>
 <p>solving the Poisson equation by parallel program (multiple cells for one process)<br><a target="_blank" rel="noopener" href="https://youtu.be/mUeFWnntbC4">https://youtu.be/mUeFWnntbC4</a></p>
 <p>source code<br><a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MPPT/tree/master/mpi_example/possionhybrid">https://github.com/wangzhezhe/5MPPT/tree/master/mpi_example/possionhybrid</a></p>
-<h3 id="Prerequest"><a href="#Prerequest" class="headerlink" title="Prerequest"></a>Prerequest</h3><p>We assumed that you have already understand the basic knowledge about the MPI such as send&#x2F;recive broadcast and reduce.</p>
+<h3 id="Prerequest"><a href="#Prerequest" class="headerlink" title="Prerequest"></a>Prerequest</h3><p>We assumed that you have already understand the basic knowledge about the MPI such as send/recive broadcast and reduce.</p>
 <p>If you are unfamiliar with those concepts, this tutorial is a good place to start.<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/">here</a> </p>
 <h3 id="construct-cartision-grid"><a href="#construct-cartision-grid" class="headerlink" title="construct cartision grid"></a>construct cartision grid</h3><p>Besides the basic API used in the message communication such as send and recv, MPI also provides several practical tools, the typical one is MPI Cartesian.</p>
-<p>The mesh is basic tool to sovle the numerical problem. If we want to run an MPI program based on our data in specific domain, we need to assign an MPI process to a specific domain&#x2F;partition&#x2F;cell and let this process to caculate and update the data in the coresponding domain. This is called the single program multiple data.</p>
+<p>The mesh is basic tool to sovle the numerical problem. If we want to run an MPI program based on our data in specific domain, we need to assign an MPI process to a specific domain/partition/cell and let this process to caculate and update the data in the coresponding domain. This is called the single program multiple data.</p>
 <p>This is the question:</p>
 <p>The most basic function used in MPI program is to get an id.<br> for example, we use <code>MPI_Comm_rank(comm, &amp;rank)</code>, then we could assign a unique id to every process. The rank id is in 1d space, What if we want to associate this id with the spatial informaion namely the mesh infomation in 2D or 3D, what should we do?</p>
 <p>For exmaple, we have 4 MPI processes, and the coordinates of every process is (x,y) which is in 2D space, we need make <code>rank=y*2+x</code> what should we do?</p>
 <p><code>MPI_Dims_create</code> could solve this problem. it could generates a communicator that will be used to initialize the cartition grid among all the processes, and then we could use the <code>MPI_Cart_coords</code> to caculates the coresponding coordinates associated with each MPI process. </p>
 <p>This is an example for creating the cartition by predefiend dims</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//the example comes from https://www.youtube.com/watch?v=eMnjwohg-sg</span><br><span class="line"></span><br><span class="line">#include &quot;mpi.h&quot;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    int rank, procs;</span><br><span class="line">    MPI_Comm cart_comm;</span><br><span class="line">    int reorder;</span><br><span class="line">    int coord[2], id;</span><br><span class="line">    int up, down, left, right;</span><br><span class="line"></span><br><span class="line">    MPI_Init(&amp;argc, &amp;argv);</span><br><span class="line">    MPI_Comm_rank(MPI_COMM_WORLD, &amp;rank);</span><br><span class="line">    MPI_Comm_size(MPI_COMM_WORLD, &amp;procs);</span><br><span class="line">    if (procs != 12)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; &quot;the process number should be 12&quot; &lt;&lt; std::endl;</span><br><span class="line">        exit(0);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int dim[2] = &#123;4, 3&#125;;</span><br><span class="line">    </span><br><span class="line">    int periodical[2] = &#123;1, 1&#125;;</span><br><span class="line">    reorder = 0;</span><br><span class="line"></span><br><span class="line">    MPI_Cart_create(MPI_COMM_WORLD, 2, dim, periodical, reorder, &amp;cart_comm);</span><br><span class="line">    MPI_Cart_coords(cart_comm, rank, 2, coord);</span><br><span class="line"></span><br><span class="line">    printf(&quot;rank %d x %d y %d\n&quot;, rank, coord[0], coord[1]);</span><br><span class="line"></span><br><span class="line">    if (rank == 7)</span><br><span class="line">    &#123;</span><br><span class="line">        MPI_Cart_shift(cart_comm, 0, 1, &amp;up, &amp;down);</span><br><span class="line">        MPI_Cart_shift(cart_comm, 1, 1, &amp;left, &amp;right);</span><br><span class="line">        printf(&quot;neighbors for rank7 left %d right %d up %d down %d\n&quot;,</span><br><span class="line">        left,right,up,down);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>The periodical here means if the dimention is perioical, if it is true, the next position of the last element will be the first element. This can be shown by using <code>MPI_Cart_shift</code>, this function is used to get the id of the neighborhood for specific element on specific dimention. For we could see the difference of the neigobor id for the cell at the boundry positions.</p>
 <p>information about the reorder, it will let MPI to determine the optimal process ordering (range from the first dimention)</p>
 <p><a target="_blank" rel="noopener" href="http://www.bu.edu/tech/support/research/training-consulting/online-tutorials/mpi/more/mpi_cart_create/">http://www.bu.edu/tech/support/research/training-consulting/online-tutorials/mpi/more/mpi_cart_create/</a></p>
@@ -158,38 +153,29 @@ ga('send', 'pageview');
 <p>If we use coordinates to index the mesh, it is easy to get all the neighbor cells, For 2D mesh, if the coordinates of the current cell is (x,y), then the neigobor cell is (x-1,y) (x+1,y) (x,y-1) (x,y+1). But the underlying index is the rank id which is in one dimention space. Therefore, in order to get the value from the specific MPI process, we need to map the coordinates into the rank id. This is a kind of reverse process compared with the <code>mpi_cart_create</code>.</p>
 <p>How to convert the coordinates into the rank id? For example, if the dimention array is a 2D array like this [dim1, dim2], the rank id is </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">for d1 in dim1</span><br><span class="line">	for d2 in dim2</span><br><span class="line">       rankid = d2+d1*dim2</span><br></pre></td></tr></table></figure>
-
 <p>If we use the x to represent the horizental axis and use y to represent the vertical axis, if the current rank id is cid,  the id of the up cell is cid+1, the down cell id is cid-1, the left cell id is cid-dim1, the right cell is cid+dim1. We do not consider the boundy cell here. </p>
 <p>The caculation is getting complicated if we process the mesh in 3D, and we may need to caculate the id by using the function like this:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">inline int l2i(int x, int y, int z) const</span><br><span class="line">&#123;</span><br><span class="line">    return x + y * (size_x + 2) + z * (size_x + 2) * (size_y + 2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>The <code>MPI_Cart</code> provides simple interface to help us to caculate the id of the neighrbor cells directly. This interface is called MPI_Shift and it is like this:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int MPI_Cart_shift(MPI_Comm comm, int direction, int disp, int *rank_source, int *rank_dest)</span><br></pre></td></tr></table></figure>
-
 <p>The first parameter is the communicator generated by the cat_create, the second parameter label direction or dimention we want to target, the third parameter is the distance between the neigobor cell and the current cell, they rank_source and rank_dest are the output, they are tricky to understand at the first glance. let us look at an example firstly.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &quot;mpi.h&quot;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    int rank, procs;</span><br><span class="line">    MPI_Comm cart_comm;</span><br><span class="line">    int reorder;</span><br><span class="line">    int coord[2], id;</span><br><span class="line">    int up, down, left, right;</span><br><span class="line"></span><br><span class="line">    MPI_Init(&amp;argc, &amp;argv);</span><br><span class="line">    MPI_Comm_rank(MPI_COMM_WORLD, &amp;rank);</span><br><span class="line">    MPI_Comm_size(MPI_COMM_WORLD, &amp;procs);</span><br><span class="line">    if (procs != 12)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; &quot;the process number should be 12&quot; &lt;&lt; std::endl;</span><br><span class="line">        exit(0);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int dim[2];</span><br><span class="line">    dim[0] = 4;</span><br><span class="line">    dim[1] = 3;</span><br><span class="line">    int periodical[2] = &#123;1, 1&#125;;</span><br><span class="line">    reorder = 0;</span><br><span class="line"></span><br><span class="line">    MPI_Cart_create(MPI_COMM_WORLD, 2, dim, periodical, reorder, &amp;cart_comm);</span><br><span class="line">    MPI_Cart_coords(cart_comm, rank, 2, coord);</span><br><span class="line"></span><br><span class="line">    printf(&quot;rank %d coor1 %d coor2 %d\n&quot;, rank, coord[0], coord[1]);</span><br><span class="line">    </span><br><span class="line">    if (rank == 7)</span><br><span class="line">    &#123;</span><br><span class="line">        MPI_Cart_shift(cart_comm, 0, 1, &amp;dim1_src, &amp;dim1_dest);</span><br><span class="line">        MPI_Cart_shift(cart_comm, 1, 1, &amp;dim2_src, &amp;dim2_dest);</span><br><span class="line">        printf(&quot;neighbors for rank 7 dim1_src %d dim1_dest %d dim2_src %d dim2_dest %d\n&quot;,</span><br><span class="line">               dim1_src, dim1_dest, dim2_src, dim2_dest);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>the output is </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">rank 5 coor1 1 coor2 2</span><br><span class="line">rank 0 coor1 0 coor2 0</span><br><span class="line">rank 3 coor1 1 coor2 0</span><br><span class="line">rank 6 coor1 2 coor2 0</span><br><span class="line">rank 9 coor1 3 coor2 0</span><br><span class="line">rank 1 coor1 0 coor2 1</span><br><span class="line">rank 4 coor1 1 coor2 1</span><br><span class="line">rank 11 coor1 3 coor2 2</span><br><span class="line">rank 2 coor1 0 coor2 2</span><br><span class="line">rank 10 coor1 3 coor2 1</span><br><span class="line">rank 7 coor1 2 coor2 1</span><br><span class="line">neighbors for rank 7 dim1_src 4 dim1_dest 10 dim2_src 6 dim2_dest 8</span><br><span class="line">rank 8 coor1 2 coor2 2</span><br></pre></td></tr></table></figure>
-
 <p>if we use another parameter:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MPI_Cart_shift(cart_comm, 0, -1, &amp;dim1_src, &amp;dim1_dest);</span><br><span class="line">MPI_Cart_shift(cart_comm, 1, -1, &amp;dim2_src, &amp;dim2_dest);</span><br></pre></td></tr></table></figure>
-
 <p>the output is </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">neighbors for rank 7 dim1_src 10 dim1_dest 4 dim2_src 8 dim2_dest 6</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>it is upward shift if this value is larger than 0 , upward means the id increase from the small value to the large value, and the downwards shift means the value decrease from the large value to the small value.</p>
 <p>the second parameter is used to label with direaction we are target, for 2D mesh, if the direaction is 0, it means we are talking about the first dimention in this API, this is a exmaple of 2D case:</p>
 <p>If we make the z direaction perpendicular with the paper plan by this way, we could get the exmaple for neigobor cells for the 3D mesh</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MPI_Cart_shift(cart_comm, 0, 1, &amp;west, &amp;east);</span><br><span class="line">MPI_Cart_shift(cart_comm, 1, 1, &amp;down, &amp;up);</span><br><span class="line">MPI_Cart_shift(cart_comm, 2, 1, &amp;south, &amp;north);</span><br></pre></td></tr></table></figure>
-
 <p>if the distance can be the large number than 1, if it is 2, it means we want to get the cell that is 2 unit based on the current cell.</p>
 <p>Let’s go back to the following parameters:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int periodical[2] = &#123;1, 1&#125;;</span><br><span class="line">reorder = 0;</span><br><span class="line">MPI_Cart_create(MPI_COMM_WORLD, 2, dim, periodical, reorder, &amp;cart_comm);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>The two parameters are used when we create the new communicator, reorder means if you allow MPI to reorder the mapping relationship between the id and the actual process, the process that are close physically may have close id. If reorder &#x3D; false then the rank of each process in the new group is identical to its rank in the old group. Otherwise, the function may reorder the processes (possibly so as to choose a good embedding of the virtual topology onto the physical machine). </p>
+<p>The two parameters are used when we create the new communicator, reorder means if you allow MPI to reorder the mapping relationship between the id and the actual process, the process that are close physically may have close id. If reorder = false then the rank of each process in the new group is identical to its rank in the old group. Otherwise, the function may reorder the processes (possibly so as to choose a good embedding of the virtual topology onto the physical machine). </p>
 <p>For the cell with id 8, the results is:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">neighbors for rank 7 dim1_src 5 dim1_dest 11 dim2_src 7 dim2_dest 6</span><br></pre></td></tr></table></figure>
-
 <p>we could see that the dim2_dest is 6, which is acrually the first element in this direaction.</p>
 <p><a target="_blank" rel="noopener" href="https://mpi.deino.net/mpi_functions/MPI_Cart_create.html">https://mpi.deino.net/mpi_functions/MPI_Cart_create.html</a></p>
 <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/32125267/mpi-reordering-of-processes-using-mpi-cart-create">https://stackoverflow.com/questions/32125267/mpi-reordering-of-processes-using-mpi-cart-create</a></p>
@@ -201,7 +187,6 @@ ga('send', 'pageview');
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#include &quot;mpi.h&quot;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    int rank, procs;</span><br><span class="line">    MPI_Comm cart_comm;</span><br><span class="line">    int reorder;</span><br><span class="line">    int coord[3], id;</span><br><span class="line">    int dim=3;</span><br><span class="line">    int xl, xr, yl, yr, zl, zr;</span><br><span class="line"></span><br><span class="line">    MPI_Init(&amp;argc, &amp;argv);</span><br><span class="line">    MPI_Comm_rank(MPI_COMM_WORLD, &amp;rank);</span><br><span class="line">    MPI_Comm_size(MPI_COMM_WORLD, &amp;procs);</span><br><span class="line"></span><br><span class="line">    int periodical[3] = &#123;1, 1, 1&#125;;</span><br><span class="line">    reorder = 0;</span><br><span class="line"></span><br><span class="line">    //update the dim according to nproc</span><br><span class="line">    int dims[3]=&#123;&#125;;</span><br><span class="line">    MPI_Dims_create(procs, 3, dims);</span><br><span class="line"></span><br><span class="line">    if (rank == 0)</span><br><span class="line">    &#123;</span><br><span class="line">        printf(&quot;dims %d,%d,%d\n&quot;, dims[0], dims[1], dims[2]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    MPI_Cart_create(MPI_COMM_WORLD, dim, dims, periodical, reorder, &amp;cart_comm);</span><br><span class="line">    MPI_Cart_coords(cart_comm, rank, dim, coord);</span><br><span class="line"></span><br><span class="line">    printf(&quot;rank %d x %d y %d z %d\n&quot;, rank, coord[0], coord[1], coord[2]);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>If we use 12 MPI process, the output is </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dims 3,2,2</span><br><span class="line">rank 10 x 2 y 1 z 0</span><br><span class="line">rank 11 x 2 y 1 z 1</span><br><span class="line">rank 6 x 1 y 1 z 0</span><br><span class="line">rank 9 x 2 y 0 z 1</span><br><span class="line">rank 0 x 0 y 0 z 0</span><br><span class="line">rank 4 x 1 y 0 z 0</span><br><span class="line">rank 2 x 0 y 1 z 0</span><br><span class="line">rank 5 x 1 y 0 z 1</span><br><span class="line">rank 7 x 1 y 1 z 1</span><br><span class="line">rank 1 x 0 y 0 z 1</span><br><span class="line">rank 3 x 0 y 1 z 1</span><br><span class="line">rank 8 x 2 y 0 z 0</span><br></pre></td></tr></table></figure>
-
 <p>the only parameter we input is the number of the process, both the dimention array and coordinates that labels the MPI process are created in automatic way by MPI related functions. </p>
 <h3 id="a-real-example-Possion-equation"><a href="#a-real-example-Possion-equation" class="headerlink" title="a real example, Possion equation"></a>a real example, Possion equation</h3><p>For the numerical background and realted solution, please refer to this <a target="_blank" rel="noopener" href="https://people.eecs.berkeley.edu/~demmel/cs267-1995/lecture24/lecture24.html">link</a></p>
 <p>Poisson equation is a fundamental and commonly used equation in engineering. If we understand the Poisson equation from the mathematical view. we will be more clear when we write the program to solve it.  When we figure out how to write a serial program to solve it, we can then update it into a parallel version to improve the execution time to solve the equation</p>
@@ -231,7 +216,7 @@ ga('send', 'pageview');
 <p>another important operation for parallel processing is the face exchange. But the data might not continuous in storage. The <code>MPI_Vector_Type</code> can be used to define the vector contains the non-continuous data. The user just need to define the start position, the length of every block and the space between every blocks. Then this customized vector can be used to transfer data between each others. The data at the ghost area will be updated at the beginning of every iteration. Becase from the view of the logic, evey partition connected with each other, but actually, they are managmed by different thread and when the boundry element is updated, it needs the value from the ghost area to make the computation process run correactly. The advantages of using the customized the vector is the simplified interface of doing the face change between different process.</p>
 <p><strong>write the serial program firstly</strong></p>
 <p>it is easy to get lost when write a parallel program, therefore, the good tip is always to write a simplified serial program and use it as a checker for the parallel program. Maybe you could start with a small sacal program and use it to check if steps such as initilization, dataexchage and update are correct. It is not trival work to write a parallel program. Some minor bug may cause the results go to the wrong direaction. Basically, the serial program aims to solve the theoretical part, we need to make sure the math or model works. The parallel version is just use more resource wisely to accelarate the computing process. If we did not figure out the math when we write the parallle program, it may mess up tings easily.</p>
-<p>The source code can be found <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MPPT/tree/master/mpi_example/possionhybrid">here</a>, for the configuration of the 800 times 800 square, if we use the hybrid parallel with 4 process and every process udpate 200 times 200 data block, it only use around 1&#x2F;5 time compared with the serial version. The program can be optimized further by all kinds of optimization strategies. And we will discuss these strategies in other blogs.</p>
+<p>The source code can be found <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MPPT/tree/master/mpi_example/possionhybrid">here</a>, for the configuration of the 800 times 800 square, if we use the hybrid parallel with 4 process and every process udpate 200 times 200 data block, it only use around 1/5 time compared with the serial version. The program can be optimized further by all kinds of optimization strategies. And we will discuss these strategies in other blogs.</p>
 <h3 id="references"><a href="#references" class="headerlink" title="references"></a>references</h3><p><a target="_blank" rel="noopener" href="https://www.mpich.org/static/docs/latest/www3/MPI_Cart_create.html">https://www.mpich.org/static/docs/latest/www3/MPI_Cart_create.html</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.mpich.org/static/docs/latest/www3/MPI_Cart_shift.html">https://www.mpich.org/static/docs/latest/www3/MPI_Cart_shift.html</a></p>
 <p>MPI vector type<br><a target="_blank" rel="noopener" href="https://pages.tacc.utexas.edu/~eijkhout/pcse/html/mpi-data.html#Vectortype">https://pages.tacc.utexas.edu/~eijkhout/pcse/html/mpi-data.html#Vectortype</a></p>
@@ -246,7 +231,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/22/MPI-Cart/" data-id="cm2a0xf49002pdvjr88p71gy3" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/06/22/MPI-Cart/" data-id="cmbw030i50028j8jrepg7e0ov" class="article-share-link">分享</a>
       
       
       
@@ -429,28 +414,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

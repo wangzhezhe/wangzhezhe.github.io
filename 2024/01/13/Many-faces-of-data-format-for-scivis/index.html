@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -125,9 +122,7 @@ ga('send', 'pageview');
       
         <!-- Table of Contents -->
         
-        <p>This blog documents some practical references about different datasets used for scientific visualization, which are first step to do the further detailed data analysis.</p>
-<span id="more"></span>
-
+        <p>This blog documents some practical references about different datasets used for scientific visualization, which are first step to do the further detailed data analysis.<br><span id="more"></span></p>
 <h3 id="General-vtk-dataset"><a href="#General-vtk-dataset" class="headerlink" title="General vtk dataset"></a>General vtk dataset</h3><h3 id="General-vtkm-dataset"><a href="#General-vtkm-dataset" class="headerlink" title="General vtkm dataset"></a>General vtkm dataset</h3><p>The good practice to understand details of the vtkm data set is through some filters such as MergeDataSets filter to see how two data sets are <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/vtk/vtk-m/-/blob/master/vtkm/cont/MergePartitionedDataSet.h">merged together from scratch</a>.</p>
 <h3 id="Converting-between-vtk-to-vtkm-data-sets"><a href="#Converting-between-vtk-to-vtkm-data-sets" class="headerlink" title="Converting between vtk to vtkm data sets"></a>Converting between vtk to vtkm data sets</h3><p>In VTK, there are same shape with different name for <code>VTK_POLYGAN</code> and <code>VTK_QUAD</code> the only difference for these two data sets are the sequence of adding the vortex (maybe for the reason of the memory efficiency). In vtkm only one type is supported. It will not convert the data into vtkm if the dataset is not in the list <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/vtk/vtk/-/blob/master/Accelerators/Vtkm/DataModel/vtkmlib/DataSetConverters.cxx?ref_type=heads#L270">here</a>.</p>
 <h3 id="Amrex-related-data"><a href="#Amrex-related-data" class="headerlink" title="Amrex related data"></a>Amrex related data</h3><p>Using hdf5 adios as the backend</p>
@@ -136,7 +131,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2024/01/13/Many-faces-of-data-format-for-scivis/" data-id="cm2a0xf49002vdvjrf3g7c0a3" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2024/01/13/Many-faces-of-data-format-for-scivis/" data-id="cmbw030i9002vj8jr2ijx7iof" class="article-share-link">分享</a>
       
       
       
@@ -319,28 +314,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

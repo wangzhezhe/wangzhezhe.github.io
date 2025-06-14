@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,28 +124,23 @@ ga('send', 'pageview');
         
         <p>some tips about the curiously recurring template pattern (CRTP) in cpp. The example comes from <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=7-nHdQjSRe0">this video</a>.</p>
 <span id="more"></span>
-
 <h3 id="Naive-version"><a href="#Naive-version" class="headerlink" title="Naive version"></a>Naive version</h3><p>Assume there is general class Shape, and then there is Square and Rectangle, which is derived class. The code looks like this</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct Shape &#123;</span><br><span class="line">  virtual ~Shape() = default;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct Square : public Shape &#123;</span><br><span class="line">  // when using new to create the object</span><br><span class="line">  // the value in parathesis can be the initilizer</span><br><span class="line">  // for example</span><br><span class="line">  // int* p = new int(7);  means dynamically allocated int with value 7</span><br><span class="line">  // the value of the int is default if we use the new int()</span><br><span class="line">  Square* Clone() &#123; return new Square(*this); &#125;</span><br><span class="line">  int x = 1;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct Rectangle : public Shape &#123;</span><br><span class="line">  Rectangle* Clone() &#123; return new Rectangle(*this); &#125;</span><br><span class="line">  int x = 1;</span><br><span class="line">  int y = 2;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">  Square s1;</span><br><span class="line">  // the only difference of the clone function is the type</span><br><span class="line">  Square* s3 = s1.Clone();</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>The issue of the code is that (1) the Clone function looks same for two subclass and it looks redoundant. Besides, (2) if there is a pointer to Shape, it can not call the Clone function, since it does not know what is the concrete type and the Clone function is not in the Base class.</p>
 <h3 id="Polymorphic-version"><a href="#Polymorphic-version" class="headerlink" title="Polymorphic version"></a>Polymorphic version</h3><p>One common strategy is to use the pure virtual function in the base class and then implement concrete functions in subsequent class.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">struct Shape &#123;</span><br><span class="line">  virtual Shape* Clone() = 0;</span><br><span class="line">  virtual ~Shape() = default;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct Square : public Shape &#123;</span><br><span class="line">  // when using new to create the object</span><br><span class="line">  // the value in parathesis can be the initilizer</span><br><span class="line">  // for example</span><br><span class="line">  // int* p = new int(7);  means dynamically allocated int with value 7</span><br><span class="line">  // the value of the int is default if we use the new int()</span><br><span class="line">  virtual Square* Clone() override &#123;</span><br><span class="line">    std::cout &lt;&lt; &quot;clone Square&quot; &lt;&lt; std::endl;</span><br><span class="line">    return new Square(*this);</span><br><span class="line">  &#125;</span><br><span class="line">  int x = 1;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct Rectangle : public Shape &#123;</span><br><span class="line">  virtual Rectangle* Clone() override &#123;</span><br><span class="line">    std::cout &lt;&lt; &quot;clone Rectangle&quot; &lt;&lt; std::endl;</span><br><span class="line">    return new Rectangle(*this);</span><br><span class="line">  &#125;</span><br><span class="line">  int x = 1;</span><br><span class="line">  int y = 2;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">  // the only difference of the clone function is the type</span><br><span class="line">  // although we can use the virtual function</span><br><span class="line">  // there are still two clones implementation</span><br><span class="line">  Square s1;</span><br><span class="line">  Square* s2 = s1.Clone();</span><br><span class="line"></span><br><span class="line">  Rectangle r1;</span><br><span class="line">  Rectangle* r2 = r1.Clone();</span><br><span class="line"></span><br><span class="line">  std::vector&lt;Shape*&gt; shapelist;</span><br><span class="line">  shapelist.push_back(s2);</span><br><span class="line">  shapelist.push_back(r2);</span><br><span class="line"></span><br><span class="line">  for(auto s:shapelist)&#123;</span><br><span class="line">      Shape* tempShape = s-&gt;Clone();</span><br><span class="line">  &#125;</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>This code is a typical way to use the polymorphism. </p>
 <h3 id="CRTP-version"><a href="#CRTP-version" class="headerlink" title="CRTP version"></a>CRTP version</h3><p>If we want to move one step further and try to save the code in Clone function, we may try to do sth like this:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line"></span><br><span class="line">struct Shape &#123;</span><br><span class="line">  template &lt;typename T&gt;</span><br><span class="line">  T* Clone() &#123;</span><br><span class="line">    std::cout &lt;&lt; &quot;clone Shape&quot; &lt;&lt; std::endl;</span><br><span class="line">    return new T(*this);</span><br><span class="line">  &#125;;</span><br><span class="line">  virtual ~Shape() = default;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct Square : public Shape &#123;</span><br><span class="line">  int x = 1;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct Rectangle : public Shape &#123;</span><br><span class="line">  int x = 1;</span><br><span class="line">  int y = 2;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">  // the only difference of the clone function is the type</span><br><span class="line">  // although we can use the virtual function</span><br><span class="line">  // there are still two clones implementation</span><br><span class="line">  Square s1;</span><br><span class="line">  </span><br><span class="line">  //Shape* s2 = s1.Clone&lt;Square&gt;(); /* error here: no matching constructor for initialization of &#x27;Square&#x27; */</span><br><span class="line">  Shape* s2 = s1.Clone&lt;Shape&gt;();</span><br><span class="line"></span><br><span class="line">  Rectangle r1;</span><br><span class="line">  Shape* r2 = r1.Clone&lt;Shape&gt;();</span><br><span class="line"></span><br><span class="line">  std::vector&lt;Shape*&gt; shapelist;</span><br><span class="line">  shapelist.push_back(s2);</span><br><span class="line">  shapelist.push_back(r2);</span><br><span class="line"></span><br><span class="line">  for (auto s : shapelist) &#123;</span><br><span class="line">    Shape* tempShape = s-&gt;Clone&lt;Shape&gt;();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>In this code, we use the template function in the parent class. But the issue is, the parent class do not know the information about the subclass, it can not call the correct clone function implemented by derived class.</p>
 <p>That is how curiously recurring template pattern works here, it use another struct as the intermediate layer to help find the correct version of the class.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line"></span><br><span class="line">struct Shape &#123;</span><br><span class="line">  virtual Shape* Clone() = 0;</span><br><span class="line">  virtual ~Shape() = default;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">//the middle layer class that knows the information of the dereived class</span><br><span class="line">template &lt;typename T&gt;</span><br><span class="line">struct ShapeCRTP : public Shape &#123;</span><br><span class="line">  virtual Shape* Clone() override &#123;</span><br><span class="line">    std::cout &lt;&lt; &quot;clone ShapeCRTP &quot; &lt;&lt; typeid(T).name() &lt;&lt; std::endl;</span><br><span class="line">    return new T(*static_cast&lt;T*&gt;(this));</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct Square : public ShapeCRTP&lt;Square&gt; &#123;</span><br><span class="line">  int x = 1;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct Rectangle : public ShapeCRTP&lt;Rectangle&gt; &#123;</span><br><span class="line">  int x = 1;</span><br><span class="line">  int y = 2;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">  // the only difference of the clone function is the type</span><br><span class="line">  // although we can use the virtual function</span><br><span class="line">  // there are still two clones implementation</span><br><span class="line">  Square s1;</span><br><span class="line">  Shape* s2 = s1.Clone();</span><br><span class="line"></span><br><span class="line">  Rectangle r1;</span><br><span class="line">  Shape* r2 = r1.Clone();</span><br><span class="line"></span><br><span class="line">  std::vector&lt;Shape*&gt; shapelist;</span><br><span class="line">  shapelist.push_back(s2);</span><br><span class="line">  shapelist.push_back(r2);</span><br><span class="line"></span><br><span class="line">  for (auto s : shapelist) &#123;</span><br><span class="line">    Shape* tempShape = s-&gt;Clone();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>In this code, the concrete class inheriet from the ShapeCRTP and also provide their  own class information during the declaration. When call the clone function, it does not need to add the template name signature, since the related information is set to the ShapeCRTP during the initilization of the class. By this way, we achieve the goal: (1) do not contains the repeated function or similar implementation in the child class (2) support the polymorphic and use the parent class to manage all the derived class.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/04/26/cpptemplateCRPT/" data-id="cm2a0xf4m006vdvjr3g2hac1x" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/04/26/cpptemplateCRPT/" data-id="cmbw030il0074j8jr1at6by00" class="article-share-link">分享</a>
       
       
       
@@ -331,28 +323,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

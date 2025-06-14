@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,8 +124,7 @@ ga('send', 'pageview');
         
         <p>Some tips regarding using Ninja.</p>
 <span id="more"></span>
-
-<h3 id="Basic-using"><a href="#Basic-using" class="headerlink" title="Basic using"></a>Basic using</h3><p>Assuming the Ninja build system is installed properly, previously, we may use <code>cmake -B &lt;install dir&gt; -S &lt;src dir&gt; ... </code> to set the cmake configurations and then using <code>cmake --build &lt;install dir&gt; -j&lt;job_number&gt;</code> to do the install.</p>
+<h3 id="Basic-using"><a href="#Basic-using" class="headerlink" title="Basic using"></a>Basic using</h3><p>Assuming the Ninja build system is installed properly, previously, we may use <code>cmake -B &lt;install dir&gt; -S &lt;src dir&gt; ...</code> to set the cmake configurations and then using <code>cmake --build &lt;install dir&gt; -j&lt;job_number&gt;</code> to do the install.</p>
 <p>If we want to build the project based on cmake and Ninja, we just need to use <code>make -B &lt;install dir&gt; -S &lt;src dir&gt; -GNinja</code> after executing the cmake, we can continue to use the <code>cmake --build</code> to build the project based on Ninja. The Ninja version will save a lot of output and make the building process clean.</p>
 <h3 id="Getting-tracing-file"><a href="#Getting-tracing-file" class="headerlink" title="Getting tracing file"></a>Getting tracing file</h3><p>One benifit of using Ninja is to get the time trace for each object file, this is really good way to solve the issue regarding the compiling time.</p>
 <p>This is <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/vtk/vtk-m/-/merge_requests/3089">one example</a> to show how Ninja can help to solve particular problem. </p>
@@ -137,7 +133,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/12/13/use-ninja/" data-id="cm2a0xf5000aldvjrfjidepu7" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/12/13/use-ninja/" data-id="cmbw030iw00atj8jr8a2i4mve" class="article-share-link">分享</a>
       
       
       
@@ -320,28 +316,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

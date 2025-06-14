@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -125,13 +122,11 @@ ga('send', 'pageview');
       
         <!-- Table of Contents -->
         
-        <p>Try to list some techniques that I need to improve or continue pursue in the scope of scivis.</p>
-<span id="more"></span>
-
+        <p>Try to list some techniques that I need to improve or continue pursue in the scope of scivis.<br><span id="more"></span></p>
 <p>最近又到了找工作的时候，没到这种时候就会总结一下之前工作的内容然后梳理一下自己已经掌握的和欠缺的，每次梳理都有一些新的想法。这一篇做一个记录，从scivis的角度来进行梳理，包括工程和研究的角度。</p>
-<p>从SciVis的角度讲，大致划分成一下几个角度：提取（Extraction），感知（Perception）交互（Flexibility）高速（High performance computing）智能（Autonomic&#x2F;Intelligent manner）。</p>
+<p>从SciVis的角度讲，大致划分成一下几个角度：提取（Extraction），感知（Perception）交互（Flexibility）高速（High performance computing）智能（Autonomic/Intelligent manner）。</p>
 <p><strong>提取</strong>这部分在算法层面上的内容比较多，主要就是关注于怎么提出或者计算一个新的可视化属性，然后让这个属性返回某种数据的特点。比较典型的就是marching cube，这个方向更偏向于纯粹算法的研究，关注的点是怎么提出一个新的算法。</p>
-<p>最熟悉的应该要属于<strong>高速</strong>的角度了，就是怎么用GPU实现一些可视化的算法，以及large scale sci vis常用的是VTK-m，还有会涉及到一些MPI，并行计算的知识。但就单单针对VTK-m这一个角度里面的内容就挺多的，自己目前能做的也就是仿照已有的代码添加一些filter，更深层次的内容还需要理解，比如如何从filter到backend的调用过程，以及如何更好第使用各种类型的arrayhandle。还有就是vtkmdiy的一些api的使用，如果再往深就是parallel for vis algorithm怎么利用基本的MPI的algorithm来实现的。Research的角度的话主要还是large scale vis，不过随着ECP ending 这个研究方向可能逐渐变弱，毕竟large scale的场景毕竟还是比较少的，需要的资源也比较多，发论文也不容易，复现起来也并不容易，所以比较有难度convince别人说这个strategy确实有效，或者容易缺乏一些key contribution point 大多是对已有的算法进行并行化的迁移，或者对本身已经可以并行运行的可视化算法进行优化。这一部分弄的好了的话还可以与ML infra 加速AI workload相结合，比如一些找工作的相关需要的<a target="_blank" rel="noopener" href="https://www.linkedin.com/jobs/view/3763229878/?refId=S2YvBT8ASJGRF92hZTWVdg==&trackingId=y+tBYr+1TTm4bopgAPHsEA==">要求</a>. 在商业公司中要求的是直接使用一些相关的library，而在research的domain中可能需要自己实现一些libraray，比如vtkm中的调用底层accelarator的例子。</p>
+<p>最熟悉的应该要属于<strong>高速</strong>的角度了，就是怎么用GPU实现一些可视化的算法，以及large scale sci vis常用的是VTK-m，还有会涉及到一些MPI，并行计算的知识。但就单单针对VTK-m这一个角度里面的内容就挺多的，自己目前能做的也就是仿照已有的代码添加一些filter，更深层次的内容还需要理解，比如如何从filter到backend的调用过程，以及如何更好第使用各种类型的arrayhandle。还有就是vtkmdiy的一些api的使用，如果再往深就是parallel for vis algorithm怎么利用基本的MPI的algorithm来实现的。Research的角度的话主要还是large scale vis，不过随着ECP ending 这个研究方向可能逐渐变弱，毕竟large scale的场景毕竟还是比较少的，需要的资源也比较多，发论文也不容易，复现起来也并不容易，所以比较有难度convince别人说这个strategy确实有效，或者容易缺乏一些key contribution point 大多是对已有的算法进行并行化的迁移，或者对本身已经可以并行运行的可视化算法进行优化。这一部分弄的好了的话还可以与ML infra 加速AI workload相结合，比如一些找工作的相关需要的<a target="_blank" rel="noopener" href="https://www.linkedin.com/jobs/view/3763229878/?refId=S2YvBT8ASJGRF92hZTWVdg%3D%3D&amp;trackingId=y%2BtBYr%2B1TTm4bopgAPHsEA%3D%3D">要求</a>. 在商业公司中要求的是直接使用一些相关的library，而在research的domain中可能需要自己实现一些libraray，比如vtkm中的调用底层accelarator的例子。</p>
 <p><strong>交互</strong>的这个方向总感觉是vis比较实实在在的功能了，比如build 一个vis的 system 来分析数据，大概就是单节点就能实现，比较强调GUI，或者工作本地的GUI来和远程的文件系统上的内容进行交互。有点算是传统意义上的前端开发，比较典型的基于QT的开发，常用到的比如包括如何设置paraview插件。web方面经常会看到论文里的一些小demo，这一块就是D3.js，很少有需要从头开发的，大多是找一个现成的框架然后把已有的数据展现出来。可能vtk.js也需要再熟悉一下，毕竟如果没有什么用的话，kitware也不会将vtk用js重写一下。相关的WebGL与WebGPU的内容可能也需要了解一下，这些可能是通过web和加速器以及render方面相结合的比较好的点。这部分从research的角度上讲更偏向于工程，或者paper中的一个demo，后面的算法比较重要。</p>
 <p><strong>感知</strong>这个方向就是怎么将数据map成为图形元素，偏向于图形学的内容，如果仅仅是render的话，paraview 或者基于vtk的简单的render也可以，这部分更进一步是进行photorealistic render就是具备真是感受的渲染，比如用blender相关的技术和工作流，相关的数据格式，比如obj，texture这些，可能是自己需要提升的，比如一个数据，如果从宣传的角度讲，用blender做出来肯定是比普通的vtk render更加吸引人。从research的角度讲是比较typical的vis主题，就是考虑如何把一些新的数据用vis的方式表达出来比较关键。</p>
 <p><strong>智能</strong>这个方向主要是关注autonomics, adaptive 以及AI相关的技术如何作用于vis worklfow。AI相关的技术无疑是做research角度比较火的方向，但是在工程方面的实用性有待商榷，总之在做一个工作的时候心里要明确这个到底是research driven还是engineering driven。需要提升的点主要还是pytorch相关的AI技术，比如这个<a target="_blank" rel="noopener" href="https://stevenhan1991.github.io/assets/pdf/DL4SciVis.pdf">survey</a>里面介绍的内容，常见的一些手段，比如encode-decode, LSTM, transformer这些类型的AI model 的基本的应用。对于无监督学习的方面，reinforcement learning 以及相关的对于optimization的问题如何应用到vis workflow可能是一个需要在进一步提升的地方，总而言之，总感觉这一部分有一些噱头的成分，但是智能化大概是research相关的一个核心主题，research相关的工作需要长期主动地在这个方向上有所投入，毕竟新的内容学习起来需要费一些劲，需要尽快能有一个将相关内容和AI结合起来的project。最近有亮点的一个方面可能是生成式的Ai的技术，这个技术如何用在extraction的角度可能比较有研究的价值，就是如何用AI自动生成一些用于可视化的关键技术，比如marching cube, vector visualization相关的内容，比较典型的比如<a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content_cvpr_2018/html/Liao_Deep_Marching_Cubes_CVPR_2018_paper.html">这个</a>。</p>
@@ -144,7 +139,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/11/11/SciVis-R-D-Scope/" data-id="cm2a0xf4d0044dvjrbxnpdcpn" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/11/11/SciVis-R-D-Scope/" data-id="cmbw030id004bj8jrhsar8f14" class="article-share-link">分享</a>
       
       
       
@@ -327,28 +322,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

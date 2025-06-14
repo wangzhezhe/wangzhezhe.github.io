@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>Some tips about the cpp lambda expression.</p>
 <span id="more"></span>
-
 <p>When you start to use the cpp, one thing that can not be avoided is the lambda expression. The senior programmer may use it a lot and consider it as a flexible way to do things. But the junior programmer may think it is hard to understnad.</p>
 <p>Most of the detilas about the lambda expression can be found <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/language/lambda">here</a>, and I jsut list some points that might be neglected.</p>
 <h3 id="capture-all"><a href="#capture-all" class="headerlink" title="capture all"></a>capture all</h3><p><code>&amp;</code> (implicitly capture the used automatic variables by reference)</p>
@@ -136,20 +132,18 @@ ga('send', 'pageview');
 <p>it is crutial to figure out the life cycle and the scope of every variable, which is temporay variable that in the scope of the function, which is belong to class, which is on the heap. By this way, it is easy to figure out if you need to copy a variable or use reference for it.</p>
 <p>essentially, the goal of the capture part is just to set the context for actual task, some variables maybe used in the task and they should be initilized well when writting the lambda expression.</p>
 <h3 id="functor-vs-the-lambda-expression"><a href="#functor-vs-the-lambda-expression" class="headerlink" title="functor vs the lambda expression"></a>functor vs the lambda expression</h3><p>it seems the lambda expression are really similar with the <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/functors-in-cpp/">functors</a> (<a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/utility/functional">function opject, callable object</a>) in cpp, the functors are more general case, but some times, using the lambda expression properly and simplify the soure code.</p>
-<p>For example, if we want the customized struct to be a key of the <code>unorderd_map</code>, we may need to provide a function object that contains the hash function of the self defined class&#x2F;struct.</p>
+<p>For example, if we want the customized struct to be a key of the <code>unorderd_map</code>, we may need to provide a function object that contains the hash function of the self defined class/struct.</p>
 <p>But for other case, such as the <code>find_if</code> operation, the third parameter might be a lambda expression, which is more simple for the code.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">std::find_if(req_list.begin(), req_list.end(),</span><br><span class="line">                     [src, tag](const key_req &amp;k) &#123; return k.m_tag == tag;&#125;);</span><br></pre></td></tr></table></figure>
 <p>for this case, we want to find firt value that have the same key, and the key is determined during the program execution, we may need more redoundant code to wrap the simple operation <code>k.m_tag == tag</code> if we use the functor.</p>
 <h3 id="Simple-lambda-function-in-one-line"><a href="#Simple-lambda-function-in-one-line" class="headerlink" title="Simple lambda function in one line"></a>Simple lambda function in one line</h3><p>If there is smaller function in the code, just using this type of lambda function to do the smaller function call. Capture all variables, no input variables, do some simple operations, such as updating some metadata.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[&amp;]()&#123; do sth, return&#125; ();</span><br></pre></td></tr></table></figure>
-<h3 id="Some-typical-use-cases"><a href="#Some-typical-use-cases" class="headerlink" title="Some typical use cases"></a>Some typical use cases</h3><p>When there are two levels or several levels of for loop, we may try to return the results when we find specific i,j,k that satisfies specific condition. This is how we use it by lambda expression:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[&amp;]()&#123;</span><br><span class="line">for(int i=0;i&lt;this-&gt;m_r;i++)&#123;</span><br><span class="line">	 for(int j=0;j&lt;this-&gt;m_c;j++)&#123;</span><br><span class="line">     if(grid[i][j]==1)&#123;</span><br><span class="line">       ir=i;ic=j;</span><br><span class="line">       return;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;();</span><br></pre></td></tr></table></figure>
-<p>This can simplify the code a lot since we do not need an extra function. If we do it in original cpp, we need to set a specific flag and check it in each for loop, and the code is redaundant in that case.</p>
+<h3 id="Some-typical-use-cases"><a href="#Some-typical-use-cases" class="headerlink" title="Some typical use cases"></a>Some typical use cases</h3><p>When there are two levels or several levels of for loop, we may try to return the results when we find specific i,j,k that satisfies specific condition. This is how we use it by lambda expression:<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[&amp;]()&#123;</span><br><span class="line">for(int i=0;i&lt;this-&gt;m_r;i++)&#123;</span><br><span class="line">	 for(int j=0;j&lt;this-&gt;m_c;j++)&#123;</span><br><span class="line">     if(grid[i][j]==1)&#123;</span><br><span class="line">       ir=i;ic=j;</span><br><span class="line">       return;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;();</span><br></pre></td></tr></table></figure><br>This can simplify the code a lot since we do not need an extra function. If we do it in original cpp, we need to set a specific flag and check it in each for loop, and the code is redaundant in that case.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/09/03/all-aspects-of-lamda-expression/" data-id="cm2a0xf4i0059dvjrem8hdm4o" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/09/03/all-aspects-of-lamda-expression/" data-id="cmbw030ig005kj8jreykja24n" class="article-share-link">分享</a>
       
       
       
@@ -332,28 +326,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

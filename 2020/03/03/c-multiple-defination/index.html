@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>several typical case that trigger the error of “multiple defination” </p>
 <span id="more"></span>
-
 <p>1 the most obvious reason is the typo, you may declare a function several times.</p>
 <p>2 the second reason is that, you declare functions in .h file and implement the function at the .c file, but you forgot to use the <code># ifdefine</code> at the beginning of the .h file and <code>#endif</code> at the end of the file,  or there are some typos here.</p>
 <p>3 if you want to declare a variable in .h file, you need to declare it by using <code>extern</code> keyword and init it at the .c files instead of using it direactly.</p>
@@ -136,7 +132,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/03/03/c-multiple-defination/" data-id="cm2a0xf4j005xdvjr8xdjfcbt" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/03/03/c-multiple-defination/" data-id="cmbw030ij006aj8jrgicn8eln" class="article-share-link">分享</a>
       
       
       
@@ -242,23 +238,23 @@ ga('send', 'pageview');
       <ul>
         
           <li>
-            <a href="/2024/11/23/distributed-rendering/">distributed rendering</a>
+            <a href="/2025/06/08/javascript-tips/">javascript-tips</a>
           </li>
         
           <li>
-            <a href="/2024/11/21/opengl-tips/">opengl_tips</a>
+            <a href="/2025/02/27/Package-management/">Package management tips</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/23/distributed-rendering/">Distributed rendering (WIP)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/21/graphics-opengl-tips/">Graphics and Opengl Tips</a>
           </li>
         
           <li>
             <a href="/2024/10/18/Multiple-backend-design/">Multiple backend design</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/17/LLM-tips/">LLM tips</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/13/Interesting-numbers-in-CS-and-Femi-estimation/">Interesting numbers in CS and Femi estimation (WIP)</a>
           </li>
         
       </ul>
@@ -337,28 +333,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

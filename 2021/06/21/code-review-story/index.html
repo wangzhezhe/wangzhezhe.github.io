@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>This blog describe some tips and experience about the code review. </p>
 <span id="more"></span>
-
 <h3 id="Naming-convention"><a href="#Naming-convention" class="headerlink" title="Naming convention"></a>Naming convention</h3><p>For example, in some c++ code, it uses the camel cases, for other code, it may use the  underscore convention. Make sure that the parameter should be consistent with the existing coding style. This is the easist thing which only need some patience to do so.<br>For example, <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/vtk/vtk-m/-/blob/master/docs/CodingConventions.md?ref_type=heads">this</a> is the coding style convention of VTK and VTKm, it is important to keep them in mind before and check each item before submitting the code. Especially for when to use capital letter and camel case. For example, local variables should start in lower case and then to use camel case.</p>
 <h3 id="using-existing-mechanism"><a href="#using-existing-mechanism" class="headerlink" title="using existing mechanism"></a>using existing mechanism</h3><p>When trying to add some new functions, the first step is trying to figure out if the current code base or framework provide these type of functions or mechanism. Do not introduce new features only if it is necessary. A simple case is in vtkm filter, the base class of filter provides the ActiveField parameter. So try to use this instead of setting a new parameter in the customized filter class.</p>
 <h3 id="using-worklet-instead-of-for-loop"><a href="#using-worklet-instead-of-for-loop" class="headerlink" title="using worklet instead of for loop"></a>using worklet instead of for loop</h3><p>This is in the context of the vtkm’s code. When there is a for loop, we always try to consider if it is ok to use worklet to do so to run it in parallel on specific devices instead of using the for loop, there are some testing helper function such as <code>test_equal_arrayHandle</code> which can compare two arrays to check if they equal with each other.</p>
@@ -138,7 +134,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/06/21/code-review-story/" data-id="cm2a0xf4k0067dvjrh8wh8g5v" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2021/06/21/code-review-story/" data-id="cmbw030ij006gj8jr68lieff4" class="article-share-link">分享</a>
       
       
       
@@ -321,28 +317,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

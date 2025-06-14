@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -195,14 +192,14 @@ ga('send', 'pageview');
 <p>8.18</p>
 <p>回来到是不习惯了，觉得工位局促，显示器看着也不舒服。会不自觉地恢复到之前的状态。比如纠结的事情，没有解决的问题等等。这个时候要告诉自己不能够，毕竟实习这段时间之后有了一些新的想法和体会，要培养一些新的习惯。宁愿在lab里多待一会儿，大概是回去看到堆在地上的乱七八糟的东西心情就也比较乱，就是之前每次说的，在混乱中开始新的生活。虽然是同样的生活，但总是觉得要以新的状态来面对。</p>
 <p>8.22</p>
-<p>想必很重要的一点就是大概终于清楚自己做的是什么事情了，这个过程有花了2年的时间吧。之前一直觉的lab的项目是distributed in-memory storage library 会看好多distributed，indexing以及scalability的事情，可后来有一些实际的上手经验，发现更多的还是在I&#x2F;O的层面上，就是所谓的加了一层cache，最后的目的还是为了I&#x2F;O而服务的，而关于I&#x2F;O一方面是面向数据，一方面是面向device，似乎之前的一些项目的motivation也变得清晰了。而scientitic的场景下，对于data storage好像也并没有很care。主要原因是simulation本身就是可以产生数据，所以之前的数据即使存下来也没什么实际的意义。或者真的要存，放在disk里就好啊，也没必要去进行in-memory的存储。那in-memory的场景到底有什么用处呢？结合industry的一些产品，还是real time的流式数据engine，这一块scientific data 的场景下似乎目前还没有什么成型的产品，可以朝着这个方向多考虑考虑。</p>
+<p>想必很重要的一点就是大概终于清楚自己做的是什么事情了，这个过程有花了2年的时间吧。之前一直觉的lab的项目是distributed in-memory storage library 会看好多distributed，indexing以及scalability的事情，可后来有一些实际的上手经验，发现更多的还是在I/O的层面上，就是所谓的加了一层cache，最后的目的还是为了I/O而服务的，而关于I/O一方面是面向数据，一方面是面向device，似乎之前的一些项目的motivation也变得清晰了。而scientitic的场景下，对于data storage好像也并没有很care。主要原因是simulation本身就是可以产生数据，所以之前的数据即使存下来也没什么实际的意义。或者真的要存，放在disk里就好啊，也没必要去进行in-memory的存储。那in-memory的场景到底有什么用处呢？结合industry的一些产品，还是real time的流式数据engine，这一块scientific data 的场景下似乎目前还没有什么成型的产品，可以朝着这个方向多考虑考虑。</p>
 <p>reflection</p>
 <p>想来在对于scientific data的认识上，在data structure的层面上与之前dataspace的时候考虑的最大区别，就是加入了mesh的信息应该怎么弄，在传递的时候 mesh info 以及 field info 是要分开进行的，在处理的时候，为什么普通的filter不能用呢?因为普通的filter没有mesh的信息在里面，只是单纯地对数据进行处理，这就是为什么要使用vtk-m的原因了，主要是scientific data的filter都是与mesh相关的，其他的data process engine并没有这个能力。和别人讲的时候，这一点要想清楚，可以从adios array, vtk-m 以及 vtk 三个不同的presentation来把这个问题说清楚，vtk-m和vtk本身的dataset到底不同在哪里也要说清楚。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/09/01/Halfmoon-Story/" data-id="cm2a0xf44001mdvjr2uyebfto" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/09/01/Halfmoon-Story/" data-id="cmbw030i4001pj8jrgqas53oe" class="article-share-link">分享</a>
       
       
       
@@ -308,23 +305,23 @@ ga('send', 'pageview');
       <ul>
         
           <li>
-            <a href="/2024/11/23/distributed-rendering/">distributed rendering</a>
+            <a href="/2025/06/08/javascript-tips/">javascript-tips</a>
           </li>
         
           <li>
-            <a href="/2024/11/21/opengl-tips/">opengl_tips</a>
+            <a href="/2025/02/27/Package-management/">Package management tips</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/23/distributed-rendering/">Distributed rendering (WIP)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/21/graphics-opengl-tips/">Graphics and Opengl Tips</a>
           </li>
         
           <li>
             <a href="/2024/10/18/Multiple-backend-design/">Multiple backend design</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/17/LLM-tips/">LLM tips</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/13/Interesting-numbers-in-CS-and-Femi-estimation/">Interesting numbers in CS and Femi estimation (WIP)</a>
           </li>
         
       </ul>
@@ -403,28 +400,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

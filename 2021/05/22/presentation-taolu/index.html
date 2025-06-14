@@ -14,7 +14,7 @@
 <meta property="og:locale">
 <meta property="og:image" content="http://yoursite.com/images/slides_template.png">
 <meta property="article:published_time" content="2021-05-22T00:46:25.000Z">
-<meta property="article:modified_time" content="2024-12-25T08:11:03.374Z">
+<meta property="article:modified_time" content="2025-04-09T16:04:00.774Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/images/slides_template.png">
@@ -55,11 +55,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -129,7 +126,6 @@ ga('send', 'pageview');
         
         <p>Some tips about making the slides and preparing the presentation.</p>
 <span id="more"></span>
-
 <h3 id="Tips-about-slides"><a href="#Tips-about-slides" class="headerlink" title="Tips about slides"></a>Tips about slides</h3><p>We list some points that easy to be neglected. Actually, these principles are same with the editing of the paper, but we may easy to neglect them when edit the slides.</p>
 <p><strong>The captial letter</strong>: </p>
 <p>We may easy to forget to use capital letter for slides, since we may list some key points here and there. However, this tips is still deserved to be noticed even if we use bullet or some key points in slides. Maybe try to examine the title of slides and make sure they are in consistency with the paper or assoicated documents.</p>
@@ -147,7 +143,7 @@ ga('send', 'pageview');
 <p><strong>Clear skeleton</strong></p>
 <p>This ideas can be used in the introduction part</p>
 <p>It can be represented by the term “PWBT” template for easy remember.</p>
-<p>P represents what are the problem here<br>W represents why people care about this question<br>B represent: but why this is difficult to solve<br>T represents: therefore, we provide what techniques&#x2F;contributions for this.</p>
+<p>P represents what are the problem here<br>W represents why people care about this question<br>B represent: but why this is difficult to solve<br>T represents: therefore, we provide what techniques/contributions for this.</p>
 <p>For the conclusion part, we might use another template:</p>
 <p>1&gt; what approach is presented in this work<br>2&gt; This approach can do what<br>3&gt; how this approach do this<br>4&gt; what are the good results from the evaluation results</p>
 <p>Comprehensive paper can be built based on these template or skeletons. If the presentation capture these two good parts, at least it answers the core questions, always try to ask yourself, what are the content that the audience might remember after three months, that is also a key point or take away message for the presentation.</p>
@@ -162,14 +158,13 @@ ga('send', 'pageview');
 <p>After considering three work by this way, the slides can be much clear. In fact, within 10 minutes, the audience can not figure out what you did in detail. They assume the deailed knowledge is after the peer review, they just want to know what you did, what are general appraoch (2-3 sentences), what are novelty and contribution etc. That’s engough. These type of report is different with the technique report that share the detailed data. You just need to give a good impression to audience quickly. </p>
 <p>Do not dive into too much details but you need to give others clear throught, so every sentence is important.</p>
 <h3 id="Good-typography-style"><a href="#Good-typography-style" class="headerlink" title="Good typography style"></a>Good typography style</h3><p>This image shows a typical example for presentation. This is a naive version which shows the necessary element. Compared with putting the key sentences in the middle or side or random positions in the slides. Just putting it at the beginning and using the bullets to label everything is a good way to make ideas clear. </p>
-<img src="/images/slides_template.png" width="500"/>
-
+<p><img src="/images/slides_template.png" width="500"/></p>
 <p>Only putting the figures without any explanation is not good, since the audience may not no what you want to convey in this slide. So these are minimal elements we need to put into the slides. The style like this can be a basic unit. If we need more details, we can then adding more detailed slides step by step, such as Approach 1, Approach 2 etc.</p>
 <p>Redflag!!! 仅仅列出item目前被认为是一种简单boring的流水账式的表述了，如果日常汇报可能这样还可以，但是比较重要的回报，这种形式的排版就不太吸引人了，通常大家会说，这几个模块之间的逻辑关系是什么呢？等等。基础的排版是如下的模式，就是一个slide里面有三个或者多个矩形框，每个矩形框中有一个突出的标题，然后每个标题下面是这个模块的细节。</p>
 <p>至于研究落路线或者研究内容，应为涉及多个模块，最好是每个矩形框都有一些背景颜色，可以外部的矩形框仅用虚线，里面的矩形框采用实现的框表示。</p>
 <p>所以目前比较好的一个模式是，总结的页面可以用矩形框布局，每个矩形使用让人能记住的标题，不要数字，然后具体的展开内容里，可以用上下布局，上面文字介绍背景挑战，下面介绍具体的难点和实现的效果。</p>
 <h3 id="工作的命名方式以及novelty-points"><a href="#工作的命名方式以及novelty-points" class="headerlink" title="工作的命名方式以及novelty points"></a>工作的命名方式以及novelty points</h3><p>For scientific work, the basic type for naming it contains two basic element, what it is, is it an algorithm, or framework, or approach etc. The second part is that, this thing is based on what method, used in what context or what it can be used to do.</p>
-<p>Be careful about the Chinese title, it is inversed compared with the englisth version. Typical title in Chinese research is “基于abc的def方法&#x2F;服务&#x2F;框架” abc represents the approach adopted to implement this thing. or “面向 abc 的 def” the abc here can be some context or what data type basically, the abc is the high lights of the work or novelty of the work (novely can come from new approach, new context&#x2F;data, new data)</p>
+<p>Be careful about the Chinese title, it is inversed compared with the englisth version. Typical title in Chinese research is “基于abc的def方法/服务/框架” abc represents the approach adopted to implement this thing. or “面向 abc 的 def” the abc here can be some context or what data type basically, the abc is the high lights of the work or novelty of the work (novely can come from new approach, new context/data, new data)</p>
 <p>For english title, after explaning the title by the pattern of novely+what it is, we then use some abbreviations to make it easier to remember. Let’s do some exercise:</p>
 <p>English title</p>
 <p>ChatGPT: Chat Generative Pre-trained Transformer<br>If trying to present it in Chinese context, maybe it should be<br>基于深度学习转换器架构的自动聊天生成程序<br>Obviously, the ChatGPT is the name for people to remember it, but the Chinese name can show the ideas in a more structured way compared with the englisth version. English version is more flexible, they put adj all together, but these adj can be different aims, some emphasize the goal, other emphsize the context and appraoch.</p>
@@ -178,8 +173,8 @@ ga('send', 'pageview');
 <p>基于并行高性能后排序算法的图像渲染库 (If using appraoch + what it is)</p>
 <p>This title tries to emphsize that the novelty point is the sort last parallel. </p>
 <p>Anyway, considering the title both from Chinese and englisth can better help you to figure out what are main novelty and contributions for the work and organize the content in a more structured way. For research paper, if it can be explained as “基于abc的def方法”, there might be some interestign point from research perspective, otherwise, it more like an engineering practice work. Such as describing the framework you buit or that service, which might lacks the novelty in some degrees. </p>
-<p>Start from “基于abc的def框架&#x2F;Service&#x2F;Library” might be easy start point, but <strong>think twice at this time</strong>, what work you need to to if you want to change it into “基于&#x2F;面向 abc的def方法” that can be a good way to improve the quality of your research.</p>
-<p>还有一种再加上一些特点的地方是把目的和实现的效果也加上，比如high-performance libraray, 快速可视化系统等等，大规模数据可视化系统等等，就是加形容词的时候突出一些方法的关键特性。大致的风格可以按照如下的形式：基于&lt;xx方法&gt;的&lt;要实现什么目的的&gt;框架，方法研究，系统等等。</p>
+<p>Start from “基于abc的def框架/Service/Library” might be easy start point, but <strong>think twice at this time</strong>, what work you need to to if you want to change it into “基于/面向 abc的def方法” that can be a good way to improve the quality of your research.</p>
+<p>还有一种再加上一些特点的地方是把目的和实现的效果也加上，比如high-performance libraray, 快速可视化系统等等，大规模数据可视化系统等等，就是加形容词的时候突出一些方法的关键特性。大致的风格可以按照如下的形式：基于<xx方法>的&lt;要实现什么目的的&gt;框架，方法研究，系统等等。</p>
 <h3 id="充分的准备：各类的突发情况"><a href="#充分的准备：各类的突发情况" class="headerlink" title="充分的准备：各类的突发情况"></a>充分的准备：各类的突发情况</h3><p>有一次参加比较重要的答辩，在准备之前，和组织人员核对了一下，可能只有12分钟的答辩汇报，但是在正经准备的时候，领导却说，可以多讲一讲，按照半个小时左右来准备，这个时候还有一点慌乱。</p>
 <p>在这种时候就要等做到有的放矢了，比如领导想要让多讲一讲，就可以多讲一讲，时间有限的话，又可以少讲一讲。总而言之的话，第一次准备的比较充分的话，内容上压缩起来就相对容易一些，但是如果本身的内容没有那么多，临场扩展起来就比较难。总之为了应对突发的情况，这个presentation准备起来要有两个版本，一个长的版本每一个短的版本。</p>
 <p>而且对于这种事情一定要有双手准备，因为告诉你报告时间的人可能并不是最终听报告的人，或者最终的主要负责人，比如协调时间的人说，讲10分钟就够了，那主要负责人可能想听得更多，那十分钟肯定不够。而且还要根据整个活动的时间长度来看，比如如果有8-9个专家，这种规模的话肯定不可能是10分钟的演讲长度的，一定要做好备份方案。</p>
@@ -187,7 +182,7 @@ ga('send', 'pageview');
 <h3 id="Back-up-slides-and-QA"><a href="#Back-up-slides-and-QA" class="headerlink" title="Back up slides and QA"></a>Back up slides and QA</h3><p><strong>level 1 questions (applicable for most works)</strong></p>
 <p>What is the most challenging part for this work</p>
 <p>What is the future plans for this work</p>
-<p>What is the error&#x2F;accuracy&#x2F;drawback&#x2F;scalability issue for the method&#x2F;approach presented in the paper</p>
+<p>What is the error/accuracy/drawback/scalability issue for the method/approach presented in the paper</p>
 <p>What are general research challenges in this domain (国内国外的范围内), how do you see the development of this domain after 3-5 years, etc.</p>
 <p><strong>level 2 questions</strong></p>
 <p>More detailed and specific questions related with the content. Maybe try to ask your self these questions, and list the answer as the back up parts for the presentation. These contents can be the extension based on the current slides, or sth that is not explained clearly in the presentation due to the time constraints.</p>
@@ -197,11 +192,15 @@ ga('send', 'pageview');
 <p>自己有一次在作为主持人主持周会的时候，明显有这种感觉，有的同事在汇报完毕之后，就会说，汇报完毕，或者回答完毕之类的话，这样给主持人一种有头有尾的感觉，要是不说的话，有时候主持人就会觉得，怎么说了一半的答案，感觉整个的话还没有说完整，等等，这些小细节往往是能够体现一个汇报人或者面试者素质的关键所在，重要的事情多说一次，一定要说，谢谢提问加上回答完毕，这两个小词。正如同打电话一样，结束的时候问一下，还有没有其他事情了，或者其他需要说明的事情了，等等，这样再挂电话。</p>
 <h3 id="关于铺垫与背景"><a href="#关于铺垫与背景" class="headerlink" title="关于铺垫与背景"></a>关于铺垫与背景</h3><p>background与motivation一定要充分让人容易理解，讲清楚这个东西是什么，为什么重要，然后再讲自己做了哪些事情。“概念引入要基础，让人容易理解，研究讲起来要深入，把关键问题讲清楚，体现出难点和挑战的地方”。</p>
 <h3 id="一页ppt一句话"><a href="#一页ppt一句话" class="headerlink" title="一页ppt一句话"></a>一页ppt一句话</h3><p>有的时候会被有经验的人说ppt里的字太多或者内容杂乱等等，这个时候是没有把握好一页ppt一句话的原则，通常来讲我们想用一页ppt表达出一个观点或者argument，或者是说明某个现象结论等等。</p>
+<h3 id="和领导开会时候汇报的方式"><a href="#和领导开会时候汇报的方式" class="headerlink" title="和领导开会时候汇报的方式"></a>和领导开会时候汇报的方式</h3><p>一个套路就是类似于“温水煮青蛙”，就是先把背景铺垫好了，由宏观到具体，然后娓娓道来，千万千万不能一上来就讲细节，然后就郑重下怀，容易被批评。其实这和写paper是一样的，一定要先有一层到两层的铺垫。关键是平时一定要培养这种深入浅出的表达方式，背景是/出发点是。。。部门的主责主业。。。结合这些方面，我的工作主要是方面一。。。方面二。。。等等这种表述要在心里反复熟练。</p>
+<p>就像写报告一样，总是要先说大的背景，大政策，比如AI4S，宏观层面支持的内容是什么等等，然后再逐渐深入，把具体的内容放在后面。比如最近的一个汇报，主要是讨论每个人未来做的方向，自己说的时候没组织好语言，直接一上来就说了一个具体的内容，这个内容是一个很personal的事情，领导听了并不是很开心，觉得这个工作是没用的。</p>
+<p>这种小的短会往往很容易考验出人的积累，就像吃饭时候突然见到很大的领导，然后大领导一问，你现在在做什么事情，这个时候可能需要1-2句话就回答好，如果平时想不清楚的话，这个时候就容易语无伦次，组织得不是很清楚，让领导觉得这个员工不知道自己在做什么事情，对自己的定位不是很清楚。</p>
+<p>比如将自己做的事情，可以开始的时候先说几个背景，一个是AI4S，然后是部门的主责主业，目前的已有的项目，然后一结合，落实到现在做的事情的方向上来，这样就比较make sense了，可能领导听了也大概知道你在做什么，不会让领导产生误解，同时也能把自己的想法表述的清晰一些。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/05/22/presentation-taolu/" data-id="cm2a0xf4t008ydvjr7obh09ve" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2021/05/22/presentation-taolu/" data-id="cmbw030ir009ej8jr0h9ub28e" class="article-share-link">分享</a>
       
       
       
@@ -300,7 +299,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Tips-about-slides"><span class="toc-number">1.</span> <span class="toc-text">Tips about slides</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#A-typical-template-to-present-the-work"><span class="toc-number">2.</span> <span class="toc-text">A typical template to present the work</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Good-typography-style"><span class="toc-number">3.</span> <span class="toc-text">Good typography style</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E7%9A%84%E5%91%BD%E5%90%8D%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8Anovelty-points"><span class="toc-number">4.</span> <span class="toc-text">工作的命名方式以及novelty points</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%85%E5%88%86%E7%9A%84%E5%87%86%E5%A4%87%EF%BC%9A%E5%90%84%E7%B1%BB%E7%9A%84%E7%AA%81%E5%8F%91%E6%83%85%E5%86%B5"><span class="toc-number">5.</span> <span class="toc-text">充分的准备：各类的突发情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E5%BC%95%E5%85%A5%E4%B8%8E%E6%8A%80%E6%9C%AF%E9%98%90%E8%BF%B0"><span class="toc-number">6.</span> <span class="toc-text">概念引入与技术阐述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Back-up-slides-and-QA"><span class="toc-number">7.</span> <span class="toc-text">Back up slides and QA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E5%AF%B9%E4%B8%93%E5%AE%B6%E7%9A%84%E6%8F%90%E9%97%AE-%E6%9C%89%E5%A7%8B%E6%9C%89%E7%BB%88"><span class="toc-number">8.</span> <span class="toc-text">应对专家的提问 有始有终</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E9%93%BA%E5%9E%AB%E4%B8%8E%E8%83%8C%E6%99%AF"><span class="toc-number">9.</span> <span class="toc-text">关于铺垫与背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E9%A1%B5ppt%E4%B8%80%E5%8F%A5%E8%AF%9D"><span class="toc-number">10.</span> <span class="toc-text">一页ppt一句话</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Tips-about-slides"><span class="toc-number">1.</span> <span class="toc-text">Tips about slides</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#A-typical-template-to-present-the-work"><span class="toc-number">2.</span> <span class="toc-text">A typical template to present the work</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Good-typography-style"><span class="toc-number">3.</span> <span class="toc-text">Good typography style</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E7%9A%84%E5%91%BD%E5%90%8D%E6%96%B9%E5%BC%8F%E4%BB%A5%E5%8F%8Anovelty-points"><span class="toc-number">4.</span> <span class="toc-text">工作的命名方式以及novelty points</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%85%E5%88%86%E7%9A%84%E5%87%86%E5%A4%87%EF%BC%9A%E5%90%84%E7%B1%BB%E7%9A%84%E7%AA%81%E5%8F%91%E6%83%85%E5%86%B5"><span class="toc-number">5.</span> <span class="toc-text">充分的准备：各类的突发情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E5%BC%95%E5%85%A5%E4%B8%8E%E6%8A%80%E6%9C%AF%E9%98%90%E8%BF%B0"><span class="toc-number">6.</span> <span class="toc-text">概念引入与技术阐述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Back-up-slides-and-QA"><span class="toc-number">7.</span> <span class="toc-text">Back up slides and QA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E5%AF%B9%E4%B8%93%E5%AE%B6%E7%9A%84%E6%8F%90%E9%97%AE-%E6%9C%89%E5%A7%8B%E6%9C%89%E7%BB%88"><span class="toc-number">8.</span> <span class="toc-text">应对专家的提问 有始有终</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E9%93%BA%E5%9E%AB%E4%B8%8E%E8%83%8C%E6%99%AF"><span class="toc-number">9.</span> <span class="toc-text">关于铺垫与背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E9%A1%B5ppt%E4%B8%80%E5%8F%A5%E8%AF%9D"><span class="toc-number">10.</span> <span class="toc-text">一页ppt一句话</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%92%8C%E9%A2%86%E5%AF%BC%E5%BC%80%E4%BC%9A%E6%97%B6%E5%80%99%E6%B1%87%E6%8A%A5%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-number">11.</span> <span class="toc-text">和领导开会时候汇报的方式</span></a></li></ol>
           </div>
       </div>
     </div>
@@ -384,28 +383,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

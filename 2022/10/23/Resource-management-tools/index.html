@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,23 +124,18 @@ ga('send', 'pageview');
         
         <p>This blog mainly discuss about some tips for commonly used tools to allocated resources for distrirbuted system and parallel computing. </p>
 <span id="more"></span>
-
 <h3 id="SLURM"><a href="#SLURM" class="headerlink" title="SLURM"></a>SLURM</h3><p>The slurm is popular workload manager for HPC cluster. Here is detailed <a target="_blank" rel="noopener" href="https://slurm.schedmd.com/srun.html">document</a>.</p>
 <p>User can specify how many nodes they want, how many cores and memory etc.</p>
 <p>The idea is to submit job into associated queues and the manager will allocate resources according to the job information.</p>
 <p>Here are some tips</p>
 <p><strong>search queue info</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">squeue -p gpu</span><br></pre></td></tr></table></figure>
-
 <p><strong>cancel job</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">scancel + jobid</span><br></pre></td></tr></table></figure>
-
 <p><strong>submit job</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sbatch &lt;job name&gt;</span><br></pre></td></tr></table></figure>
-
 <p><strong>show quota</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$showquota</span><br></pre></td></tr></table></figure>
-
 <p><strong>scontrol</strong></p>
 <p><code>scontrol show hostname</code> command, this can show all host names of a running job, if the program need to access the allocated nodes, we can use this command. For some program that requires the service registration for the master process, this is really helpful. Since the ip address changes each time when there is new allocation.</p>
 <p><strong>commonly used parameters for srun</strong></p>
@@ -153,7 +145,6 @@ ga('send', 'pageview');
 <h3 id="MPIRUN"><a href="#MPIRUN" class="headerlink" title="MPIRUN"></a>MPIRUN</h3><p>This <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/51300165/any-use-case-for-mpirun-on-slurm-managed-cluster">question</a> discusses some differences between the srun and the mpirun. From my understanding, the srun is prefered compared with using the mpirun direactly.</p>
 <p>Here is a exmaple for how to set multi openmp thread for mpi run</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mpirun -n 1 --bind-to none -x OMP_NUM_THREADS=1 ...</span><br></pre></td></tr></table></figure>
-
 <p>Otherwise, if we use the <code>mpirun -n &lt;executable&gt;</code> without specifying the openmp thread, it is possible that each process use multiple threads or oversubscribe the number of cores. The good practice is always to set the <code>export OMP_NUM_THREADS=&lt;numbers&gt;</code> explicitly. It depends on the operating system about how the threads are scheduled.</p>
 <h3 id="LSF"><a href="#LSF" class="headerlink" title="LSF"></a>LSF</h3><p>This is also designed for the HPC cluster, this is designed by the IBM. The summit cluster use this scheduler.</p>
 <p>One main difference between the LSF and the SLURM is that the LSF use the concepts of resource set, user can not control the node, they just control how many resource set they will need.</p>
@@ -167,7 +158,7 @@ ga('send', 'pageview');
 <p>This <a target="_blank" rel="noopener" href="https://www.olcf.ornl.gov/wp-content/uploads/2019/12/Jsrun-Multi.pdf">document</a> shows how to run multiple jsrun at the same time.</p>
 <p>Illustrating things by that topological figure of HPC computing node is important.</p>
 <p>One special concept of the LSF is the <strong>resource set</strong>, this is similar to the concept of the container which provide a good resource isolation view  and user can orgaznize reosuces flexibaly in one node. The good thing is that when we use the node with multiple gpu, using resource isolation can  decrease the dificult for programming. The program just need to control one gpu instead of multiple gpu at the same time.</p>
-<p>For the experiment that need to use more than 1 node, the good way to determine how many resource sets is to use the gpu as the indicator, for example on summit node, there is 6 gpu per node, so try to use 6 resource sets, since there are 42 cores, when than assign 42&#x2F;6 &#x3D; 7 cores for each resource set. And one task per resource set can be easy to manage. Then just need to adjust the number of resource sets when change use different number of processes.</p>
+<p>For the experiment that need to use more than 1 node, the good way to determine how many resource sets is to use the gpu as the indicator, for example on summit node, there is 6 gpu per node, so try to use 6 resource sets, since there are 42 cores, when than assign 42/6 = 7 cores for each resource set. And one task per resource set can be easy to manage. Then just need to adjust the number of resource sets when change use different number of processes.</p>
 <p><code>-n 1 -a 1 -c 7 -b packed:7 -g 1</code></p>
 <p>Another way is to use cpu as the distinction, for example, 1 resource set per node and use all cpu here by 1 MPI program.</p>
 <p><code>-n 1 -a 1 -c 42 -b packed:42 -g 0</code></p>
@@ -187,7 +178,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/10/23/Resource-management-tools/" data-id="cm2a0xf4d0042dvjr538q4xeb" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/10/23/Resource-management-tools/" data-id="cmbw030id0049j8jr1tf0awy9" class="article-share-link">分享</a>
       
       
       
@@ -370,28 +361,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

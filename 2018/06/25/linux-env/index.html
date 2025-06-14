@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,23 +124,19 @@ ga('send', 'pageview');
         
         <p>主要介绍了Linux中常见的环境变量使用和配置时的一些基本概念和操作。</p>
 <span id="more"></span>
-
 <h3 id="环境变量的分类"><a href="#环境变量的分类" class="headerlink" title="环境变量的分类"></a>环境变量的分类</h3><p>在shell中的环境变量主要有几种: 内部变量，系统环境变量（对所有用户有效），用户环境变量(对当前用户有效) 注意shell variable不属于env variable。</p>
 <p>注意内部变量的特殊使用方式：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">表示方法     描述</span><br><span class="line">$n     $1 表示第一个参数，$2 表示第二个参数 ...</span><br><span class="line">$#     命令行参数的个数</span><br><span class="line">$0     当前程序的名称</span><br><span class="line">$?     前一个命令或函数的返回码</span><br><span class="line">$*     以&quot;参数1 参数2 ... &quot; 形式保存所有参数</span><br><span class="line">$@     以&quot;参数1&quot; &quot;参数2&quot; ... 形式保存所有参数</span><br><span class="line">$$     本程序的(进程ID号)PID</span><br></pre></td></tr></table></figure>
-
 <p>每个应用都有自己的环境变量，比如在一个terminal中 <code>export name=golang</code>，之后在新开一个终端，再<code>echo $name</code>就是没有信息的，新开的终端相当于是一个新的进程了。</p>
 <h3 id="set、env、export"><a href="#set、env、export" class="headerlink" title="set、env、export"></a>set、env、export</h3><p>env命令显示当前用户的变量;</p>
 <p>set命令可以查看所有的环境变量，包括环境变量与用户自定义的变量;</p>
 <p>export命令可以将自定义的变量转化成环境变量。</p>
 <h3 id="相关的文件"><a href="#相关的文件" class="headerlink" title="相关的文件"></a>相关的文件</h3><p>各种软件在运行的时候都会设置一些自定义的环境变量，比如说像JVM <code>JAVA_HOME</code> 或者像GOPATH等等，这些环境变量一般确定好，就不再发生变化，因此希望每次打开一个新的terminal的时候，或者是系统启动的时候，就自动把这些变量存储进来。</p>
 <p>以ubuntu为例，列举一下相关的配置文件</p>
-<p>方法1：修改&#x2F;etc&#x2F;profile 文件 ，在这个文件的最后面添加所需的环境变量，重启系统之后，文件中的内容会生效。<br>方法2：修改 .bashrc文件，如果你需要给某个用户权限使用这些环境变量，你只需要修改其个人用户主目录下的.bashrc就可以了,而不像第一种方法给所有用户权限，<strong>这样每次该用户在重新登录的时候，对应的用户目录下的.bashrc文件就会被执行</strong>。<br>方法3：直接在shell中修改，仅仅针对于当前shell有效，在shell发生变化之后，当前所声明的这些环境变量就无效了。这样的变量一般称为shell variable。</p>
+<p>方法1：修改/etc/profile 文件 ，在这个文件的最后面添加所需的环境变量，重启系统之后，文件中的内容会生效。<br>方法2：修改 .bashrc文件，如果你需要给某个用户权限使用这些环境变量，你只需要修改其个人用户主目录下的.bashrc就可以了,而不像第一种方法给所有用户权限，<strong>这样每次该用户在重新登录的时候，对应的用户目录下的.bashrc文件就会被执行</strong>。<br>方法3：直接在shell中修改，仅仅针对于当前shell有效，在shell发生变化之后，当前所声明的这些环境变量就无效了。这样的变量一般称为shell variable。</p>
 <h3 id="区别shell-variable-与-env-variable"><a href="#区别shell-variable-与-env-variable" class="headerlink" title="区别shell variable 与 env variable"></a>区别shell variable 与 env variable</h3><p>不使用export的话就是shell variable，这样的variable是不能通过cpp 中的getenv操作读取到的。一些parallel的library需要读取env variable，比如<code>omp_num_threads</code>，这个时候记得要使用env variable。</p>
 <h3 id="PYTHONPATH"><a href="#PYTHONPATH" class="headerlink" title="PYTHONPATH"></a>PYTHONPATH</h3><p>如果新安装了一个software，这个software包含有python binding，然后想使用对应的python binding，就需要手动修改一下 PYTHONPATH。通常是找到相对应的<code>site-packages</code>目录，然后 </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export PYTHONPATH=/dir/to/site-packages:$&#123;PYTHONPATH&#125;</span><br></pre></td></tr></table></figure>
-
-
 <h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p>主要参考的是这个文章<br><a target="_blank" rel="noopener" href="http://www.cnblogs.com/dongzhiquan/archive/2012/01/10/2317641.html">http://www.cnblogs.com/dongzhiquan/archive/2012/01/10/2317641.html</a></p>
 <p>ubuntu java 环境变量配置</p>
 <p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/BigIdiot/archive/2012/03/26/2417547.html">http://www.cnblogs.com/BigIdiot/archive/2012/03/26/2417547.html</a></p>
@@ -153,7 +146,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/25/linux-env/" data-id="cm2a0xf4r008ldvjrc7bkgszr" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/06/25/linux-env/" data-id="cmbw030iq008wj8jrb35ybrkz" class="article-share-link">分享</a>
       
       
       
@@ -336,28 +329,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

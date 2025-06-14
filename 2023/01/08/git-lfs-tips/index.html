@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>The git lfs may seems like a magic for me. We try to take some notes here.</p>
 <span id="more"></span>
-
 <h3 id="clone-repo-then-download-large-file"><a href="#clone-repo-then-download-large-file" class="headerlink" title="clone repo then download large file"></a>clone repo then download large file</h3><p><a target="_blank" rel="noopener" href="https://gist.github.com/nepsilon/7c44e8fc597eed97e71174d6d67a5617">https://gist.github.com/nepsilon/7c44e8fc597eed97e71174d6d67a5617</a></p>
 <p>We generate a file here to track things. <code>.gitattributes</code> try to use git related command to track and untrack the file, do not update associated file manually.</p>
 <h3 id="push-large-file-in-local-repo-to-remote"><a href="#push-large-file-in-local-repo-to-remote" class="headerlink" title="push large file in local repo to remote"></a>push large file in local repo to remote</h3><h3 id="Fork-repo-with-lfs-but-do-not-want-to-push-it-to-forked-remote-repo"><a href="#Fork-repo-with-lfs-but-do-not-want-to-push-it-to-forked-remote-repo" class="headerlink" title="Fork repo with lfs but do not want to push it to forked remote repo"></a>Fork repo with lfs but do not want to push it to forked remote repo</h3><p>Some issue is <code>remote: Gitlab: LFS Objects are missing.</code></p>
@@ -138,7 +134,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/01/08/git-lfs-tips/" data-id="cm2a0xf4n007cdvjr47b3auqb" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/01/08/git-lfs-tips/" data-id="cmbw030in007pj8jrevu963xp" class="article-share-link">分享</a>
       
       
       
@@ -321,28 +317,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

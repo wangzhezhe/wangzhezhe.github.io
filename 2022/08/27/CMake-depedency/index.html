@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>Some tips about cmake depedency.</p>
 <span id="more"></span>
-
 <h3 id="Within-the-same-project"><a href="#Within-the-same-project" class="headerlink" title="Within the same project"></a>Within the same project</h3><p>We may start with the default option to link two libraries, however, the depedency between two library in the same projects can be classified as <code>PRIVATE</code> <code>PUBLIC</code> <code>INTERFACE</code>.</p>
 <p>Let’s start with a simple example to show how these things are differnet in cmake.</p>
 <p>Assuming there is a main function call the hello, and the hello function calls the helloinner.</p>
@@ -135,21 +131,16 @@ ga('send', 'pageview');
 <p>There are four cases, we take down the main operations of make by using <code>make VERBOSE=1</code></p>
 <p>Case 1<br>Both helloinner and hello are static libraries</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#1 create the object file for helloinner</span><br><span class="line">/usr/bin/c++  -I/home/zw/cworkspace/src/5MCST/cmake_example/Depedency  -MD -MT hello/helloinner/CMakeFiles/helloinner.dir/helloinner.cpp.o -MF CMakeFiles/helloinner.dir/helloinner.cpp.o.d -o CMakeFiles/helloinner.dir/helloinner.cpp.o -c /home/zw/cworkspace/src/5MCST/cmake_example/Depedency/hello/helloinner/helloinner.cpp</span><br><span class="line"></span><br><span class="line">#2 build the object file into the static library</span><br><span class="line">/usr/bin/ar qc libhelloinner.a CMakeFiles/helloinner.dir/helloinner.cpp.o</span><br><span class="line">/usr/bin/ranlib libhelloinner.a</span><br><span class="line"></span><br><span class="line">#3 build object file for hello</span><br><span class="line">/usr/bin/c++  -I/home/zw/cworkspace/src/5MCST/cmake_example/Depedency  -MD -MT hello/CMakeFiles/hello.dir/hello.cpp.o -MF CMakeFiles/hello.dir/hello.cpp.o.d -o CMakeFiles/hello.dir/hello.cpp.o -c /home/zw/cworkspace/src/5MCST/cmake_example/Depedency/hello/hello.cpp</span><br><span class="line"></span><br><span class="line">#4 create the static library for hello</span><br><span class="line">/usr/bin/ar qc libhello.a CMakeFiles/hello.dir/hello.cpp.o</span><br><span class="line">/usr/bin/ranlib libhello.a</span><br><span class="line"></span><br><span class="line">#5 build the object file for main</span><br><span class="line">/usr/bin/c++  -I/home/zw/cworkspace/src/5MCST/cmake_example/Depedency  -MD -MT CMakeFiles/main.dir/main.cpp.o -MF CMakeFiles/main.dir/main.cpp.o.d -o CMakeFiles/main.dir/main.cpp.o -c /home/zw/cworkspace/src/5MCST/cmake_example/Depedency/main.cpp</span><br><span class="line"></span><br><span class="line">#6 link the static libraris to main executable file</span><br><span class="line">/usr/bin/c++ -rdynamic CMakeFiles/main.dir/main.cpp.o -o main  hello/libhello.a hello/helloinner/libhelloinner.a </span><br></pre></td></tr></table></figure>
-
 <p>Case 2<br>helloinner is shared library and hello is static library</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 1 build the shared object for helloinner</span><br><span class="line"># except the parameter used for shared library, it adds -Dhelloinner_EXPORTS as a preprocessor macro helloinner_EXPORTS</span><br><span class="line"></span><br><span class="line">/usr/bin/c++ -Dhelloinner_EXPORTS -I/home/zw/cworkspace/src/5MCST/cmake_example/Depedency -fPIC -MD -MT hello/helloinner/CMakeFiles/helloinner.dir/helloinner.cpp.o -MF CMakeFiles/helloinner.dir/helloinner.cpp.o.d -o CMakeFiles/helloinner.dir/helloinner.cpp.o -c /home/zw/cworkspace/src/5MCST/cmake_example/Depedency/hello/helloinner/helloinner.cpp</span><br><span class="line"></span><br><span class="line"># 2 create the shared library</span><br><span class="line"></span><br><span class="line">/usr/bin/c++ -fPIC -shared -Wl,-soname,libhelloinner.so -o libhelloinner.so CMakeFiles/helloinner.dir/helloinner.cpp.o </span><br><span class="line"></span><br><span class="line"># 3 build the object of hello, this is same with previous situation</span><br><span class="line">/usr/bin/c++  -I/home/zw/cworkspace/src/5MCST/cmake_example/Depedency  -MD -MT hello/CMakeFiles/hello.dir/hello.cpp.o -MF CMakeFiles/hello.dir/hello.cpp.o.d -o CMakeFiles/hello.dir/hello.cpp.o -c /home/zw/cworkspace/src/5MCST/cmake_example/Depedency/hello/hello.cpp</span><br><span class="line"></span><br><span class="line"># 4 link to a static lib (same with prevoius situation)</span><br><span class="line">/usr/bin/ar qc libhello.a CMakeFiles/hello.dir/hello.cpp.o</span><br><span class="line">/usr/bin/ranlib libhello.a</span><br><span class="line"></span><br><span class="line"># 5 build object for main (same with previous situation)</span><br><span class="line">/usr/bin/c++  -I/home/zw/cworkspace/src/5MCST/cmake_example/Depedency  -MD -MT CMakeFiles/main.dir/main.cpp.o -MF CMakeFiles/main.dir/main.cpp.o.d -o CMakeFiles/main.dir/main.cpp.o -c /home/zw/cworkspace/src/5MCST/cmake_example/Depedency/main.cpp</span><br><span class="line"></span><br><span class="line"># 6 link the shared object (helloinner) and static library (hello) to the main (two libraries are linked here)</span><br><span class="line">/usr/bin/c++ -rdynamic CMakeFiles/main.dir/main.cpp.o -o main  -Wl,-rpath,/home/zw/cworkspace/src/5MCST/cmake_example/Depedency/build/hello/helloinner hello/libhello.a hello/helloinner/libhelloinner.so </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>Case 3<br>helloinner is static and hello is dynamic library</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 1 and 2 same with the case 1</span><br><span class="line"># 3 build shared object for hello, there is also export macro</span><br><span class="line"></span><br><span class="line">/usr/bin/c++ -Dhello_EXPORTS -I/home/zw/cworkspace/src/5MCST/cmake_example/Depedency -fPIC -MD -MT hello/CMakeFiles/hello.dir/hello.cpp.o -MF CMakeFiles/hello.dir/hello.cpp.o.d -o CMakeFiles/hello.dir/hello.cpp.o -c /home/zw/cworkspace/src/5MCST/cmake_example/Depedency/hello/hello.cpp</span><br><span class="line"></span><br><span class="line"># 4 link the static library to the shared library</span><br><span class="line">/usr/bin/c++ -fPIC -shared -Wl,-soname,libhello.so -o libhello.so CMakeFiles/hello.dir/hello.cpp.o  helloinner/libhelloinner.a </span><br><span class="line"></span><br><span class="line"># 5 build the object for main, same with the case 1</span><br><span class="line"></span><br><span class="line"># 6 link the shared lib to the main (two libraries are linked here)</span><br><span class="line">/usr/bin/c++ -rdynamic CMakeFiles/main.dir/main.cpp.o -o main  -Wl,-rpath,/home/zw/cworkspace/src/5MCST/cmake_example/Depedency/build/hello hello/libhello.so hello/helloinner/libhelloinner.a</span><br></pre></td></tr></table></figure>
-
 <p>Case 4<br>Both helloinner and hello are dynamic libraries</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 1 build shared object for helloinner</span><br><span class="line"></span><br><span class="line">/usr/bin/c++ -Dhelloinner_EXPORTS -I/home/zw/cworkspace/src/5MCST/cmake_example/Depedency -fPIC -MD -MT hello/helloinner/CMakeFiles/helloinner.dir/helloinner.cpp.o -MF CMakeFiles/helloinner.dir/helloinner.cpp.o.d -o CMakeFiles/helloinner.dir/helloinner.cpp.o -c /home/zw/cworkspace/src/5MCST/cmake_example/Depedency/hello/helloinner/helloinner.cpp</span><br><span class="line"></span><br><span class="line"># 2 link the shared lib</span><br><span class="line"></span><br><span class="line">/usr/bin/c++ -fPIC -shared -Wl,-soname,libhelloinner.so -o libhelloinner.so CMakeFiles/helloinner.dir/helloinner.cpp.o</span><br><span class="line"></span><br><span class="line"># 3 build shared object for hello</span><br><span class="line"></span><br><span class="line">/usr/bin/c++ -Dhello_EXPORTS -I/home/zw/cworkspace/src/5MCST/cmake_example/Depedency -fPIC -MD -MT hello/CMakeFiles/hello.dir/hello.cpp.o -MF CMakeFiles/hello.dir/hello.cpp.o.d -o CMakeFiles/hello.dir/hello.cpp.o -c /home/zw/cworkspace/src/5MCST/cmake_example/Depedency/hello/hello.cpp</span><br><span class="line"></span><br><span class="line"># 4 link the shared lib for hello</span><br><span class="line"></span><br><span class="line">/usr/bin/c++ -fPIC -shared -Wl,-soname,libhello.so -o libhello.so CMakeFiles/hello.dir/hello.cpp.o  -Wl,-rpath,/home/zw/cworkspace/src/5MCST/cmake_example/Depedency/build/hello/helloinner helloinner/libhelloinner.so</span><br><span class="line"></span><br><span class="line"># 5 build shared object for main</span><br><span class="line"></span><br><span class="line">/usr/bin/c++  -I/home/zw/cworkspace/src/5MCST/cmake_example/Depedency  -MD -MT CMakeFiles/main.dir/main.cpp.o -MF CMakeFiles/main.dir/main.cpp.o.d -o CMakeFiles/main.dir/main.cpp.o -c /home/zw/cworkspace/src/5MCST/cmake_example/Depedency/main.cpp</span><br><span class="line"></span><br><span class="line"># 6 link the shared executable for main (there are two shared files)</span><br><span class="line"></span><br><span class="line">/usr/bin/c++ -rdynamic CMakeFiles/main.dir/main.cpp.o -o main  -Wl,-rpath,/home/zw/cworkspace/src/5MCST/cmake_example/Depedency/build/hello:/home/zw/cworkspace/src/5MCST/cmake_example/Depedency/build/hello/helloinner hello/libhello.so hello/helloinner/libhelloinner.so</span><br></pre></td></tr></table></figure>
-
 <p>There are some discussion about the meaning of <code>PRIVATE</code> keyward <code>PUBLIC</code> keyword when link to the target <a target="_blank" rel="noopener" href="https://cmake.org/pipermail/cmake/2016-May/063400.html">here</a></p>
 <p>If the hello library in our situation is the static library, we does not need to care about the private and public keyword, the static library does not contains the information about the shared library, so the shared library is added to the link path of the main even if we use the private key word here.</p>
 <p>The thing that matters is when both helloinner and hello are shared libraries. In this case, when we use the private keyword, at the link stage of the main, we get:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 1, 2  and 3 are same with the case 4</span><br><span class="line"># 4 link the hello.so libraray, the path of the helloinner is added into the rpath based on the comma format, which is different with the previous case 4</span><br><span class="line"></span><br><span class="line">/usr/bin/c++ -fPIC -shared -Wl,-soname,libhello.so -o libhello.so CMakeFiles/hello.dir/hello.cpp.o  -Wl,-rpath,/home/zw/cworkspace/src/5MCST/cmake_example/Depedency/build/hello/helloinner: helloinner/libhelloinner.so </span><br><span class="line"></span><br><span class="line">#5 same with previous case for build object file</span><br><span class="line"></span><br><span class="line">#6 Do not contain the helloinner.so in linked library, only put it into the -rpath-link, which is different with previous one</span><br><span class="line"></span><br><span class="line">/usr/bin/c++ -rdynamic CMakeFiles/main.dir/main.cpp.o -o main  -Wl,-rpath,/home/zw/cworkspace/src/5MCST/cmake_example/Depedency/build/hello:/home/zw/cworkspace/src/5MCST/cmake_example/Depedency/build/hello/helloinner hello/libhello.so -Wl,-rpath-link,/home/zw/cworkspace/src/5MCST/cmake_example/Depedency/build/hello/helloinner </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <h3 id="Between-different-projeccts"><a href="#Between-different-projeccts" class="headerlink" title="Between different projeccts"></a>Between different projeccts</h3><p>export and install export</p>
 <p><a target="_blank" rel="noopener" href="https://cmake.org/cmake/help/latest/command/export.html">https://cmake.org/cmake/help/latest/command/export.html</a></p>
 <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/47534442/cmake-how-to-export-a-library-with-private-dependencies">https://stackoverflow.com/questions/47534442/cmake-how-to-export-a-library-with-private-dependencies</a></p>
@@ -162,7 +153,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/08/27/CMake-depedency/" data-id="cm2a0xf42000rdvjr1ev2avkp" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/08/27/CMake-depedency/" data-id="cmbw030i0000mj8jra48q3m0x" class="article-share-link">分享</a>
       
       
       
@@ -345,28 +336,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -125,15 +122,13 @@ ga('send', 'pageview');
       
         <!-- Table of Contents -->
         
-        <p>Some tips about representing errors in c&#x2F;c++</p>
+        <p>Some tips about representing errors in c/c++</p>
 <span id="more"></span>
-
 <p>The fact is that the computer can not express all numbers in math. These fact cause some error here and there in the program, we need to be careful about these errors</p>
 <h3 id="Comparing-two-double-or-float-value"><a href="#Comparing-two-double-or-float-value" class="headerlink" title="Comparing two double or float value"></a>Comparing two double or float value</h3><p>When we try to compare two double or float value, we use abs(a,b) &lt; epsilon to represent it, since they are not totoally same with each other.</p>
 <h3 id="Exceeding-the-limit"><a href="#Exceeding-the-limit" class="headerlink" title="Exceeding the limit"></a>Exceeding the limit</h3><p>The type of number have their limitation, since there are limited number of byte for each type of data, if we do not care about these issues, the computation can be totoally wrong at some point.</p>
 <p>We always need to care about the scope of the input number and if the type of the data we choose can properly express the computed results for numerical operations.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int a = INT_MAX;</span><br><span class="line">std::cout &lt;&lt; a &lt;&lt; std::endl;</span><br><span class="line">a=a+1;</span><br><span class="line">std::cout &lt;&lt; a &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">2147483647</span><br><span class="line">-2147483648</span><br></pre></td></tr></table></figure>
-
 <h3 id="The-point-is-located-in-which-cell"><a href="#The-point-is-located-in-which-cell" class="headerlink" title="The point is located in which cell"></a>The point is located in which cell</h3><p>Sometimes, we need the operation to adjust one point is in which cell, however, the boundry of the cell might be a small number such as 0.000001 which is used to represent 0, then in this case, it is not 0, so when we check the point (0,0) it is not located in the cell, in this case, we need some tolerance value to make the boundry a little bit wider than what it actually is.</p>
 <p>Then the followed up question is that, one point can be located in several cells at the same time because of this tolerance issue. </p>
 <p>I’m still not sure if the line of cell itsself take up space, but considering one point is located on the cell boundry exactly, we might think it is at the two cells at the same time, especially when we use the tolerance to compare two double value</p>
@@ -141,7 +136,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/10/30/Error-of-representing-numbers/" data-id="cm2a0xf44001advjrgg2j72t9" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/10/30/Error-of-representing-numbers/" data-id="cmbw030i20017j8jr30enekvq" class="article-share-link">分享</a>
       
       
       
@@ -324,28 +319,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

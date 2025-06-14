@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>这一块主要记录一下链表相关的一些常考题目以及解题思路。</p>
 <span id="more"></span>
-
 <h3 id="基本知识"><a href="#基本知识" class="headerlink" title="基本知识"></a>基本知识</h3><p>这一块的难点主要是考察代码的实现能力，链表相关的题目在思路上比较简单，链表上每一个元素都存储空间都是临时分配的，每一个节点在存储空间的物理位置上是不一定连续的。链表的问题，在实现的时候，最优解往往不是使用额外的数据结构，这往往需要更多的技巧（最基本的比如链表的翻转）</p>
 <p><strong>在分类上</strong></p>
 <ul>
@@ -161,7 +157,7 @@ ga('send', 'pageview');
 <p>关于退出条件以及一些细节，在进行h-&gt;next这种操作之前，一定要判断是否h指针是否为NULL，要不然总会在莫名奇妙的地方出现问题。</p>
 <p><strong>一些常用的tips</strong></p>
 <ul>
-<li>这块的操作确比较繁琐，在初始话的时候最好使用构造函数的形式head&#x3D;new ListNode(val);以免造成忘记初始化为NULL</li>
+<li>这块的操作确比较繁琐，在初始话的时候最好使用构造函数的形式head=new ListNode(val);以免造成忘记初始化为NULL</li>
 <li>head指针太关键了，所有操作也都是从head指针开始的，不管是循环的还是非循环的，都要保存一个head指针，根据题目的实际情况判断头结点设置为空节点，还是第一个元素所在位置的节点。（比如后面的删除值为val的节点的题目）</li>
 <li>注意保存lastNode，即是当前节点的上一个节点，许多操作都是lastNode和currentNode结合起来进行的</li>
 <li>插入，删除的时候，改变指针也都是先改变后面的再改变前面的</li>
@@ -185,16 +181,14 @@ ga('send', 'pageview');
 <p>思路一：<br>使用额外的数组，将链表中的元素放到数组中。之后类似荷兰国旗问题，对数组进行一次partition，之后再还原为链表。</p>
 <p>思路二：<br>思路一其实没有发挥链表的优势：拆分灵活，实质上只需要在遍历链表的时候，把原来的大链表拆分成三个小的链表就可以了，拆分之后再讲这三个小的链表串起来，灵活方便，也不容易出错。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;cstring&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">struct ListNode</span><br><span class="line">&#123;</span><br><span class="line">    int val;</span><br><span class="line">    struct ListNode *next;</span><br><span class="line">    ListNode(int x) : val(x), next(NULL) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line">class Divide</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    int ifempty(ListNode *head)</span><br><span class="line">    &#123;</span><br><span class="line">        if (head-&gt;next==NULL)</span><br><span class="line">        &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ListNode* listDivide(ListNode* head, int val)</span><br><span class="line">    &#123;</span><br><span class="line">        ListNode *heada=new ListNode(-1);</span><br><span class="line">        ListNode *headc=new ListNode(-1);</span><br><span class="line">        ListNode *taila=heada;</span><br><span class="line">        ListNode *tailc=headc;</span><br><span class="line">        ListNode *returnHead;</span><br><span class="line">        ListNode *temp=head;</span><br><span class="line">        if (temp-&gt;next==NULL)&#123;</span><br><span class="line">            return head;</span><br><span class="line">        &#125;</span><br><span class="line">        while(temp!=NULL)</span><br><span class="line">        &#123;</span><br><span class="line">            ListNode *newnode=new ListNode(temp-&gt;val);</span><br><span class="line">            if(temp-&gt;val&lt;=val)</span><br><span class="line">            &#123;</span><br><span class="line">                taila-&gt;next=newnode;</span><br><span class="line">                taila=newnode;</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                tailc-&gt;next=newnode;</span><br><span class="line">                tailc=newnode;</span><br><span class="line">            &#125;</span><br><span class="line">            temp=temp-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        if (ifempty(heada)==false)</span><br><span class="line">        &#123;</span><br><span class="line">            returnHead=heada-&gt;next;</span><br><span class="line">            taila-&gt;next=headc-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        if(ifempty(heada)==true &amp;&amp; ifempty(headc)==false)</span><br><span class="line">        &#123;</span><br><span class="line">            returnHead=headc-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        return returnHead;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int a[5]= &#123;360,220,2&#125;;</span><br><span class="line">    int val=2;</span><br><span class="line">    int i;</span><br><span class="line">    ListNode *head=new ListNode(360);</span><br><span class="line">    ListNode *tail=head;</span><br><span class="line">    ListNode *returnHead;</span><br><span class="line">    for(i=1; i&lt;3; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        ListNode *temp=new ListNode(a[i]);</span><br><span class="line">        tail-&gt;next=temp;</span><br><span class="line">        tail=temp;</span><br><span class="line">    &#125;</span><br><span class="line">    tail=head;</span><br><span class="line">    while(tail!=NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        printf(&quot; %d&quot;,tail-&gt;val);</span><br><span class="line">        tail=tail-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    putchar(&#x27;\n&#x27;);</span><br><span class="line">    Divide d;</span><br><span class="line">    returnHead=d.listDivide(head,val);</span><br><span class="line">    tail=returnHead;</span><br><span class="line">    while(tail!=NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        printf(&quot; %d&quot;,tail-&gt;val);</span><br><span class="line">        tail=tail-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="两个链表的公共部分-这个没有要求公共部分连续-降低了一些难度"><a href="#两个链表的公共部分-这个没有要求公共部分连续-降低了一些难度" class="headerlink" title="两个链表的公共部分(这个没有要求公共部分连续 降低了一些难度)"></a>两个链表的公共部分(这个没有要求公共部分连续 降低了一些难度)</h3><p>给定两个有序链表的头结点head1以及head2，求两个有序链表的公共部分。</p>
 <p>其实思路也很简单，就是类似于之前的两指针的思路。</p>
 <p>是指上是两指针问题的一个链表版本的实现。</p>
 <p>首先是前提条件判断，如果为空的时候，就直接返回空，之后index1与index2都从头开始往后遍历，如果两个元素的值相等，则打印，之后两个index全都后移，否则，值稍微小一点的那个链表的index向后移动，重复前面的逻辑。</p>
 <p>代码实现起来倒是比较简单，注意开始时候的空值判断</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class Common</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; findCommonParts(ListNode* headA, ListNode* headB)</span><br><span class="line">    &#123;</span><br><span class="line">        vector&lt;int&gt; common;</span><br><span class="line">        if (headA-&gt;next==NULL||headB-&gt;next==NULL)</span><br><span class="line">        &#123;</span><br><span class="line">            return common;</span><br><span class="line">        &#125;</span><br><span class="line">        ListNode *tailA=headA;</span><br><span class="line">        ListNode *tailB=headB;</span><br><span class="line">        while(tailA!=NULL&amp;&amp;tailB!=NULL)</span><br><span class="line">        &#123;</span><br><span class="line">            if(tailA-&gt;val==tailB-&gt;val)&#123;</span><br><span class="line">                common.push_back(tailA-&gt;val);</span><br><span class="line">                tailA=tailA-&gt;next;</span><br><span class="line">                tailB=tailB-&gt;next;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;else if(tailA-&gt;val&lt;tailB-&gt;val)&#123;</span><br><span class="line">                tailA=tailA-&gt;next;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                tailB=tailB-&gt;next;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return common;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
 <h3 id="链表局部逆序（比较灵活-综合性较强）"><a href="#链表局部逆序（比较灵活-综合性较强）" class="headerlink" title="链表局部逆序（比较灵活 综合性较强）"></a>链表局部逆序（比较灵活 综合性较强）</h3><p>给定一个链表的头结点head，实现一个调整单链表的函数，使得每K个节点之间逆序，如果最后不够K格节点一组，则不调整最后的几个节点。</p>
-<p>比如链表 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6-&gt;7-&gt;8-&gt;null K&#x3D;3 进行调整之后，就会变成3-&gt;2-&gt;1-&gt;6-&gt;5-&gt;4-&gt;7-&gt;8-&gt;null 因为最后两个元素的个数加起来没有组成3，所以最后两个节点不够一组。<br>说起来简单做起来难，总之有好多边界情况需要考虑，这块可能隐藏着的坑比较多。</p>
+<p>比如链表 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6-&gt;7-&gt;8-&gt;null K=3 进行调整之后，就会变成3-&gt;2-&gt;1-&gt;6-&gt;5-&gt;4-&gt;7-&gt;8-&gt;null 因为最后两个元素的个数加起来没有组成3，所以最后两个节点不够一组。<br>说起来简单做起来难，总之有好多边界情况需要考虑，这块可能隐藏着的坑比较多。</p>
 <p>思路一：<br>其实有点综合题的感觉，涉及到逆序类的题目，可以很自然的联想到逆序的操作，比如前面K个元素先入栈，之后再反向一一弹出，每次弹出的时候，需要链表的next指针进行重连，具体涉及到的细节比较多。</p>
 <p>注意最后元素不足k个的时候，应该如何处理。<br>组与组之前需要经行连接，需要记下上一组中的最后一个元素。<br>返回调整时候链表的头结点，函数应该返回链表的头结点。</p>
 <p>思路二：<br>与方法一类似，就是省去了栈的这种额外结构，依然是搜集到k个元素就进行一次k个元素之间的逆序操作。每组逆序之后的头节点和上一组已经调整好的尾节点相连。</p>
@@ -240,8 +234,8 @@ ga('send', 'pageview');
 <p>首先要明确的一个基本概念，什么样的情况叫做链表相交，实际上更准确的表述是说，两个链表，从某个节点开始之后，剩下的部分都开始重合了，不存才那种”X”形式的相交，因为根据链表的结构，不会有两个next指针，只能是类似”Y”形的这种情况。或者是Y形后面接一个环的形状，再或者是一个环，然后分出两个小枝，两个链表在环的不同节点位置入环。</p>
 <p>更高效的思路，首先是判断两个链表的环的起始的节点，具体方法可以根据上面的题目中的思路，比如两个如环节点分别是head1与head2</p>
 <ul>
-<li>如果head1&#x3D;head2，两个链表可能在入环之前就出现相交，这个时候按照上上题的方式，只不过遍历的终止节点为head1&#x3D;head2</li>
-<li>如果head1！&#x3D;head2 可能是两个有换的链表根本不相交，或者如环节点是大环上的两个节点，这个时候从head1开始遍历，如果在遍历过程中找到了head2，说明是第二种情况，返回head1或者是head2都是可以的，如果在遍历的过程中，没有找到head2，又回到了head1节点，说明两个环形链表是不相交的。<br>没有在规定时间运行完？？(需要把上一个题目的程序修改下，结束标志由NULL变为公共元素)</li>
+<li>如果head1=head2，两个链表可能在入环之前就出现相交，这个时候按照上上题的方式，只不过遍历的终止节点为head1=head2</li>
+<li>如果head1！=head2 可能是两个有换的链表根本不相交，或者如环节点是大环上的两个节点，这个时候从head1开始遍历，如果在遍历过程中找到了head2，说明是第二种情况，返回head1或者是head2都是可以的，如果在遍历的过程中，没有找到head2，又回到了head1节点，说明两个环形链表是不相交的。<br>没有在规定时间运行完？？(需要把上一个题目的程序修改下，结束标志由NULL变为公共元素)</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/*</span><br><span class="line">struct ListNode &#123;</span><br><span class="line">    int val;</span><br><span class="line">    struct ListNode *next;</span><br><span class="line">    ListNode(int x) : val(x), next(NULL) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line">*/</span><br><span class="line">class ChkIntersection &#123;</span><br><span class="line">    </span><br><span class="line">    int getLen(ListNode* head,ListNode*common)&#123;</span><br><span class="line">    int len=0;</span><br><span class="line">    ListNode* tail=head;</span><br><span class="line">    while(tail!=common)&#123;</span><br><span class="line">        len=len+1;</span><br><span class="line">        tail=tail-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    return len;</span><br><span class="line">&#125;</span><br><span class="line">    bool chkIntersect(ListNode* headA, ListNode* headB,ListNode*common) &#123;</span><br><span class="line">        // write code here</span><br><span class="line">        int lena=getLen(headA,common);</span><br><span class="line">        int lenb=getLen(headB,common);</span><br><span class="line">        ListNode*taila=headA;</span><br><span class="line">        ListNode*tailb=headB;</span><br><span class="line">        int temp;</span><br><span class="line">        if(lena&gt;lenb)&#123;</span><br><span class="line">            temp=lena-lenb;</span><br><span class="line">            while(temp--)&#123;</span><br><span class="line">                taila=taila-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            temp=lenb-lena;</span><br><span class="line">            while(temp--)&#123;</span><br><span class="line">                tailb=tailb-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        //move together</span><br><span class="line">        while(taila!=common&amp;&amp;tailb!=common)&#123;</span><br><span class="line">            if (taila==tailb)&#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">            taila=taila-&gt;next;</span><br><span class="line">            tailb=tailb-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;  </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    ListNode* detectCycle(ListNode* head) &#123;</span><br><span class="line">        ListNode *h1=head;</span><br><span class="line">        ListNode *h2=head;</span><br><span class="line">        bool cycle=false;</span><br><span class="line">        int flag=0;</span><br><span class="line">        if (head==NULL)&#123;</span><br><span class="line">            cycle = false;</span><br><span class="line">            flag=1;</span><br><span class="line">        &#125;</span><br><span class="line">        if (h1!=NULL&amp;&amp;h1-&gt;next==h1)&#123;</span><br><span class="line">            cycle =true;</span><br><span class="line">            flag=1;</span><br><span class="line">        &#125;</span><br><span class="line">        if (h1!=NULL&amp;&amp;h1-&gt;next==NULL)&#123;</span><br><span class="line">            cycle = false;</span><br><span class="line">            flag=1;</span><br><span class="line">        &#125;</span><br><span class="line">        while(h1!=NULL&amp;&amp;h2!=NULL&amp;&amp;flag==0)&#123;</span><br><span class="line">            h1=h1-&gt;next;</span><br><span class="line">            if(h2-&gt;next!=NULL)&#123;</span><br><span class="line">                h2=h2-&gt;next-&gt;next;</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">            if(h1==h2)&#123;</span><br><span class="line">                cycle=true;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if(cycle==false)&#123;</span><br><span class="line">            return NULL;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            h1=head;</span><br><span class="line">            while(h1!=h2)&#123;</span><br><span class="line">                h1=h1-&gt;next;</span><br><span class="line">                h2=h2-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return h1;</span><br><span class="line">    &#125;</span><br><span class="line">public:</span><br><span class="line">    bool chkInter(ListNode* head1, ListNode* head2, int adjust0, int adjust1) &#123;</span><br><span class="line">        // write code here</span><br><span class="line">        ListNode * pointA=detectCycle(head1);</span><br><span class="line">        ListNode * pointB=detectCycle(head2);</span><br><span class="line">        if (pointA==NULL||pointB==NULL)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        if(pointA==pointB)&#123;</span><br><span class="line">            return chkIntersect(head1,head2,pointA);</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">             ListNode*curr=pointA-&gt;next;</span><br><span class="line">             while(curr!=pointA)&#123;</span><br><span class="line">               if (curr==pointB)&#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">        &#125;</span><br><span class="line">       </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <h3 id="判断两个单链表是否相交（综合题目）"><a href="#判断两个单链表是否相交（综合题目）" class="headerlink" title="判断两个单链表是否相交（综合题目）"></a>判断两个单链表是否相交（综合题目）</h3><p>给定两个单链表的头结点head1以及head2，如何判断两个链表是否相交？相交的话返回第一个相交的节点，不想交的话返回空。</p>
@@ -250,7 +244,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/13/algorithm-4-linked-list/" data-id="cm2a0xf4h004zdvjrfu4khsf4" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/13/algorithm-4-linked-list/" data-id="cmbw030ih005mj8jr7kak1rnv" class="article-share-link">分享</a>
       
       
       
@@ -433,28 +427,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

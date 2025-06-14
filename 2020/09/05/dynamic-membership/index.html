@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,8 +124,7 @@ ga('send', 'pageview');
         
         <p>some thoughts about the dynamic membership in the research</p>
 <span id="more"></span>
-
-<p>one related work that explains the dynamic membership of the process for key-value store on HEC system (<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=6569861&amp;tag=1">https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=6569861&amp;tag=1</a>), at the Section three of the paper, they present good motivation for dynamic process join&#x2F;leave (1) for the fault tolerance such as process or node failure (2) better utilizing resource to improve the performance, such as using more processes when there are more data&#x2F;tasks. However, for the HEC environment, the resource is fixed when we start a job, this means the resource will not change dynamically (at least for the process level). Therefore, more research efforts about this topic (dynamic membership) is located in the area of fault tolerance for the HEC environment. Even for this paper, they also use fault tolerance as an important use case. The second use case might be more useful for the cloud environment according to this paper.</p>
+<p>one related work that explains the dynamic membership of the process for key-value store on HEC system (<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=6569861&amp;tag=1">https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=6569861&amp;tag=1</a>), at the Section three of the paper, they present good motivation for dynamic process join/leave (1) for the fault tolerance such as process or node failure (2) better utilizing resource to improve the performance, such as using more processes when there are more data/tasks. However, for the HEC environment, the resource is fixed when we start a job, this means the resource will not change dynamically (at least for the process level). Therefore, more research efforts about this topic (dynamic membership) is located in the area of fault tolerance for the HEC environment. Even for this paper, they also use fault tolerance as an important use case. The second use case might be more useful for the cloud environment according to this paper.</p>
 <p>However, for the fault tolerance, the previous work from Duan (<a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/3391448">https://dl.acm.org/doi/10.1145/3391448</a>) has presented good solutions for the case of the process failure for data staging service; and it seems that for the research topics related with the fault tolerance, more research interests are how to do data checkpointing, and how to recovery data or process from the failure point. The dynamic membership is just an important tool to support these features.</p>
 <p>Based on these discussion, one main motivaion for HEC case is that how to fully utilize the allocalted resources. The resources you can use is like a large bag and what you can do is schedule tasks in a smart way to utilize resources fully or decrease the total workflow execution time fully. For the cloud env, the idea is that, the resource can be joined and leave high frequently and how to handle related issues. That are two different ways to consider the problems. This is mainly because of the resource allocation tool for the HEC system. </p>
 <p>Based on this thoguhts, there are lots of works about how to scheduler tasks wisely to let them fully utilize the process resources. such as the GoldRush(Resource Efficient In Situ Scientific Data Analytics Using Fine-Grained Interference Aware Execution) and AMR data load balance, main thoughts is to use the process idle period.</p>
@@ -136,7 +132,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/05/dynamic-membership/" data-id="cm2a0xf4n0073dvjreji37dzo" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/09/05/dynamic-membership/" data-id="cmbw030in007hj8jrh05n6o0r" class="article-share-link">分享</a>
       
       
       
@@ -242,23 +238,23 @@ ga('send', 'pageview');
       <ul>
         
           <li>
-            <a href="/2024/11/23/distributed-rendering/">distributed rendering</a>
+            <a href="/2025/06/08/javascript-tips/">javascript-tips</a>
           </li>
         
           <li>
-            <a href="/2024/11/21/opengl-tips/">opengl_tips</a>
+            <a href="/2025/02/27/Package-management/">Package management tips</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/23/distributed-rendering/">Distributed rendering (WIP)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/21/graphics-opengl-tips/">Graphics and Opengl Tips</a>
           </li>
         
           <li>
             <a href="/2024/10/18/Multiple-backend-design/">Multiple backend design</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/17/LLM-tips/">LLM tips</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/13/Interesting-numbers-in-CS-and-Femi-estimation/">Interesting numbers in CS and Femi estimation (WIP)</a>
           </li>
         
       </ul>
@@ -337,28 +333,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

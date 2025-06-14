@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>Key concepts and optimization strategies about the cuda based gpu programming.</p>
 <span id="more"></span>
-
 <p>The related code is in the parallelBLK cuda MVM (matrix vector multiplication)</p>
 <p>This blog discusses how to use cuda to compule the Ax, just show the basic concepts of cuda and associated programming details.</p>
 <h3 id="Number-of-block-per-grid-number-of-thread-per-block"><a href="#Number-of-block-per-grid-number-of-thread-per-block" class="headerlink" title="Number of block per grid, number of thread per block"></a>Number of block per grid, number of thread per block</h3><p>I learn the cuda and gpu programming in different classes, every time i start to try to program on cuda, I try to relearn these concepts again, such as grid, block, wrap, bank conflict and so on. I’m still feel confusing sometimes, and try to start clear up every thing again. Here I try to started with several simple eample, this example can be the foundation for the future learning. The first example is computing the matric times vector operation, namely the matrix vector multiplecation.</p>
@@ -150,12 +146,10 @@ ga('send', 'pageview');
 <p>The hard limitation is that we do not exceeds the physical limitation. For example, we can use the <code>deviceQuery</code> to check the <code>Maximum number of threads per block</code>, which is <code>1024</code> on A100 GPU.</p>
 <p>Then we can do the kernel call like this:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">function &lt;&lt;&lt; (elementsNum + BLOCK_SIZE - 1)/BLOCK_SIZE, BLOCK_SIZE &gt;&gt;&gt; (d_in, d_out);</span><br></pre></td></tr></table></figure>
-
 <p>The trick for <code>(elementsNum + BLOCK_SIZE - 1)/BLOCK_SIZE</code> is for processing the remainder. Because the elemNum may not be the integer multiples of the <code>BLOCK_SIZE</code>, so we add one more thread for each block if the element size is not the integer multipler of the blcok size. And these threads will keep idle if we do not have so many data to process, this way can simplify the programming a lot. We can also use the <code>ceil(N/blockSize)</code> to compute the number of blocks (dimGrid).</p>
 <p>The notation <code>&lt;&lt;&lt;&gt;&gt;&gt;</code> is called the execution configuration in cuda term, check this <a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#execution-configuration">doc</a> for more details. Although we only set one number for first and second parameters. According to the documentationt, these two positions are the actual dimentions of grid and block. For example, if we want to make use of both threadidx.x and threadidx.y, we need to make sure the block dim is 2d variable when we set the execution configuration.</p>
 <p>For our current configuration, the output of all id is like this:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">threadIdx.x 32 threadIdx.y 0 threadIdx.z 0 blockIdx.x 80 blockIdx.y 0 blockIdx.z 0 gridDim.x 313 gridDim.y 1 gridDim.z 1</span><br></pre></td></tr></table></figure>
-
 <p>We only use 1d of the threadIdx, it starts from 0 and ends with 63 in our case (we fix the threads number per block as 64). The blockIdx is computed based on the number of blocks, which is also 1d case. The gridDim shows the total number of blocks. Which is 313 in this case. The meaning of these variables are descirbed in this <a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#built-in-variables">doc</a>. We can explain the gridDim blockIdx and blockIdm threadIdx now. We will explain the idea of warp in the next section.</p>
 <p>Anyway, after executing the kernel call, then copy data back and forth between the cpu and gpu and initilizing all kinds of data structure is time consuming and error prone. Although this thing is not difficult, it still takes me a little while to make every thing correct. </p>
 <ul>
@@ -231,7 +225,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/06/13/Cuda-programming-1/" data-id="cm2a0xf42000wdvjr27gu0hnu" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/06/13/Cuda-programming-1/" data-id="cmbw030i0000rj8jrbndpb8a7" class="article-share-link">分享</a>
       
       
       
@@ -414,28 +408,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

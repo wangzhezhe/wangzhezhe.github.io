@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,14 +124,13 @@ ga('send', 'pageview');
         
         <p>Discsuss some commonly used primitives for parallel computing.</p>
 <span id="more"></span>
-
 <h3 id="FieldMap"><a href="#FieldMap" class="headerlink" title="FieldMap"></a>FieldMap</h3><h3 id="Scan-amp-PrefixSum"><a href="#Scan-amp-PrefixSum" class="headerlink" title="Scan &amp; PrefixSum"></a>Scan &amp; PrefixSum</h3><p>Using scan to process the case when there is depedency betwee operations</p>
 <h3 id="Strided1D-and-Strided3D"><a href="#Strided1D-and-Strided3D" class="headerlink" title="Strided1D and Strided3D"></a>Strided1D and Strided3D</h3><h3 id="ReduceByKey"><a href="#ReduceByKey" class="headerlink" title="ReduceByKey"></a>ReduceByKey</h3><p>Need sorting here</p>
 <h3 id="IterateCellByVertex"><a href="#IterateCellByVertex" class="headerlink" title="IterateCellByVertex"></a>IterateCellByVertex</h3><h3 id="IterateVertexByCell"><a href="#IterateVertexByCell" class="headerlink" title="IterateVertexByCell"></a>IterateVertexByCell</h3>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/09/24/parallel-primitives/" data-id="cm2a0xf4t008vdvjr1or809p9" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/09/24/parallel-primitives/" data-id="cmbw030ir009aj8jrces99wqj" class="article-share-link">分享</a>
       
       
       
@@ -317,28 +313,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

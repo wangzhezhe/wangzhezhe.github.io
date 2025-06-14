@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,22 +124,20 @@ ga('send', 'pageview');
         
         <p>记录一些关于distributed hash table(DHT)的感想和tips</p>
 <span id="more"></span>
-
-
-<h3 id="service-register-and-descovery-id"><a href="#service-register-and-descovery-id" class="headerlink" title="service register and descovery id"></a>service register and descovery id</h3><p>比如以db的server为例，在client决定需要把request发送到哪个server上时，首先要对server进行标记，which one is which。因为许多dht算法都是要通过id标记来进行的，这里列出来找到的几种方案。之后还要有id到ip的映射，比如client明确说要把请求发送给server with id &#x3D; 1 这个时候要能提供一个index的service，将id index 成ip然后让client获取到。</p>
+<h3 id="service-register-and-descovery-id"><a href="#service-register-and-descovery-id" class="headerlink" title="service register and descovery id"></a>service register and descovery id</h3><p>比如以db的server为例，在client决定需要把request发送到哪个server上时，首先要对server进行标记，which one is which。因为许多dht算法都是要通过id标记来进行的，这里列出来找到的几种方案。之后还要有id到ip的映射，比如client明确说要把请求发送给server with id = 1 这个时候要能提供一个index的service，将id index 成ip然后让client获取到。</p>
 <p><strong>MPI+parallel file system</strong></p>
 <p>MPI的程序可以通过<code>MPI_Comm_rank (MPI_COMM_WORLD, &amp;rank);</code>来得到当前process所在的id。之后通过shared file system来管理id到ip的mapping，比如以id名称为目录以ip名称为文件名称，或者采用其他的自定义文件内容的方式，总之因为parallel file system可以被所有的client 和 server access，get ip的操作就变得简单了许多</p>
 <p><strong>third party service</strong></p>
 <p>在cloud环境中就需要一个单独的server来管理ip的注册和发现(所谓的服务注册和服务发现)。主要的方法就是生成id，然后将这个id记录在一个global access的third party 服务中，具体参考<a target="_blank" rel="noopener" href="https://www.callicoder.com/distributed-unique-id-sequence-number-generator/">这个</a>，以及<a target="_blank" rel="noopener" href="https://medium.com/@varuntayal/what-does-it-take-to-generate-cluster-wide-unique-ids-in-a-distributed-system-d505b9eaa46e">这个</a>，<a target="_blank" rel="noopener" href="http://horicky.blogspot.com/2007/11/distributed-uuid-generation.html">这个</a>&lt;如何缓解由于centrlized server引发的单点问题&gt;。</p>
-<h3 id="sharding-horizental-partition-vertical-partition"><a href="#sharding-horizental-partition-vertical-partition" class="headerlink" title="sharding, horizental partition, vertical partition"></a>sharding, horizental partition, vertical partition</h3><p>这个<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=5faMjKuB9bc">youtube video</a>讲sharding比较有意思。用简单的话说就是把所有的data分配在不同的server上(根据某一个key)，key可以映射成某个range的数字，比如server1负责处理key&#x3D;1到key&#x3D;99的case，server2负责处理key&#x3D;100到199的case， 然后query的时候每个client请求不同的server。</p>
-<h3 id="consistent-hash"><a href="#consistent-hash" class="headerlink" title="consistent hash"></a>consistent hash</h3><p>这个 <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=zaRkONvyGr8&t=172s">youtube video</a>了解概念比较快。可以看到的一点是这里比较灵活的是不断有server adding或者move out时候，consistent hash 比较有用。（adding or removing servers）要是纯粹的load balancing的问题，使用之前的partition或者定期进行重新分配&lt;比如经过一段时间的存取删除操作，有的server上的data比较多，有的server上的data比较少，这时候可以采用redistribution进行重新分配&gt;，问题就可以解决。还有一些比较有名的dht协议，这里不一一介绍，比如chord，比较近的Kademlia，具体可以参考 wiki dht。</p>
+<h3 id="sharding-horizental-partition-vertical-partition"><a href="#sharding-horizental-partition-vertical-partition" class="headerlink" title="sharding, horizental partition, vertical partition"></a>sharding, horizental partition, vertical partition</h3><p>这个<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=5faMjKuB9bc">youtube video</a>讲sharding比较有意思。用简单的话说就是把所有的data分配在不同的server上(根据某一个key)，key可以映射成某个range的数字，比如server1负责处理key=1到key=99的case，server2负责处理key=100到199的case， 然后query的时候每个client请求不同的server。</p>
+<h3 id="consistent-hash"><a href="#consistent-hash" class="headerlink" title="consistent hash"></a>consistent hash</h3><p>这个 <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=zaRkONvyGr8&amp;t=172s">youtube video</a>了解概念比较快。可以看到的一点是这里比较灵活的是不断有server adding或者move out时候，consistent hash 比较有用。（adding or removing servers）要是纯粹的load balancing的问题，使用之前的partition或者定期进行重新分配&lt;比如经过一段时间的存取删除操作，有的server上的data比较多，有的server上的data比较少，这时候可以采用redistribution进行重新分配&gt;，问题就可以解决。还有一些比较有名的dht协议，这里不一一介绍，比如chord，比较近的Kademlia，具体可以参考 wiki dht。</p>
 <h3 id="fault-tolerance"><a href="#fault-tolerance" class="headerlink" title="fault tolerance"></a>fault tolerance</h3><p>fault tolerance主要解决的问题就是有一个server突然down掉了或者网络环境不稳定的时候有的服务连不上该怎么弄。主要的策略就是主从备份，server会分不同的role，比较popular的protocol有raft以及paxsos协议。这里就不具体展开，这一部分需要专门的一篇来介绍。stright forward的master slave策略可以参考redis的实现。</p>
 <h3 id="real-example"><a href="#real-example" class="headerlink" title="real example"></a>real example</h3><p><strong>redis</strong></p>
 <ul>
 <li>The ability to automatically split your dataset among multiple nodes:</li>
 </ul>
 <p> redis doesn’t use the consistance hash, it use data sharding (every key is conceptually part of what we call an hash slot) 这里的策略也比较straight forward，就是horizontal sharding的直接应用</p>
-<p> add move server? how to do this in redis &lt;using redirect?&gt; reshard data??<br> (Redirection and resharding in <a target="_blank" rel="noopener" href="https://redis.io/topics/cluster-spec)the">https://redis.io/topics/cluster-spec)the</a> client could cache the new key position &lt;client end 的map 在不断动态给更新&gt;<different status of the slot></p>
+<p> add move server? how to do this in redis <using redirect?> reshard data??<br> (Redirection and resharding in <a target="_blank" rel="noopener" href="https://redis.io/topics/cluster-spec)the">https://redis.io/topics/cluster-spec)the</a> client could cache the new key position <client end 的map 在不断动态给更新><different status of the slot></p>
 <p> 这种支持online add and delete server的操作需要很多设计考量，但是实际场景中可能并不需要动态地move in 以及 move out。在prototype的产品中，如果focuse的点不在db上，这里就可以略过。</p>
 <ul>
 <li>The ability to continue operations when a subset of the nodes are experiencing failures or are unable to communicate with the rest of the cluster.</li>
@@ -164,7 +159,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/29/DHT-tips/" data-id="cm2a0xf42000ydvjr4s0b0dcx" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/06/29/DHT-tips/" data-id="cmbw030i20012j8jr4p160ubv" class="article-share-link">分享</a>
       
       
       
@@ -347,28 +342,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>主要是介绍了golang中反射的基本工作原理以及基本的使用，其实关键还是要学会如何从interface实现的角度上去理解反射的流程，就很清晰了，当然这里只是介绍基本的使用方式，具体细节还有很多。</p>
 <span id="more"></span>
-
 <h3 id="关于接口的实现原理"><a href="#关于接口的实现原理" class="headerlink" title="关于接口的实现原理"></a>关于接口的实现原理</h3><h4 id="编译期间检测"><a href="#编译期间检测" class="headerlink" title="编译期间检测"></a>编译期间检测</h4><p>虽然golang中实现了 ducktype,但是仍然会在编译期会进行检测，不像其他的动态语言比如python那样，如果传入的是一个错误的类型（没有实现这个接口），在编译期间就会报错。</p>
 <p>比如下面的例子</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line">type Testinface interface &#123;</span><br><span class="line">	getLen(s string) (n int)</span><br><span class="line">&#125;</span><br><span class="line">func strLen(strutil Testinface, content string) int &#123;</span><br><span class="line">	str_len := strutil.getLen(content)</span><br><span class="line">	return str_len</span><br><span class="line">&#125;</span><br><span class="line">type Mystra struct &#123;</span><br><span class="line">	str string</span><br><span class="line">&#125;</span><br><span class="line">type Mystrb struct &#123;</span><br><span class="line">	num int</span><br><span class="line">&#125;</span><br><span class="line">func (s Mystra) getLen(str string) int &#123;</span><br><span class="line">	fmt.Printf(&quot;caculating the str of struct : %v\n&quot;, s)</span><br><span class="line">	return len(str)</span><br><span class="line">&#125;</span><br><span class="line">func main() &#123;</span><br><span class="line">	mystra := Mystra&#123;&quot;test the interface&quot;&#125;</span><br><span class="line">	mystrb := Mystrb&#123;100&#125;</span><br><span class="line">	value := strLen(mystra, mystra.str)</span><br><span class="line">	fmt.Println(value)</span><br><span class="line">	//check the first parameter if it realize the Testinface interface when compiling</span><br><span class="line">	value = strLen(mystrb, &quot;teststr&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -148,7 +144,7 @@ ga('send', 'pageview');
 <li><p>go语言interface的处理方式是将两者结合起来，它也有对应的method table，在实际运行的时候才会计算method table中的内容。</p>
 </li>
 </ul>
-<p>具体的图片可以参考原文，通过s:&#x3D;Stringer(b)生成一个interface的实例之后，其中包含两个指针（仅仅是从理解的角度上，实际代码的实现可能并没有这样直接），整个Stringer实例所在的地址空间主要包括两个指针:tab于data。</p>
+<p>具体的图片可以参考原文，通过s:=Stringer(b)生成一个interface的实例之后，其中包含两个指针（仅仅是从理解的角度上，实际代码的实现可能并没有这样直接），整个Stringer实例所在的地址空间主要包括两个指针:tab于data。</p>
 <ul>
 <li><p>其中data指针指向的是一个实际的值，在上面的例子中就是指向的b，就是通过reflect.ValueOf得到的那个值，只不过返回的结果被包装成了reflect.Value类型。</p>
 </li>
@@ -186,7 +182,7 @@ ga('send', 'pageview');
 </li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">  package main</span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;reflect&quot;</span><br><span class="line">)</span><br><span class="line">func main() &#123;</span><br><span class="line">	var x float32 = 32</span><br><span class="line">	v := reflect.ValueOf(x)</span><br><span class="line">	fmt.Println(&quot;type:&quot;, v.Type())</span><br><span class="line">	fmt.Println(&quot;kind is uint8: &quot;, v.Kind()) </span><br><span class="line">	fmt.Println(&quot;the type:&quot;, reflect.TypeOf(v.Float()))</span><br><span class="line">	fmt.Println(&quot;the type:&quot;, reflect.TypeOf(float32(v.Float())))</span><br><span class="line">&#125;</span><br><span class="line">/*output</span><br><span class="line">type: float32</span><br><span class="line">kind is uint8:  float32</span><br><span class="line">the type: float64</span><br><span class="line">the type: float32</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
-<p>再补充一点,在golang中可以使用断言的方式将接口类型的变量转化为具体data的类型，具体的语法如value, ok :&#x3D; interfaceInstance.(string),如果转化成功,value值与类型变为了具体的data的值与类型，否则ok的值就为false。从具体的某个底层类型转化为接口类型的实例，直接 newinterface:&#x3D;InterfaceType(instance)即可转化成功。</p>
+<p>再补充一点,在golang中可以使用断言的方式将接口类型的变量转化为具体data的类型，具体的语法如value, ok := interfaceInstance.(string),如果转化成功,value值与类型变为了具体的data的值与类型，否则ok的值就为false。从具体的某个底层类型转化为接口类型的实例，直接 newinterface:=InterfaceType(instance)即可转化成功。</p>
 <h4 id="从反射对象到接口值"><a href="#从反射对象到接口值" class="headerlink" title="从反射对象到接口值"></a>从反射对象到接口值</h4><p>可以把实际的类型通过reflecct.value的interface方法来打包成一个interface的形式，本质上相当于直接将这个值赋给一个interface{}类型的实例：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// Interface returns v&#x27;s current value as an interface&#123;&#125;.</span><br><span class="line">// It is equivalent to:</span><br><span class="line">//	var i interface&#123;&#125; = (v&#x27;s underlying value)</span><br><span class="line">// It panics if the Value was obtained by accessing</span><br><span class="line">// unexported struct fields.</span><br><span class="line">func (v Value) Interface() (i interface&#123;&#125;) &#123;</span><br><span class="line">	return valueInterface(v, true)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="可修改的反射对象值必须是settable的"><a href="#可修改的反射对象值必须是settable的" class="headerlink" title="可修改的反射对象值必须是settable的"></a>可修改的反射对象值必须是settable的</h4><p>如果想要通过反射来修改某个对象的值，需要这个值本身是setable的，这实际上是一个传值和传指针的问题，通过下面的例子就很明白了：</p>
@@ -209,10 +205,9 @@ ga('send', 'pageview');
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">type Stringer interface &#123;</span><br><span class="line">	String() string</span><br><span class="line">&#125;</span><br><span class="line">func main() &#123;</span><br><span class="line">	// Kind returns the specific kind of this type.</span><br><span class="line">	// Elem returns a type&#x27;s element type.</span><br><span class="line">	// It panics if the type&#x27;s Kind is not Array, Chan, Map, Ptr, or Slice.</span><br><span class="line">	fmt.Println(&quot;------------ptr------------&quot;)</span><br><span class="line">	fmt.Println(&quot;typeof:&quot;, reflect.TypeOf(new(Stringer)))</span><br><span class="line">	fmt.Println(&quot;kind:&quot;, reflect.TypeOf(new(Stringer)).Kind())</span><br><span class="line">	fmt.Println(&quot;elem:&quot;, reflect.TypeOf(new(Stringer)).Elem())</span><br><span class="line">	fmt.Println(&quot;------------map------------&quot;)</span><br><span class="line">	m := make(map[string]int)</span><br><span class="line">	fmt.Println(&quot;typeof:&quot;, reflect.TypeOf(m))</span><br><span class="line">	fmt.Println(&quot;kind:&quot;, reflect.TypeOf(m).Kind())</span><br><span class="line">	fmt.Println(&quot;elem:&quot;, reflect.TypeOf(m).Elem())</span><br><span class="line">	fmt.Println(&quot;------------slice------------&quot;)</span><br><span class="line">	s := make([]string, 3)</span><br><span class="line">	fmt.Println(&quot;typeof:&quot;, reflect.TypeOf(s))</span><br><span class="line">	fmt.Println(&quot;kind:&quot;, reflect.TypeOf(s).Kind())</span><br><span class="line">	fmt.Println(&quot;elem:&quot;, reflect.TypeOf(s).Elem())</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">output</span><br><span class="line">------------ptr------------</span><br><span class="line">typeof: *main.Stringer</span><br><span class="line">kind: ptr</span><br><span class="line">elem: main.Stringer</span><br><span class="line">------------map------------</span><br><span class="line">typeof: map[string]int</span><br><span class="line">kind: map</span><br><span class="line">elem: int</span><br><span class="line">------------slice------------</span><br><span class="line">typeof: []string</span><br><span class="line">kind: slice</span><br><span class="line">elem: string</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
 <p>上面的例子展示了type与kind函数的使用，type就是最”表层的分类”比如一个指针的type可以main.Stringer但是它的type是ptr指针类型。具体的elem函数会得到指针所指向的元素的Type比如第一个例子中的elem是main.Stringer，elem显示的是Type,而不是kind底层类型。再看之前reflect.TypeOf(new(Marshaler)).Elem()的定义，就容易理解了，得到的是指针所指向的实际内容的类型,newTypeEncoder函数中首先通过Implements函数判断了是否实现传入的接口类型，类似地在这一部分最开始的代码中，如果要判断自定义的struct是否实现了Stringer接口，需要进行如下操作fmt.Println(reflect.TypeOf(i).Implements(reflect.TypeOf(new(Stringer)).Elem()))，之后如果判断实现了这个接口，则执行marshalerEncoder函数，具体代码如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">func marshalerEncoder(e *encodeState, v reflect.Value, quoted bool) &#123;</span><br><span class="line">	if v.Kind() == reflect.Ptr &amp;&amp; v.IsNil() &#123;</span><br><span class="line">		e.WriteString(&quot;null&quot;)</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br><span class="line">	m := v.Interface().(Marshaler)</span><br><span class="line">	b, err := m.MarshalJSON()</span><br><span class="line">	if err == nil &#123;</span><br><span class="line">		// copy JSON into buffer, checking validity.</span><br><span class="line">		err = compact(&amp;e.Buffer, b, true)</span><br><span class="line">	&#125;</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		e.error(&amp;MarshalerError&#123;v.Type(), err&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>关键的一步是m :&#x3D; v.Interface().(Marshaler),首先把反射类型转化为接口类型，之后再讲接口类型通过断言的方式转化为存在其中的data值，即是Marshaler的interface实例。这里写完整是这样的表达reflect.Valueof(Instance).Interface().(Marshaler)其中Instance是最初的实现了Marshaler接口的结构体实例。这句话的作用就是将原先的实例转化为Marshaler的接口类型，此时生成的接口实例的itable中，函数的位置就是我们自己定义的MarshalJSON的实现。</p>
+<p>关键的一步是m := v.Interface().(Marshaler),首先把反射类型转化为接口类型，之后再讲接口类型通过断言的方式转化为存在其中的data值，即是Marshaler的interface实例。这里写完整是这样的表达reflect.Valueof(Instance).Interface().(Marshaler)其中Instance是最初的实现了Marshaler接口的结构体实例。这句话的作用就是将原先的实例转化为Marshaler的接口类型，此时生成的接口实例的itable中，函数的位置就是我们自己定义的MarshalJSON的实现。</p>
 <p>这里仅仅分析了json.Marshal的一部分，主要的反射相关的要点也都有涉及到，其他的部分可以对比地进行分析。通过这个函数，也可以看到Golang中所支持的所有的底层类型(即是kind()函数所返回的值)，在检验完车，发现没有其他的实现，就使用Golang中每种类型对应的json解析方式,也就是newTypeEncoder函数的最后一段：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">switch t.Kind() &#123;</span><br><span class="line">case reflect.Bool:</span><br><span class="line">	return boolEncoder</span><br><span class="line">case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:</span><br><span class="line">	return intEncoder</span><br><span class="line">case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:</span><br><span class="line">	return uintEncoder</span><br><span class="line">case reflect.Float32:</span><br><span class="line">	return float32Encoder</span><br><span class="line">case reflect.Float64:</span><br><span class="line">	return float64Encoder</span><br><span class="line">case reflect.String:</span><br><span class="line">	return stringEncoder</span><br><span class="line">case reflect.Interface:</span><br><span class="line">	return interfaceEncoder</span><br><span class="line">case reflect.Struct:</span><br><span class="line">	return newStructEncoder(t)</span><br><span class="line">case reflect.Map:</span><br><span class="line">	return newMapEncoder(t)</span><br><span class="line">case reflect.Slice:</span><br><span class="line">	return newSliceEncoder(t)</span><br><span class="line">case reflect.Array:</span><br><span class="line">	return newArrayEncoder(t)</span><br><span class="line">case reflect.Ptr:</span><br><span class="line">	return newPtrEncoder(t)</span><br><span class="line">default:</span><br><span class="line">	return unsupportedTypeEncoder</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p>json使用相关注意<br><a target="_blank" rel="noopener" href="https://blog.gopheracademy.com/advent-2016/advanced-encoding-decoding/?from=timeline">https://blog.gopheracademy.com/advent-2016/advanced-encoding-decoding/?from=timeline</a></p>
 <p>interface较深入了解：</p>
 <p><a target="_blank" rel="noopener" href="http://research.swtch.com/interfaces">http://research.swtch.com/interfaces</a></p>
@@ -222,7 +217,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/golang-reflection-model/" data-id="cm2a0xf4p007tdvjr9el8hkov" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/golang-reflection-model/" data-id="cmbw030ip008aj8jrebkwgrox" class="article-share-link">分享</a>
       
       
       
@@ -405,28 +400,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -128,21 +125,17 @@ ga('send', 'pageview');
         <p>There are some basic useage about the cmake on the <a target="_blank" rel="noopener" href="https://www.youtube.com/playlist?list=PLCiOACzVKBLnDIWYrDxBlsWTidEPhJPy-">youtube videos</a> here.</p>
 <p>Here are some other tips regarding the cmake. Which are important but not obvious in all kinds of tutorials.</p>
 <span id="more"></span>
-
 <h3 id="CMake-cache-preloading"><a href="#CMake-cache-preloading" class="headerlink" title="CMake cache preloading"></a>CMake cache preloading</h3><p>Some recently known parameter.<br>About the <code>-C</code> parameter. This parameter can help to load a cmake file before executing the actual cmake operation. The project path can be listed based on this <code>-C</code> parameter. For example, the project path might be different in the local env and remote env for same depedent library, we can store two .cmake files. One is for the local env and another is for the remote env. When we execute the cmake, the command becomes short, we do not need to maintain a long command line for each cmake command.</p>
 <p>We ususlly put multiple <code>set (&lt;VAR_NAME&gt; &lt;VALUE&gt;)</code> into associated cmake file.</p>
 <p>For example, this is the .cmake file that we want to load during the initilization stage (It is necessary to use the CACHE to tell cmake that these variables will be cached, and the parameter after the CACHE represents the type of the parameter):</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// env.cmake file</span><br><span class="line">set (VAR1 &quot;path1/path2&quot; CACHE STRING &quot;description&quot;)</span><br><span class="line">set (VAR2 &quot;path2/path3&quot; CACHE STRING &quot;description&quot;)</span><br><span class="line">set (VAR3 &quot;path3/path4&quot; CACHE STRING &quot;description&quot;)</span><br></pre></td></tr></table></figure>
-
 <p>Then at the beginning of the current CMakeLists.txt file, we add these messages to print out the variable：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">message (STATUS $&#123;VAR1&#125;)</span><br><span class="line">message (STATUS $&#123;VAR2&#125;)</span><br><span class="line">message (STATUS $&#123;VAR3&#125;)</span><br></pre></td></tr></table></figure>
 <p>When we executing the cmake command, we can do sth like:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cmake -C ../env.cmake ..</span><br><span class="line">loading initial cache file ../env.cmake</span><br><span class="line">-- path1/path2</span><br><span class="line">-- path2/path3</span><br><span class="line">-- path3/path4</span><br><span class="line">static off</span><br><span class="line">-- Configuring done</span><br><span class="line">-- Generating done</span><br><span class="line">-- Build files have been written to: /home/zw/cworkspace/src/5MCST/cmake_example/basic/build</span><br></pre></td></tr></table></figure>
-
 <p>By using <code>-C</code> to load the cmake configuration file, we can get the assocaited variables.</p>
 <p>If we check the variable listed in CMakeCache file, we can see that:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cat CMakeCache.txt |grep VAR</span><br><span class="line">VAR1:STRING=path1/path2</span><br><span class="line">VAR2:STRING=path2/path3</span><br><span class="line">VAR3:STRING=path3/path4</span><br></pre></td></tr></table></figure>
-
 <p>The associated variables are recorded into the CMakeCache file.</p>
 <h3 id="Set-verbose"><a href="#Set-verbose" class="headerlink" title="Set verbose"></a>Set verbose</h3><p>Actually, the cmake is just the mapping from the cmake expression into the makefile. One typical expression is that the <code>cmake VERBOS=1</code> which will print out all kinds of make commands. It is really helpful for solving the compiling issue to see what are the root reason that causes the compiling error. This is definately one frequent command that I adopted for solving the compiling issue.</p>
 <h3 id="Prefix-path"><a href="#Prefix-path" class="headerlink" title="Prefix path"></a>Prefix path</h3><p>We always use the <code>-D&lt;Library&gt;_Path</code> to specify the installed library. Another way is to set the <code>CMAKE_PREFIX_PATH</code>, this command set the path to find the installed libaray. If we assume the library need to be detected by pkgconfig, we need to use this one. For example</p>
@@ -155,7 +148,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/09/05/cmake-tips/" data-id="cm2a0xf4k0069dvjrd1qbeqja" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/09/05/cmake-tips/" data-id="cmbw030ij006ij8jr40zqe8kn" class="article-share-link">分享</a>
       
       
       
@@ -338,28 +331,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

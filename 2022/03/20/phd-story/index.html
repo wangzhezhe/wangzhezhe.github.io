@@ -55,11 +55,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -135,22 +132,21 @@ ga('send', 'pageview');
 <p>但是安静下来，又想着还是要有点责任心，沉淀沉淀一些核心的想法和问题，看看以后做相关的事情怎么能更有意义一些。</p>
 <h3 id="About-the-target-and-the-platform"><a href="#About-the-target-and-the-platform" class="headerlink" title="About the target and the platform"></a>About the target and the platform</h3><p>关于target以及platform的事情事比较tricky的，好多时候自己说的事情和别人认为的事情不是一个事情，特别是对于in situ worklfow这个词的理解，随着不断投稿然后得到reviewer的feedback，对于这个词的理解才逐渐变得深刻。</p>
 <p>首先是对于in situ的定义，这个词在不同的target platform都可以使用，比如在edge device 或者是 observatary facilities都可以使用 in situ 的方式，在论文里说的时候，最好是强调一下这里主要关注的是hpc platform 上处理simulation data 的场景。事实上相关的terminology的论文中的表述都是比较严谨的，比如 <a target="_blank" rel="noopener" href="https://cdux.cs.uoregon.edu/pubs/ChildsIJHPCA.pdf">这里</a> 直接就是使用的是 in situ analytics and visulization的表述，说的很明确。</p>
-<p>还有一个就是关于scientific workflow的表示，这个就更general了，每次想说workflow的时候就需要仔细想想，这里是否有必要用到这个workflow。就算是在scientific 的context 下，常见的workflow都包括这么几种，一个是pegsus compose起来的那种workflow，有比较复杂的task之间的depedency 有点和big data 的平台结合起来的意思，典型的就是Montage的workflow，这种workflow的一个特点就是run application one by one in sequence，一个stage运行完成结束之后才能开始运行下一个stage，典型的就是visulization的pipeline，这一步的results生成之后才能作为输入处理下一步的resutls, the start time of each task depends on the completion of all its predecessors。这里in situ processing 有所区别的地方是，sim 和 vis 是同时在一起运行的，还不停地互相传递着数据。还有一个是那种coupled simulation workflow，就是两个simulation要 互相使用对方的数据，还有一个就是 使用 analytics 和 visulization 来处理simulation的数据的这种workflow，这个才是我们一直比较关注的，所以最好能直接描述准确，比如就使用in situ ana&#x2F;vis 这样的表述。更不要说其他各种各样的workflow了，比如ensemble workflow以及deep learning的 training workflow 等等，每一种说的都不是一个事情，所以能使用比较准确的词尽量用准确，在论文中的abstract或者introduction部分，多花几句话把这个相关的scope表述清晰也是很有必要的事情。</p>
+<p>还有一个就是关于scientific workflow的表示，这个就更general了，每次想说workflow的时候就需要仔细想想，这里是否有必要用到这个workflow。就算是在scientific 的context 下，常见的workflow都包括这么几种，一个是pegsus compose起来的那种workflow，有比较复杂的task之间的depedency 有点和big data 的平台结合起来的意思，典型的就是Montage的workflow，这种workflow的一个特点就是run application one by one in sequence，一个stage运行完成结束之后才能开始运行下一个stage，典型的就是visulization的pipeline，这一步的results生成之后才能作为输入处理下一步的resutls, the start time of each task depends on the completion of all its predecessors。这里in situ processing 有所区别的地方是，sim 和 vis 是同时在一起运行的，还不停地互相传递着数据。还有一个是那种coupled simulation workflow，就是两个simulation要 互相使用对方的数据，还有一个就是 使用 analytics 和 visulization 来处理simulation的数据的这种workflow，这个才是我们一直比较关注的，所以最好能直接描述准确，比如就使用in situ ana/vis 这样的表述。更不要说其他各种各样的workflow了，比如ensemble workflow以及deep learning的 training workflow 等等，每一种说的都不是一个事情，所以能使用比较准确的词尽量用准确，在论文中的abstract或者introduction部分，多花几句话把这个相关的scope表述清晰也是很有必要的事情。</p>
 <h3 id="Motivation-of-in-situ-processing"><a href="#Motivation-of-in-situ-processing" class="headerlink" title="Motivation of in situ processing"></a>Motivation of in situ processing</h3><p>in situ的 main motivation 是 gap between computaion and IO 然后数据量很大，这时候disk IO就是瓶颈，然后很大量的data没法写到disk上来分析，或者IO的时间过长了，需要做analtyics before doing the file IO</p>
 <p>但是事实上许多paper里面的用例和规模都没有达到这种IO是bottleneck的程度。不论是从scale上还是数据的量上。可以说大部分的时候in-situ是没有什么必要的，或者说作用不是很大。用一些快速的IO设备比如NVRAM等等，也是能提高速度的。这就是为什么ADIOS主要关注的是file based IO的格式，其他的就是也提供，但是并不是使用的那么广泛。好多时候论文里用到的例子甚至是workflow，实际的bottleneck并不在IO上面，还是computation和analytics，这样来看的话，整个worklfow在这种情况下的优化的重点还确实不是IO.</p>
 <p>最初说gap的时候是从整个系统的角度来说的，但是落实到具体的每个应用上，并不一定能把整个系统的computaion能力充分运用起来。比如一些toy problem，几十个节点的规模，其实用in-situ并不是很有必要，虽然确实比disk io快一些，但是并不是非要这样用不可，streaming的处理方式肯定是牺牲了一些数据的持久化和交互的便利性。</p>
 <p>但事实上在research paper中，仿佛不提in-situ就不太行，缺少卖点，但是提了之后，又不是那么给力，比如有好多科学家并不认为in-situ能给他们提供多少实实在在的帮助，不仅技术实现上复杂又容易出错还不好debug。甚至包括一些资深的大佬也有这样的argument，确实这是事实情况，这就让新人有点左右为难的感觉。总体上所做的内容和motivation不怎么匹配，所以具体内容研究起来就很矛盾。</p>
-<p>从I&#x2F;O的角度上来讲，in-staging又不是特别有必要，甚至大佬之间对于这个staging based data transfer也是很有争议的一个事情，自己作为新人探索这几年，反而增加了更多的疑惑。甚至有的时候自己对于自己说的东西都有点牵强，也没有办法，但是这个就像是命题作文一样，需要在make sense的方向和导师的interests以及funding的来源上找到一个比较好的交集。</p>
+<p>从I/O的角度上来讲，in-staging又不是特别有必要，甚至大佬之间对于这个staging based data transfer也是很有争议的一个事情，自己作为新人探索这几年，反而增加了更多的疑惑。甚至有的时候自己对于自己说的东西都有点牵强，也没有办法，但是这个就像是命题作文一样，需要在make sense的方向和导师的interests以及funding的来源上找到一个比较好的交集。</p>
 <p>从staging本身最初的起源来看，还是作为那种coupled simulation之间互相share数据的场景比较稳妥，就是caching机制，然后有比较清晰的get和put的interface。</p>
 <p>那最终的问题是，什么样的情况下in-situ是必要的呢？一些实际问题中的baseline是什么情况呢? 不涉及一些非技术因素的话，可以参考<a target="_blank" rel="noopener" href="https://theory.pppl.gov/news/invited/20171117Chang.pdf">这个</a> 数据量的话大概是每秒大概要几十GB的规模吧，总之就是满足，如果不用in-situ，就确确实实写不下数据，这么一个情况。这个也是几年前的数据，in general，从workflow的角度来看，要看IO是否是一个比较明显的bottleneck。如果这个overhead相比较sim和ana的区别并不是很显著，那使用in-situ的意义也不是很大，因为引入了很多额外的overhead.</p>
-<p>用high performance visulization的书中的话(15.4.1.1)，Indeed, because data reduction must occure in the scientific analytisi pipeline in extreme-scale computing(because of the IO gap issue mentioned above), only during the simulation will all relevant data bout the simulated field, computational domain, and related fields be avalibale at the highest fidelity. This scenario is key to in situ processing – that data must be intelligently reduced, analyzed, transformed and indexed while still resident in memory before leaving the machine (or the same system).</p>
+<p>用high performance visulization的书中的话(15.4.1.1)，Indeed, because data reduction must occure in the scientific analytisi pipeline in extreme-scale computing(because of the IO gap issue mentioned above), only during the simulation will all relevant data bout the simulated field, computational domain, and related fields be avalibale at the highest fidelity. This scenario is key to in situ processing — that data must be intelligently reduced, analyzed, transformed and indexed while still resident in memory before leaving the machine (or the same system).</p>
 <p>当然从research的角度上讲，单纯从方法本身来看，tightly coupled in-situ用来做reduction还是比较好的场景，能确实减少一些IO的overhead. 使用loosely coupled in-situ的意义似乎不是太大，这里的data consumer直接是visulization code比较合适。就像是colza里使用的那种场景。相当于是sim作为source,vis直接作为consumer这样使用。</p>
 <p>这个图是参考的这本书 (这本书还是比较推荐的):</p>
 <p>High performance visualization: Enabling extreme-scale scientific insight[M]. CRC Press, 2012.</p>
 <p>里面的Figure 9.6更新了一些相关的term，怪不得大佬说这10多年这个research area都没有多大的进展，其实确实如此，拿出来这个图来看，确实发现和现在相比是没有很多的变化，这个图可以作为以后给别人讲相关work时候的一个background部分，感觉这个表达方式相比于纯粹的文字要清晰很多 (特别是介绍两种具体的loosely-coupled的实现方式的时候，一种on-node一种off-node)。有了这个图作为铺垫，再讲一些后续的工作就比较自然，比如这么多的地方可以执行analytics，放在哪里执行比较有合适，然后dedicated computing machines的elasticity的问题，以及合适传输数据处理数据，trigger analtyics的问题等等。</p>
 <p>最近还发现一个图描述的比较清楚，就是这个 paper中的figure: (SIM-SITU: A Framework for the Faithful Simulation of in-situ Workflows, e-science version)</p>
-<img src="/images/insituHighlevel.png" width="800"/>
-
+<p><img src="/images/insituHighlevel.png" width="800"/></p>
 <p>除了之前说的data amount大到一定程度，不得已要使用in-situ之外，书上还介绍了一些其他的in situ的适应场合。”In situ vis is most approporiate when end users know what they want to look in priori” 这个和实践的结果类似，根据自己最近的一些经验，通常是使用post processing把需要弄的内容处理好，比如使用paraview catalyst调整好一些合适的参数和view，之后把这个操作固定下来，按照一个template的方式integrate到in-situ的pipeline中。或者是in-situ的方式进行一些数据的preprocessing，仅仅保留一些对于post-processing有用的数据。</p>
 <p>因为data exploration的过程通常是很久的并且这些时间难以预料，domain scientists需要很多时间来分析，所以data exploration本身不太适合使用in-situ的方式来进行，这也就是post-processing必不可少的地方。所以大致流程是 post processing 和 in-situ processing 交替进行的过程，post-procesisng 得到一些knowlege，然后in-situ processing 筛选出新的数据，然后再 post-processing 这样反复进行。从这个角度来看，in situ 和 post processing 似乎是在一个轴的两端，一个是有很好的speed improvement但是不够flexibility另外一个是很好的interaction但是speed不太行。 只是从avalibility的角度看insitu，或者是streaming processing的一个例子。</p>
 <h3 id="Tar-pit-about-in-situ"><a href="#Tar-pit-about-in-situ" class="headerlink" title="Tar pit about in situ"></a>Tar pit about in situ</h3><p>In situ is just a way to do things, 如果把research的重点放在是不是一个方法要用in situ来运行或者in situ 到底有没有意义这种，显然就容易走火入魔，觉得自己想了很多，但是似乎也什么都没想，仿佛是在原地踏步或者原地绕圈，十分危险，因为很显然in situ 并不是 silver bullet，很多场景下也并不适用，回答说in situ 有用或者in situ 没有，都能举出很多反例。从论文的角度讲就是找一个适用的场合。Research 的重点还是在比如visualization, data compression, data refactor + index, data transfer, 或者是 resource management 等等这些比较具体的事情上。重点放在这些事情本身上就不容易迷路，至于具体是不是in situ，其实总是可以往上面结合的，结合也行不结合也行。想想成功的例子，就比如vtk这一系列，在各个场景中都可以使用。在不同场景下侧重点不一样，这样就是比较成功的story。比较危险的就是workflow optimization，具体是哪种workflow这一定要先仔仔细细考虑清楚或者说明清楚，一个workflow有一个workflow的适用场景，在一个场景下讨论另一个场景的solution仿佛是如同鸡同鸭讲。</p>
@@ -192,7 +188,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/03/20/phd-story/" data-id="cm2a0xf4u009ddvjr5hv2fcba" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/03/20/phd-story/" data-id="cmbw030ir009cj8jr9xim5s3t" class="article-share-link">分享</a>
       
       
       
@@ -375,28 +371,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

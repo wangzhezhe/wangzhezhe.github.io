@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,9 +124,7 @@ ga('send', 'pageview');
         
         <p>Preparation for the interview regarding the c++ questions. Just go through it to make sure that you can answer everything correctly.</p>
 <span id="more"></span>
-
-
-<h3 id="Memory-Management"><a href="#Memory-Management" class="headerlink" title="Memory Management"></a>Memory Management</h3><p>malloc&#x2F;free</p>
+<h3 id="Memory-Management"><a href="#Memory-Management" class="headerlink" title="Memory Management"></a>Memory Management</h3><p>malloc/free</p>
 <p>new delete</p>
 <p>shallow copy vs deep copy</p>
 <p>constructor vs deconstructor</p>
@@ -143,7 +138,7 @@ ga('send', 'pageview');
 <p>nullptr vs NULL (one type is pointer, another type is int and value is zero)</p>
 <p>smart pointer in c++ (unique_ptr, shared_ptr, weak_ptr)</p>
 <p>why need std::ref</p>
-<p>storage class in C&#x2F;C++:</p>
+<p>storage class in C/C++:</p>
 <p>auto, static, register(keyword:register), external (keyword:extern)</p>
 <p>const vs static</p>
 <p>const return value vs const function vs const members</p>
@@ -180,8 +175,8 @@ ga('send', 'pageview');
 <p>key word: volatile</p>
 <p>details about the iterator in c++</p>
 <h3 id="useful-resources"><a href="#useful-resources" class="headerlink" title="useful resources"></a>useful resources</h3><h3 id="Answers"><a href="#Answers" class="headerlink" title="Answers"></a>Answers</h3><p><strong>Memory management</strong></p>
-<p>malloc&#x2F;free is used to allocate and free the continuous memory space</p>
-<p>new&#x2F;delete is operator in cpp, they will call the constructor and destructor of associated object. malloc is c library, malloc return void pointer, new return the pointer to object (new is type safe)</p>
+<p>malloc/free is used to allocate and free the continuous memory space</p>
+<p>new/delete is operator in cpp, they will call the constructor and destructor of associated object. malloc is c library, malloc return void pointer, new return the pointer to object (new is type safe)</p>
 <p>shallow copy vs deep copy, shallow copy only copy the pointer and deep copy will copy contents from one project to another project.</p>
 <p>constructor vs deconstructor, constructor will be called when then object is created and destructor will be called when the object is destroied.</p>
 <p>Different types of constructor: Default constructor will be called by the compiler itsself. Parameterized can be used when there are parameters are needed in creating the object. Copy constructor is used when copy from one object to another object.</p>
@@ -195,14 +190,14 @@ ga('send', 'pageview');
 <p>nullptr vs NULL (one type is pointer, another type is int and value is zero)</p>
 <p>smart pointer in c++ (<code>unique_ptr</code>, <code>shared_ptr</code>, <code>weak_ptr</code>) refer to <a target="_blank" rel="noopener" href="https://wangzhezhe.github.io/2020/08/29/cppsmartpointer/">this</a> the owner ship is the key idea. weak pointer is to access the pointer but not own it.</p>
 <p>why need std::ref (std::ref is act like &amp; except std::ref is copyable and reassignable) there is an example <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/11833070/when-is-the-use-of-stdref-necessary">here</a>, the parameter in function is also a reference.</p>
-<p>storage class in C&#x2F;C++: storage class define the scople and lifetiem of variable or functions. Typical include: auto, static, register(keyword:register), external (keyword:extern), <code>auto</code> can be only used within function, like local vairable, <code>register</code> means that the variable need to be stored in register not RAM. <code>static</code> means memory initilized once before the program start. Keep this variable during the lifetime of the program. <code>extern</code> is used to declare a global function or variable defined in other files.</p>
+<p>storage class in C/C++: storage class define the scople and lifetiem of variable or functions. Typical include: auto, static, register(keyword:register), external (keyword:extern), <code>auto</code> can be only used within function, like local vairable, <code>register</code> means that the variable need to be stored in register not RAM. <code>static</code> means memory initilized once before the program start. Keep this variable during the lifetime of the program. <code>extern</code> is used to declare a global function or variable defined in other files.</p>
 <p>Difference between const and static: check <a target="_blank" rel="noopener" href="https://wangzhezhe.github.io/2022/09/04/cpp-static-const-keyword/">this</a> in detail. Once static is defined, the memory staies there. It is defined onece.</p>
 <p>explain details about the automatic object (auto in c++ is different with autonomic object one) if objects is constructed by compiler and destroyed automatically it is autonomic object. It is typically declared on stack and destroyed when out of the scope.</p>
 <p>const function vs const members vs const return value: </p>
 <p>const variabe is easy to understand, we define a parameter as const in a functionm it usually means that this variable is only readable and we can not change its value in function, otherwise, there is compiling error.</p>
 <p>const function (put the const at the end of the function) means that this function will not change any members of associated class. <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=RC7uE_wl1Uc">This</a> is a good reference. Even if the const function calls a non-const function, it is still does not compile. (A const function can only call another const function)</p>
 <p>Be careful about returning a const value. The temporarny object can not be a const value. (It is meaningless to use const to declare the temporaray value. It might ok return an left variance which is a const)</p>
-<p>for shared pointer what is overhead for it: The ovehread for storing the counuter. Refer to <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/22295665/how-much-is-the-overhead-of-smart-pointers-compared-to-normal-pointers-in-c">this</a> There is overhead for maintaing metadata (the reference counter), when constructing or deleting, there is also autonomic increasing&#x2F;decreasing opreations each time when create&#x2F;desrtoy object.</p>
+<p>for shared pointer what is overhead for it: The ovehread for storing the counuter. Refer to <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/22295665/how-much-is-the-overhead-of-smart-pointers-compared-to-normal-pointers-in-c">this</a> There is overhead for maintaing metadata (the reference counter), when constructing or deleting, there is also autonomic increasing/decreasing opreations each time when create/desrtoy object.</p>
 <p><strong>OOP related questions</strong></p>
 <p>key concepts about the OOP (abstraction<hiding the inner implementation details>, encapsulation<bind the function and the parameters together>, inheritance<reuse the base clasee>, polymorphism, maybe using an example to show these, such as support multiple backends.)</p>
 <p>difference between class and struct, property of the element: for struct, all members are public, class have different declaration for these properties.</p>
@@ -212,7 +207,7 @@ ga('send', 'pageview');
 <p>when to use virtual function, using virtual function when there is runtime polymorphism, it can guarantee that the correct function is called. When we call this virtual function, it will find the correct function defined in children class.</p>
 <p>pure virtual function and the abstract class: we need to override the pure virtual function, there is no defination of in the base class for the pure virtual function. abstract class does not provide all implementation of associated functions. </p>
 <p>types of the inheritences (single, multiple, multilevel, hierachical, hybrid)</p>
-<p>virtual table and virtual pointer: virtual table is a lookup table of functions used to resolve function calls in a dynamic&#x2F;late binding manner.</p>
+<p>virtual table and virtual pointer: virtual table is a lookup table of functions used to resolve function calls in a dynamic/late binding manner.</p>
 <p>friend class and friend function</p>
 <p>size of the empty class with the normal function and the virtual function</p>
 <p>namespace and it’s using context</p>
@@ -222,7 +217,6 @@ ga('send', 'pageview');
 <p>CRPT (curiously recurring template pattern): A kind of wrapper class, it has a template parameter, which can be the type of children classes. The children class inherit from this wrapper class. In this <a target="_blank" rel="noopener" href="https://wangzhezhe.github.io/2022/04/26/cpptemplateCRPT/">example</a>, the root class is Shape, then the ShapeCRPT inherit from base class. The concrete Rectangle and Circle inheric from ShapeCRPT <strong>and the Rectange and Circle using them self as the template parameter when inherit from the ShapeCRPT</strong>, when use the Base class pointer to point the children class, we can still get the right function call.</p>
 <p>trailing return type: <a target="_blank" rel="noopener" href="https://danielsieger.com/blog/2022/01/28/cpp-trailing-return-types.html">This blog</a> provides a good explanation. When the return type depednes on the template araument, it is hard to declare the function, in this case we use the trailling return type:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">template&lt;typename A, typename B&gt;</span><br><span class="line">auto multiply(A a, B b) -&gt; decltype(a*b) &#123; return a*b; &#125;</span><br></pre></td></tr></table></figure>
-
 <p>it can be used together with lambda expression.</p>
 <h3 id="Multi-thread-1"><a href="#Multi-thread-1" class="headerlink" title="Multi-thread"></a>Multi-thread</h3><p>conditional variable </p>
 <p>The <code>condition_variable</code> class is a synchronization primitive used with a <code>std::mutex</code> to block one or more threads until another thread both modifies a shared variable (the condition) and notifies the <code>condition_variable</code>.</p>
@@ -235,21 +229,21 @@ ga('send', 'pageview');
 <p>std::move. explained in previous sections</p>
 <p>lamda expression (anonymous function) <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/cpp/cpp/lambda-expressions-in-cpp?view=msvc-170">this</a> is a good explanation. (a trailing return type is a syntax feature that specifies the return type of a function after the parameter list)</p>
 <p>std::function general wrapper about sth that can be called. </p>
-<p>async: The function template std::async runs the function f asynchronously (potentially in a separate thread which might be a part of a thread pool) and returns a std::future that will eventually hold the result of that function call. (the future is like the handler&#x2F;request of <code>MPI_Irecv</code>)</p>
+<p>async: The function template std::async runs the function f asynchronously (potentially in a separate thread which might be a part of a thread pool) and returns a std::future that will eventually hold the result of that function call. (the future is like the handler/request of <code>MPI_Irecv</code>)</p>
 <p>future and promise: the concepts related to multi-thread programming in cpp. The promise is used to set value in the sender. Which is similar to the producer of the channel in golong. This <a target="_blank" rel="noopener" href="https://cplusplus.com/reference/future/promise/">example</a> show simple idea, after the thread call, we put data through promise and get data through future.</p>
 <p><code>packaged_task</code> A packaged_task wraps a callable element and allows its result to be retrieved asynchronously. It is similar to std::function, but transferring its result automatically to a future object.</p>
 <p><strong>Other points</strong></p>
 <p>exceptions (different between throw and throw object)</p>
 <p><code>#ifdef</code> and <code>#endif</code>, when define the .h file, we need to add this to make sure the header file is not included multiple times in the .cxx file during the compiling.</p>
 <p>translation unit: This is a good <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1106149/what-is-a-translation-unit-in-c">explanation</a>. It consists of the contents of a single source file, plus the contents of any header files directly or indirectly included by it, minus those lines that were ignored using conditional preprocessing statements. A single translation unit can be compiled into an object file, library, or executable program.</p>
-<p>key word: volatile: volatile prevents the compiler from optimizing code&#x2F;or the variable with volatile.</p>
-<p>details about the iterator in c++ (some implementation ideas, build pointer, left and right reference to the customized class, and also the operation such as ++ – get set etc.)</p>
+<p>key word: volatile: volatile prevents the compiler from optimizing code/or the variable with volatile.</p>
+<p>details about the iterator in c++ (some implementation ideas, build pointer, left and right reference to the customized class, and also the operation such as ++ — get set etc.)</p>
 <p>the new feature you want to add to cpp: borrow idea from golong, define the source remover, and remove resource at the end of the function. sth like defer. It can be defined after the rellocation of the resource, which is easy for programming.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/20/C++-review/" data-id="cm2a0xf41000mdvjrbho50siw" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/04/20/C++-review/" data-id="cmbw030i0000kj8jr6id9d28v" class="article-share-link">分享</a>
       
       
       
@@ -432,28 +426,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

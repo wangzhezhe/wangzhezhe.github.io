@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -125,9 +122,8 @@ ga('send', 'pageview');
       
         <!-- Table of Contents -->
         
-        <p>主要介绍了在c&#x2F;c++中如何使用dynamic link来动态加载.so文件以及涉及到的一些重要环境变量。</p>
+        <p>主要介绍了在c/c++中如何使用dynamic link来动态加载.so文件以及涉及到的一些重要环境变量。</p>
 <span id="more"></span>
-
 <h3 id="dynamic-link-与-static-link"><a href="#dynamic-link-与-static-link" class="headerlink" title="dynamic link 与 static link"></a>dynamic link 与 static link</h3><p><a target="_blank" rel="noopener" href="http://www.network-theory.co.uk/docs/gccintro/gccintro_25.html">这一篇</a> 对于shared library 和 static library 说明的比较透彻，详细的内容看原文，大致上static library使用<code>.a</code>的后缀，在使用static library的时候，code直接被link到binary的文件中。而使用shared library则是<code>.so</code>结尾 在程序run的时候才会去寻找实际的<code>.so</code>文件的位置(这个.so文件本身就是一个二进制文件)。</p>
 <p>使用<code>ldd &lt;binaryfile&gt;</code> 可以查找到当前的这个 binary file 在动态链接的时候都链接到了哪些<code>.so</code>文件以及其具体的路径 这个可以用来debug动态链接时候的问题，有的时候没有链接到一个动态库上，比如之前的安装mpi4py的问题，当时想通过python传一个mpi的communicator给c的code，只有mpi4py和本身的c code 使用了一个mpi的动态链接库的时候 这个思路才可能实现 但有的时候安装环境可能有问题 导致mpi4py所链接的mpi library和 c code 所链接的library 不是一个 具体的问题和详细信息可以参考<a target="_blank" rel="noopener" href="https://bitbucket.org/mpi4py/mpi4py/issues/107/problem-to-run-swig-demo-attempting-to-use">这个</a> 以及 <a target="_blank" rel="noopener" href="https://groups.google.com/forum/#!topic/mpi4py/qvrWgA9uEt0">这个</a>。</p>
 <h3 id="使用gcc进行dynamic-link"><a href="#使用gcc进行dynamic-link" class="headerlink" title="使用gcc进行dynamic link"></a>使用gcc进行dynamic link</h3><p>dynamic link就是在运行的时候动态地链接所需要的代码库，在Linux中，动态链接库通常是被封装成为.so的形式。下面是一个具体的例子：</p>
@@ -135,16 +131,12 @@ ga('send', 'pageview');
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &quot;stdio.h&quot;</span><br><span class="line"></span><br><span class="line"> int add(int a, int b)</span><br><span class="line">&#123;</span><br><span class="line">    return (a + b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> int sub(int a, int b)</span><br><span class="line">&#123;</span><br><span class="line">    return (a - b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> int mul(int a, int b)</span><br><span class="line">&#123;</span><br><span class="line">    return (a * b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> int div(int a, int b)</span><br><span class="line">&#123;</span><br><span class="line">    return (a / b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> void action()</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;test action func\n&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>使用如下命令编译：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gcc -fPIC -shared caculate.c -o libcaculate.so</span><br></pre></td></tr></table></figure>
-
 <p>之后可以使用nm命令查看 .so文件中的内容</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nm libcaculate.so</span><br><span class="line">0000000000000f40 T _action</span><br><span class="line">0000000000000ec0 T _add</span><br><span class="line">0000000000000f20 T _div</span><br><span class="line">0000000000000f00 T _mul</span><br><span class="line">                 U _printf</span><br><span class="line">0000000000000ee0 T _sub</span><br><span class="line">                 U dyld_stub_binder</span><br></pre></td></tr></table></figure>
-
 <p>之后可以加载这个动态链接库并且根据外部变量导入指定的函数</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;dlfcn.h&gt;</span><br><span class="line"></span><br><span class="line">//动态链接库路径</span><br><span class="line">#define LIB_CACULATE_PATH &quot;./caculatelib/libcaculate.so&quot;</span><br><span class="line"></span><br><span class="line">//函数指针</span><br><span class="line">typedef  int (*CAC_FUNC)(int, int);</span><br><span class="line">typedef  void (*ACT_FUNC)();</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    void *handle;</span><br><span class="line">    char *error;</span><br><span class="line">    CAC_FUNC cac_func = NULL;</span><br><span class="line"></span><br><span class="line">    //打开动态链接库</span><br><span class="line">    handle = dlopen(LIB_CACULATE_PATH, RTLD_LAZY);</span><br><span class="line">    if (!handle)</span><br><span class="line">    &#123;</span><br><span class="line">        fprintf(stderr, &quot;%s\n&quot;, dlerror());</span><br><span class="line">        exit(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //清除之前存在的错误</span><br><span class="line">    dlerror();</span><br><span class="line"></span><br><span class="line">    //获取一个函数</span><br><span class="line">    *(void **)(&amp;cac_func) = dlsym(handle, &quot;add&quot;);</span><br><span class="line">    if ((error = dlerror()) != NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        fprintf(stderr, &quot;%s\n&quot;, error);</span><br><span class="line">        exit(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line">    printf(&quot;add: %d\n&quot;, (*cac_func)(2, 7));</span><br><span class="line"></span><br><span class="line">    cac_func = (CAC_FUNC)dlsym(handle, &quot;sub&quot;);</span><br><span class="line">    printf(&quot;sub: %d\n&quot;, cac_func(9, 2));</span><br><span class="line"></span><br><span class="line">    cac_func = (CAC_FUNC)dlsym(handle, &quot;mul&quot;);</span><br><span class="line">    printf(&quot;mul: %d\n&quot;, cac_func(3, 2));</span><br><span class="line"></span><br><span class="line">    cac_func = (CAC_FUNC)dlsym(handle, &quot;div&quot;);</span><br><span class="line">    printf(&quot;div: %d\n&quot;, cac_func(8, 2));</span><br><span class="line"></span><br><span class="line">    ACT_FUNC act_func = NULL;</span><br><span class="line">    act_func = (ACT_FUNC)dlsym(handle, &quot;action&quot;);</span><br><span class="line">    act_func();</span><br><span class="line"></span><br><span class="line">    //关闭动态链接库</span><br><span class="line">    dlclose(handle);</span><br><span class="line">    exit(EXIT_SUCCESS);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>具体编译的方式如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gcc -rdynamic -o main main.c -ldl</span><br></pre></td></tr></table></figure>
-
 <h3 id="使用g-进行dynamic-link"><a href="#使用g-进行dynamic-link" class="headerlink" title="使用g++进行dynamic link"></a>使用g++进行dynamic link</h3><p>如果使用g++对.cpp文件进行dynamic link，具体可以参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/49187610/dynamic-link-with-dlopen-symbol-not-found?noredirect=1#comment85380797_49187610">这个</a>，由于c++有name mangling的作用，需要使用<code>extern C</code>来对.so文件进行标记。</p>
 <p>比如下面源文件直接进行编译<code>g++ -fPIC -shared add.cpp -o add.so</code>时候再使用nm查看</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;vector&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int add(int c)</span><br><span class="line">&#123;</span><br><span class="line">    vector&lt;int&gt; v;</span><br><span class="line"></span><br><span class="line">    int i;</span><br><span class="line">    int sum = 0;</span><br><span class="line">    for (i = 0; i &lt; c; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        sum = sum + i;</span><br><span class="line">    &#125;</span><br><span class="line">    return sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -152,13 +144,10 @@ ga('send', 'pageview');
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0000000000000ac0 T __Z3addi</span><br><span class="line">0000000000000d50 t __ZNSt3__113__vector_baseIiNS_9allocatorIiEEED2Ev</span><br><span class="line">0000000000000d10 t __ZNSt3__16vectorIiNS_9allocatorIiEEED1Ev</span><br><span class="line">0000000000000d30 t __ZNSt3__16vectorIiNS_9allocatorIiEEED2Ev</span><br><span class="line">                 U __ZdlPv</span><br><span class="line">                 U dyld_stub_binder</span><br></pre></td></tr></table></figure>
 <p>由于函数的名字被加上了一些字符，所以动态链接的时候会找不到对应的函数。如果加上extern C再进行编译：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;vector&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">extern &quot;C&quot; int add(int c)</span><br><span class="line">&#123;</span><br><span class="line">    vector&lt;int&gt; v;</span><br><span class="line"></span><br><span class="line">    int i;</span><br><span class="line">    int sum = 0;</span><br><span class="line">    for (i = 0; i &lt; c; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        sum = sum + i;</span><br><span class="line">    &#125;</span><br><span class="line">    return sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>使用mn查看之后结果如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ nm add.so</span><br><span class="line">0000000000000d50 t __ZNSt3__113__vector_baseIiNS_9allocatorIiEEED2Ev</span><br><span class="line">0000000000000d10 t __ZNSt3__16vectorIiNS_9allocatorIiEEED1Ev</span><br><span class="line">0000000000000d30 t __ZNSt3__16vectorIiNS_9allocatorIiEEED2Ev</span><br><span class="line">                 U __ZdlPv</span><br><span class="line">0000000000000ac0 T _add</span><br><span class="line">                 U dyld_stub_binder</span><br></pre></td></tr></table></figure>
-
 <p>main函数也可以写成.cpp的形式使用g++进行编译：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;dlfcn.h&gt;</span><br><span class="line"></span><br><span class="line">typedef int (*add_func_ptr)(int);</span><br><span class="line"></span><br><span class="line">    int main(int argc, char **argv)</span><br><span class="line">&#123;</span><br><span class="line">    void *handle;</span><br><span class="line">    double (*cosine)(double);</span><br><span class="line">    char *error;</span><br><span class="line"></span><br><span class="line">    handle = dlopen(&quot;./add.so&quot;, RTLD_LAZY);</span><br><span class="line">    if (!handle)</span><br><span class="line">    &#123;</span><br><span class="line">        fputs(dlerror(), stderr);</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    add_func_ptr addfun;</span><br><span class="line">    addfun = (add_func_ptr)dlsym(handle, &quot;add&quot;);</span><br><span class="line">    if ((error = dlerror()) != NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        fputs(error, stderr);</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    printf(&quot;%d\n&quot;, (*addfun)(5));</span><br><span class="line">    dlclose(handle);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p>dynamic link的example</p>
 <p><a target="_blank" rel="noopener" href="https://medium.com/@LeeJulija/dynamic-and-static-libraries-in-c-bcab492a8da">https://medium.com/@LeeJulija/dynamic-and-static-libraries-in-c-bcab492a8da</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html">https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html</a></p>
@@ -171,7 +160,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/06/28/c-c-dynamic-static-link/" data-id="cm2a0xf4j005rdvjr6zq2alo5" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/06/28/c-c-dynamic-static-link/" data-id="cmbw030ii005yj8jr89ed6r3z" class="article-share-link">分享</a>
       
       
       
@@ -354,28 +343,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

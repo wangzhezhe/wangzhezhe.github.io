@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>主要记录下multithreading提升performance的一些点。</p>
 <span id="more"></span>
-
 <h3 id="overlap-communication-with-computing"><a href="#overlap-communication-with-computing" class="headerlink" title="overlap communication with computing"></a>overlap communication with computing</h3><p>首先要明确的一点是，一个core在单位时间内只能运行一个thread。如果已经指定好说一个program只能使用一个core，那么multithread仅仅是timeslicing而已，这样到底有没有效率？</p>
 <p>具体可以参考<a target="_blank" rel="noopener" href="https://www.quora.com/If-a-computer-has-only-one-CPU-do-multi-threaded-programs-provide-any-performance-improvements-over-single-threaded-programs">这个</a>。</p>
 <p>整理一下，唯一的好处就是来源于IO与computing的overlapping。如果对于计算密集型的application，那其实没有什么帮助，反而增加了额外的不同thread之间context switching的overhead，对于IO成分比较多的应用，一个thread在IO的时候可以将另外一个thread调度到core上来执行，这样总是保持cpu busy，在总体上可以节省时间。</p>
@@ -153,7 +149,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/24/single-core-with-multithreading/" data-id="cm2a0xf4v009rdvjrfkcpha45" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/04/24/single-core-with-multithreading/" data-id="cmbw030iu00a5j8jrbo0whcrb" class="article-share-link">分享</a>
       
       
       
@@ -336,28 +332,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

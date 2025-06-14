@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,10 +124,8 @@ ga('send', 'pageview');
         
         <p>some tips about the cpp std::function</p>
 <span id="more"></span>
-
 <p>The main contents here come from the <a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/utility/functional/function">https://en.cppreference.com/w/cpp/utility/functional/function</a>, I just found that the std::function is a good callable abstraction in cpp, and take some notes here.</p>
 <h3 id="defination"><a href="#defination" class="headerlink" title="defination"></a>defination</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">template&lt; class R, class... Args &gt;</span><br><span class="line">class function&lt;R(Args...)&gt;;</span><br></pre></td></tr></table></figure>
-
 <p>It is straight forward, since we only need the return data type (R), the input data type (Args…) for a callable.</p>
 <p>For instances</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void print_num(int i)&#123;...&#125;</span><br><span class="line">std::function&lt;void(int)&gt; f_display = print_num;</span><br></pre></td></tr></table></figure>
@@ -138,11 +133,9 @@ ga('send', 'pageview');
 <h3 id="examples"><a href="#examples" class="headerlink" title="examples"></a>examples</h3><p>the flexibility of std::function is the wrapp the different callable in cpp, although it might not a necessary things from the perspective of the system programming, it is good to grasp it for quickly understanding other people’s code.</p>
 <p>this is the whole function examples from the cpp references, and I added more comments </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;functional&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line"> </span><br><span class="line">struct Foo &#123;</span><br><span class="line">    Foo(int num) : num_(num) &#123;&#125;</span><br><span class="line">    void print_add(int i) const &#123; std::cout &lt;&lt; num_+i &lt;&lt; &#x27;\n&#x27;; &#125;</span><br><span class="line">    int num_;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">void print_num(int i)</span><br><span class="line">&#123;</span><br><span class="line">    std::cout &lt;&lt; i &lt;&lt; &#x27;\n&#x27;;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">struct PrintNum &#123;</span><br><span class="line">    void operator()(int i) const</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; i &lt;&lt; &#x27;\n&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    // store a free function</span><br><span class="line">    // this is the basic usage of the function as a wrapper</span><br><span class="line">    // the code is more clean compared with define a function pointer</span><br><span class="line">    std::function&lt;void(int)&gt; f_display = print_num;</span><br><span class="line">    f_display(-9);</span><br><span class="line"> </span><br><span class="line">    // store a lambda</span><br><span class="line">    // this may looks more general since we basically do not care about the</span><br><span class="line">    // type of the input parameter and return parameters </span><br><span class="line">    // we can call different functions with the lambda expression</span><br><span class="line">    std::function&lt;void()&gt; f_display_42 = []() &#123; print_num(42); &#125;;</span><br><span class="line">    f_display_42();</span><br><span class="line"> </span><br><span class="line">    // store the result of a call to std::bind</span><br><span class="line">    // this may more like the grammar suger and we bind the function with a particular parameter</span><br><span class="line">    // we can also wrap it by the std::function</span><br><span class="line">    std::function&lt;void()&gt; f_display_31337 = std::bind(print_num, 31337);</span><br><span class="line">    f_display_31337();</span><br><span class="line"> </span><br><span class="line">    // store a call to a member function</span><br><span class="line">    // it looks fancy to call a member function of the instance</span><br><span class="line">    // the first parameter should be the reference of the instance</span><br><span class="line">    // we need to use &amp; when assign the member function to the std::function but we do not need the &amp; for the common function previously</span><br><span class="line">    std::function&lt;void(const Foo&amp;, int)&gt; f_add_display = &amp;Foo::print_add;</span><br><span class="line">    const Foo foo(314159);</span><br><span class="line">    f_add_display(foo, 1);</span><br><span class="line">    f_add_display(314159, 1);</span><br><span class="line"> </span><br><span class="line">    // store a call to a data member accessor</span><br><span class="line">    std::function&lt;int(Foo const&amp;)&gt; f_num = &amp;Foo::num_;</span><br><span class="line">    std::cout &lt;&lt; &quot;num_: &quot; &lt;&lt; f_num(foo) &lt;&lt; &#x27;\n&#x27;;</span><br><span class="line"> </span><br><span class="line">    // store a call to a member function and object</span><br><span class="line">    using std::placeholders::_1;</span><br><span class="line">    std::function&lt;void(int)&gt; f_add_display2 = std::bind( &amp;Foo::print_add, foo, _1 );</span><br><span class="line">    f_add_display2(2);</span><br><span class="line"> </span><br><span class="line">    // store a call to a member function and object ptr</span><br><span class="line">    std::function&lt;void(int)&gt; f_add_display3 = std::bind( &amp;Foo::print_add, &amp;foo, _1 );</span><br><span class="line">    f_add_display3(3);</span><br><span class="line"> </span><br><span class="line">    // store a call to a function object</span><br><span class="line">    // the PrintNum is a kind of functor in this case that overload the () operator</span><br><span class="line">    std::function&lt;void(int)&gt; f_display_obj = PrintNum();</span><br><span class="line">    f_display_obj(18);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/* output</span><br><span class="line">-9</span><br><span class="line">42</span><br><span class="line">31337</span><br><span class="line">314160</span><br><span class="line">314160</span><br><span class="line">num_: 314159</span><br><span class="line">314161</span><br><span class="line">314162</span><br><span class="line">18</span><br><span class="line"></span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
-
 <h3 id="more-examples"><a href="#more-examples" class="headerlink" title="more examples"></a>more examples</h3><p>In one project, we use the function as a wrapper for factory pattern.</p>
 <p>this is the key data structure:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">std::unordered_map&lt;std::string,</span><br><span class="line">                std::function&lt;std::unique_ptr&lt;Backend&gt;(const PipelineFactoryArgs&amp;)&gt;&gt; create_fn;</span><br></pre></td></tr></table></figure>
-
 <p>the key of the map is the identifier of the backend, the value of the map is a std::function wrapper. For this wrapper, the return value is a unique pointer which hold the backend class, and the input parameter is the pipelineFactorArgs.</p>
 <p>when we init the map, the code (registration function) looks like this:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">template&lt;typename BackendType&gt;</span><br><span class="line">class __ColzaBackendRegistration &#123;</span><br><span class="line">    ...</span><br><span class="line">    public:</span><br><span class="line"></span><br><span class="line">    __ColzaBackendRegistration(const std::string&amp; backend_name)</span><br><span class="line">    &#123;</span><br><span class="line">        colza::PipelineFactory::create_fn[backend_name] = [](const colza::PipelineFactoryArgs&amp; args) &#123;</span><br><span class="line">            return BackendType::create(args);</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
@@ -151,7 +144,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/05/11/cpp-std-function/" data-id="cm2a0xf4l006jdvjrh6tvbylk" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2021/05/11/cpp-std-function/" data-id="cmbw030il006wj8jrciq31y64" class="article-share-link">分享</a>
       
       
       
@@ -334,28 +327,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

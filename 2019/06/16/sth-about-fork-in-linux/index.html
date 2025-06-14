@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>回顾下fork相关的基本内容，这个应该是各种鄙视面试常爱考的知识点了，fork本身来说，也是个神奇的东西。。。</p>
 <span id="more"></span>
-
 <h3 id="关于fork以及进程相关"><a href="#关于fork以及进程相关" class="headerlink" title="关于fork以及进程相关"></a>关于fork以及进程相关</h3><p>找工作的相关题目中好多是对于fork的考察，感觉自己有些基础支持还是掌握的不牢靠。</p>
 <p>具体的问题来源于一个典型的面试题，大概是问 fork||fork 操作会生成几个新的进程<br>类似的面试题，也有，比如更复杂一点的情况，参考这个：</p>
 <h3 id="再简单回顾一下fork"><a href="#再简单回顾一下fork" class="headerlink" title="再简单回顾一下fork"></a>再简单回顾一下fork</h3><p>fork主要的功能就是说，把已有的一个进程复制一个出来，这两个新的进程几乎完全是一样的。执行fork之后,生成的两个进程每个都会启动一个从同一位置开始执行的线程，执行到fork函数中的时候，子进程就会复制父进程的堆栈段，所以两个进程实际上都陷入在fork中，还没有执行完，这样的话，fork其实可能有两种不同的返回值，一个是原先的父进程的fork执行完之后的返回值,另一个是新生成的子进程的fork得到的返回值。<br>当然两种返回值是不同的，这也是fork相关题目的一个考点：</p>
@@ -142,14 +138,14 @@ ga('send', 'pageview');
 <p>使用fork函数得到的子进程从父进程中继承了整个进程的地址空间，包括：进程上下文，进程堆栈，内存信息，打开文件的描述符，信号控制设置、进程优先级、进程组号、当前工作目录、根目录、资源限制、控制终端等等。<br>子进程与父进程的区别（区别要牢记）：新fork出来的进程有自己的数据空间，子进程的ID和父进程不同，由fork所生成的子进程不能继承父进程所设置的文件锁。</p>
 <h3 id="再回顾下那个题目"><a href="#再回顾下那个题目" class="headerlink" title="再回顾下那个题目"></a>再回顾下那个题目</h3><p>就是先前列出的博客里的</p>
 <p>第一次fork 生成了一个新的进程，此时有两个进程</p>
-<p>第二次 fork &amp;&amp; fork || fork 按照博客里的图，每一个最上端的父进程会生成了四个新的进程（中间有好几次是新生成的子进程又充当了父进程），开始的时候有，经过第一次的操作，有两个进程，它们分别作为最顶端的父进程，这样就生成了4+4&#x3D;8个新的进程</p>
-<p>第三次 又fork 经过了前两步的操作 已经有10个进程了 每个进程执行一次fork会新生成一个新的进程 这样就又生成了10个新的进程 于是整个过程就一共产生了 10+8+1&#x3D;19 个新的进程</p>
+<p>第二次 fork &amp;&amp; fork || fork 按照博客里的图，每一个最上端的父进程会生成了四个新的进程（中间有好几次是新生成的子进程又充当了父进程），开始的时候有，经过第一次的操作，有两个进程，它们分别作为最顶端的父进程，这样就生成了4+4=8个新的进程</p>
+<p>第三次 又fork 经过了前两步的操作 已经有10个进程了 每个进程执行一次fork会新生成一个新的进程 这样就又生成了10个新的进程 于是整个过程就一共产生了 10+8+1=19 个新的进程</p>
 <p>再这个基础上，单纯的 fork || fork 操作应该是新生成了两个进程 condition1||confition2逻辑或操作，如果condition1为true，结果返回true，如果condition1为false，同时condition2为true，则返回true，condition2为false则返回false。</p>
 <p>用图片的方式表示比较直接，可以很明显的看出来，算上本身的主进程，程序在运行过程中一共创建了3个进程：</p>
 <p>插入图片（todo）</p>
 <p>相关参考资料</p>
 <p>（这个来龙去脉讲的比较透彻）<a target="_blank" rel="noopener" href="http://www.cnblogs.com/hicjiajia/archive/2011/01/20/1940154.html">http://www.cnblogs.com/hicjiajia/archive/2011/01/20/1940154.html</a></p>
-<h3 id="关于僵尸进程与孤儿进程"><a href="#关于僵尸进程与孤儿进程" class="headerlink" title="关于僵尸进程与孤儿进程"></a>关于僵尸进程与孤儿进程</h3><p>linux提供了一种机制可以保证只要父进程想知道子进程结束时的状态信息， 就可以得到。这种机制就是: 在每个进程退出的时候,内核释放该进程所有的资源，包括打开的文件，占用的内存等。 但是仍然为其保留一定的信息(包括进程号the process ID，退出状态the termination status of the process，运行时间the amount of CPU time taken by the process等)。直到父进程通过wait &#x2F; waitpid来取时才释放。</p>
+<h3 id="关于僵尸进程与孤儿进程"><a href="#关于僵尸进程与孤儿进程" class="headerlink" title="关于僵尸进程与孤儿进程"></a>关于僵尸进程与孤儿进程</h3><p>linux提供了一种机制可以保证只要父进程想知道子进程结束时的状态信息， 就可以得到。这种机制就是: 在每个进程退出的时候,内核释放该进程所有的资源，包括打开的文件，占用的内存等。 但是仍然为其保留一定的信息(包括进程号the process ID，退出状态the termination status of the process，运行时间the amount of CPU time taken by the process等)。直到父进程通过wait / waitpid来取时才释放。</p>
 <ul>
 <li>孤儿进程：一个父进程退出，而它的一个或多个子进程还在运行，那么那些子进程将成为孤儿进程。孤儿进程将被init进程(进程号为1)所收养，并由init进程对它们完成状态收集工作。</li>
 <li>僵尸进程：一个进程使用fork创建子进程，如果子进程退出，而父进程并没有调用wait或waitpid获取子进程的状态信息，那么子进程的进程描述符仍然保存在系统中。这种进程称之为僵死进程。<br>僵死进程并不是问题的根源，罪魁祸首是产生出大量僵死进程的那个父进程，所以，解决方法就是kill那个父进程，于是僵尸进程就可以被init进程接收，释放。</li>
@@ -159,7 +155,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/16/sth-about-fork-in-linux/" data-id="cm2a0xf4w00a1dvjr1egcbb63" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/16/sth-about-fork-in-linux/" data-id="cmbw030iv00afj8jrfrgd2p3j" class="article-share-link">分享</a>
       
       
       
@@ -342,28 +338,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

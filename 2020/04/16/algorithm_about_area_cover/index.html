@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>判断某个area是否被已有area cover的算法以及其在实践中的应用</p>
 <span id="more"></span>
-
 <p>大部分的coding工作可能更像是glue。设计好合适的data abstraction以及interface，按照合适的语言部署到合适的platform上。很多时候关键的问题都被解决好了，剩下的似乎就是把不同小部分的模块组成在一起的操作了。</p>
 <p>最近终于有了一个把实际的algorithm使用到一个framework中的体会。具体问题背景是这样的: 对于一个in-memory的data management system, 不同partition的data是分布式地存储在不同的node上，不仅仅raw data 是分布式地存储，这些raw data 的metadat 也是分布式地进行存储。那在query的时候怎么能知道这些data是不是都avaliable了？比如一个data被分成了10个partition,可能传输的时候只有5个到了data management service里，这个时候一个query过来，如何知道这个数据还没传输完整？</p>
 <p>之前的一种方式是在client端使用lock，比如在准备传data的时候加一个lock，然后在data传送完成之后再加一个lock。在query的过程中，如果发现指定的数据已被lock，就返回正在处理的状态。这个方法虽然可行，但总是引入了额外复杂的机制，比如client在传数据之前还要设置lock，增加了额外的复杂操作，这就让人很不爽。</p>
@@ -140,7 +136,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/04/16/algorithm_about_area_cover/" data-id="cm2a0xf4i005bdvjrg1oogfmv" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2020/04/16/algorithm_about_area_cover/" data-id="cmbw030ig005ij8jrfs2ydtzo" class="article-share-link">分享</a>
       
       
       
@@ -246,23 +242,23 @@ ga('send', 'pageview');
       <ul>
         
           <li>
-            <a href="/2024/11/23/distributed-rendering/">distributed rendering</a>
+            <a href="/2025/06/08/javascript-tips/">javascript-tips</a>
           </li>
         
           <li>
-            <a href="/2024/11/21/opengl-tips/">opengl_tips</a>
+            <a href="/2025/02/27/Package-management/">Package management tips</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/23/distributed-rendering/">Distributed rendering (WIP)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/21/graphics-opengl-tips/">Graphics and Opengl Tips</a>
           </li>
         
           <li>
             <a href="/2024/10/18/Multiple-backend-design/">Multiple backend design</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/17/LLM-tips/">LLM tips</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/13/Interesting-numbers-in-CS-and-Femi-estimation/">Interesting numbers in CS and Femi estimation (WIP)</a>
           </li>
         
       </ul>
@@ -341,28 +337,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

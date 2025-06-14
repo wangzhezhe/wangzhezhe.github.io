@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>Some tips about using vtk based on python.</p>
 <span id="more"></span>
-
 <p>When there are no requirments about the completion time, using the python binding of the vtk is usually more efficient, we do not need to write the cmake command and we can also integrate it with the numpy quickly. Actually, if you look at the blog of thr kitware, there is a trend to integrate the paraview with all kinds of python based library such as the jupetor notebook.</p>
 <p>For most cases, we only need to execute the pip install vtk to get that depedency quickly. However, for some specific platform such as amd platform, the pip install python may not work well, we need to build the vtk manually with the option of python wrap and then update the <code>$PYTHONPATH</code> to add the specific python binding into the library, such as <code>/home/ubuntu/cworkspace/install/vtk/lib/python3.10/site-packages</code>, this should be the absolute path.</p>
 <p>There are all kinds of examples online regarding the python script based on vtk especially for the vtk examples website, we do not cover all details and we only list several examples which are commonly used in general.</p>
@@ -140,7 +136,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/01/14/vtk-based-on-python-scripts/" data-id="cm2a0xf4x00ahdvjr89nz8g6p" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/01/14/vtk-based-on-python-scripts/" data-id="cmbw030iw00b1j8jr81m78utp" class="article-share-link">分享</a>
       
       
       
@@ -323,28 +319,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

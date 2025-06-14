@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>This blog write some quick notes about using the paraview to do the visualization. There are some <a target="_blank" rel="noopener" href="https://www.youtube.com/playlist?list=PLCiOACzVKBLkGXqk19i-FADF7ukYnz351">videos here</a>, this article records some quick notes, which can be useful for daily use.</p>
 <span id="more"></span>
-
 <h3 id="All-kinds-of-details-about-color-mapping"><a href="#All-kinds-of-details-about-color-mapping" class="headerlink" title="All kinds of details about color mapping"></a>All kinds of details about color mapping</h3><p>TODO meaning of the 2d color plot<br>TODO discriticesed value and continuous values (check the discriticese button todo that)</p>
 <h3 id="Necessary-thing-for-taking-screenshot"><a href="#Necessary-thing-for-taking-screenshot" class="headerlink" title="Necessary thing for taking screenshot"></a>Necessary thing for taking screenshot</h3><p>Backgound color might be set to white color when taking a screen shot and put results into the paper as visualization reuslts. There is a color plaette at the top row of the GUI, click that can set the backgound color.</p>
 <p>Setting legend is a trick part. The default legend is using scientific format. There is a legend label with the letter ‘e’ on that in the editing region (information section), click that button can edit the figure as needed. We can adjust title size, the anotation size, the style of the legend number as needed. If there are multiple render view in the window, and you want to save each output one by one, we may want to make sure the legend is in the same place for all figure, in this case we can set legend position section and set its lengend as needed (such as setting it to 1), so all legend will stay at the same place.</p>
@@ -138,10 +134,9 @@ ga('send', 'pageview');
 <h3 id="Connect-to-remote-server"><a href="#Connect-to-remote-server" class="headerlink" title="Connect to remote server"></a>Connect to remote server</h3><p>For a long time, I run the paraview in local machine, I basically transfer the node to my local env. It is not the most efficient way to do use the paraview. For lots of cases, the large scale data is located on the Cluster, we need to run the paraview by a job on the cluster and then use local paraview as a client to login to the remote server. Just click that connet botton, and fetch all configurable servers. If you run the code on the typical HPC, then there is a terminal will be poped out, after login the password and token, the pv server is then started according to the configurations, such as process number.</p>
 <p>Be careful, we need to install the XQuartz for mac to trigger that terminal. After install the XQuartz, we need to restart the os. This is the related <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/37826094/xt-error-cant-open-display-if-using-default-display">discussion</a>, after reinstalling, the display parameter is sth like this:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ echo $DISPLAY</span><br><span class="line">/private/tmp/com.apple.launchd.DAdu1PW5GV/org.xquartz:0</span><br></pre></td></tr></table></figure>
-
 <p>The good thing is that we can run multple paraview server to accelarate the rendering speed. When everything is work, we can then use the extractor to generated png and send back to local machine to make animation. The png file is comparatively small and easy to transfer back and forth between client and server.</p>
-<h3 id="The-spread-view-and-the-particle-x2F-cell-finder"><a href="#The-spread-view-and-the-particle-x2F-cell-finder" class="headerlink" title="The spread view and the particle&#x2F;cell finder"></a>The spread view and the particle&#x2F;cell finder</h3><p>When click the split tab, we can get a new tab which shows different view, the default view is called the render view which shows the graphics data, another commonly used view is called the spreadsheet view, the good thing for this view is that we can clearly check the point data, cell data, field data etc, which can provide a good understading for the position of the specific points or cells.</p>
-<p>Furthermore, we can use the <code>View</code>-&gt;<code>FindData</code> to select different data points or cells according to the properties of the id, which is really useful for debuging some of the algorithm related to the vtk. The selected points or cells will be labeled out in the figure. These can provide a direact understanding for the position of points&#x2F;cells in the rendered geometry. We can even click the extract to extract the associated geometry with different colors. </p>
+<h3 id="The-spread-view-and-the-particle-cell-finder"><a href="#The-spread-view-and-the-particle-cell-finder" class="headerlink" title="The spread view and the particle/cell finder"></a>The spread view and the particle/cell finder</h3><p>When click the split tab, we can get a new tab which shows different view, the default view is called the render view which shows the graphics data, another commonly used view is called the spreadsheet view, the good thing for this view is that we can clearly check the point data, cell data, field data etc, which can provide a good understading for the position of the specific points or cells.</p>
+<p>Furthermore, we can use the <code>View</code>-&gt;<code>FindData</code> to select different data points or cells according to the properties of the id, which is really useful for debuging some of the algorithm related to the vtk. The selected points or cells will be labeled out in the figure. These can provide a direact understanding for the position of points/cells in the rendered geometry. We can even click the extract to extract the associated geometry with different colors. </p>
 <h3 id="Data-selection-mechanism"><a href="#Data-selection-mechanism" class="headerlink" title="Data selection mechanism"></a>Data selection mechanism</h3><p>The Paraview provide a really flexible data selection machanism, you could select the interested region from the visualized results direactly. This <a target="_blank" rel="noopener" href="https://docs.paraview.org/en/latest/UsersGuide/selectingData.html#selecting-in-render-view">doc</a> and this <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=U2sKoN9NGc8">video</a> provides a detailed explanation about it. After selecting the dedicated region, we can then use a specific filter called extracting selection to export the selected data region as a separate data set. This is helpful in selecting the perticular region to generate a data set used for debuging. It can save us a lot of energy for preparing dedicated data set for debug, we can just select them out from the rendered figure and export it for testing, this is really a flexible capability and can be used together with find data view.</p>
 <h3 id="Processing-multiple-data-blocks"><a href="#Processing-multiple-data-blocks" class="headerlink" title="Processing multiple data blocks"></a>Processing multiple data blocks</h3><p>In parallel computing, it is common that the data are outputed into separate vtk files. In visit, we can set the metadata file and load associated vtk file once. Such as </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">!NBLOCKS 4</span><br><span class="line">Block0.vtk</span><br><span class="line">Block1.vtk</span><br><span class="line">Block2.vtk</span><br><span class="line">Block3.vtk</span><br></pre></td></tr></table></figure>
@@ -181,15 +176,12 @@ ga('send', 'pageview');
 <p><strong>build paraview on HPC</strong></p>
 <p>These are steps to build the paraview on Frontier supercomputer, this is the one withtout using the qt and try to run paraivew through the server mode.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">module load gcc</span><br><span class="line">Module load python</span><br><span class="line">module load ninja</span><br><span class="line">module load mesa</span><br><span class="line">module git-lfs</span><br><span class="line"></span><br><span class="line">cmake -GNinja -DPARAVIEW_USE_PYTHON=ON -DPARAVIEW_USE_MPI=ON -DVTK_SMP_IMPLEMENTATION_TYPE=OPENMP -DCMAKE_BUILD_TYPE=Release -DPARAVIEW_USE_QT=OFF -DVTK_OPENGL_HAS_OSMESA=ON -DVTK_USE_X=OFF ../paraview</span><br></pre></td></tr></table></figure>
-
 <p><strong>build paraview by cuda</strong></p>
 <p>When cuda is enabled, it will also enable the vtk-m gpu version automatically. This is an example to build the paraview based on GeForce 2080, be careful about different cuda architecture version, this is an key parameter to make cuda things work properly.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cmake ../paraview/ -DPARAVIEW_USE_CUDA=ON -DVTKm_ENABLE_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES=75</span><br></pre></td></tr></table></figure>
-
 <p><strong>build paraview with adios enabled</strong></p>
 <p>The paraview could detect the adios bp file if associated bp reader plugin is enabled. But we need to make sure the associated bp reader is built when installing adios. This is an exmaple:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cmake ../paraview/ -DPARAVIEW_USE_QT=OFF -DVTK_USE_X=OFF -DVTK_OPENGL_HAS_OSMESA=ON -DPARAVIEW_ENABLE_ADIOS2=ON -DADIOS2_DIR=/ccs/home/zw241/cworkspace/install_adios/lib64/cmake/adios2/ -DPARAVIEW_USE_MPI=ON</span><br></pre></td></tr></table></figure>
-
 <p>After building by this way, when we load the bp file, we can load it automatically. However, it might be more flexible to use the adios cpp reader to load the raw data and write out the data as needed. This is an <a target="_blank" rel="noopener" href="https://github.com/wangzhezhe/5MCST/blob/master/vtk_example/adiosToVTK/adiosToRawCommon.cpp">online example</a> to get the adios file and write it out (it might still be necessary to add the vtk.xml file under the associated bp folder as described by the online document). Ensentially, the adios thing is just a bounch of n-d array, the <code>vtk.xml</code> is the metadata that tells paraview how to parse the data (the structure of the mesh).</p>
 <p>For the metadata of the adios, for example, if it is {d1,d2,d3}, the d3 is the slowest changed one and the d1 is the fastest changing one. For x-y-z case, it should be {dz,dy,dx} where the x dim changes fast and then y and then z.</p>
 <p>There is a ADIOS AdiosReaderPixie reder, which is not maintained for a long time, it also need to include adios1 which is time-consuming when compiling things. It seems there are still some compiling errors associated with it. The best way is still to use the cpp bp reader to get the data and write the resutls out into the raw data, and rendered by other associated softwares.</p>
@@ -203,11 +195,10 @@ ga('send', 'pageview');
 <p>Step 4, adding the xml file to make sure how the plugin can be interacted with the paraview frontend. This <a target="_blank" rel="noopener" href="https://www.paraview.org/Wiki/ParaView/Plugin_HowTo">doc</a> details a lot of xml label and its meaning.</p>
 <p>Step 5, Just try to debug the algorithm to make sure it can work as expeced, maybe run the paraview by command line to see the printed log message. For the mac, just go into that paraview.app folder and run the paraview through the command line.</p>
 <p>Step 6, Program the class that inherit from specific vtk algorithm such as vtkImageAlgorithm and implement the <code>RequestData</code> function. In this function, we need to make sure how to get data form vtk data object and return the vtk data etc. It is quite flexible and case by case. Try to look at <a target="_blank" rel="noopener" href="https://www.kitware.com//a-vtk-pipeline-primer-part-1/">these blogs</a> and <a target="_blank" rel="noopener" href="https://vtk.org/Wiki/VTK/Tutorials/New_Pipeline">this doc</a> to get more ideas.</p>
-<h3 id="Using-client-x2F-remote-mode-run-paraview"><a href="#Using-client-x2F-remote-mode-run-paraview" class="headerlink" title="Using client&#x2F;remote mode run paraview."></a>Using client&#x2F;remote mode run paraview.</h3><ul>
+<h3 id="Using-client-remote-mode-run-paraview"><a href="#Using-client-remote-mode-run-paraview" class="headerlink" title="Using client/remote mode run paraview."></a>Using client/remote mode run paraview.</h3><ul>
 <li>Building and install same version of paraview on client and server respectively. For example, this is the cmake command to build and install paraview on server. Remember to load necessary module such as mesa, gcc on HPC.</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cmake -GNinja -DPARAVIEW_USE_PYTHON=ON -DPARAVIEW_USE_MPI=ON \</span><br><span class="line">-DVTK_SMP_IMPLEMENTATION_TYPE=OPENMP \</span><br><span class="line">-DCMAKE_BUILD_TYPE=Release \</span><br><span class="line">-DPARAVIEW_USE_QT=OFF \</span><br><span class="line">-DVTK_OPENGL_HAS_OSMESA=ON \</span><br><span class="line">-DVTK_USE_X=OFF ../paraview</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>This is example command to build the paraview on client, check the official <a target="_blank" rel="noopener" href="https://gitlab.kitware.com/paraview/paraview/-/blob/master/Documentation/dev/build.md?ref_type=heads">documents</a> to get ideas for different platform.</li>
 </ul>
@@ -217,12 +208,10 @@ ga('send', 'pageview');
 <li>Using frontier HPC as an exmaple, we first run the paraview server on login node. Be careful to login to dedicated login node. If we use <code>ssh &lt;username&gt;@frontier.olcf.ornl.gov</code> we might ssh to a random login node. There are different name patterns for these login node. On Frontier cluster, it is <code>login01.frontier, login02.frontier</code> etc. This can be different for different cluster. Assuming we are on <code>login01.frontier</code>, then run the pvserver by <code>./pvserver --force-offscreen-rendering</code>, the output is:</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Waiting for client...</span><br><span class="line">Connection URL: cs://login01:11111</span><br><span class="line">Accepting connection(s): login01:11111</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>Building a ssh tunnel between local machine (laptop) and the HPC login node. This is an important step and we can do it by this way:</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -L 11111:login01:11111 &lt;username&gt;@login01.frontier.olcf.ornl.gov </span><br></pre></td></tr></table></figure>
-
 <p>This means that we map the 11111 port on local machine to the <code>login01:11111</code> through the <code>&lt;username&gt;@login01.frontier.olcf.ornl.gov</code>. This is same to the normal ssh login process, we input password and login to the HPC.</p>
 <ul>
 <li><p>Starting the paraview on local machine, choose File-&gt;Connect-&gt;Add server, then add <code>localhost:11111</code> the start up type is manual. Since the we have already map the local port to remote HPC machine, once we connect button, the client could connect to the pvserver on remote machine successfully. The server end shows <code>Client connected</code>.</p>
@@ -231,15 +220,12 @@ ga('send', 'pageview');
 </li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">srun -A &lt;project id&gt; -t 00:30:00 -N 1 -n 8 ./pvserver --force-offscreen-rendering</span><br></pre></td></tr></table></figure>
-
 <p>The output is like this when the node is allocated:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Waiting for client...</span><br><span class="line">Connection URL: cs://frontier07337:11111</span><br><span class="line">Accepting connection(s): frontier07337:11111</span><br></pre></td></tr></table></figure>
-
 <p>In this case, when building the ssh tunnel, we should use </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -L 11111:frontier07337:11111 &lt;username&gt;@login01.frontier.olcf.ornl.gov</span><br></pre></td></tr></table></figure>
 <p>This means that we actually build a tunnel through login01 to the compute node <code>frontier07337</code>, the ip of <code>frontier07337</code> can be recognized on the login node. We can also build to tunnels first one is </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -L 11111:localhost:11111 &lt;username&gt;@login01.frontier.olcf.ornl.gov</span><br></pre></td></tr></table></figure>
-
 <p>After logining into the login node, then build the second one, which is</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -L 11111:localhost:11111 frontier07337</span><br></pre></td></tr></table></figure>
 <p>After building this tunnel, we can connect the client with the pvserver. Checking associated document to learn how to use reverse connection.</p>
@@ -248,7 +234,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/10/02/Scientific-visualization-with-paraview/" data-id="cm2a0xf4d0046dvjr8drrdwxm" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/10/02/Scientific-visualization-with-paraview/" data-id="cmbw030ie004hj8jr17bhbs5z" class="article-share-link">分享</a>
       
       
       
@@ -347,7 +333,7 @@ ga('send', 'pageview');
       
         <strong class="toc-title">文章目录</strong>
         <div class="toc-widget-list">
-              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#All-kinds-of-details-about-color-mapping"><span class="toc-number">1.</span> <span class="toc-text">All kinds of details about color mapping</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Necessary-thing-for-taking-screenshot"><span class="toc-number">2.</span> <span class="toc-text">Necessary thing for taking screenshot</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Find-the-data-id-list"><span class="toc-number">3.</span> <span class="toc-text">Find the data id list</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Connect-to-remote-server"><span class="toc-number">4.</span> <span class="toc-text">Connect to remote server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-spread-view-and-the-particle-x2F-cell-finder"><span class="toc-number">5.</span> <span class="toc-text">The spread view and the particle&#x2F;cell finder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Data-selection-mechanism"><span class="toc-number">6.</span> <span class="toc-text">Data selection mechanism</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Processing-multiple-data-blocks"><span class="toc-number">7.</span> <span class="toc-text">Processing multiple data blocks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-small-but-important-operations"><span class="toc-number">8.</span> <span class="toc-text">Some small but important operations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-archetecture-regarding-the-Paraview-design"><span class="toc-number">9.</span> <span class="toc-text">Some archetecture regarding the Paraview design.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Common-flow-vis-tasks"><span class="toc-number">10.</span> <span class="toc-text">Common flow vis tasks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tips-of-building-paraview-in-all-kinds-of-scenarios"><span class="toc-number">11.</span> <span class="toc-text">Tips of building paraview in all kinds of scenarios</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Paraview-loading-the-raw-data"><span class="toc-number">12.</span> <span class="toc-text">Paraview loading the raw data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Customized-filter"><span class="toc-number">13.</span> <span class="toc-text">Customized filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Paraview-plugin"><span class="toc-number">14.</span> <span class="toc-text">Paraview plugin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using-client-x2F-remote-mode-run-paraview"><span class="toc-number">15.</span> <span class="toc-text">Using client&#x2F;remote mode run paraview.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Setting-camera-position"><span class="toc-number">16.</span> <span class="toc-text">Setting camera position</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#All-kinds-of-details-about-color-mapping"><span class="toc-number">1.</span> <span class="toc-text">All kinds of details about color mapping</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Necessary-thing-for-taking-screenshot"><span class="toc-number">2.</span> <span class="toc-text">Necessary thing for taking screenshot</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Find-the-data-id-list"><span class="toc-number">3.</span> <span class="toc-text">Find the data id list</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Connect-to-remote-server"><span class="toc-number">4.</span> <span class="toc-text">Connect to remote server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-spread-view-and-the-particle-cell-finder"><span class="toc-number">5.</span> <span class="toc-text">The spread view and the particle&#x2F;cell finder</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Data-selection-mechanism"><span class="toc-number">6.</span> <span class="toc-text">Data selection mechanism</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Processing-multiple-data-blocks"><span class="toc-number">7.</span> <span class="toc-text">Processing multiple data blocks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-small-but-important-operations"><span class="toc-number">8.</span> <span class="toc-text">Some small but important operations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Some-archetecture-regarding-the-Paraview-design"><span class="toc-number">9.</span> <span class="toc-text">Some archetecture regarding the Paraview design.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Common-flow-vis-tasks"><span class="toc-number">10.</span> <span class="toc-text">Common flow vis tasks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tips-of-building-paraview-in-all-kinds-of-scenarios"><span class="toc-number">11.</span> <span class="toc-text">Tips of building paraview in all kinds of scenarios</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Paraview-loading-the-raw-data"><span class="toc-number">12.</span> <span class="toc-text">Paraview loading the raw data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Customized-filter"><span class="toc-number">13.</span> <span class="toc-text">Customized filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Paraview-plugin"><span class="toc-number">14.</span> <span class="toc-text">Paraview plugin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Using-client-remote-mode-run-paraview"><span class="toc-number">15.</span> <span class="toc-text">Using client&#x2F;remote mode run paraview.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Setting-camera-position"><span class="toc-number">16.</span> <span class="toc-text">Setting camera position</span></a></li></ol>
           </div>
       </div>
     </div>
@@ -431,28 +417,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

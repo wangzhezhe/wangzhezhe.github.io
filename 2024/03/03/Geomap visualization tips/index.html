@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,16 +124,14 @@ ga('send', 'pageview');
         
         <p>Some tips about map visuliazation</p>
 <span id="more"></span>
-
-
-<h3 id="Preparing-env"><a href="#Preparing-env" class="headerlink" title="Preparing env"></a>Preparing env</h3><p>Originally, I’m considering using Flask as backend, but i’m not developing a web app, and I do not have a ip and server to hold my service. I’m actually working on a desktop service. The dedicated user is not public (I do not need to consider the account, session things for different user). The goal of that project is just provide a GUI to let user input something, store in the local file in an organized way, index&#x2F;search the data as needed, and draw out the searched results.</p>
+<h3 id="Preparing-env"><a href="#Preparing-env" class="headerlink" title="Preparing env"></a>Preparing env</h3><p>Originally, I’m considering using Flask as backend, but i’m not developing a web app, and I do not have a ip and server to hold my service. I’m actually working on a desktop service. The dedicated user is not public (I do not need to consider the account, session things for different user). The goal of that project is just provide a GUI to let user input something, store in the local file in an organized way, index/search the data as needed, and draw out the searched results.</p>
 <p>Final thought, using pyqt as the backend and using d3 for rendering map specified by geo json file.</p>
 <h3 id="Associated-web-knowledge"><a href="#Associated-web-knowledge" class="headerlink" title="Associated web knowledge"></a>Associated web knowledge</h3><p>In html, using svg tag to specify the position of the map</p>
 <p>the js file can be included in the header of body section of the html. the js file is separated functions to be executed each time we need to render resutls.</p>
 <p>pyqt webengine can be viewed as a browser, but it is not flexible as actual browser(no interactive debug consol for js), the good thing is to debug the html well through general browser, when it is ready, then embed it into the pyat.</p>
 <h3 id="svg-properties"><a href="#svg-properties" class="headerlink" title="svg properties"></a>svg properties</h3><p>append(“g”) group several elements together</p>
 <p>A trick part to vis multiple feature blocks sometimes. Originally, I set <code>.attr(&quot;fill&quot;, &quot;white&quot;)</code> but it turns out that for each filter, this fill is applied to the whole object once. The result can not be shown properly. Even if I use <code>style(&quot;opacity&quot;,0.1)</code>, the feature blog that is vised firstly has been covered by multiple layers and the results are getting blur, the newly rendered feature reagion is clear. I stucked there for a long time and the issue is solved after I set <code>attr(&quot;fill&quot;,&quot;none&quot;)</code>.</p>
-<p>&#x2F;&#x2F; select all SVG path elements in document order<br>d3.selectAll(“path”);</p>
+<p>// select all SVG path elements in document order<br>d3.selectAll(“path”);</p>
 <p>TODO, the coresponding relationship between the svg tag and the svg variable in js</p>
 <p>TODO <code>=&gt;</code> in js</p>
 <p>TODO, the fill for the path did not fill the inner region of the map in multiPolygon, it seems that it will fill background each time for each province. Some province is clear, some are not, the province drawn eariler are clear, so I set fill as empty</p>
@@ -152,7 +147,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2024/03/03/Geomap%20visualization%20tips/" data-id="cm4dzcq6k000052jr063q1ufm" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2024/03/03/Geomap%20visualization%20tips/" data-id="cmbw030i2001cj8jr39zzea7r" class="article-share-link">分享</a>
       
       
       
@@ -335,28 +330,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

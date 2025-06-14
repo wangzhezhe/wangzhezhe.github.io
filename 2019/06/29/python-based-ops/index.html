@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -125,27 +122,20 @@ ga('send', 'pageview');
       
         <!-- Table of Contents -->
         
-        <p>有些时候纯粹用shell似乎感觉有点力不从心，在python的帮助下似乎简单很多</p>
-<span id="more"></span>
-
+        <p>有些时候纯粹用shell似乎感觉有点力不从心，在python的帮助下似乎简单很多<br><span id="more"></span></p>
 <h3 id="format-json"><a href="#format-json" class="headerlink" title="format json"></a>format json</h3><p>using following commands：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &#x27;&#123;&quot;foo&quot;: &quot;bar&quot;&#125;&#x27; | python -m json.tool</span><br></pre></td></tr></table></figure>
-
-
 <h3 id="analyze-results-from-timer"><a href="#analyze-results-from-timer" class="headerlink" title="analyze results from timer"></a>analyze results from timer</h3><p>在系统的performance的相关问题中常常需要测性能，比如某个部分的时间，之后设置好的timer会打印出很多的格式化的数据存在log中。之前的时候常常用shell过滤出来所需要的log信息然后放在excel中处理，但是效率还是低，而且linux环境下使用excel不很方便，于是就采用shell+python结合起来的方式。</p>
 <p>比如log中的信息如下</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">timer1: the time 1.0</span><br><span class="line">timer1: the time 2.0</span><br><span class="line">timer1: the time 3.0</span><br></pre></td></tr></table></figure>
-
 <p>这个时候可以用如下的bash先讲data过滤出来</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat testdata.txt |cut -d &quot; &quot; -f 4</span><br></pre></td></tr></table></figure>
 <p>之后再将这些数据使用pip传送给python scripts 比如</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat testdata.txt |cut -d &quot; &quot; -f 4 | python3 analysis.py</span><br></pre></td></tr></table></figure>
 <p>具体的python scripts如下，需要对于list添加什么样的运算都可以灵活处理，简单直接</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import sys</span><br><span class="line">import statistics </span><br><span class="line"></span><br><span class="line">data_list = []</span><br><span class="line">real_data_list = []</span><br><span class="line">def isfloat(value):</span><br><span class="line">  try:</span><br><span class="line">    float(value)</span><br><span class="line">    return True</span><br><span class="line">  except ValueError:</span><br><span class="line">    return False</span><br><span class="line"></span><br><span class="line">for line in sys.stdin:</span><br><span class="line">    new_list = [(elem) for elem in line.split()]</span><br><span class="line">    if(len(new_list)&gt;0):</span><br><span class="line">      data_list.append(new_list[0])</span><br><span class="line"></span><br><span class="line">#print (data_list)</span><br><span class="line"># delete useless string</span><br><span class="line">for d in (data_list):</span><br><span class="line">    if isfloat(d):</span><br><span class="line">        real_data_list.append(float(d))</span><br><span class="line"></span><br><span class="line">#print (real_data_list)</span><br><span class="line">print (&quot;len&quot;, len(real_data_list))</span><br><span class="line">print (&quot;avg&quot;, statistics.mean(real_data_list))</span><br><span class="line">print (&quot;min&quot;, min(real_data_list) )</span><br><span class="line">print (&quot;max&quot;, max(real_data_list) )</span><br><span class="line">print (&quot;std&quot;,statistics.stdev(real_data_list))</span><br><span class="line">print (&quot;sum&quot;,sum(real_data_list))</span><br></pre></td></tr></table></figure>
-
 <p>Actually, python statistical library have provided a function to compute these values at once:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">from scipy.stats import describe</span><br><span class="line">v = np.random.normal(size=100)</span><br><span class="line">res = describe(v)</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
-
 <p>In addition to these basic descriptions, another description is the <strong>statistical significance test</strong>, this <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=fiMFqfatieE">video</a> shows a good theoretical backgound about the hypothesis testing. </p>
 <p>Assuming the that the collected value is the execution time, you may see that 50% of them completed in 1 seconds. However, it is more professional to use the hypothesis testing to show this. Such as the p value to reject the hypothesis is 0.01, null hypothesis is the execution time which is larger then specific threshold.</p>
 <p>Using <a target="_blank" rel="noopener" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_1samp.html#scipy.stats.ttest_1samp">python library</a> can do the ttest quickly, there are flexible parameters to set the left tail testing, right tail testing of double sided testing.</p>
@@ -153,7 +143,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/29/python-based-ops/" data-id="cm2a0xf4u009edvjrb1778kxz" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/29/python-based-ops/" data-id="cmbw030ir009ij8jr2am3gq9y" class="article-share-link">分享</a>
       
       
       
@@ -217,7 +207,7 @@ ga('send', 'pageview');
     </a>
   
   
-    <a href="/2019/06/27/Communication-Patterns/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/06/27/communication-patterns/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
       <div class="article-nav-title">Communication Patterns</div>
     </a>
@@ -336,28 +326,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

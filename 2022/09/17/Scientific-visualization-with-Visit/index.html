@@ -55,11 +55,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -129,7 +126,6 @@ ga('send', 'pageview');
         
         <p>Some notes about using the Visit to do the scientiifc visulization.</p>
 <span id="more"></span>
-
 <p>It is quite popular to use the Paraview to do the scientific visulization. But in some cases, using the Visit might be a better option. For example, the visit is good at processing the data in <code>hdf5</code> format and in <code>soli</code> format, the paraview is not really good at processing data in these types. There are some learning curves for doing thes since the visit is not that much straightforward to use</p>
 <p>This is the complete online <a target="_blank" rel="noopener" href="https://visit-sphinx-github-user-manual.readthedocs.io/en/develop/getting_started/index.html">document of the Visit</a>.</p>
 <p>This is the OLCF tutorial about the visit, it contains some detialed operation such as how to connect to the remote server etc.(<a target="_blank" rel="noopener" href="https://github.com/olcf/dva-training-series/tree/main/visit">https://github.com/olcf/dva-training-series/tree/main/visit</a>)</p>
@@ -137,13 +133,11 @@ ga('send', 'pageview');
 <p>Another way to show the 1d data is to go to the <code>Add</code> and then <code>Pseudocolor</code> direactly. At the mesh section, just click the suitable variable you want to visualize, but this way only map the color into one specific surface. we could not get more details about how things look like inner that surface. Which is not good compared with using the contour to present things.</p>
 <h3 id="Vector-Visualization"><a href="#Vector-Visualization" class="headerlink" title="Vector Visualization"></a>Vector Visualization</h3><p>The typical way to show the vector filed is to click the <code>Add</code> and then go to the <code>Vector</code> section, if there is a specific vector field in the data, then after drawing the figure, we could show out the vector direactly (this is really great tool to get the idea of the vector field quickly, and it is more convenient than using the ParaView for vector visualization here). Then by double clicking the associated added vector’s column, we can update the value assocated with the sampling field to check different result views. This is a <a target="_blank" rel="noopener" href="https://visit-sphinx-github-user-manual.readthedocs.io/en/v3.2.0/gui_manual/Plots/PlotTypes/VectorPlot.html">online tutorial</a> that shows these details.</p>
 <p>One convenient thing in Visit is to create the new expression based on the existing variables. For example, if we store the <code>&#123;velocity_x, velocity_y, and velocity_z&#125;</code> separately, we can create a new <code>expression</code> to create a vector based on these parameters (be careful to select the type of new expression as vector and also put { } at the left and right side of the expression). The following screenshot shows how to create the vector expression from the scalar:</p>
-<img src="/images/FigVisitExpression.jpg" width="800"/>
-
+<p><img src="/images/FigVisitExpression.jpg" width="800"/></p>
 <p>Be careful about the gramma of the expression.</p>
 <p>A little bit tricky part is executing the streamline, it is not that much straightforward. We need to click the pseudocolor firstly, and then adding <code>operator</code> and then the <code>IntergralCurve</code>, then hit the draw to get the streamline results. After double clicking the IntergralCurve, we can set assocaited parameters such as the data seeds, integration steps etc. </p>
 <h3 id="Generating-the-movie"><a href="#Generating-the-movie" class="headerlink" title="Generating the movie"></a>Generating the movie</h3><p>Sometimes, the animation generator does not work well, it shows the specific <code>ffmpeg</code> commands to generate the movie. There are all kinds of parameters for using the ffmpeg, check this page to get more information. This is a sample one that I used ok to create the video file, be careful that we need to use the expression such as <code>%d</code> to match the source files.</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ffmpeg -i ./mesh_128_stepsize_0.1_stepnum_1000_seedsnum_512-0/mesh_128_stepsize_0.1_stepnum_1000_seedsnum_512%4d.ppm -vcodec libx264 -pix_fmt yuv420p output.mp4</span><br></pre></td></tr></table></figure>
-
 <p>This is <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/7015489/building-video-from-images-with-ffmpeg-w-pause-between-frames">example</a> to show how to adjust the video frame rate.</p>
 <h3 id="Other-small-tips"><a href="#Other-small-tips" class="headerlink" title="Other small tips"></a>Other small tips</h3><p>I once try to visualize the data of different domains into different colors. In visit, we can use <code>subset</code>-&gt;<code>domains</code> to get associated results. It is a kind of scalar visualization techiniques essentially. Then we can decrease its opacity. If we add more filters based on this such as adding the streamline, we can also see the stream line results.</p>
 <p>In the paraview, it will automatically group the file with the same suffix. (Or we can create the multi block vtk file) In the visit, we could group the file by specified catalogue file. This is convenient to do, we just need to create a file with the <code>.visit</code> suffix. The contents of the file may looks like:</p>
@@ -155,7 +149,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/09/17/Scientific-visualization-with-Visit/" data-id="cm2a0xf4e004fdvjr1oz91zqb" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/09/17/Scientific-visualization-with-Visit/" data-id="cmbw030id004fj8jr8tto1yap" class="article-share-link">分享</a>
       
       
       
@@ -338,28 +332,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>manipulate the data</p>
 <span id="more"></span>
-
 <h3 id="Resample-the-data"><a href="#Resample-the-data" class="headerlink" title="Resample the data"></a>Resample the data</h3><p>sampling</p>
 <h3 id="Decompose-data-into-blocks"><a href="#Decompose-data-into-blocks" class="headerlink" title="Decompose data into blocks"></a>Decompose data into blocks</h3><p>hexiles</p>
 <p><a target="_blank" rel="noopener" href="https://vtk.org/doc/nightly/html/classvtkProbeFilter.html#details">https://vtk.org/doc/nightly/html/classvtkProbeFilter.html#details</a></p>
@@ -138,7 +134,7 @@ ga('send', 'pageview');
 <p>We need to have a good understanding about the vtk cell type</p>
 <p>This examples shows all the types of the vtkCell Type</p>
 <p><a target="_blank" rel="noopener" href="https://kitware.github.io/vtk-examples/site/Cxx/GeometricObjects/LinearCellDemo/">https://kitware.github.io/vtk-examples/site/Cxx/GeometricObjects/LinearCellDemo/</a></p>
-<p>Even the <code>vtkLine</code> (VTK&#x2F;Common&#x2F;DataModel&#x2F;vtkLine.cxx) is an concrete example of the <code>vtkCell</code> (VTK&#x2F;Common&#x2F;DataModel), for each cell, there are <code>EvaluateLocation</code> and <code>EvaluatePosition</code> function and <code>InterpolationFunctions</code>, these are used to do some naive interpolation. </p>
+<p>Even the <code>vtkLine</code> (VTK/Common/DataModel/vtkLine.cxx) is an concrete example of the <code>vtkCell</code> (VTK/Common/DataModel), for each cell, there are <code>EvaluateLocation</code> and <code>EvaluatePosition</code> function and <code>InterpolationFunctions</code>, these are used to do some naive interpolation. </p>
 <p>The dedicated point interpolation function use the different approch compared with the default one implemented by the cell operations here.</p>
 <p>iso-parametric interpolation functions</p>
 <p>Other types of interpolation do not have the operation of finding the cell, it just sample the points from cloud points, such as the example that use the PointInterpolator (the inputs is the list of points)</p>
@@ -163,7 +159,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/11/13/Resample-and-interpolation/" data-id="cm2a0xf4d003ydvjr36r7hmcu" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/11/13/Resample-and-interpolation/" data-id="cmbw030id0047j8jr822gh3ge" class="article-share-link">分享</a>
       
       
       
@@ -346,28 +342,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

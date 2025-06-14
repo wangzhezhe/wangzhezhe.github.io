@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>队列和栈相关的笔试面试题，栈和队列自然是基础中的基础了，罗列了一些基本的，总之不要着急，在纸上理清楚之后再去实现，实现起来反而是非常快的，有一些地方是不常用到，比如通过栈来比较大小，进行排序等等操作。</p>
 <span id="more"></span>
-
 <h3 id="基本性质"><a href="#基本性质" class="headerlink" title="基本性质"></a>基本性质</h3><ul>
 <li>栈 先进后出 （弹夹） 支持 pop(弹出) push(压入) size</li>
 <li>队列 先进先出 pop 从队尾弹出 push 从队头压入</li>
@@ -167,23 +163,21 @@ ga('send', 'pageview');
 </ul>
 <p>下面这个图可以表示出递归操作的整个调用栈和操作流程的关系：</p>
 <p>TODO (7niu)</p>
-<p>&#x2F;&#x2F;这个递归的用法太精妙了。。。</p>
+<p>//这个递归的用法太精妙了。。。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">class StackReverse &#123;</span><br><span class="line">public:</span><br><span class="line">    int get(stack&lt;int&gt; getstack)&#123;</span><br><span class="line">        int result=getstack.top();</span><br><span class="line">        getstack.pop();</span><br><span class="line">        </span><br><span class="line">        if (getstack.empty())&#123;</span><br><span class="line">            return result;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            int last=get(getsstack);</span><br><span class="line">            getstack.push(result);</span><br><span class="line">            return last;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    void reverse(stack&lt;int&gt; rstack)&#123;</span><br><span class="line">        if (rstack.empty())&#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        int i=get(rstack);</span><br><span class="line">        reverse(rstack);</span><br><span class="line">        rstack.push(i);   </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    vector&lt;int&gt; reverseStack(vector&lt;int&gt; A, int n) &#123;</span><br><span class="line">        // write code here</span><br><span class="line">        stack&lt;int&gt; s;</span><br><span class="line">        for(i=0;i&lt;n;i++)&#123;</span><br><span class="line">            s.push(A[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        reverse(s);</span><br><span class="line">        for(i=0;i&lt;n;i++)&#123;</span><br><span class="line">            int temp=s.top()</span><br><span class="line">            s.pop();</span><br><span class="line">            A[i]=temp;</span><br><span class="line">        &#125;</span><br><span class="line">        return A;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
 <h3 id="利用一个额外的栈进行排序-小复杂"><a href="#利用一个额外的栈进行排序-小复杂" class="headerlink" title="利用一个额外的栈进行排序(小复杂)"></a>利用一个额外的栈进行排序(小复杂)</h3><p>栈中的元素类型为整形，想将该栈从顶到底按照从大到小的顺序排序，只许申请一个额外栈，除此之外可以申请新的变量，但不能申请额外的数据结构，如何完成排序操作?</p>
 <ul>
-<li>需要申请一个辅助栈help，当前元素为current，如果current&lt;&#x3D;help栈顶元素，则入栈，如果current&gt;help栈顶元素，将help中的元素弹回栈一，直到current&lt;help栈的栈顶元素，整个过程完毕后，current是从小到大排列的，之后再将help中的元素一次放回到栈一种即可。</li>
+<li>需要申请一个辅助栈help，当前元素为current，如果current&lt;=help栈顶元素，则入栈，如果current&gt;help栈顶元素，将help中的元素弹回栈一，直到current&lt;help栈的栈顶元素，整个过程完毕后，current是从小到大排列的，之后再将help中的元素一次放回到栈一种即可。</li>
 </ul>
-<p><strong>注意 要熟悉用vector或者数组 来模拟入栈和出栈的过程</strong><br>用栈模拟的化，还是挺简单的，用数组模拟的话，一定要在开始的时候定义清楚，在开始的时候，栈顶指针存储在0号元素位置还是1号元素位置！！！要不然后面就搞晕了！！！<br><strong>提示 在每次push 或者pop操作的最后 都把当前栈的元素打印一遍出来 这样在调试的时候 容易减少错误</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">class TwoStacks</span><br><span class="line">&#123;</span><br><span class="line">    vector&lt;int&gt; help;</span><br><span class="line">    int top(vector&lt;int&gt; tempstack)</span><br><span class="line">    &#123;</span><br><span class="line">        return tempstack.back();</span><br><span class="line">    &#125;</span><br><span class="line">    void pop(vector&lt;int&gt; &amp;tempstack)</span><br><span class="line">    &#123;</span><br><span class="line">        tempstack.pop_back();</span><br><span class="line">        /*</span><br><span class="line">        printf(&quot;%s: &quot;,&quot;pop&quot;)；   </span><br><span class="line">        for(int i=0; i&lt;tempstack.size(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(&quot;%d &quot;,tempstack[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        putchar(&#x27;\n&#x27;);</span><br><span class="line">        */</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    void push(vector&lt;int&gt; &amp;tempstack, int value)</span><br><span class="line">    &#123;</span><br><span class="line">        tempstack.push_back(value);</span><br><span class="line">        /*</span><br><span class="line">        printf(&quot;%s: &quot;,&quot;push&quot;);</span><br><span class="line">        for(int i=0; i&lt;tempstack.size(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(&quot;%d &quot;,tempstack[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        putchar(&#x27;\n&#x27;);</span><br><span class="line">        */</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    bool stackempty(vector&lt;int&gt; tempstack)</span><br><span class="line">    &#123;</span><br><span class="line">        return tempstack.empty();</span><br><span class="line">    &#125;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; twoStacksSort(vector&lt;int&gt; numbers)</span><br><span class="line">    &#123;</span><br><span class="line">        // write code here</span><br><span class="line">        int len=numbers.size();</span><br><span class="line">        if (len==0)</span><br><span class="line">        &#123;</span><br><span class="line">            return numbers;</span><br><span class="line">        &#125;</span><br><span class="line">        int c;</span><br><span class="line">        int temp;</span><br><span class="line">        while(stackempty(numbers)==false)</span><br><span class="line">        &#123;</span><br><span class="line">            c=top(numbers);</span><br><span class="line">            pop(numbers);</span><br><span class="line">            if(stackempty(help))</span><br><span class="line">            &#123;</span><br><span class="line">                push(help,c);</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            temp=top(help);</span><br><span class="line">            if(c&gt;=temp)</span><br><span class="line">            &#123;</span><br><span class="line">                push(help,c);</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                while(stackempty(help)==false)</span><br><span class="line">                &#123;</span><br><span class="line">                    temp=top(help);</span><br><span class="line">                    pop(help);</span><br><span class="line">                    push(numbers,temp);</span><br><span class="line">                &#125;</span><br><span class="line">                push(help,c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //put the element in help back to numbers</span><br><span class="line">        return help;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    TwoStacks s;</span><br><span class="line">    vector&lt;int&gt; v;</span><br><span class="line">    vector&lt;int&gt; r;</span><br><span class="line">    int i=0;</span><br><span class="line">    int a[10]= &#123;2,3,4,8,6,7&#125;;</span><br><span class="line">    for (i=0; i&lt;5; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        v.push_back(a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    r=s.twoStacksSort(v);</span><br><span class="line">    int len=r.size();</span><br><span class="line">    for(i=0; i&lt;len; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        printf(&quot;%d &quot;,r[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="滑动窗口（难度较高）"><a href="#滑动窗口（难度较高）" class="headerlink" title="滑动窗口（难度较高）"></a>滑动窗口（难度较高）</h3><p>给定一个数组以及一个滑动窗口，窗口每次向右移动一个元素，每次返回窗口中的最大的元素。比如数组[4,3,5,4,3,3,6,7]窗口的长度w&#x3D;3，这样最后返回的结果就是[5,5,5,4,6,7]。</p>
+<p><strong>注意 要熟悉用vector或者数组 来模拟入栈和出栈的过程</strong><br>用栈模拟的化，还是挺简单的，用数组模拟的话，一定要在开始的时候定义清楚，在开始的时候，栈顶指针存储在0号元素位置还是1号元素位置！！！要不然后面就搞晕了！！！<br><strong>提示 在每次push 或者pop操作的最后 都把当前栈的元素打印一遍出来 这样在调试的时候 容易减少错误</strong><br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">class TwoStacks</span><br><span class="line">&#123;</span><br><span class="line">    vector&lt;int&gt; help;</span><br><span class="line">    int top(vector&lt;int&gt; tempstack)</span><br><span class="line">    &#123;</span><br><span class="line">        return tempstack.back();</span><br><span class="line">    &#125;</span><br><span class="line">    void pop(vector&lt;int&gt; &amp;tempstack)</span><br><span class="line">    &#123;</span><br><span class="line">        tempstack.pop_back();</span><br><span class="line">        /*</span><br><span class="line">        printf(&quot;%s: &quot;,&quot;pop&quot;)；   </span><br><span class="line">        for(int i=0; i&lt;tempstack.size(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(&quot;%d &quot;,tempstack[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        putchar(&#x27;\n&#x27;);</span><br><span class="line">        */</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    void push(vector&lt;int&gt; &amp;tempstack, int value)</span><br><span class="line">    &#123;</span><br><span class="line">        tempstack.push_back(value);</span><br><span class="line">        /*</span><br><span class="line">        printf(&quot;%s: &quot;,&quot;push&quot;);</span><br><span class="line">        for(int i=0; i&lt;tempstack.size(); i++)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(&quot;%d &quot;,tempstack[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        putchar(&#x27;\n&#x27;);</span><br><span class="line">        */</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    bool stackempty(vector&lt;int&gt; tempstack)</span><br><span class="line">    &#123;</span><br><span class="line">        return tempstack.empty();</span><br><span class="line">    &#125;</span><br><span class="line">public:</span><br><span class="line">    vector&lt;int&gt; twoStacksSort(vector&lt;int&gt; numbers)</span><br><span class="line">    &#123;</span><br><span class="line">        // write code here</span><br><span class="line">        int len=numbers.size();</span><br><span class="line">        if (len==0)</span><br><span class="line">        &#123;</span><br><span class="line">            return numbers;</span><br><span class="line">        &#125;</span><br><span class="line">        int c;</span><br><span class="line">        int temp;</span><br><span class="line">        while(stackempty(numbers)==false)</span><br><span class="line">        &#123;</span><br><span class="line">            c=top(numbers);</span><br><span class="line">            pop(numbers);</span><br><span class="line">            if(stackempty(help))</span><br><span class="line">            &#123;</span><br><span class="line">                push(help,c);</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            temp=top(help);</span><br><span class="line">            if(c&gt;=temp)</span><br><span class="line">            &#123;</span><br><span class="line">                push(help,c);</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                while(stackempty(help)==false)</span><br><span class="line">                &#123;</span><br><span class="line">                    temp=top(help);</span><br><span class="line">                    pop(help);</span><br><span class="line">                    push(numbers,temp);</span><br><span class="line">                &#125;</span><br><span class="line">                push(help,c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //put the element in help back to numbers</span><br><span class="line">        return help;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    TwoStacks s;</span><br><span class="line">    vector&lt;int&gt; v;</span><br><span class="line">    vector&lt;int&gt; r;</span><br><span class="line">    int i=0;</span><br><span class="line">    int a[10]= &#123;2,3,4,8,6,7&#125;;</span><br><span class="line">    for (i=0; i&lt;5; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        v.push_back(a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    r=s.twoStacksSort(v);</span><br><span class="line">    int len=r.size();</span><br><span class="line">    for(i=0; i&lt;len; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        printf(&quot;%d &quot;,r[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="滑动窗口（难度较高）"><a href="#滑动窗口（难度较高）" class="headerlink" title="滑动窗口（难度较高）"></a>滑动窗口（难度较高）</h3><p>给定一个数组以及一个滑动窗口，窗口每次向右移动一个元素，每次返回窗口中的最大的元素。比如数组[4,3,5,4,3,3,6,7]窗口的长度w=3，这样最后返回的结果就是[5,5,5,4,6,7]。</p>
 <ul>
 <li>普通解法的时间复杂度为O(n*w)，即是每次遍历w窗口中的元素，并且从中选出最大值，将最大值依次弹出。</li>
-<li>(较难的一个方法)最好的时间复杂度为O(N)可以利用双端队列实现窗口中最大值的更新。双端队列qmax&#x3D;{},双端队列存放着数组中的下标值。</li>
+<li>(较难的一个方法)最好的时间复杂度为O(N)可以利用双端队列实现窗口中最大值的更新。双端队列qmax={},双端队列存放着数组中的下标值。</li>
 <li>对数组进行遍历</li>
 <li>队列为空 插入arr[i]</li>
 <li>如果当前元素arr[i]&lt;d.back()把下标i插入到队列队尾。</li>
-<li>否则 一直从队尾弹出元素 直到arr[i]&gt;&#x3D;d.back()</li>
+<li>否则 一直从队尾弹出元素 直到arr[i]&gt;=d.back()</li>
 <li>当遍历的位置超过窗口的宽度，如果d中第一个元素index值大于i-w，则d中的第一个元素就是最大的元素，将这个元素放入结果数组中，否则就将队头元素弹出，直到符合上述要求，这里也是一层循环。</li>
 </ul>
 <p><strong>注意 做这个题的收获点</strong></p>
@@ -212,7 +206,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/13/algorithm-3-stack-and-queue/" data-id="cm2a0xf4h0051dvjrdh1h3v8m" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/06/13/algorithm-3-stack-and-queue/" data-id="cmbw030ig005aj8jrbs27hlzp" class="article-share-link">分享</a>
       
       
       
@@ -395,28 +389,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

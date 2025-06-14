@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,17 +124,14 @@ ga('send', 'pageview');
         
         <p>Discuss one exmaple library about cpp serilization and unserilization</p>
 <span id="more"></span>
-
 <p>Unlike the golang or java that provide the official serilization and decirilization libraray, we may need to use the third part library for the object serilization and decirilization. One example library that we want to introduce is this library: cereal (<a target="_blank" rel="noopener" href="https://github.com/USCiLab/cereal">https://github.com/USCiLab/cereal</a>). There are detailed documents about how to use this library. We just put an small example here to show some ideas about this library.</p>
 <h3 id="Cereal"><a href="#Cereal" class="headerlink" title="Cereal"></a>Cereal</h3><p>Just like many convenient cpp tool libraray, we only need to include the header file in order to use the cereal.</p>
 <p>this is an exmaple code</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include &lt;cereal/archives/binary.hpp&gt;</span><br><span class="line">#include &lt;cereal/archives/xml.hpp&gt;</span><br><span class="line">#include &lt;cereal/types/vector.hpp&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;sstream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line"></span><br><span class="line">class Object &#123;</span><br><span class="line"> public:</span><br><span class="line">  Object()&#123;&#125;;</span><br><span class="line">  Object(unsigned width, unsigned height, unsigned depth, double z_offset,</span><br><span class="line">         float range = 1.2, unsigned nblocks = 1)</span><br><span class="line">      : m_width(width),</span><br><span class="line">        m_height(height),</span><br><span class="line">        m_depth(depth + 1),</span><br><span class="line">        m_extents(6),</span><br><span class="line">        m_origin(3),</span><br><span class="line">        m_data(width * height * (depth + 1)),</span><br><span class="line">        m_z_offset(z_offset),</span><br><span class="line">        m_range(range),</span><br><span class="line">        m_nblocks(nblocks) &#123;</span><br><span class="line">    // initilization</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Object(const Object&amp;) = default;</span><br><span class="line">  Object(Object&amp;&amp;) = default;</span><br><span class="line">  Object&amp; operator=(const Object&amp;) = default;</span><br><span class="line">  Object&amp; operator=(Object&amp;&amp;) = default;</span><br><span class="line">  ~Object() = default;</span><br><span class="line"></span><br><span class="line">  bool compare(Object&amp; other) &#123;</span><br><span class="line">    if (other.m_width != m_width || other.m_height != m_height ||</span><br><span class="line">        other.m_depth != m_depth) &#123;</span><br><span class="line">      std::cout &lt;&lt; &quot;unequal part1&quot; &lt;&lt; std::endl;</span><br><span class="line">      return false;</span><br><span class="line">    &#125;</span><br><span class="line">    if (other.m_z_offset != m_z_offset || other.m_range != m_range ||</span><br><span class="line">        other.m_nblocks != m_nblocks) &#123;</span><br><span class="line">      std::cout &lt;&lt; &quot;unequal part2&quot; &lt;&lt; std::endl;</span><br><span class="line">      return false;</span><br><span class="line">    &#125;</span><br><span class="line">    if (other.m_extents.size() != m_extents.size() ||</span><br><span class="line">        other.m_origin.size() != m_origin.size() ||</span><br><span class="line">        other.m_data.size() != m_data.size()) &#123;</span><br><span class="line">      std::cout &lt;&lt; &quot;unequal part3&quot; &lt;&lt; std::endl;</span><br><span class="line">      return false;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i = 0; i &lt; m_extents.size(); i++) &#123;</span><br><span class="line">      if (other.m_extents[i] != m_extents[i]) &#123;</span><br><span class="line">        std::cout &lt;&lt; &quot;unequal m_extents&quot; &lt;&lt; std::endl;</span><br><span class="line">        return false;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i = 0; i &lt; m_origin.size(); i++) &#123;</span><br><span class="line">      if (other.m_origin[i] != m_origin[i]) &#123;</span><br><span class="line">        std::cout &lt;&lt; &quot;unequal m_origin&quot; &lt;&lt; std::endl;</span><br><span class="line">        return false;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i = 0; i &lt; m_data.size(); i++) &#123;</span><br><span class="line">      if (other.m_data[i] != m_data[i]) &#123;</span><br><span class="line">        std::cout &lt;&lt; &quot;unequal m_data&quot; &lt;&lt; std::endl;</span><br><span class="line">        return false;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return true;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  void caculateSize() &#123;</span><br><span class="line">    size_t stackVar;</span><br><span class="line">    stackVar = sizeof(m_width) + sizeof(m_height) + sizeof(m_depth) +</span><br><span class="line">               sizeof(m_extents) + sizeof(m_origin) + sizeof(m_data) +</span><br><span class="line">               sizeof(m_z_offset) + sizeof(m_range) + sizeof(m_nblocks);</span><br><span class="line">    std::cout &lt;&lt; &quot;major ariables&quot;;</span><br><span class="line">    std::cout &lt;&lt; &quot; m_width &quot; &lt;&lt; sizeof(m_width) &lt;&lt; &quot;,&quot;;</span><br><span class="line">    std::cout &lt;&lt; &quot; m_extents &quot; &lt;&lt; sizeof(m_extents) &lt;&lt; &quot;,&quot;;</span><br><span class="line">    std::cout &lt;&lt; &quot; m_origin &quot; &lt;&lt; sizeof(m_origin) &lt;&lt; &quot;,&quot;;</span><br><span class="line">    std::cout &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; &quot; stackVar &quot; &lt;&lt; stackVar &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    size_t heapVar = sizeof(int) * m_extents.size() +</span><br><span class="line">                     sizeof(double) * m_origin.size() +</span><br><span class="line">                     sizeof(int) * m_data.size();</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; &quot; heapVar &quot; &lt;&lt; heapVar &lt;&lt; std::endl;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // binary output based on cereal</span><br><span class="line">  // https://uscilab.github.io/cereal/serialization_archives.html</span><br><span class="line">  // the function should be public one!</span><br><span class="line">  template &lt;typename A&gt;</span><br><span class="line">  void serialize(A&amp; ar) &#123;</span><br><span class="line">    ar&amp; m_width;</span><br><span class="line">    ar&amp; m_height;</span><br><span class="line">    ar&amp; m_depth;</span><br><span class="line">    ar&amp; m_extents;</span><br><span class="line">    ar&amp; m_origin;</span><br><span class="line">    ar&amp; m_data;</span><br><span class="line">    ar&amp; m_z_offset;</span><br><span class="line">    ar&amp; m_range;</span><br><span class="line">    ar&amp; m_nblocks;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> private:</span><br><span class="line">  size_t m_width;</span><br><span class="line">  size_t m_height;</span><br><span class="line">  size_t m_depth;</span><br><span class="line">  std::vector&lt;int&gt; m_extents;</span><br><span class="line">  std::vector&lt;double&gt; m_origin;</span><br><span class="line">  std::vector&lt;int&gt; m_data;</span><br><span class="line">  unsigned m_z_offset;</span><br><span class="line">  float m_range;</span><br><span class="line">  unsigned m_nblocks;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">  static unsigned LEN = 10;</span><br><span class="line">  Object ob(LEN, LEN, LEN, 1, 1.2, 5);</span><br><span class="line"></span><br><span class="line">  std::stringstream ss;  // any stream can be used</span><br><span class="line"></span><br><span class="line">  cereal::BinaryOutputArchive oarchive(ss);  // Create an output archive</span><br><span class="line"></span><br><span class="line">  oarchive(ob);  // Write the data to the archive</span><br><span class="line"></span><br><span class="line">  // oarchive.saveBinaryValue(mb, sizeof(mb), &quot;mb&quot;);</span><br><span class="line"></span><br><span class="line">  std::string bufferedstr = ss.str();</span><br><span class="line"></span><br><span class="line">  std::cout &lt;&lt; &quot;serilized size &quot; &lt;&lt; bufferedstr.size() &lt;&lt; &quot; original size &quot;</span><br><span class="line">            &lt;&lt; sizeof(ob);</span><br><span class="line"></span><br><span class="line">  // deserialize</span><br><span class="line">  std::stringstream is(bufferedstr);</span><br><span class="line"></span><br><span class="line">  cereal::BinaryInputArchive archive_in(is);</span><br><span class="line">  Object mbnew;</span><br><span class="line">  archive_in(mbnew);</span><br><span class="line"></span><br><span class="line">  bool ifequal = ob.compare(mbnew);</span><br><span class="line">  std::cout &lt;&lt; &quot; ifequal &quot; &lt;&lt; ifequal &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">  mbnew.caculateSize();</span><br><span class="line"></span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <h3 id="Several-tips-of-using-cereals"><a href="#Several-tips-of-using-cereals" class="headerlink" title="Several tips of using cereals"></a>Several tips of using cereals</h3><p>you may need to use stringstream to transfer the marshaled data into a string</p>
 <p>you also need to add an public template function in the defination of the object in order to use the cereal</p>
 <p>When we check the size of the object</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">serilized size 4508 original size 112 ifequal 1</span><br><span class="line">major ariables m_width 8, m_extents 24, m_origin 24,</span><br><span class="line"> stackVar 108</span><br><span class="line"> heapVar 4448</span><br></pre></td></tr></table></figure>
-
 <p>You could see that the serilized size contains both the stack variable and the heap variable. The sizeof only caculate the stack varaible, that is why the size of the object is 112</p>
 <h3 id="DIY"><a href="#DIY" class="headerlink" title="DIY"></a>DIY</h3><p>The diy library is maintained by kitware, that is desinged for executing the visualization algorithm in an distributed manner. Talking about the distributed things, we need to send data object back and forth and also includes different types of data communication patterns.</p>
 <p>The memory buffer of the diy is easy to undersdand, just a simple <code>vector&lt;char&gt;</code> which is supposed to store the serialized data. Assuming the buffer is a file, It use the position to store the current location of current offset of the memory buffer.</p>
@@ -152,7 +146,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/02/07/libraraies-about-cpp-object-serilization/" data-id="cm2a0xf4q008bdvjrb47p3cym" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2021/02/07/libraraies-about-cpp-object-serilization/" data-id="cmbw030iq008sj8jr51jnejez" class="article-share-link">分享</a>
       
       
       
@@ -335,28 +329,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

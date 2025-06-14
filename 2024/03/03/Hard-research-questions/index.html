@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>列举一些遇到的比较难以回答的research相关的问题。</p>
 <span id="more"></span>
-
 <p>回答这些问题要借鉴一些文科考试的思路，一句话的问题并不是说让你也一句话就说清楚，而是可能需要用一大段，从几个点去回答。因为这些问题让人感到难以回答的原因是，一个问题实际上是包含着好几个具体的小问题的。在回答之前没有想清楚从哪几个角度去回答，然后就直接回答很具体的内容，往往就容易回答不好。</p>
 <p><strong>某个领域(比如in situ workflow)在国内国外的主要挑战有哪些。</strong></p>
 <p>这个问题是之前的一次面试中被问到的，回答的有亮点还是比较难的，答案不能太朴实了，要让人觉得有高度。</p>
@@ -142,11 +138,11 @@ ga('send', 'pageview');
 <p>(当前进展) 对于in situ的解决方案而言，已经有了十多年的研究历史，相关的研究围绕着硬件的升级不断更新，比如从P级机器到E级机器。</p>
 <p>(更近一步细节) 具体在科学可视化或者科学工作流中，研究的点就是如何将in situ与data reduction, visualization, transfer 结合起来。共同的挑战是如何将这些技术适用到新的硬件上，以及如何将这些技术应用到新的模拟和数据上 (比如warpx的工作，比如puncare map开发的新的应用)，如何利用新的方法来提升原位可视化工作流的灵活性和效率。</p>
 <p>(针对国内国外的特点) 1 国内的地方一个是如何与自己的硬件进行适配，这些已有的解决方案如何能适配到国内的硬件上，2 另一个是针对特定的应用研究新的解决方案，以及有自主知识产权的通用的相关的解决方案，目前看到的可视化，数据压缩，传输的方案好多都是国外实验室架构和维护的。3 再一个是比如针对我们自己的大型科学装置，数据传输，可视化，以及数据压缩的方案如何有效地应用起来辅助科学发现（适配自己的大科学装置，满足其中的一些要求），这个是国内的in situ研究面临的挑战。</p>
-<p><strong>当前的这个工作中，妨碍&#x2F;限制scalabiity的根本原因是什么。</strong></p>
+<p><strong>当前的这个工作中，妨碍/限制scalabiity的根本原因是什么。</strong></p>
 <p>这个问题是读博士期间，老师经常问到的一个问题。</p>
 <p><strong>这个工作使用了GPU或者其他的加速器，这种性能的提升是仅仅因为使用了GPU还是说在算法本身上有一些提升或贡献。</strong></p>
 <p>这个问题其实是二个问题</p>
-<p>把已有的问题&#x2F;算法，用基于GPU的加速器实现，有什么困难的地方或者值得挑战的地方。</p>
+<p>把已有的问题/算法，用基于GPU的加速器实现，有什么困难的地方或者值得挑战的地方。</p>
 <p>对于使用了加速器或者GPU的实现，这种实现是否在算法上是有效的，比同样类型的基于GPU的实现快多少，瓶颈在哪里，是否有一些可以进一步优化的空间，测试过程中多大程度上接近理论值 (并行计算上的理论值，以及计算机本身的理论峰值)</p>
 <p>This is hard one, 首先是从算法上，根据阿姆达law，引入并行能给整个程序带来多多大程度的提升，这个是有理论上限的。如果本身算法就是 Embarrassingly parallel (perfect parallel) 然后其中并没有多少depedency的话，可能就不是一个major research contribution 或者从research的角度上看是没有多少需要contribute的地方的。</p>
 <p>另一个是从已经构建的层面，当前使用到的解决方案是否能很高效地利用GPU，比如能达到百分之多少的GPU theoretical peak performance这个是在evaluation的时候应该加上的内容。</p>
@@ -162,7 +158,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2024/03/03/Hard-research-questions/" data-id="cm2a0xf45001rdvjr2z0od21d" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2024/03/03/Hard-research-questions/" data-id="cmbw030i4001rj8jr2l3pee6i" class="article-share-link">分享</a>
       
       
       
@@ -268,23 +264,23 @@ ga('send', 'pageview');
       <ul>
         
           <li>
-            <a href="/2024/11/23/distributed-rendering/">distributed rendering</a>
+            <a href="/2025/06/08/javascript-tips/">javascript-tips</a>
           </li>
         
           <li>
-            <a href="/2024/11/21/opengl-tips/">opengl_tips</a>
+            <a href="/2025/02/27/Package-management/">Package management tips</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/23/distributed-rendering/">Distributed rendering (WIP)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/21/graphics-opengl-tips/">Graphics and Opengl Tips</a>
           </li>
         
           <li>
             <a href="/2024/10/18/Multiple-backend-design/">Multiple backend design</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/17/LLM-tips/">LLM tips</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/13/Interesting-numbers-in-CS-and-Femi-estimation/">Interesting numbers in CS and Femi estimation (WIP)</a>
           </li>
         
       </ul>
@@ -363,28 +359,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

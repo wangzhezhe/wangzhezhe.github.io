@@ -13,7 +13,7 @@
 <meta property="og:description" content="Some tips about mathmetical operations and how are they implemented in python library such as numpy.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-10-04T08:09:48.000Z">
-<meta property="article:modified_time" content="2024-12-22T09:43:39.174Z">
+<meta property="article:modified_time" content="2025-06-02T09:20:51.217Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,10 +124,8 @@ ga('send', 'pageview');
         
         <p>Some tips about mathmetical operations and how are they implemented in python library such as numpy.</p>
 <span id="more"></span>
-
-
 <h3 id="Set-operations"><a href="#Set-operations" class="headerlink" title="Set operations"></a>Set operations</h3><h4 id="Cartesian-product"><a href="#Cartesian-product" class="headerlink" title="Cartesian product"></a>Cartesian product</h4><p>If A and B are two sets, the cartisian product is defined by (set-builder notation):</p>
-<p>$A \times B $ &#x3D; { (a,b) | a belongs to A and b belongs to B }</p>
+<p>$A \times B $ = { (a,b) | a belongs to A and b belongs to B }</p>
 <p>The resutls is the set of all <strong>ordered pairs</strong> (a, b) where a is in A and b is in B. </p>
 <h3 id="Array-operations"><a href="#Array-operations" class="headerlink" title="Array operations"></a>Array operations</h3><p>单独的numpy array 更多地用来描述 vector math</p>
 <p>一个vector就相当于一个numpy中的array</p>
@@ -144,24 +139,23 @@ ga('send', 'pageview');
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">np.ones(n) 的方式进行定义</span><br></pre></td></tr></table></figure>
 <p><strong>行列变换</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a = np.array([1, 2, 3])</span><br><span class="line">a = a.reshape(-1, 1)</span><br><span class="line">a</span><br><span class="line">array([[1],</span><br><span class="line">       [2],</span><br><span class="line">       [3]])</span><br></pre></td></tr></table></figure>
-
 <p><strong>Length</strong></p>
 <p><strong>Normalization</strong></p>
 <p><strong>basic operation such as vector sum substract multuply divide</strong></p>
 <p><strong>multiple for the elements at the corresponding position</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">np.array([1,2,3])*np.array([2,3,4])</span><br><span class="line">array([ 2,  6, 12])</span><br></pre></td></tr></table></figure>
-
 <p><strong>Dot Product (inner product)</strong></p>
-<p>projection one vector into another vector, the results of the dot product is a value. (remember the projection). For the value, it is a dot b &#x3D; |a||b|cos(theta), therefore, the a dot b can be used to describe the value of intersection angle between two vector.</p>
+<p>projection one vector into another vector, the results of the dot product is a value. (remember the projection). For the value, it is a dot b = |a||b|cos(theta), therefore, the a dot b can be used to describe the value of intersection angle between two vector.</p>
 <p>consider it in 3d space for vector represented by 2d, just projection one vector onto another one.</p>
 <p>you start with two vectors and ends up with a scalar value.</p>
-<p>For the complex number, since we need to make sure the energy (magnitude&#x2F;amplitude) is a postive value, we should use the conjugate transpose instead of the transpose of the original vector when we construct the dot product resutls.</p>
+<p>For the complex number, since we need to make sure the energy (magnitude/amplitude) is a postive value, we should use the conjugate transpose instead of the transpose of the original vector when we construct the dot product resutls.</p>
 <p>check out this vedio to get more ideas:<br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Qpm85nC2BBE">https://www.youtube.com/watch?v=Qpm85nC2BBE</a></p>
 <p><strong>Cross Product</strong></p>
 <p>the results of the cross product is a vector. The direaction of this vector follows the right handed screw rule. The value of the vector is the area of parallelogram composed of these two vectors. (remember the rotation). there is a particular equation to compute the new vector of the cross product, for example the three dimention vetor times three dimention vector, the equation is a determinant. The first row is the i,j,k, the second row is the x1,y1,z1 and the last row is x2,y2,z2. Then the value of the determinant is a new vector.</p>
 <p>bracket representation, since the cross product is so common for some use cases such as in the robotics cases, we also use the <code>A X B = [A]B</code> to represent this, and the <code>[A]</code> can be represented by the 3*3 matrix, the matrix [A] is called the skew-symmetric matrix</p>
 <p>If we already know the vector and the rotation axis w than we want to caculate the linear velocity, the idea is to use the <code>-[w]xp</code> why there is a negative mark?</p>
 <p>using <code>numpy.cross</code> to express the coresponding results. </p>
+<p>从代数的角度上看，外积的集合意义就是两个向量所形成的平行四边形的面积的大小。如果这两个向量是平行向量，那么就围不成一个平行四边形，那么两个平行向量的外积就是0。在推到伯努利方程的时候，有一个假设是流体沿着一个流线流动，就有dv (v是速度向量) 与 ds (s是流体微元流动的距离的向量) 的外积为0，于是就能起到化简公式的作用。<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Vq4y1r7Z7?spm_id_from=333.788.videopod.sections&amp;vd_source=c079f7117dc37c8230df11c4eee4228f">视频链接</a>，位置 16:30.</p>
 <p><strong>Projection</strong></p>
 <p><strong>Reflection</strong></p>
 <p><strong>tangential vector</strong></p>
@@ -169,7 +163,6 @@ ga('send', 'pageview');
 <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/4535374/initialize-a-numpy-array">https://stackoverflow.com/questions/4535374/initialize-a-numpy-array</a></p>
 <p>初始化array的时候直接使用numpy的方法 比如</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">numpy.zeros</span><br><span class="line"></span><br><span class="line">Return a new array of given shape and type, filled with zeros.</span><br><span class="line"></span><br><span class="line">使用tolist的方法可以把array再转化为list</span><br><span class="line"></span><br><span class="line">https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.tolist.html</span><br></pre></td></tr></table></figure>
-
 <h3 id="complex-vector-caculuse-gradient-divergency-Laplacian-curl-based-on-nabla-operator"><a href="#complex-vector-caculuse-gradient-divergency-Laplacian-curl-based-on-nabla-operator" class="headerlink" title="complex vector caculuse (gradient divergency Laplacian curl based on nabla operator)"></a>complex vector caculuse (gradient divergency Laplacian curl based on nabla operator)</h3><p>通俗理解可以参考这个：</p>
 <p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/24074028">https://www.zhihu.com/question/24074028</a></p>
 <p>这几个量都是对于空间中的点而言的，就算是divergency，输入也是空间中的一个点所在位置的vector</p>
@@ -177,17 +170,17 @@ ga('send', 'pageview');
 <p><strong>gradient</strong></p>
 <p>input is a scalar, output is a vector</p>
 <p>gradient会作用在一个scalar field中，gradient操作会在每个点上都求出一个vector，这个vector方向就是scalar field中的值上升最快的方向</p>
-<p>具体计算的时候，每个scalar 由空间中的 x,y,z 的位置决定 (assume there is 3d) 这个scarlar value 实质上是空间上的每个点对应的值 v &#x3D; f (x,y,z) 之后这个函数对每个方向上的分量求偏导数然后每个方向上的分量组成一个vector，就是gradient of f。</p>
-<p>Gradient: grad f &#x3D; ∇f</p>
+<p>具体计算的时候，每个scalar 由空间中的 x,y,z 的位置决定 (assume there is 3d) 这个scarlar value 实质上是空间上的每个点对应的值 v = f (x,y,z) 之后这个函数对每个方向上的分量求偏导数然后每个方向上的分量组成一个vector，就是gradient of f。</p>
+<p>Gradient: grad f = ∇f</p>
 <p>区别方向导数与梯度，比如平面上的一个点可以有很多方向导数，而梯度就是变化率最大的方向的导数。</p>
 <p><strong>divergency（散度）</strong></p>
 <p>input is vector and the output is a scalar<br>具体运算 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Divergence">https://en.wikipedia.org/wiki/Divergence</a></p>
 <p>divergency作用在一个vector field中，物理含义是vector field的发散程度</p>
 <p>比如在二维空间中，想想一个点周围的极小的圆圈，在每个方向的变化量相加，得到的是总的变化量，也就是发散程度，可以表示为是向正方向变化(向外发散)还是向负方向变化(向内收缩)。</p>
-<p>Divergence: div v &#x3D; ∇·v (the v here is a vector)</p>
-<p>也可以理解成梯度算子和一个向量的内积，向量在各个方面的变化程度，比如向量是 V &#x3D; (Vx,Vy,Vz)，每个分量是一个表达式，那div (散度算子可以表达成下面的形式)</p>
-<p>$$<br>div \space \vec{v}  &#x3D;  ∇·\vec{v} &#x3D; (\frac{\partial}{\partial x},\frac{\partial}{\partial y},\frac{\partial}{\partial z})·(v_x,v_y,v_z)  &#x3D; \frac{\partial v_x}{\partial x} + \frac{\partial v_y}{\partial y}+\frac{\partial v_z}{\partial z}<br>$$</p>
-<p>虽然这里的点可以类比点积的形式，但是并不完全等同，点积是对每个分量进行相乘的操作，这里是对每个分量施加对应的偏微分的操作。从数学的角度上讲更多的是两个算子的组合，而并非是简单的相乘的操作。</p>
+<p>Divergence: div v = ∇·v (the v here is a vector)</p>
+<p>也可以理解成梯度算子和一个向量的内积，向量在各个方面的变化程度，比如向量是 V = (Vx,Vy,Vz)，每个分量是一个表达式，那div (散度算子可以表达成下面的形式)</p>
+<script type="math/tex; mode=display">
+div \space \vec{v}  =  ∇·\vec{v} = (\frac{\partial}{\partial x},\frac{\partial}{\partial y},\frac{\partial}{\partial z})·(v_x,v_y,v_z)  = \frac{\partial v_x}{\partial x} + \frac{\partial v_y}{\partial y}+\frac{\partial v_z}{\partial z}</script><p>虽然这里的点可以类比点积的形式，但是并不完全等同，点积是对每个分量进行相乘的操作，这里是对每个分量施加对应的偏微分的操作。从数学的角度上讲更多的是两个算子的组合，而并非是简单的相乘的操作。</p>
 <p><strong>Laplacian(拉普拉斯算子)</strong></p>
 <p>注意拉普拉斯算子与拉普拉斯变换是两个不同的事情。</p>
 <p>input is the scalar (function value, this value depends on the coordinates, namely the position in the space), the output value is a scalar.</p>
@@ -196,9 +189,15 @@ ga('send', 'pageview');
 <p>表示偏离平均值的程度，本质上是对空间标量的一种操作，先求该标量的梯度场，再求梯度场的散度。</p>
 <p>为什么求scalar field的gradient field的divergency是比较重要的，这个量可以描述field本身的一些properties，中文可以解释为某种驱动力或者势。比如这个例子(<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/26822364">https://www.zhihu.com/question/26822364</a>) 通过温度场来理解Laplacian，值如果为正表示发散，说明了热量从这个点流出，反之则是热量流入这个区域。</p>
 <p><strong>curl（旋度）</strong></p>
-<p>curl v &#x3D; ∇ cross dot v (the v here is a vector)</p>
+<p>curl v = ∇ cross dot v (the v here is a vector)</p>
 <p>梯度算子和一个向量的叉乘，根据叉乘的计算公式，可以表达成如下的形式。</p>
-<p>$$<br>curl \space \vec{v} &#x3D; (\frac{\partial}{\partial x},\frac{\partial}{\partial y},\frac{\partial}{\partial z}) \times (v_x,v_y,v_z) &#x3D;<br>\begin{vmatrix}<br>u_x &amp; u_y &amp; u_z \\ \frac{\partial}{\partial x} &amp; \frac{\partial}{\partial y} &amp; \frac{\partial}{\partial z} \\ v_x &amp; v_y &amp; v_z<br>\end{vmatrix}<br>&#x3D; (\frac{\partial v_z}{\partial y} - \frac{\partial v_y}{\partial z}   ,  \frac{\partial v_x}{\partial z} - \frac{\partial v_z}{\partial x}   ,<br>\frac{\partial v_y}{\partial x} - \frac{\partial v_x}{\partial y}  )<br>$$</p>
+<script type="math/tex; mode=display">
+curl \space \vec{v} = (\frac{\partial}{\partial x},\frac{\partial}{\partial y},\frac{\partial}{\partial z}) \times (v_x,v_y,v_z) = 
+\begin{vmatrix}
+u_x & u_y & u_z \\\ \frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\\ v_x & v_y & v_z
+\end{vmatrix}
+= (\frac{\partial v_z}{\partial y} - \frac{\partial v_y}{\partial z}   ,  \frac{\partial v_x}{\partial z} - \frac{\partial v_z}{\partial x}   ,  
+\frac{\partial v_y}{\partial x} - \frac{\partial v_x}{\partial y}  )</script><p>一个比较好理解的文章<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_17109251/article/details/82932946">https://blog.csdn.net/qq_17109251/article/details/82932946</a></p>
 <h3 id="Matrix-operation"><a href="#Matrix-operation" class="headerlink" title="Matrix operation"></a>Matrix operation</h3><p>More detailed conceptes regarding the linear alg (such as physical mearning of specific operaiton) can be found in the linear_alg_review.md blog</p>
 <h4 id="Determinant-of-matrix-absolute-value"><a href="#Determinant-of-matrix-absolute-value" class="headerlink" title="Determinant of matrix (absolute value)"></a>Determinant of matrix (absolute value)</h4><p>The determinant of matirx has a simple expression which is just a $|A|$ expression, namely adding the absolute operation around the matrix, the reuslt is a scalar value. </p>
 <h4 id="Matrix-norm"><a href="#Matrix-norm" class="headerlink" title="Matrix norm"></a>Matrix norm</h4><p>Matrix norm is in the format of $||A||_p$, the typical value of p is 1, 2 and positive infinity. When p is 1, it represents max column sum, when p is 2, it represents max row sum, when p is postive infinity, it represents the largest singular value of A (spectral norm).</p>
@@ -209,7 +208,7 @@ ga('send', 'pageview');
 <p>properties of singular matrix</p>
 <p>non-invertible</p>
 <p>explain one eigen value corresponds to multiple eigen vectors</p>
-<p>对应元素相乘 a[i][j] times b[i][j] &#x3D; c[i][j]</p>
+<p>对应元素相乘 a[i][j] times b[i][j] = c[i][j]</p>
 <p>矩阵乘法运算 c[i][j] 是 a matrix 中的j行 对应乘以b matrix中的j列，然后相加求和。</p>
 <p>module of matrix</p>
 <p><strong>numpy.matmul</strong></p>
@@ -232,9 +231,9 @@ ga('send', 'pageview');
 <p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=8ptMTLzV4-I&amp;list=PLJHszsWbB6hrkmmq57lX8BV-o-YIOFsiG">https://www.youtube.com/watch?v=8ptMTLzV4-I&amp;list=PLJHszsWbB6hrkmmq57lX8BV-o-YIOFsiG</a></p>
 <p>here are some key concepts:</p>
 <p>although the quantum computing looks fancy, it is quite straightforward to explain it mathematically, for the superposition, it is just a fancy way to describe the linear compination. For the quantum entanglement, it is just the tensor productr of two (tensors) geometries.</p>
-<p>defination of the tensor: there are multiple defination about the tensor, such as the array defination, coordinates defination, and abstract defination. The one that I could figure out quickly but not most accurately is the array defination, basically, the tensor is a multidimentional array. The scarlar can be rank tensor, the vector can be rank 1 tensor, and the matrix can be rank 2 tensor, the 3d grid&#x2F;mesh is a rank 3 tensor. But this defination lose some key geometry properties. Try to dive into the coordinates defination when it is necessary.</p>
+<p>defination of the tensor: there are multiple defination about the tensor, such as the array defination, coordinates defination, and abstract defination. The one that I could figure out quickly but not most accurately is the array defination, basically, the tensor is a multidimentional array. The scarlar can be rank tensor, the vector can be rank 1 tensor, and the matrix can be rank 2 tensor, the 3d grid/mesh is a rank 3 tensor. But this defination lose some key geometry properties. Try to dive into the coordinates defination when it is necessary.</p>
 <p>forward backward transformation: there are two coordinates system can be used to represents one tensor, how to tranform from the one coordinates system to another coordinates system. what is the transformation matrix here.</p>
-<p>covector: a function that takes a vector and produce a scalar&#x2F;number, one typical example of the covector is the first row vector when thers is a row vector times the column vector.</p>
+<p>covector: a function that takes a vector and produce a scalar/number, one typical example of the covector is the first row vector when thers is a row vector times the column vector.</p>
 <h3 id="solving-linear-system"><a href="#solving-linear-system" class="headerlink" title="solving linear system"></a>solving linear system</h3><p>svd</p>
 <p>deeppeset descent</p>
 <p>conjugate descent</p>
@@ -243,10 +242,8 @@ ga('send', 'pageview');
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">a = np.array([</span><br><span class="line">    [1,0,0],</span><br><span class="line">    [1,4,0],</span><br><span class="line">    [1,0,5],</span><br><span class="line">    ]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for i in range(3):</span><br><span class="line">    norma = np.linalg.norm(a[:,i])</span><br><span class="line">    normdata = a[:,i]/norma</span><br><span class="line">    a[:,i]=normdata</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">print a</span><br></pre></td></tr></table></figure>
 <p>但是打印出来的结果比较奇怪</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[[0 0 0]</span><br><span class="line"> [0 1 0]</span><br><span class="line"> [0 0 1]]</span><br></pre></td></tr></table></figure>
-
 <p>后来同学提醒是数据格式有问题，修改之后按照如下形式</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">def selfnorm(a):</span><br><span class="line"></span><br><span class="line">    for i in range(3):</span><br><span class="line">        norma = np.linalg.norm(a[:,i])</span><br><span class="line">        normdata = a[:,i]/norma</span><br><span class="line">        a[:,i]=normdata</span><br><span class="line">    </span><br><span class="line">    return a</span><br><span class="line">    </span><br><span class="line">a = np.array([</span><br><span class="line">    [1.0,0.0,0.0],</span><br><span class="line">    [1.0,4.0,0.0],</span><br><span class="line">    [0.0,0.0,5.0],</span><br><span class="line">    ],dtype=np.float32</span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">print selfnorm(a)</span><br></pre></td></tr></table></figure>
-
 <p>按照上面这样的操作在定义a的时候要加上数据类型，这样就不会被弄成默认的int类型</p>
 <h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p>334 class notes (确保334的内容涵盖在这个note中)</p>
 <p><a target="_blank" rel="noopener" href="https://orionquest.github.io/Numacom/">https://orionquest.github.io/Numacom/</a></p>
@@ -266,7 +263,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/10/04/common-mathmetical-operations-and-python-examples/" data-id="cm2a0xf4k006ddvjr1yfs4duf" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/10/04/common-mathmetical-operations-and-python-examples/" data-id="cmbw030ik006kj8jrcjaq37w0" class="article-share-link">分享</a>
       
       
       
@@ -449,28 +446,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

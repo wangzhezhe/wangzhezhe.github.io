@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,14 +124,10 @@ ga('send', 'pageview');
         
         <p>One of the task for visulization software is to change the format of data back and force between different types. This blog includes some notes about the vtk io.</p>
 <span id="more"></span>
-
 <h3 id="Which-reader-or-writer-should-be-used"><a href="#Which-reader-or-writer-should-be-used" class="headerlink" title="Which reader or writer should be used"></a>Which reader or writer should be used</h3><h3 id="Version-info"><a href="#Version-info" class="headerlink" title="Version info"></a>Version info</h3><p>The vision 5.1 is not well supported for some software such as Visit. Try to use the SetFileVersion(42) if the generated file can not be properly loaded into the software.</p>
-<p>For the imageData, use the vtkStructurePoints reader&#x2F;writer, instead of the imageDataReader or writer.</p>
-<h3 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h3><p>(read&#x2F;write using vtkm dataset reader&#x2F;writer)</p>
+<p>For the imageData, use the vtkStructurePoints reader/writer, instead of the imageDataReader or writer.</p>
+<h3 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h3><p>(read/write using vtkm dataset reader/writer)</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//reader example</span><br><span class="line">vtkm::cont::DataSet ds;</span><br><span class="line">vtkm::io::VTKDataSetReader reader(vtkFileName);</span><br><span class="line">ds=reader.ReadDataSet();</span><br><span class="line"></span><br><span class="line">//writer example (write vtkm data set to the vtk data)</span><br><span class="line">vtkm::io::VTKDataSetWriter(vtkFileName);</span><br><span class="line">write.WriteDataSet(vtkmdataset)</span><br></pre></td></tr></table></figure>
-
-
-
 <h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><p>All kinds of exmaples for the online example</p>
 <p><a target="_blank" rel="noopener" href="https://kitware.github.io/vtk-examples/site/Cxx/">https://kitware.github.io/vtk-examples/site/Cxx/</a></p>
 <p>Check the IO section for more details</p>
@@ -146,7 +139,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2022/11/20/All-aspectes-of-vtk-io/" data-id="cm2a0xf3y0007dvjr2u9bfut6" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2022/11/20/All-aspectes-of-vtk-io/" data-id="cmbw030i10010j8jr5z3xetwt" class="article-share-link">分享</a>
       
       
       
@@ -329,28 +322,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

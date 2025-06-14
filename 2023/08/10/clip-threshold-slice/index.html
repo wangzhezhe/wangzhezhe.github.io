@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,7 +124,6 @@ ga('send', 'pageview');
         
         <p>Some quick notes about the commonly used vis filter, such as clip, threshold and slice.</p>
 <span id="more"></span>
-
 <p>This type of filter belongs to the type of filtering data, this is good outline<br><a target="_blank" rel="noopener" href="https://docs.paraview.org/en/latest/UsersGuide/filteringData.html">https://docs.paraview.org/en/latest/UsersGuide/filteringData.html</a></p>
 <h3 id="Threshold"><a href="#Threshold" class="headerlink" title="Threshold"></a>Threshold</h3><p>The threshold is to provide the range for the content of the data, and filter out the data contents that located in this range. It only cares about the content or the value of the input field data.</p>
 <h3 id="Iso-volume"><a href="#Iso-volume" class="headerlink" title="Iso volume"></a>Iso volume</h3><p>In order to use the threshold, the volume visualization reuslts based on iso volume can be an good replacement from the perspective of visualization. </p>
@@ -136,7 +132,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/08/10/clip-threshold-slice/" data-id="cm2a0xf4k0065dvjr72l48ihs" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/08/10/clip-threshold-slice/" data-id="cmbw030ij006cj8jrhb3d36wt" class="article-share-link">分享</a>
       
       
       
@@ -319,28 +315,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

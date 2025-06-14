@@ -53,11 +53,8 @@ ga('send', 'pageview');
 
 
 
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
   <div id="container">
@@ -127,24 +124,23 @@ ga('send', 'pageview');
         
         <p>主要介绍numerical method的一些笔记。再回头来看看，知识本身并不是很taugh，真正用在物理场景中就变得比较tough</p>
 <span id="more"></span>
-
 <p>真想不到有重操起了就业，当初班主任时长挂在嘴边的有限元分析回忆起来仍然记忆犹新。</p>
 <p>当时学的各种知识是有用的，但还是差了点应用，到最后也不知道能用在什么地方。偶尔看到同学拿出来的高中的讲AI问题的课本，发现了其中的音乐风格分析，这不是自己本科毕业时候的topic吗，知识降级真是太快了，要不断地学习新的东西。</p>
 <p>选了MATHEMATICAL MODELING FOR BIOMEDICAL ENGINEERING的课程，希望能让数值分析方法能找到一个应用场景吧。其实内心来讲，觉得比较理想的职业是医生，作家，新闻编辑或者记者什么的，码农也挺好的，总能学习和看到一些前沿的知识和领域，希望能做一些有价值的事情吧。</p>
 <p>9.10<br>今天上了ODE与PDE，教材的话还是按照 NME《numerical methods for engineers》的书来走，又重新review了ODE的解析解法。核心的思想是reduction， pde reduct 到 ode, ode reduct 到 algebric ， algebric reduct 到 multiplication 之后 multiplication reduct 到 addition。</p>
-<p>物理意义的话，differential equation 更多的是描述某种物理的变化率，比如dy&#x2F;dx &#x3D; f(x)，这个是能直接观测到的，需要求解的是dy本身。y(x)的曲线和dy&#x2F;dx的对应关系应该通过图形有比较直观的认识，比如dy&#x2F;dx &#x3D; 0 的时候 对应到 y&#x3D;f(x) 的曲线应该是比较平缓的区域。</p>
+<p>物理意义的话，differential equation 更多的是描述某种物理的变化率，比如dy/dx = f(x)，这个是能直接观测到的，需要求解的是dy本身。y(x)的曲线和dy/dx的对应关系应该通过图形有比较直观的认识，比如dy/dx = 0 的时候 对应到 y=f(x) 的曲线应该是比较平缓的区域。</p>
 <p>对于linear ODE 是由 linear polinomial 叠加组成的 一个property就是 y1(x）和 y2(x) 是解的话 y1(x）+ y2(x) 也是解</p>
 <p>要熟悉standard form 以及 homogenious equation和unhomogenious equation的定义</p>
-<p>求解析解的ODE的时候 basis function y(x) 的选取很重要 这里基本上是说 通过ODE的形式就知道了y(x)的形式 只是y(x)中的一些参数是不知道的 常用的有e^(lamdax)以及Asinx+Bcosx这种形式 好多时候需要采用查表的方式来确定 对于含有 Ax^ny^(n) 这种term的时候 比较适合用 power law y&#x3D;ax^b这种表述</p>
+<p>求解析解的ODE的时候 basis function y(x) 的选取很重要 这里基本上是说 通过ODE的形式就知道了y(x)的形式 只是y(x)中的一些参数是不知道的 常用的有e^(lamdax)以及Asinx+Bcosx这种形式 好多时候需要采用查表的方式来确定 对于含有 Ax^ny^(n) 这种term的时候 比较适合用 power law y=ax^b这种表述</p>
 <p>注意在求取解析解的时候欧拉公式的应用</p>
-<p>ODE的数值解法上，主要学习了one step method 以及 Euler 方法（Runge–Kutta method 方法的一种），具体讲了backward&#x2F;forward&#x2F;simplicic euler在NME的书里这部分有很细致的解释，核心思想就是用一连串的分段的直线去近似解析曲线。之后老师给了Lotka–Volterra的例子，虽然这个解析解是一系列小圈套大圈的圆，但是数值解是得不到这种圆的，因为每次近似之后都会切到一个相近的轨道上。</p>
-<p>之后以y’(t)&#x3D;lamda y(t)为例子分析了 stable 的 case ODE is stable is |y(t)-y~(t)|&lt;&#x3D;constant 当任意 t&gt;&#x3D;t0</p>
+<p>ODE的数值解法上，主要学习了one step method 以及 Euler 方法（Runge–Kutta method 方法的一种），具体讲了backward/forward/simplicic euler在NME的书里这部分有很细致的解释，核心思想就是用一连串的分段的直线去近似解析曲线。之后老师给了Lotka–Volterra的例子，虽然这个解析解是一系列小圈套大圈的圆，但是数值解是得不到这种圆的，因为每次近似之后都会切到一个相近的轨道上。</p>
+<p>之后以y’(t)=lamda y(t)为例子分析了 stable 的 case ODE is stable is |y(t)-y~(t)|&lt;=constant 当任意 t&gt;=t0</p>
 <p>本质上就是看是否converge主要是lamda的选取</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/09/10/numerical-method-for-engineer-notes/" data-id="cm2a0xf4t008wdvjr7hsk093j" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2018/09/10/numerical-method-for-engineer-notes/" data-id="cmbw030ir0098j8jr5y6o41l7" class="article-share-link">分享</a>
       
       
       
@@ -250,23 +246,23 @@ ga('send', 'pageview');
       <ul>
         
           <li>
-            <a href="/2024/11/23/distributed-rendering/">distributed rendering</a>
+            <a href="/2025/06/08/javascript-tips/">javascript-tips</a>
           </li>
         
           <li>
-            <a href="/2024/11/21/opengl-tips/">opengl_tips</a>
+            <a href="/2025/02/27/Package-management/">Package management tips</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/23/distributed-rendering/">Distributed rendering (WIP)</a>
+          </li>
+        
+          <li>
+            <a href="/2024/11/21/graphics-opengl-tips/">Graphics and Opengl Tips</a>
           </li>
         
           <li>
             <a href="/2024/10/18/Multiple-backend-design/">Multiple backend design</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/17/LLM-tips/">LLM tips</a>
-          </li>
-        
-          <li>
-            <a href="/2024/10/13/Interesting-numbers-in-CS-and-Femi-estimation/">Interesting numbers in CS and Femi estimation (WIP)</a>
           </li>
         
       </ul>
@@ -345,28 +341,6 @@ window.onload = function() {
 
 <!-- author:forvoid end -->
 
-
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      })
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      })
-    </script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  
 
 
 

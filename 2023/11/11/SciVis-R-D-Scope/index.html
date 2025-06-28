@@ -13,7 +13,7 @@
 <meta property="og:description" content="Try to list some techniques that I need to improve or continue pursue in the scope of scivis.">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-11-11T14:06:55.000Z">
-<meta property="article:modified_time" content="2023-11-14T01:13:04.802Z">
+<meta property="article:modified_time" content="2025-06-28T07:12:14.015Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -53,7 +53,7 @@ ga('send', 'pageview');
 
 
 
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
@@ -132,6 +132,8 @@ ga('send', 'pageview');
 <p><strong>智能</strong>这个方向主要是关注autonomics, adaptive 以及AI相关的技术如何作用于vis worklfow。AI相关的技术无疑是做research角度比较火的方向，但是在工程方面的实用性有待商榷，总之在做一个工作的时候心里要明确这个到底是research driven还是engineering driven。需要提升的点主要还是pytorch相关的AI技术，比如这个<a target="_blank" rel="noopener" href="https://stevenhan1991.github.io/assets/pdf/DL4SciVis.pdf">survey</a>里面介绍的内容，常见的一些手段，比如encode-decode, LSTM, transformer这些类型的AI model 的基本的应用。对于无监督学习的方面，reinforcement learning 以及相关的对于optimization的问题如何应用到vis workflow可能是一个需要在进一步提升的地方，总而言之，总感觉这一部分有一些噱头的成分，但是智能化大概是research相关的一个核心主题，research相关的工作需要长期主动地在这个方向上有所投入，毕竟新的内容学习起来需要费一些劲，需要尽快能有一个将相关内容和AI结合起来的project。最近有亮点的一个方面可能是生成式的Ai的技术，这个技术如何用在extraction的角度可能比较有研究的价值，就是如何用AI自动生成一些用于可视化的关键技术，比如marching cube, vector visualization相关的内容，比较典型的比如<a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content_cvpr_2018/html/Liao_Deep_Marching_Cubes_CVPR_2018_paper.html">这个</a>。</p>
 <p>还有一个是background about the data 虽然有各式各样的online data sets 可以用来使用，但是最根本还是要对data set的本身有一些了解，比如各式各样的simulation。简单的就是了解如何通过openfoam生成各式各样的data sets。总而言之要对某一类的科学模拟所产生的数据有比较深刻的insights才能走得更远。</p>
 <p>其余的就是计算机的基础方面的内容，比如coding ability 有时候是通过面试的一个基本保障。</p>
+<p>最近结合实际工作中的内容又有一些新的想法，从大致的流程上划分，就是所谓的后处理，大致分为数据的<strong>预处理</strong>，<strong>可视化展示</strong>，<strong>可视分析</strong> 三个层面。实际CFD产出的内容都是千奇百怪，多种格式，复杂度高，信息混杂，预处理的过程就是从中提取出关键的特恒，可能是一个曲线，可能是三维的图像表面等等。可视化展示就是通常的可视分析系统，把提取出来的数据渲染出来，一般都是二维信息与三维图表结合起来的方式。最后一个可视分析就是通过展示的内容对后处理的数据进行分析，得到一些insight，这些insight可以更好地辅助科学家进行决策等等。</p>
+<p>虽然有时候自嘲式做前端的，但是这里的前端也还是有一些技术含量的，比如数据的特定特征提取与三维渲染展现，总之还是能有一些生存空间的，实际证明这样的项目也还是有市场的，最起码做一些外包还能养活自己。但是在这个基础上怎么做research做paper，就需要结合领域了。总之先要做到能生存，之后在这个过程中不断提炼科学问题，如大规模数据的高性能提取与压缩、组织等等，新的渲染与交互技术，和AI也能进行一些结合等等。</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>关于数据可视化方向的介绍<br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/305228844/answer/548837843">https://www.zhihu.com/question/305228844/answer/548837843</a></p>
 <p>相关期刊的介绍<br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/30932305/answer/2583666018">https://www.zhihu.com/question/30932305/answer/2583666018</a></p>
 <p>vis 导论的网上课程<br><a target="_blank" rel="noopener" href="https://www.icourse163.org/learn/ZJU-1206452826?tid=1450762609#/learn/content?type=detail&amp;id=1215889995&amp;cid=1221009700">https://www.icourse163.org/learn/ZJU-1206452826?tid=1450762609#/learn/content?type=detail&amp;id=1215889995&amp;cid=1221009700</a></p>
@@ -139,7 +141,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2023/11/11/SciVis-R-D-Scope/" data-id="cmbw030id004bj8jrhsar8f14" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2023/11/11/SciVis-R-D-Scope/" data-id="cmbw0e4na0049xmjr8tjtdfiw" class="article-share-link">分享</a>
       
       
       

@@ -13,7 +13,7 @@
 <meta property="og:description" content="整理一些所谓的做research些的套路，做research时候需要遵循的一些方法，以及how to come up with new research idea。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-08-22T10:52:44.000Z">
-<meta property="article:modified_time" content="2025-02-09T10:03:53.525Z">
+<meta property="article:modified_time" content="2025-06-28T02:24:39.991Z">
 <meta property="article:author" content="zhe">
 <meta name="twitter:card" content="summary">
   
@@ -53,7 +53,7 @@ ga('send', 'pageview');
 
 
 
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <meta name="generator" content="Hexo 6.2.0"></head>
 
 <body>
@@ -140,6 +140,7 @@ ga('send', 'pageview');
 <p>Actually, the S dimension is most common strategy we usually come up with. For example, we use a particlular theory from the ML or statistics to solve a scheduler problem in distributed system or parallel computing, then improve its execution time or resource efficiency. This is commonly called the A+B+C type of pattern to do the research work.</p>
 <p>这里提到的AMDS就是实际paper里面具体有亮点的地方，如果把paper比喻成cooking，这些地方就是加入的一些巧妙的构思。比如一个paper，如果在A方面用到了GPU 或者 large scale cluster，在M用到的dl的一些最新基础，在D上用到的是实际的应用的数据，在S上又是一个比较又意义的场景 (比如切实地用计算机的方法赋能了其他的某个领域或者解决了其他的某个领域的一个实际的问题)，或者哪怕是常见的场景，那这样的论文在基本的方法 evaluation 比较solid的情况下，被录用的概率，亮点都是比较高的。</p>
 <p>另一个常用的思考方式是从”问题/场景/数据”，以及”解决方法/手段” 两个角度来考虑这个问题。一个paper更像是一个产品，而不是一个具体的零件(知识点)，实际上是由好多细分的部分组合在一起的。</p>
+<p>S可以代表的另一个含义就是simple，这里的simple更多地是说的是整个work在目标上的simple，指标要能让人一下就理解，比如让某些事情变快或者变好，让某个量化的指标提升起来，这就是很好的goal，工程方面的问题和科学发现又有所不同，还是需要有一个比较明确的指标牵引的，就只有是这样才能让整个系统变得更好。所以单纯做一个可视分析系统就很容易让人迷失，也比较难说明这个work的质量，你这个目标是什么呢？到底是把其中的哪些分析的过程加快了呢，仅仅是功能性的描述是很难说明你的这个轮子比别人的轮子做的好的。通常容易陷入的误区就是工具性质的描述，我做了一个什么什么系统之类的，这样就是分析不够深入，缺少量化指标，很难发出来high quality的工作。</p>
 <p><strong>老问题，老方法</strong>，这个角度的research内容可能不太能发出来paper，但这是一个good start point。查看新或者老的区别是看这个内容是否在以前的paper中出现过。如果reader说，通过这个论文我没有学习到新的知识，那很大程度上这个论文就是属于这个类别。实在不行了就是做一个evaluation，测试不同的参数情况下这个问题的方法的情况。比如自己最初的一篇关于in situ的文章，就是evaluate不同的参数对这个results的影响，最后也没有发出去。</p>
 <p><strong>老场景，新问题，老方法</strong>，从老场景中提炼出来新的问题，或者从已经发的paper中提炼出新的问题，可能是迈向research的第一步。这可能是老的场景中比较细分的一个情况，比如in situ workflow的背景下的各种细化的load balance的问题，或者是elastic in situ的问题，都属于这一类，虽然in situ 和 elastic 都是比较老的场景或问题，但是它们结合起来就属于一个novelty。总而言之，稍稍改变已有问题的assumption或者添加额外的requriements就能使其变成一个新的问题。</p>
 <p><strong>新场景，老问题</strong>。这个可能是上手比较容易的一类，比如做可视化的研究，遇到了covid的时候，做一个covid的数据，遇到了quantum computing的时候，做一个quantum computing的数据，这些都算是novelty，因为是新的场景，稍稍弄一下就能有比较好的contribution，不一定要提出新的方法，可能就是把已有的方法迁移到这个上面解决了一个新的场景中的问题，就比较好了。对于worflow这种就是in situ和其他的场景结合起来，比如AI相关的任务用到in situ workflow里也是新的使用场景。</p>
@@ -236,7 +237,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/22/Research_taolu/" data-id="cmbw030id004dj8jr01mf56qj" class="article-share-link">分享</a>
+      <a data-url="http://yoursite.com/2019/08/22/Research_taolu/" data-id="cmbw0e4n90047xmjrbh25eu8s" class="article-share-link">分享</a>
       
       
       
